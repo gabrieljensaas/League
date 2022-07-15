@@ -3,15 +3,15 @@ node_modules
 # Modified from:
 #     https://github.com/github/gitignore/blob/master/Unity.gitignore
 
-LSS GG/[Ll]ibrary/
-LSS GG/[Uu]serSettings/
-LSS GG/[Tt]emp/
-LSS GG/[Oo]bj/
-LSS GG/[Bb]uild/
-LSS GG/[Bb]uilds/
-LSS GG/[Ll]ogs/
-LSS GG/[Mm]emoryCaptures/
-LSS GG/Assets/TextMesh Pro
+/[Ll]ibrary/
+/[Uu]serSettings/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Mm]emoryCaptures/
+/Assets/TextMesh Pro
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # [Aa]ssets/AssetStoreTools*
@@ -64,4 +64,4 @@ Thumbs.db.meta
 
 # VS Code
 *.vscode
-LSS GG/.vsconfig
+/.vsconfig
