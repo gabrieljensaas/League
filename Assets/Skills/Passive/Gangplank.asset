@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e131eaf23fa50346a9f8562b0ed23e7, type: 3}
+  m_Name: Gangplank
+  m_EditorClassIdentifier: 
+  championName: Gangplank
+  skillName: Trial By Fire
+  castTime: 0
+  skillDamageType: 2
+  coolDown: 15
+  inactive: 0
+  levelScale: 0
+  applyOnAttack: 1
+  applyOnAbility: 0
+  alwaysActive: 0
+  minAD: 0
+  maxAD: 0
+  percentMinAD: 0
+  percentMaxAD: 0
+  minAP: 0
+  maxAP: 0
+  percentMinAP: 0
+  percentMaxAP: 0
+  minTD: 55
+  maxTD: 310
+  percentMinTD: 0
+  percentMaxTD: 0
+  minHeal: 0
+  maxHeal: 0
+  percentMinHeal: 0
+  percentMaxHeal: 0
+  percentMinTargetMissingHealth: 0
+  percentMaxTargetMissingHealth: 0
+  percentMinTargetMaxHealth: 0
+  percentMaxTargetMaxHealth: 0

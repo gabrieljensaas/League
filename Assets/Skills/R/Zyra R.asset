@@ -1,0 +1,375 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b54892e021f4682478dc5895e98fd5d3, type: 3}
+  m_Name: Zyra R
+  m_EditorClassIdentifier: 
+  basic:
+    champion: Zyra
+    name: Stranglethorns
+    castTime: 0
+    inactive: 0
+    coolDown:
+    - 110
+    - 100
+    - 90
+    - 0
+    - 0
+    cost:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    hpCost:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+  skillType: 1
+  skillDamageType: 1
+  multihit:
+    multiHit: 0
+    hits: 0000000000000000000000000000000000000000
+    multiHitHasInterval: 0
+    multiHitInterval: 0
+  charge:
+    chargeable: 0
+    charges: 0
+    maxCharges:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+  damage:
+    flatAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    bonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    flatAP:
+    - 180
+    - 265
+    - 360
+    - 0
+    - 0
+    bonusAP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentAP:
+    - 70
+    - 70
+    - 70
+    - 0
+    - 0
+  trueDamage:
+    TDType: 0
+    flat:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percent:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+  damageByHP:
+    targetMaxHPDamage:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    targetMissingHPDamage:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+  heal:
+    flat:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percent:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    flatByAP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentByAP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentByMissingHealth:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+  enemyEffects:
+    stun: 1
+    stunDuration: 1
+    silence: 0
+    silenceDuration: 0
+    disarm: 0
+    disarmDuration: 0
+    ASIncrease: 0
+    ASIncreaseFlat: 0
+    ASIncreasePercent: 0
+    ASIncreaseDuration: 0
+    MSIncrease: 0
+    MSIncreaseFlat: 0
+    MSIncreasePercent: 0
+    MSIncreaseDuration: 0
+    ASSlow: 0
+    ASSlowDuration: 0
+    MSSlow: 0
+    MSSlowDuration: 0
+    Invincible: 0
+    InvincibleDuration: 0
+  selfEffects:
+    stun: 0
+    stunDuration: 0
+    silence: 0
+    silenceDuration: 0
+    disarm: 0
+    disarmDuration: 0
+    ASIncrease: 0
+    ASIncreaseFlat:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    ASIncreasePercent:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    ASIncreaseDuration:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    MSIncrease: 0
+    MSIncreaseFlat:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    MSIncreasePercent:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    MSIncreaseDuration:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    DamageRed: 0
+    DamageRedFlat:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    DamageRedPercent:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    DamageRedDuration:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    Tenacity: 0
+    TenacityPercent:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    TenacityDuration:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    ASSlow: 0
+    ASSlowDuration: 0
+    MSSlow: 0
+    MSSlowDuration: 0
+    Invincible: 0
+    InvincibleDuration: 0
+    ArmorBonus: 0
+    ArmorFlat:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    ArmorPercent:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    ArmorPercentByAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    ArmorPercentByModAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    ArmorPercentByAP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    ArmorPercentByModAP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    ArmorDuration:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    SpellBlockBonus: 0
+    SpellBlockFlat:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    SpellBlockPercent:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    SpellBlockPercentByAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    SpellBlockPercentByModAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    SpellBlockPercentByAP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    SpellBlockPercentByModAP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    SpellBlockDuration:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    Shield: 0
+    ShieldFlat:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    ShieldPercent:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    ShieldPercentByHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    ShieldPercentByMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    ShieldPercentByBonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    ShieldDuration:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0

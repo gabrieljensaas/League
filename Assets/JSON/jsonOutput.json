@@ -1,0 +1,236 @@
+{
+  "matchID": "",
+  "fightData": {
+    "autoAttackData": [
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "0.178"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "0.178"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "0.778"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "0.778"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "1.823"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "1.823"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "2.863"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "2.863"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "3.904"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "3.904"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "4.945"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "4.945"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "5.987"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "5.987"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "7.028"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "7.028"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "8.069"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "8.069"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "8.666"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "8.666"
+      },
+      {
+        "champName": "Fiora",
+        "value": 11,
+        "time": "9.708"
+      }
+    ],
+    "spellData": [
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora Q",
+        "value": 52,
+        "time": "0.031"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora Q",
+        "value": 52,
+        "time": "0.031"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora W",
+        "value": 0,
+        "time": "0.046"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora W",
+        "value": 0,
+        "time": "0.046"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora E",
+        "value": 0,
+        "time": "0.058"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora E",
+        "value": 0,
+        "time": "0.058"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora Q",
+        "value": 52,
+        "time": "6.034"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora Q",
+        "value": 52,
+        "time": "6.034"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora E",
+        "value": 0,
+        "time": "7.062"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora E",
+        "value": 0,
+        "time": "7.062"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora Q",
+        "value": 52,
+        "time": "12.064"
+      }
+    ],
+    "passiveData": [
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora",
+        "value": 196,
+        "time": "0.031"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora",
+        "value": 196,
+        "time": "0.031"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora",
+        "value": 196,
+        "time": "0.046"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora",
+        "value": 196,
+        "time": "0.046"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora",
+        "value": 196,
+        "time": "0.178"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora",
+        "value": 196,
+        "time": "0.178"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora",
+        "value": 196,
+        "time": "6.034"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora",
+        "value": 196,
+        "time": "6.034"
+      },
+      {
+        "champName": "Fiora",
+        "spellName": "Fiora",
+        "value": 196,
+        "time": "12.064"
+      }
+    ]
+  }
+}
