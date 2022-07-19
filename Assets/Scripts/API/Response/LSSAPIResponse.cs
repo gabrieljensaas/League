@@ -11,7 +11,8 @@ public class APIMatchInfo
 public class ChampionInfo
 {
     public string champName { get; set; }
-    public int champLevel { get; set; }
+    public int champLevel { get; set; }    
+    public List<int> items { get; set; }
 }
 
 public class LSSAPIResponse

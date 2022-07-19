@@ -158,8 +158,8 @@ public class RiotAPIMatchRequest : MonoBehaviour
         {
             champStats[0].isLoaded = false;
             champStats[1].isLoaded = false;
-            champStats[0].Reset(1);
-            champStats[1].Reset(1);
+            //champStats[0].Reset(1);
+            //champStats[1].Reset(1);
             apiRequest.SimulateFight(0, champName[0],timeline.info.frames[int.Parse(slider.value.ToString())].participantFrames[selectedChamp[0]+1].xp,1);
             apiRequest.SimulateFight(1, champName[1],timeline.info.frames[int.Parse(slider.value.ToString())].participantFrames[selectedChamp[1]+1].xp,1);                    
         }
@@ -183,89 +183,90 @@ public class RiotAPIMatchRequest : MonoBehaviour
 #region GetMatch Info
     IEnumerator FetchMatchData(string _matchID)
     {
-        UnityWebRequest unityWebRequest;
-        url = "https://"+continent+".api.riotgames.com/lol/match/v5/matches/"+_matchID+"/?api_key="+key;
-        unityWebRequest = UnityWebRequest.Get(url);        
-        yield return unityWebRequest.SendWebRequest();
-
-        string s = unityWebRequest.downloadHandler.text;
-        matchResponse = JsonConvert.DeserializeObject<RiotAPIMatchResponse>(s);
-
-        //Get Participant ID by PUUID
-        int id = (matchResponse.metadata.participants.FindIndex(x => x.StartsWith(puuid)));
-        string maxTimeStamp = ((float)(((matchResponse.info.gameEndTimestamp - matchResponse.info.gameStartTimestamp) / 60) /1000)).ToString("F2");
-
-        simManager.sliderGO.GetComponent<Slider>().maxValue = int.Parse(((((matchResponse.info.gameEndTimestamp - matchResponse.info.gameStartTimestamp) / 60) /1000)).ToString("F0"));
-        simManager.sliderGO.GetComponent<Slider>().value = int.Parse(((((matchResponse.info.gameEndTimestamp - matchResponse.info.gameStartTimestamp) / 60) /1000)).ToString("F0"));
-        
-        for(int i = 0; i<10; i++)
-        {
-            button[i].GetComponentsInChildren<TextMeshProUGUI>()[0].text = matchResponse.info.participants[i].championName;
-
-        }
-        
-        ver = "12.10.1";
-        int[] champExp = {0,0};
-        int[] champ1Items = {0,0,0,0,0,0};
-        int[] champ2Items = {0,0,0,0,0,0};
-
-        
-        matchChampions = new List<string>();
-
-        for(int i = 0; i<10; i++)
-        {
-            matchChampions.Add(matchResponse.info.participants[i].championName);
-        }
-
-        champName[0] = matchResponse.info.participants[0].championName;
-        champName[1] = matchResponse.info.participants[5].championName;
-
-        champExp[0] = matchResponse.info.participants[0].champExperience;
-        champExp[1] = matchResponse.info.participants[5].champExperience;
-
-        simManager.storedName[0] = champName[0];
-        simManager.storedName[1] = champName[1];
-        simManager.storedXP[0] = champExp[0];
-        simManager.storedXP[1] = champExp[1];
-        
-        champ1Items[0] = matchResponse.info.participants[0].item0;
-        champ1Items[1] = matchResponse.info.participants[0].item1;
-        champ1Items[2] = matchResponse.info.participants[0].item2;
-        champ1Items[3] = matchResponse.info.participants[0].item3;
-        champ1Items[4] = matchResponse.info.participants[0].item4;
-        champ1Items[5] = matchResponse.info.participants[0].item5;
-        champ2Items[0] = matchResponse.info.participants[5].item0;
-        champ2Items[1] = matchResponse.info.participants[5].item1;
-        champ2Items[2] = matchResponse.info.participants[5].item2;
-        champ2Items[3] = matchResponse.info.participants[5].item3;
-        champ2Items[4] = matchResponse.info.participants[5].item4;
-        champ2Items[5] = matchResponse.info.participants[5].item5;
-
-        for(int i = 1; i<66; i++)
-        {
-            for(int i2 = 0; i2<6; i2++)
-            {
-                if(champ1Items[i2] != 0)
-                {
-                    itemRequest.FetchStats(0,i2,champStats[0],i,champ1Items[i2]);
-                }
-            }
-        }
-
-        for(int i = 1; i<66; i++)
-        {
-            for(int i2 = 0; i2<6; i2++)
-            {
-                if(champ2Items[i2] != 0)
-                {
-                    itemRequest.FetchStats(1,i2,champStats[1],i,champ2Items[i2]);
-                }
-            }
-        }
-        champStats[0].FinalizeStats();
-        champStats[1].FinalizeStats();
-        //apiRequest.GetRiotAPIRequest(ver, champName[0], champName[1], champExp[0], champExp[1]);
-        StartCoroutine(GetTimelineData(_matchID));
+        yield return null;
+        //UnityWebRequest unityWebRequest;
+        //url = "https://"+continent+".api.riotgames.com/lol/match/v5/matches/"+_matchID+"/?api_key="+key;
+        //unityWebRequest = UnityWebRequest.Get(url);        
+        //yield return unityWebRequest.SendWebRequest();
+        //
+        //string s = unityWebRequest.downloadHandler.text;
+        //matchResponse = JsonConvert.DeserializeObject<RiotAPIMatchResponse>(s);
+        //
+        ////Get Participant ID by PUUID
+        //int id = (matchResponse.metadata.participants.FindIndex(x => x.StartsWith(puuid)));
+        //string maxTimeStamp = ((float)(((matchResponse.info.gameEndTimestamp - matchResponse.info.gameStartTimestamp) / 60) /1000)).ToString("F2");
+        //
+        //simManager.sliderGO.GetComponent<Slider>().maxValue = int.Parse(((((matchResponse.info.gameEndTimestamp - matchResponse.info.gameStartTimestamp) / 60) /1000)).ToString("F0"));
+        //simManager.sliderGO.GetComponent<Slider>().value = int.Parse(((((matchResponse.info.gameEndTimestamp - matchResponse.info.gameStartTimestamp) / 60) /1000)).ToString("F0"));
+        //
+        //for(int i = 0; i<10; i++)
+        //{
+        //    button[i].GetComponentsInChildren<TextMeshProUGUI>()[0].text = matchResponse.info.participants[i].championName;
+        //
+        //}
+        //
+        //ver = "12.10.1";
+        //int[] champExp = {0,0};
+        //int[] champ1Items = {0,0,0,0,0,0};
+        //int[] champ2Items = {0,0,0,0,0,0};
+        //
+        //
+        //matchChampions = new List<string>();
+        //
+        //for(int i = 0; i<10; i++)
+        //{
+        //    matchChampions.Add(matchResponse.info.participants[i].championName);
+        //}
+        //
+        //champName[0] = matchResponse.info.participants[0].championName;
+        //champName[1] = matchResponse.info.participants[5].championName;
+        //
+        //champExp[0] = matchResponse.info.participants[0].champExperience;
+        //champExp[1] = matchResponse.info.participants[5].champExperience;
+        //
+        //simManager.storedName[0] = champName[0];
+        //simManager.storedName[1] = champName[1];
+        //simManager.storedXP[0] = champExp[0];
+        //simManager.storedXP[1] = champExp[1];
+        //
+        //champ1Items[0] = matchResponse.info.participants[0].item0;
+        //champ1Items[1] = matchResponse.info.participants[0].item1;
+        //champ1Items[2] = matchResponse.info.participants[0].item2;
+        //champ1Items[3] = matchResponse.info.participants[0].item3;
+        //champ1Items[4] = matchResponse.info.participants[0].item4;
+        //champ1Items[5] = matchResponse.info.participants[0].item5;
+        //champ2Items[0] = matchResponse.info.participants[5].item0;
+        //champ2Items[1] = matchResponse.info.participants[5].item1;
+        //champ2Items[2] = matchResponse.info.participants[5].item2;
+        //champ2Items[3] = matchResponse.info.participants[5].item3;
+        //champ2Items[4] = matchResponse.info.participants[5].item4;
+        //champ2Items[5] = matchResponse.info.participants[5].item5;
+        //
+        //for(int i = 1; i<66; i++)
+        //{
+        //    for(int i2 = 0; i2<6; i2++)
+        //    {
+        //        if(champ1Items[i2] != 0)
+        //        {
+        //            itemRequest.FetchStats(0,i2,champStats[0],i,champ1Items[i2]);
+        //        }
+        //    }
+        //}
+        //
+        //for(int i = 1; i<66; i++)
+        //{
+        //    for(int i2 = 0; i2<6; i2++)
+        //    {
+        //        if(champ2Items[i2] != 0)
+        //        {
+        //            itemRequest.FetchStats(1,i2,champStats[1],i,champ2Items[i2]);
+        //        }
+        //    }
+        //}
+        //champStats[0].FinalizeStats(true);
+        //champStats[1].FinalizeStats(true);
+        ////apiRequest.GetRiotAPIRequest(ver, champName[0], champName[1], champExp[0], champExp[1]);
+        //StartCoroutine(GetTimelineData(_matchID));
     }
 
     UnityEngine.Sprite SpriteFromTexture2D(Texture2D texture) 

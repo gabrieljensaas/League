@@ -119,7 +119,7 @@ public class SkillList : ScriptableObject
                     myStats.dynamicStatusPercent["Bladework"] = 90;
                     myStats.PercentAttackSpeedMod += myStats.dynamicStatusPercent["Bladework"];
                     myStats.attackSpeed *= (1 + (myStats.PercentAttackSpeedMod / 100));
-                    myStats.UpdateStats();
+                    myStats.UpdateStats(false);
                     output.text += "[BUFF] " + myStats.name + " gains 90% AS increase for 2 attacks.\n\n";
                     myStats.UpdateTimer(SimManager.timer);
                     myStats.buffed = true;
@@ -158,7 +158,7 @@ public class SkillList : ScriptableObject
                 myStats.currentHealth += amount;
                 output.text += "[HEAL] " + myStats.name + " used " + basic.name + " and heals himself for " + heal + " health.\n\n";
                 myStats.UpdateTimer(SimManager.timer);
-                myStats.UpdateStats();
+                myStats.UpdateStats(false);
             }
 
             if (basic.name == "Powder Keg")
@@ -177,7 +177,7 @@ public class SkillList : ScriptableObject
         {
             int bonusAD = (int)Mathf.Round(myStats.AD * 0.2f);
             myStats.AD += bonusAD;
-            myStats.UpdateStats();
+            myStats.UpdateStats(false);
             output.text += "[SPECIAL] " + myStats.name + " used " + basic.name + " and gains " + bonusAD + " bonus AD.\n\n";
             myStats.UpdateTimer(SimManager.timer);
             myStats.dynamicStatus[basic.name] = true;
@@ -261,7 +261,7 @@ public class SkillList : ScriptableObject
         }
         else
         {
-            if (myStats.currentHealth-totalDamage <= 0) return 0;
+            //if (myStats.currentHealth-totalDamage <= 0) return 0;
             output.text += "[DAMAGE] " + myStats.name + " used " + basic.name + " and dealt " + totalDamage.ToString() + " damage.\n\n";
         }
         target.TakeDamage(totalDamage);
