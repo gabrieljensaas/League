@@ -13,10 +13,10 @@ public class LoadingScreenHandler : MonoBehaviour
 
     public static void Show()
     {
-        loadingScreen.SetActive(true);
+        //loadingScreen.SetActive(true);
     }
     public static void Hide()
     {
-        loadingScreen.SetActive(false);
+        //loadingScreen.SetActive(false);
     }
 }

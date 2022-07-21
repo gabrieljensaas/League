@@ -3420,7 +3420,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.00012207031}
-  m_SizeDelta: {x: 0, y: -1329.538}
+  m_SizeDelta: {x: 0, y: -950.0536}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &101636227
 MonoBehaviour:
@@ -4947,6 +4947,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackCooldown: 0
+  myStats: {fileID: 0}
+  targetStats: {fileID: 0}
   combatPriority:
   - 
   - 
@@ -4983,6 +4985,7 @@ MonoBehaviour:
   eSkill: {fileID: 0}
   rSkill: {fileID: 0}
   qStacks: 0
+  enemyCombat: {fileID: 0}
   buffed: 0
   debuffed: 0
   ccImmune: 0
@@ -5083,6 +5086,7 @@ MonoBehaviour:
   item: []
   itemList: {fileID: 0}
   itemPrefab: {fileID: 8829407649640576049, guid: 8bc35ee0e65a1d643b2fe15a47e01d0a, type: 3}
+  targetStats: {fileID: 0}
   itemCount: 0
   isLoaded: 0
   isItemsLoaded: 0
@@ -5168,8 +5172,6 @@ MonoBehaviour:
   rFlatEnergyModPerLevel: 0
   PercentLifeStealMod: 0
   PercentSpellVampMod: 0
-  targets: []
-  currentTarget: {fileID: 0}
   generateJSON: {fileID: 488965736}
 --- !u!1 &158112003
 GameObject:
@@ -13166,6 +13168,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackCooldown: 0
+  myStats: {fileID: 0}
+  targetStats: {fileID: 0}
   combatPriority:
   - 
   - 
@@ -13202,6 +13206,7 @@ MonoBehaviour:
   eSkill: {fileID: 0}
   rSkill: {fileID: 0}
   qStacks: 0
+  enemyCombat: {fileID: 0}
   buffed: 0
   debuffed: 0
   ccImmune: 0
@@ -13302,6 +13307,7 @@ MonoBehaviour:
   item: []
   itemList: {fileID: 0}
   itemPrefab: {fileID: 8829407649640576049, guid: 8bc35ee0e65a1d643b2fe15a47e01d0a, type: 3}
+  targetStats: {fileID: 0}
   itemCount: 0
   isLoaded: 0
   isItemsLoaded: 0
@@ -13387,8 +13393,6 @@ MonoBehaviour:
   rFlatEnergyModPerLevel: 0
   PercentLifeStealMod: 0
   PercentSpellVampMod: 0
-  targets: []
-  currentTarget: {fileID: 0}
   generateJSON: {fileID: 488965736}
 --- !u!1 &488965729
 GameObject:
@@ -18183,7 +18187,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 246.49, y: -1538.1997}
+  m_AnchoredPosition: {x: 246.49, y: -1538.2}
   m_SizeDelta: {x: 492.98, y: 3076.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &642007757
@@ -25211,7 +25215,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 738.005, y: -1538.199}
+  m_AnchoredPosition: {x: 738.005, y: -1538.2}
   m_SizeDelta: {x: 456.49, y: 3076.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &865374487
@@ -37432,7 +37436,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1260412487
 RectTransform:
   m_ObjectHideFlags: 0
@@ -49371,7 +49375,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 249.88007, y: -1538.1989}
+  m_AnchoredPosition: {x: 249.88, y: -1538.2}
   m_SizeDelta: {x: 499.76, y: 3076.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1675119440
@@ -56303,7 +56307,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.00012207031}
-  m_SizeDelta: {x: 0, y: -1329.538}
+  m_SizeDelta: {x: 0, y: -950.0536}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1912723366
 MonoBehaviour:
@@ -61804,7 +61808,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 734.3245, y: -1538.1995}
+  m_AnchoredPosition: {x: 734.3245, y: -1538.2}
   m_SizeDelta: {x: 462.689, y: 3076.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2103508399
@@ -62776,6 +62780,7 @@ MonoBehaviour:
   eSkill: {fileID: 0}
   rSkill: {fileID: 0}
   qStacks: 0
+  enemyCombat: {fileID: 5458847258666073444}
   buffed: 0
   debuffed: 0
   ccImmune: 0
@@ -62876,6 +62881,7 @@ MonoBehaviour:
   item: []
   itemList: {fileID: 0}
   itemPrefab: {fileID: 8829407649640576049, guid: 8bc35ee0e65a1d643b2fe15a47e01d0a, type: 3}
+  targetStats: {fileID: 3035611903516029275}
   itemCount: 0
   isLoaded: 0
   isItemsLoaded: 0
@@ -62961,8 +62967,6 @@ MonoBehaviour:
   rFlatEnergyModPerLevel: 0
   PercentLifeStealMod: 0
   PercentSpellVampMod: 0
-  targets: []
-  currentTarget: {fileID: 0}
   generateJSON: {fileID: 488965736}
 --- !u!1 &3035611903516029274
 GameObject:
@@ -63002,6 +63006,7 @@ MonoBehaviour:
   eSkill: {fileID: 0}
   rSkill: {fileID: 0}
   qStacks: 0
+  enemyCombat: {fileID: 5458847258199699786}
   buffed: 0
   debuffed: 0
   ccImmune: 0
@@ -63102,6 +63107,7 @@ MonoBehaviour:
   item: []
   itemList: {fileID: 0}
   itemPrefab: {fileID: 8829407649640576049, guid: 8bc35ee0e65a1d643b2fe15a47e01d0a, type: 3}
+  targetStats: {fileID: 3035611902072421749}
   itemCount: 0
   isLoaded: 0
   isItemsLoaded: 0
@@ -63187,8 +63193,6 @@ MonoBehaviour:
   rFlatEnergyModPerLevel: 0
   PercentLifeStealMod: 0
   PercentSpellVampMod: 0
-  targets: []
-  currentTarget: {fileID: 0}
   generateJSON: {fileID: 488965736}
 --- !u!224 &3414144649220478611
 RectTransform:
@@ -65112,6 +65116,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackCooldown: 0
+  myStats: {fileID: 3035611902072421749}
+  targetStats: {fileID: 3035611903516029275}
   combatPriority:
   - 
   - 
@@ -65141,6 +65147,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackCooldown: 0
+  myStats: {fileID: 3035611903516029275}
+  targetStats: {fileID: 3035611902072421749}
   combatPriority:
   - 
   - 

@@ -22,6 +22,7 @@ public class ChampStats : MonoBehaviour
     public int qStacks;
 
     ChampCombat champCombat;
+    public ChampCombat enemyCombat;
     public bool buffed;
     public bool debuffed;
     public bool ccImmune;
@@ -34,10 +35,11 @@ public class ChampStats : MonoBehaviour
     public bool qReady = true, wReady = true, eReady = true, rReady = true, passiveReady = true;
     public float qCD, wCD, eCD, rCD, pCD;
     [HideInInspector] public TextMeshProUGUI[] outputStats;
-    public TextMeshProUGUI[] outputStats1;
+    [HideInInspector] public TextMeshProUGUI[] outputStats1;
     [HideInInspector] public List<Item> item;
     [HideInInspector] public GameObject itemList;
     [HideInInspector] public GameObject itemPrefab;
+    [SerializeField] ChampStats targetStats;
     [HideInInspector] public int itemCount;
     [HideInInspector] public bool isLoaded;
     [HideInInspector] public bool isItemsLoaded;
@@ -121,8 +123,6 @@ public class ChampStats : MonoBehaviour
     #endregion
 
     public static int stacks;
-    [HideInInspector] public GameObject[] targets;
-    [HideInInspector] public GameObject currentTarget;
     TextMeshProUGUI output;
     TextMeshProUGUI timer;
 
@@ -136,8 +136,6 @@ public class ChampStats : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        targets = GameObject.FindGameObjectsWithTag("Champion");
-        champCount = targets.Length;
         champCombat = GetComponent<ChampCombat>();
     }
 
@@ -145,22 +143,12 @@ public class ChampStats : MonoBehaviour
     {
         if (!SimManager.battleStarted) return;
 
-        if (currentTarget == null || currentTarget == this)
-        {
-            GetTarget();
-        }
-
-        if (currentHealth <= 0)
-        {
-            if (isDead) return;
-            Die();
-            //generateJSON.DataSerialize();
-        }
-
-        if (currentTarget != null)
-        {
-            isReady = true;
-        }
+        //if (currentHealth <= 0)
+        //{
+        //    if (isDead) return;
+        //    Die();
+        //    //generateJSON.DataSerialize();
+        //}
 
         #region Jax
         if (dynamicStatus.ContainsKey("Counter Strike"))
@@ -169,10 +157,10 @@ public class ChampStats : MonoBehaviour
             if (dynamicStatusDuration["Counter Strike"] <= 0)
             {
                 int totalDamage = (int)Mathf.Round((eSkill.damage.flatAD[4] + (AD * (eSkill.damage.percentAD[4] / 100))));
-                totalDamage = (int)Mathf.Round(totalDamage * (100 / (100 + currentTarget.gameObject.GetComponent<ChampStats>().armor)));
+                totalDamage = (int)Mathf.Round(totalDamage * (100 / (100 + targetStats.armor)));
                 int _prev = int.Parse(this.gameObject.GetComponent<ChampCombat>().abilitySum[3].text);
                 TextMeshProUGUI s = this.gameObject.GetComponent<ChampCombat>().abilitySum[3];
-                eSkill.UseSkill(4, this, currentTarget.gameObject.GetComponent<ChampStats>(),s,_prev);
+                eSkill.UseSkill(4, this, targetStats,s,_prev);
                 dynamicStatus.Remove("Counter Strike");
                 dynamicStatusStacks.Remove("Counter Strike");
                 dynamicStatusDuration.Remove("Counter Strike");
@@ -191,7 +179,7 @@ public class ChampStats : MonoBehaviour
                     dynamicStatus.Remove("Ragnarok");
                     dynamicStatusDuration.Remove("Ragnarok");
                     AD -= (int)Mathf.Round(30 + (AD * 0.25f));
-                    UpdateStats();
+                    UpdateStats(false);
                 }
             }
         }
@@ -387,15 +375,15 @@ public class ChampStats : MonoBehaviour
                 {
                     shieldValue = 0;
                     shieldDuration = 0.001f;
-                    output.text += "[DAMAGE] " + name + " shield absorbed " + previousValue + " damage from " + currentTarget.GetComponent<ChampStats>().name + " \n\n";
+                    output.text += "[DAMAGE] " + name + " shield absorbed " + previousValue + " damage from " + targetStats.name + " \n\n";
                     UpdateTimer(SimManager.timer);
-                    output.text += "[DAMAGE] " + name + " took " + (amount- previousValue).ToString() + " damage from " + currentTarget.GetComponent<ChampStats>().name + " \n\n";
+                    output.text += "[DAMAGE] " + name + " took " + (amount- previousValue).ToString() + " damage from " + targetStats.name + " \n\n";
                     UpdateTimer(SimManager.timer);
                     amount = previousValue;
                 }
                 else
                 {
-                    output.text += "[DAMAGE] " + name + " shield absorbed " + absorbed + " damage from " + currentTarget.GetComponent<ChampStats>().name + " \n\n";
+                    output.text += "[DAMAGE] " + name + " shield absorbed " + absorbed + " damage from " + targetStats.name + " \n\n";
                     UpdateTimer(SimManager.timer);
                     amount -= absorbed;
                 }
@@ -406,8 +394,11 @@ public class ChampStats : MonoBehaviour
         if (currentHealth < 0)
         {
             currentHealth = 0;
+            UpdateStats(false);
+            Die();
         }
-        UpdateStats();
+        //Debug.Log(name + " " + currentHealth);
+        UpdateStats(false);
     }
 
     public void Cleanse() 
@@ -433,7 +424,7 @@ public class ChampStats : MonoBehaviour
     }
 
     #region stats
-    public void UpdateStats()
+    public void UpdateStats(bool isFirst)
     {
         this.gameObject.name = name;
         outputStats1[0].text = name;
@@ -463,24 +454,9 @@ public class ChampStats : MonoBehaviour
         //outputStats[5].text = armor.ToString("F0");
         //outputStats[6].text = spellBlock.ToString("F0");
         //outputStats[7].text = attackSpeed.ToString("F2");
-    }
-
-    void GetTarget()
-    {
-        if(currentTarget == null)
+        if (isFirst)
         {
-            for(int i = 0; i<champCount; i++)
-            {
-                currentTarget = targets[i];
-            }
-        }
-
-        if(currentTarget.gameObject.name == this.gameObject.name)
-        {
-            for(int i = champCount; i>0; i--)
-            {
-                currentTarget = targets[i-1];
-            }
+            isLoaded = true;
         }
     }
 
@@ -488,14 +464,20 @@ public class ChampStats : MonoBehaviour
     {
         ExportJSData exportData = new ExportJSData();
         isDead = true;
+        isLoaded = false;
+        champCombat.isCasting = false;
+        enemyCombat.isCasting = false;
         SimManager.battleStarted = false;
         SimManager.isNew = true;
         SimManager.isLoaded = false;
+        RiotAPIRequest.isLoading = false;
         currentHealth = 0;
         UpdateTimer(SimManager.timer);
-        output.text += currentTarget.gameObject.name + " has won with " + currentTarget.gameObject.GetComponent<ChampStats>().currentHealth + " health remaining.\n\n";
+        output.text += targetStats.name + " has won with " + targetStats.currentHealth.ToString("F0") + " health remaining.\n\n";
+        Debug.Log(name + " " + totalDamage);
+        Debug.Log(targetStats.name + " " + totalDamage);
         exportData.myDamage = totalDamage;
-        exportData.enemyDamage = currentTarget.gameObject.GetComponent<ChampStats>().totalDamage;
+        exportData.enemyDamage = targetStats.totalDamage;
         exportJS.SendData(JsonUtility.ToJson(exportData));
         LoadingScreenHandler.Hide();
     }
@@ -505,7 +487,7 @@ public class ChampStats : MonoBehaviour
         timer.text += SimManager._timer.ToString("F2") + "\n \n";
     }
 
-    public void FinalizeStats()
+    public void FinalizeStats(bool isFirst)
     {
         maxHealth += FlatHPPoolMod;
         maxHealth *= 1+PercentHPPoolMod;
@@ -516,10 +498,11 @@ public class ChampStats : MonoBehaviour
         spellBlock += FlatSpellBlockMod;
         attackSpeed *= (1 + (PercentAttackSpeedMod / 100));
         originalAS = attackSpeed;
-        UpdateStats();
+        //isLoaded = true;
+        UpdateStats(isFirst);
     }
 
-    public void Reset(int _type)
+    void Reset(int _type)
     {
         if(_type == 0)
         {
@@ -607,7 +590,7 @@ public class ChampStats : MonoBehaviour
         rFlatEnergyModPerLevel = 0;
         PercentLifeStealMod = 0;
         PercentSpellVampMod = 0;
-        FinalizeStats();
+        FinalizeStats(false);
     }
     #endregion
 

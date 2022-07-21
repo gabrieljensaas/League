@@ -136,7 +136,7 @@ public class PassiveList : ScriptableObject
                 {
                     myStats.currentHealth = myStats.maxHealth;
                 }
-                myStats.UpdateStats();
+                myStats.UpdateStats(false);
                 target.TakeDamage(damage);
                 output.text += "[PASSIVE] " + myStats.name + " " + myStats.passiveSkill.skillName + " Damage: " + damage.ToString() + " Heal: "+maxHeal+"\n\n";
                 target.UpdateTimer(SimManager.timer);
@@ -149,7 +149,7 @@ public class PassiveList : ScriptableObject
                 {
                     myStats.currentHealth = myStats.maxHealth;
                 }
-                myStats.UpdateStats();
+                myStats.UpdateStats(false);
                 target.TakeDamage(damage);
                 output.text += "[PASSIVE] " + myStats.name + " " + myStats.passiveSkill.skillName + " Damage: " + damage.ToString() + " Heal: " + maxHeal + "\n\n";
                 target.UpdateTimer(SimManager.timer);
@@ -170,7 +170,7 @@ public class PassiveList : ScriptableObject
                         myStats.PercentAttackSpeedMod = (value[level-1]) * myStats.dynamicStatusStacks[skillName];
                         //Debug.Log(myStats.PercentAttackSpeedMod);
                         myStats.attackSpeed *= (1 + (myStats.PercentAttackSpeedMod / 100));
-                        myStats.UpdateStats();
+                        myStats.UpdateStats(false);
                     }
                 }
                 else
@@ -179,7 +179,7 @@ public class PassiveList : ScriptableObject
                     myStats.dynamicStatusStacks[skillName] = 1;
                     myStats.PercentAttackSpeedMod += value[level-1];
                     myStats.attackSpeed *= (1 + (myStats.PercentAttackSpeedMod / 100));
-                    myStats.UpdateStats();
+                    myStats.UpdateStats(false);
                 }
                 break;
 
@@ -193,7 +193,7 @@ public class PassiveList : ScriptableObject
                 myStats.attackSpeed = myStats.originalAS;
                 myStats.PercentAttackSpeedMod = TotalAS;
                 myStats.attackSpeed *= (1 + (myStats.PercentAttackSpeedMod / 100));
-                myStats.UpdateStats();
+                myStats.UpdateStats(false);
                 break;
 
             case "Gangplank":

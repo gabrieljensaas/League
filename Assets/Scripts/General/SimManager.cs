@@ -80,7 +80,7 @@ public class SimManager : MonoBehaviour
         int xp = matchRequest.timeline.info.frames[value].participantFrames[RiotAPIMatchRequest.selectedChamp[0]+1].xp;
         storedXP[0] = xp;
         storedName[0] = name;
-        champStats[0].Reset(0);
+        //champStats[0].Reset(0);
         //apiRequest.GetRiotAPIRequest("12.10.1", storedName[0], storedName[1], storedXP[0], storedXP[1]);
         //Debug.Log(storedName[0]);
         //apiRequest.SimulateFight(0, name, xp,1);
@@ -88,7 +88,7 @@ public class SimManager : MonoBehaviour
         {
             apiRequest.champAbilities[0].champSkills[i].text = apiRequest.allAbilities[RiotAPIMatchRequest.selectedChamp[0]].name[i];
         }
-        apiRequest.LoadItems();
+        //apiRequest.LoadItems();
     }
 
     public void LoadChampion2(Button button)
@@ -100,14 +100,14 @@ public class SimManager : MonoBehaviour
         int xp = matchRequest.timeline.info.frames[value].participantFrames[RiotAPIMatchRequest.selectedChamp[1]+1].xp;
         storedXP[1] = xp;
         storedName[1] = name;
-        champStats[1].Reset(0);
+        //champStats[1].Reset(0);
         //apiRequest.GetRiotAPIRequest("12.10.1", storedName[0], storedName[1], storedXP[0], storedXP[1]);
         //apiRequest.SimulateFight(1, name, xp,1);
         for(int i = 0; i<4; i++)
         {
             apiRequest.champAbilities[1].champSkills[i].text = apiRequest.allAbilities[RiotAPIMatchRequest.selectedChamp[1]].name[i];
         }
-        apiRequest.LoadItems();
+        //apiRequest.LoadItems();
     }
 
     public void Back()
@@ -192,8 +192,8 @@ public class SimManager : MonoBehaviour
 
     public void Clear()
     {
-        champStats[0].Reset(0);
-        champStats[1].Reset(0);
+        //champStats[0].Reset(0);
+        //champStats[1].Reset(0);
         champStats[0].isLoaded = false;
         champStats[1].isLoaded = false;
     }

@@ -25,12 +25,16 @@ public class RiotAPIRequest : MonoBehaviour
     private string apiURL = "";
     private string _champ1;
     private string _champ2;
-    bool Load1, Load2;
+    public static bool Load1, Load2;
 
     public TMP_Dropdown dd1;
     public TMP_Dropdown dd2;
     public TMP_InputField if1;
     public TMP_InputField if2;
+    public static bool isLoading = false;
+
+    int[] champ1Items = { 0, 0, 0, 0, 0, 0};
+    int[] champ2Items = { 0, 0, 0, 0, 0, 0};
 
     public GameObject[] Champions;
     public ChampStats[] champStats;
@@ -40,12 +44,24 @@ public class RiotAPIRequest : MonoBehaviour
     public List<ChampionAbilities> champAbilities;
     public List<AllAbilities> allAbilities;
 
+    string s = "";
+
     void Update()
     {        
-        if(Load1 && Load2)
+
+        if (Load1 && Load2)
         {
-            SimManager.isLoaded = true;
-        }        
+            //SimManager.isLoaded = true;
+        }
+        if (Input.GetMouseButton(0))
+        {
+            //Debug.Log(s);
+            //s = "{ \"APIMatchInfo\":{ \"version\":\"12.10.1\",\"championInfo\":[{ \"champName\":\"TahmKench\",\"champLevel\":13,\"items\":[1037,1037,1037,1037,1037,1037]},{ \"champName\":\"Bard\",\"champLevel\":14,\"items\":[0,0,0,0,0,0]}]} }";
+            //LoadData(JsonUtility.ToJson(s));
+            //if (isLoading) return;
+            //LoadData(s);
+            //Test();
+        }
     }
 
     void Start()
@@ -54,18 +70,34 @@ public class RiotAPIRequest : MonoBehaviour
         itemRequest = GetComponent<RiotAPIItemRequest>();
         matchRequest = GetComponent<RiotAPIMatchRequest>();
         simManager = GetComponent<SimManager>();
+        //StartCoroutine(TestRepeat());
+        //Test();
+        s = "{ \"APIMatchInfo\":{ \"version\":\"12.10.1\",\"championInfo\":[{ \"champName\":\"TahmKench\",\"champLevel\":13,\"items\":[1037,0,0,0,0,0]},{ \"champName\":\"Bard\",\"champLevel\":14,\"items\":[0,0,0,0,0,0]}]} }";
+        //LoadData(s);
+    }
+
+    IEnumerator TestRepeat()
+    {
+        yield return new WaitForSeconds(5f);
         Test();
     }
 
     public void Test()
     {
-        Time.timeScale = 100f;
+        Load1 = false;
+        Load2 = false;
+        simManager.outputText.text = "";
+        champStats[0].isLoaded = false;
+        champStats[1].isLoaded = false;
+        SimManager.isLoaded = false;
+        simManager.ongoing = false;
+        Time.timeScale = 2f;
         simManager.timeText.gameObject.SetActive(false);
         string _c1 = dd1.captionText.text.ToString();
         string _c2 = dd2.captionText.text.ToString();
         int _e1 = int.Parse(if1.text);
         int _e2 = int.Parse(if2.text);
-        GetRiotAPIRequest("12.10.1", "Garen", "Ashe", 18360, 18360);
+        GetRiotAPIRequest("12.10.1", "Garen", "Jax", 18360, 18360);
     }
 
     public void ManualSimulate()
@@ -82,6 +114,10 @@ public class RiotAPIRequest : MonoBehaviour
 
     public void LoadData(string data)
     {
+        if (isLoading) return;
+        isLoading = true;
+        champStats[0].isLoaded = false;
+        champStats[1].isLoaded = false;
         LoadingScreenHandler.Show();
         simManager.timeText.gameObject.SetActive(false);
         SimManager.timer = 0;
@@ -95,6 +131,38 @@ public class RiotAPIRequest : MonoBehaviour
         _champ2 = LSSAPI.APIMatchInfo.championInfo[1].champName;
         int _exp1 = ExpTable[(LSSAPI.APIMatchInfo.championInfo[0].champLevel)-1];
         int _exp2 = ExpTable[(LSSAPI.APIMatchInfo.championInfo[1].champLevel)-1];
+
+        int _item1 = LSSAPI.APIMatchInfo.championInfo[0].items.Count;
+        int _item2 = LSSAPI.APIMatchInfo.championInfo[1].items.Count;
+
+        for (int i = 0; i < _item1; i++)
+        {
+            champ1Items[i] = LSSAPI.APIMatchInfo.championInfo[0].items[i];
+        }
+
+        for (int i = 0; i < _item2; i++)
+        {
+            champ2Items[i] = LSSAPI.APIMatchInfo.championInfo[1].items[i];
+        }
+
+        for (int i = 1; i < 66; i++)
+        {
+            for (int i2 = 0; i2 < _item1; i2++)
+            {
+              if (champ1Items[i2] != 0)
+              {
+                  itemRequest.FetchStats(0, i2, champStats[0], i, champ1Items[i2]);
+              }
+            }
+
+            for (int i2 = 0; i2 < _item2; i2++)
+            {
+                if (champ2Items[i2] != 0)
+                {
+                    itemRequest.FetchStats(1, i2, champStats[1], i, champ2Items[i2]);
+                }
+            }
+        }
 
         champStats[0].GetComponent<ChampCombat>().PriorityList(_champ1);
         champStats[1].GetComponent<ChampCombat>().PriorityList(_champ2);
@@ -189,7 +257,10 @@ public class RiotAPIRequest : MonoBehaviour
                     champStats[num].rSkill = skills.rSkills[i];
                 }
             }
-            catch { Debug.Log("No Skill Yet"); }
+            catch 
+            { 
+                //Debug.Log("No Skill Yet");
+            }
         }
 
         //if (champStats[num].eSkill.chargeable)
@@ -211,6 +282,7 @@ public class RiotAPIRequest : MonoBehaviour
         }
 
         if (myStats.isLoaded) return;
+        if (SimManager.isLoaded) return;
         myStats.name = champName;
         myStats.level = GetLevel(_exp);
         if(_type == 0)
@@ -243,7 +315,6 @@ public class RiotAPIRequest : MonoBehaviour
             myStats.spellBlock = (float)(champion.ChampionsRes[0].champData.data.Champion.stats.spellblock);
             myStats.attackSpeed = (float)champion.ChampionsRes[0].champData.data.Champion.stats.attackspeed;
         }
-
         GetStatsByLevel(myStats);
         myStats.currentHealth = myStats.maxHealth;
 
@@ -260,56 +331,14 @@ public class RiotAPIRequest : MonoBehaviour
             myStats.PercentLifeStealMod = 26;
             myStats.PercentSpellVampMod = 26;
         }
-
-        myStats.FinalizeStats();
-        myStats.isLoaded = true;        
+        myStats.FinalizeStats(true);
         myStats.isMatchLoaded = true;
-    }
 
-    public void LoadItems()
-    {        
-        RiotAPIMatchResponse matchResponse = matchRequest.matchResponse;
-
-        int[] champExp = {0,0};
-        int[] champ1Items = {0,0,0,0,0,0};
-        int[] champ2Items = {0,0,0,0,0,0};
-
-        champExp[0] = matchResponse.info.participants[RiotAPIMatchRequest.selectedChamp[0]].champExperience;
-        champExp[1] = matchResponse.info.participants[RiotAPIMatchRequest.selectedChamp[1]].champExperience;
-        champ1Items[0] = matchResponse.info.participants[RiotAPIMatchRequest.selectedChamp[0]].item0;
-        champ1Items[1] = matchResponse.info.participants[RiotAPIMatchRequest.selectedChamp[0]].item1;
-        champ1Items[2] = matchResponse.info.participants[RiotAPIMatchRequest.selectedChamp[0]].item2;
-        champ1Items[3] = matchResponse.info.participants[RiotAPIMatchRequest.selectedChamp[0]].item3;
-        champ1Items[4] = matchResponse.info.participants[RiotAPIMatchRequest.selectedChamp[0]].item4;
-        champ1Items[5] = matchResponse.info.participants[RiotAPIMatchRequest.selectedChamp[0]].item5;
-        champ2Items[0] = matchResponse.info.participants[RiotAPIMatchRequest.selectedChamp[1]].item0;
-        champ2Items[1] = matchResponse.info.participants[RiotAPIMatchRequest.selectedChamp[1]].item1;
-        champ2Items[2] = matchResponse.info.participants[RiotAPIMatchRequest.selectedChamp[1]].item2;
-        champ2Items[3] = matchResponse.info.participants[RiotAPIMatchRequest.selectedChamp[1]].item3;
-        champ2Items[4] = matchResponse.info.participants[RiotAPIMatchRequest.selectedChamp[1]].item4;
-        champ2Items[5] = matchResponse.info.participants[RiotAPIMatchRequest.selectedChamp[1]].item5;
-
-        for(int i = 1; i<66; i++)
+        if (champStats[0].isLoaded == true && champStats[1].isLoaded == true)
         {
-            for(int i2 = 0; i2<6; i2++)
-            {
-                if(champ1Items[i2] != 0)
-                {
-                    itemRequest.FetchStats(0,i2,champStats[0],i,champ1Items[i2]);
-                }
-            }
+            SimManager.isLoaded = true;
+            StopAllCoroutines();
         }
-        
-        for(int i = 1; i<66; i++)
-        {
-            for(int i2 = 0; i2<6; i2++)
-            {
-                if(champ2Items[i2] != 0)
-                {
-                    itemRequest.FetchStats(1,i2,champStats[1],i,champ2Items[i2]);
-                }
-            }
-        } 
     }
 
     int GetLevel(int _exp)

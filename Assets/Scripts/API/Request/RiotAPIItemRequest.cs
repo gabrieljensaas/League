@@ -52,10 +52,13 @@ public class RiotAPIItemRequest : MonoBehaviour
             bool success = false;
             
             itemResponse = JsonConvert.DeserializeObject<RiotAPIItemResponse>(unityWebRequest.downloadHandler.text);
+            //RiotAPIRequest.isReady = true;
+            //Debug.Log("Ready");
+            //Debug.Log(itemResponse.data[1037].stats);
         }
     }
 
-    public void FetchStats(int _num, int loopNum, ChampStats champStats,int _type, int _id)
+    public void FetchStats(int _num1, int loopNum, ChampStats champStats,int _type, int _id)
     {
         string type = "";
         object val = itemResponse.data[_id].stats;
@@ -320,20 +323,11 @@ public class RiotAPIItemRequest : MonoBehaviour
             case 65:
             type = "PercentSpellVampMod";
             break;
-        }        
-        
-
-        float value = float.Parse(GetPropValue(val,type).ToString());
-
-        if(_num == 0)
-        {
-            champ1Items[loopNum].text = itemResponse.data[_id].name.ToString();
         }
-        
-        if(_num == 1)
-        {
-            champ2Items[loopNum].text = itemResponse.data[_id].name.ToString();
-        }
+
+        float value = 0;
+        value = float.Parse(GetPropValue(val,type).ToString());
+
         switch (_type)
         {
             case 1:
@@ -414,6 +408,7 @@ public class RiotAPIItemRequest : MonoBehaviour
 
             case 20:
             champStats.FlatPhysicalDamageMod += value;
+            Debug.Log(value);
             break;
 
             case 21:

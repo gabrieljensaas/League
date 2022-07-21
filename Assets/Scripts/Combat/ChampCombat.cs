@@ -8,8 +8,8 @@ public class ChampCombat : MonoBehaviour
 {
     public float attackCooldown;
     float _attackCooldown = 1f / (float) _attackSpeed;
-    ChampStats myStats;
-    ChampStats targetStats;
+    public ChampStats myStats;
+    public ChampStats targetStats;
     GameObject[] champions;
     TextMeshProUGUI output;
     public string[] combatPriority = {"","","","",""};
@@ -48,18 +48,24 @@ public class ChampCombat : MonoBehaviour
 
     void Update()
     {        
-        if(!targetStats)
-        {
-            if(!myStats.currentTarget) return;
-            targetStats = myStats.currentTarget.GetComponent<ChampStats>();
-        }
         if (!SimManager.battleStarted)
         {
             SimManager.timer = 0;
             SimManager._timer = 0;
             return;
         }
-        
+
+        if (targetStats.currentHealth <= 0)
+        {
+            StopAllCoroutines();
+            return;
+        }
+
+        if (myStats.currentHealth <= 0) 
+        {
+            StopAllCoroutines();
+            return; 
+        }
 
         CheckPassive();
         
@@ -444,7 +450,7 @@ public class ChampCombat : MonoBehaviour
                     myStats.dynamicStatusDuration[myStats.rSkill.name] = 3f;
                     int bonusAD = (int)Mathf.Round(30 + (myStats.AD * 0.25f));
                     myStats.AD += bonusAD;
-                    myStats.UpdateStats();
+                    myStats.UpdateStats(false);
                     StartCoroutine(UpdateCasting(myStats.rSkill.basic.castTime));
                     output.text += "[BUFF] " + myStats.name + " gains " + bonusAD + " Bonus AD for 3 seconds.\n\n";
                     myStats.UpdateTimer(SimManager.timer);
@@ -463,7 +469,7 @@ public class ChampCombat : MonoBehaviour
                 {
                     myStats.AD = Mathf.Round(myStats.AD * 1.4f);
                     myStats.PercentLifeStealMod *= (int)Mathf.Round(1.55f);
-                    myStats.UpdateStats();
+                    myStats.UpdateStats(false);
                     output.text += "[SPECIAL] " + myStats.name + " used "+myStats.rSkill.basic.name+" and gains " + Mathf.Round(myStats.AD * 0.4f) + " bonus AD.\n\n";
                     myStats.UpdateTimer(SimManager.timer);
                     output.text += "[SPECIAL] " + myStats.name + " used " + myStats.rSkill.basic.name + " and gains " + Mathf.Round(myStats.PercentLifeStealMod * 0.55f) + "% bonus healing.\n\n";
@@ -614,7 +620,7 @@ public class ChampCombat : MonoBehaviour
                     myStats.dynamicStatusStacks.Remove("Bladework");
                     myStats.PercentAttackSpeedMod = 0;
                     myStats.attackSpeed = myStats.originalAS;
-                    myStats.UpdateStats();
+                    myStats.UpdateStats(false);
                     myStats.buffed = false;
                 }
             }
