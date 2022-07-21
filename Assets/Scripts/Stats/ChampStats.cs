@@ -470,9 +470,12 @@ public class ChampStats : MonoBehaviour
         SimManager.battleStarted = false;
         SimManager.isNew = true;
         SimManager.isLoaded = false;
+        RiotAPIRequest.isLoading = false;
         currentHealth = 0;
         UpdateTimer(SimManager.timer);
         output.text += targetStats.name + " has won with " + targetStats.currentHealth.ToString("F0") + " health remaining.\n\n";
+        Debug.Log(name + " " + totalDamage);
+        Debug.Log(targetStats.name + " " + totalDamage);
         exportData.myDamage = totalDamage;
         exportData.enemyDamage = targetStats.totalDamage;
         exportJS.SendData(JsonUtility.ToJson(exportData));

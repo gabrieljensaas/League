@@ -88,7 +88,7 @@ public class SimManager : MonoBehaviour
         {
             apiRequest.champAbilities[0].champSkills[i].text = apiRequest.allAbilities[RiotAPIMatchRequest.selectedChamp[0]].name[i];
         }
-        apiRequest.LoadItems();
+        //apiRequest.LoadItems();
     }
 
     public void LoadChampion2(Button button)
@@ -107,7 +107,7 @@ public class SimManager : MonoBehaviour
         {
             apiRequest.champAbilities[1].champSkills[i].text = apiRequest.allAbilities[RiotAPIMatchRequest.selectedChamp[1]].name[i];
         }
-        apiRequest.LoadItems();
+        //apiRequest.LoadItems();
     }
 
     public void Back()
