@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-[CreateAssetMenu(menuName = "ScriptableObjects/SkillList")]
+[CreateAssetMenu(fileName = "new Spell", menuName = "ScriptableObjects/SkillList")]
 public class SkillList : ScriptableObject
 {
 
