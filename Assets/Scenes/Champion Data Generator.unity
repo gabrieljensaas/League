@@ -155,13 +155,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   passives: []
   qSkills:
-  - {fileID: 11400000, guid: d71a78eaab11f4f4486e8e2be3eb6968, type: 2}
+  - {fileID: 11400000, guid: 043d8dce8c3cc294caee24be9ecb3d4d, type: 2}
   wSkills:
-  - {fileID: 11400000, guid: 20ff72bb5819f134d8780d8cc6b52a36, type: 2}
+  - {fileID: 11400000, guid: e1d7383809ac6f145ae349c3718e0bb0, type: 2}
   eSkills:
-  - {fileID: 11400000, guid: 91384cc0cb3317f4daadc94d53357f94, type: 2}
+  - {fileID: 11400000, guid: f833be3d4126a1846bd01793ed9630f3, type: 2}
   rSkills:
-  - {fileID: 11400000, guid: caa60c31b9af91740b8044806e050e45, type: 2}
+  - {fileID: 11400000, guid: ef6e352f4429cc743a795ca5950edeff, type: 2}
 --- !u!114 &517365954
 MonoBehaviour:
   m_ObjectHideFlags: 0
