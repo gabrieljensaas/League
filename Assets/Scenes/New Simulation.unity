@@ -14049,7 +14049,6 @@ GameObject:
   m_Component:
   - component: {fileID: 502540013}
   - component: {fileID: 502540014}
-  - component: {fileID: 502540015}
   m_Layer: 0
   m_Name: Skill Manager
   m_TagString: Untagged
@@ -14084,85 +14083,180 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7659dade3692e734e92e6342472cefce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  passives:
-  - {fileID: 11400000, guid: 7ce142b47aa8caa47b4dd5e93ef5f53e, type: 2}
-  - {fileID: 11400000, guid: a8f4ffac2c860ab4f8de6b850c51e4c4, type: 2}
-  - {fileID: 11400000, guid: b14e66094c9b83a4b9a4ea3616a9d7c6, type: 2}
-  - {fileID: 11400000, guid: 94d90fe3a1c26c74a96a1da54c74f235, type: 2}
-  - {fileID: 11400000, guid: 29c5bcb8963a84d4ea4f8245b154a99c, type: 2}
-  - {fileID: 11400000, guid: 2b6ef7028d77d2f41b3ea8b8fa04bc6c, type: 2}
-  - {fileID: 11400000, guid: 06b991ab105865c4fb2a58b9f436cd7e, type: 2}
-  - {fileID: 11400000, guid: c6a05f0d5a3070b45ba18b7a16a14893, type: 2}
-  - {fileID: 11400000, guid: f0b069c8c952b3e49aaa48d23398ac36, type: 2}
-  - {fileID: 11400000, guid: 95256721fa3401846b4e59ab54430118, type: 2}
-  - {fileID: 11400000, guid: 8791c27f9a346264d8bdebfc0f4a5f99, type: 2}
-  qSkills:
-  - {fileID: 11400000, guid: d4f25c56033acde4eb9fff580ebee399, type: 2}
-  - {fileID: 11400000, guid: 050f9601f6054cc4ca2e3feaaf573f31, type: 2}
-  - {fileID: 11400000, guid: d77ab77883a3d764cb7147a85637405f, type: 2}
-  - {fileID: 11400000, guid: a2b09936196faf646bc3edd6a6b14ad2, type: 2}
-  - {fileID: 11400000, guid: 0bd850ef00e75b141875139e4c3960e0, type: 2}
-  - {fileID: 11400000, guid: a1440184a50141b42bc070ec766c55f4, type: 2}
-  - {fileID: 11400000, guid: 026dd5fc08edfce41882381ef893c8ca, type: 2}
-  - {fileID: 11400000, guid: 830f34d576a6e984c925c0f8dda16991, type: 2}
-  - {fileID: 11400000, guid: 721682188d2f74a4190fc9eb8a970abc, type: 2}
-  - {fileID: 11400000, guid: fd6c62494bfc35e478b07d2e02cfa790, type: 2}
-  - {fileID: 11400000, guid: 793c850988f54af4e89fc46b7edf75a6, type: 2}
-  - {fileID: 11400000, guid: e7ab36c791cb6f948843ad82af969747, type: 2}
-  - {fileID: 11400000, guid: 393624bab8ee2704c82db99a32feb023, type: 2}
-  wSkills:
-  - {fileID: 11400000, guid: 2376174f911ab094e8a63ed3b5c2bf5c, type: 2}
-  - {fileID: 11400000, guid: 6be28f1b9d4e26149a75ea5d99b7c877, type: 2}
-  - {fileID: 11400000, guid: 46b2c15e802299b4ebcfc0fede49e772, type: 2}
-  - {fileID: 11400000, guid: d328e1186172b8d42b42169cab31fbf5, type: 2}
-  - {fileID: 11400000, guid: fa03203c3693e564f94990df27690f79, type: 2}
-  - {fileID: 11400000, guid: ab3717f0f50d5f044b6bf35589983229, type: 2}
-  - {fileID: 11400000, guid: 6ba60885e9ff3c1468046a6cb1fc2426, type: 2}
-  - {fileID: 11400000, guid: b6d6905a6d3fa2642a7728dfacf8c35a, type: 2}
-  - {fileID: 11400000, guid: eef69c737c1d3cd41801de46c12f214f, type: 2}
-  - {fileID: 11400000, guid: a7e36a41abdb2c04ab924f68e29ac066, type: 2}
-  - {fileID: 11400000, guid: a06365ab7e3996240b42f3dd581dc922, type: 2}
-  - {fileID: 11400000, guid: f5dec1a14bef74a4eb1afb4ddbdd4f85, type: 2}
-  - {fileID: 11400000, guid: 1d446f70d3dff2c498ecf4d4a43a617c, type: 2}
-  eSkills:
-  - {fileID: 11400000, guid: de23cfed9f2256447925f579c68e0028, type: 2}
-  - {fileID: 11400000, guid: f34296131f026ae448359d5db4a277d1, type: 2}
-  - {fileID: 11400000, guid: 13ed626fc110ba14d9eb52a220bbe6d2, type: 2}
-  - {fileID: 11400000, guid: ba12f78cc447d6643aeeeef607dabb2d, type: 2}
-  - {fileID: 11400000, guid: 9ab8175c58d193746b6a5b49490adab6, type: 2}
-  - {fileID: 11400000, guid: 865d4fe747f43b4439c5897e73cc2622, type: 2}
-  - {fileID: 11400000, guid: b7322a0966b3b814988ec9f882496786, type: 2}
-  - {fileID: 11400000, guid: b04884b63c3a56f4ab5159c6cac587ef, type: 2}
-  - {fileID: 11400000, guid: c24fffe65dead0e4896c2ad9d5f71bf8, type: 2}
-  - {fileID: 11400000, guid: 468c6966f8d3f7049b6e66cf27aa42b8, type: 2}
-  - {fileID: 11400000, guid: 0a6d00a02554f414099dfe94a36adffa, type: 2}
-  - {fileID: 11400000, guid: 1848592336d2fe8408e79b034016ebf8, type: 2}
-  - {fileID: 11400000, guid: 6571707c2815cba4e80664313630d805, type: 2}
-  rSkills:
-  - {fileID: 11400000, guid: a3ff372b19a443c4c82f615e4c1de5ea, type: 2}
-  - {fileID: 11400000, guid: eb70c3b390f831b4ba1f2801516d5e58, type: 2}
-  - {fileID: 11400000, guid: f4fcb51dbdc5e1c49b21f0817d8190fb, type: 2}
-  - {fileID: 11400000, guid: eded6310d1c3aff44afc6bd53af3fb41, type: 2}
-  - {fileID: 11400000, guid: bd4a812a677ef8a42a44b8d32b59a104, type: 2}
-  - {fileID: 11400000, guid: 9e5704b5472532b4fa1bad7955471390, type: 2}
-  - {fileID: 11400000, guid: 452d698bf6322fc4a8fb6165456d2ac3, type: 2}
-  - {fileID: 11400000, guid: 03fa0a9558a864945b89740f4518caa5, type: 2}
-  - {fileID: 11400000, guid: cd567faa63ebc1b4f8eec5d99d0c369d, type: 2}
-  - {fileID: 11400000, guid: a323ef88cdc2f9241910165a9801c576, type: 2}
-  - {fileID: 11400000, guid: 794493945a92a6c4d97e6f9e4b3c4f01, type: 2}
-  - {fileID: 11400000, guid: f5dec1a14bef74a4eb1afb4ddbdd4f85, type: 2}
---- !u!114 &502540015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 502540011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b39055705dc8304289c6e1c4fcaa6aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  champions:
+  - Aatrox
+  - Ahri
+  - Akali
+  - Akshan
+  - Alistar
+  - Amumu
+  - Anivia
+  - Annie
+  - Aphelios
+  - Ashe
+  - AurelionSol
+  - Azir
+  - Bard
+  - Belveth
+  - Blitzcrank
+  - Brand
+  - Braum
+  - Caitlyn
+  - Camille
+  - Cassiopeia
+  - Chogath
+  - Corki
+  - Darius
+  - Diana
+  - DrMundo
+  - Draven
+  - Ekko
+  - Elise
+  - Evelynn
+  - Ezreal
+  - Fiddlesticks
+  - Fiora
+  - Fizz
+  - Galio
+  - Gangplank
+  - Garen
+  - Gnar
+  - GnarBig
+  - Gragas
+  - Graves
+  - Gwen
+  - Hecarim
+  - Heimerdinger
+  - Illaoi
+  - Irelia
+  - Ivern
+  - Janna
+  - JarvanIV
+  - Jax
+  - Jayce
+  - Jhin
+  - Jinx
+  - Kaisa
+  - Kalista
+  - Karma
+  - Karthus
+  - Kassadin
+  - Katarina
+  - Kayle
+  - Kayn
+  - Kennen
+  - Khazix
+  - Kindred
+  - Kled
+  - KogMaw
+  - Leblanc
+  - LeeSin
+  - Leona
+  - Lillia
+  - Lissandra
+  - Lucian
+  - Lulu
+  - Lux
+  - Malphite
+  - Malzahar
+  - Maokai
+  - MasterYi
+  - MissFortune
+  - MonkeyKing
+  - Mordekaiser
+  - Morgana
+  - Nami
+  - Nasus
+  - Nautilus
+  - Neeko
+  - Nidalee
+  - Nilah
+  - Nocturne
+  - Nunu
+  - Olaf
+  - Orianna
+  - Ornn
+  - Pantheon
+  - Poppy
+  - Pyke
+  - Qiyana
+  - Quinn
+  - Rakan
+  - Rammus
+  - RekSai
+  - Rell
+  - Renata
+  - Renekton
+  - Rengar
+  - Riven
+  - Rumble
+  - Ryze
+  - Samira
+  - Sejuani
+  - Senna
+  - Seraphine
+  - Sett
+  - Shaco
+  - Shen
+  - Shyvana
+  - Singed
+  - Sion
+  - Sivir
+  - Skarner
+  - Sona
+  - Soraka
+  - Swain
+  - Sylas
+  - Syndra
+  - TahmKench
+  - Taliyah
+  - Talon
+  - Taric
+  - Teemo
+  - Thresh
+  - Tristana
+  - Trundle
+  - Tryndamere
+  - TwistedFate
+  - Twitch
+  - Udyr
+  - Urgot
+  - Varus
+  - Vayne
+  - Veigar
+  - Velkoz
+  - Vex
+  - Vi
+  - Viego
+  - Viktor
+  - Vladimir
+  - Volibear
+  - Warwick
+  - Xayah
+  - Xerath
+  - XinZhao
+  - Yasuo
+  - Yone
+  - Yorick
+  - Yuumi
+  - Zac
+  - Zed
+  - Zeri
+  - Ziggs
+  - Zilean
+  - Zoe
+  - Zyra
+  passives: []
+  qSkills: []
+  wSkills: []
+  eSkills: []
+  rSkills: []
+  folderName:
+  - Q
+  - W
+  - E
+  - R
+  - P
 --- !u!1 &503529159
 GameObject:
   m_ObjectHideFlags: 0
@@ -29082,6 +29176,7 @@ GameObject:
   - component: {fileID: 991064247}
   - component: {fileID: 991064248}
   - component: {fileID: 991064249}
+  - component: {fileID: 991064250}
   m_Layer: 0
   m_Name: LSS Manager
   m_TagString: Untagged
@@ -29130,6 +29225,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8508012e48f64fd4eabf8886b6b9d488, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &991064250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 991064246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00d150fcc44c8144587c8d4d7eb8a612, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &991349281

@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: New Skill List 2
   m_EditorClassIdentifier: 
   basic:
-    champion: Garen
-    name: Decisive Strike
+    champion: Ashe
+    name: Courage
     castTime: 0
     inactive: 0
     coolDown:
-    - 8
-    - 8
-    - 8
-    - 8
-    - 8
+    - 23
+    - 21
+    - 19
+    - 17
+    - 15
     cost:
     - 0
     - 0
@@ -53,11 +53,11 @@ MonoBehaviour:
     - 0
   damage:
     flatAD:
-    - 30
-    - 60
-    - 90
-    - 120
-    - 150
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
     bonusAD:
     - 0
     - 0
@@ -65,11 +65,11 @@ MonoBehaviour:
     - 0
     - 0
     percentAD:
-    - 50
-    - 50
-    - 50
-    - 50
-    - 50
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
     flatAP:
     - 0
     - 0

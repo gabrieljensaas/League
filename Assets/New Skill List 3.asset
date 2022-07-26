@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   basic:
     champion: Ashe
-    name: Courage
+    name: Judgment
     castTime: 0
     inactive: 0
     coolDown:
-    - 23
-    - 21
-    - 19
-    - 17
-    - 15
+    - 9
+    - 9
+    - 9
+    - 9
+    - 9
     cost:
     - 0
     - 0

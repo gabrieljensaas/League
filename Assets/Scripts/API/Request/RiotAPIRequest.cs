@@ -220,7 +220,6 @@ public class RiotAPIRequest : MonoBehaviour
         WWW www = new WWW(apiURL, formData, postHeader);
         yield return www;
         champion = JsonConvert.DeserializeObject<RiotAPIResponse>(www.text);
-        //Debug.Log(www.text);
         Load2 = true;
 
         SimulateFight(1, _champ2, _exp, 0);
@@ -233,7 +232,7 @@ public class RiotAPIRequest : MonoBehaviour
         //FOR TEST ONLY
         myStats.isLoaded = false;
         //
-        for (int i = 0; i < skills.qSkills.Count; i++)
+        /*for (int i = 0; i < skills.qSkills.Count; i++)
         {
             try
             {
@@ -279,13 +278,46 @@ public class RiotAPIRequest : MonoBehaviour
                 }
             }
             catch { Debug.Log("No Skill Yet"); }
-        }
+        }*/
 
         if (myStats.isLoaded) return;
         if (SimManager.isLoaded) return;
         myStats.name = champName;
         myStats.level = GetLevel(_exp);
-        if(_type == 0)
+
+        var QSkill = Resources.Load("Q/" + champName);
+        var WSkill = Resources.Load("W/" + champName);
+        var ESkill = Resources.Load("E/" + champName);
+        var RSkill = Resources.Load("R/" + champName);
+        var PSkill = Resources.Load("P/" + champName);
+
+        /*if(QSkill == null)
+        {
+            Skills.instance.CreateAsset(0,champName);
+        }
+
+        if (WSkill == null)
+        {
+            Skills.instance.CreateAsset(1, champName);
+        }
+
+        if (ESkill == null)
+        {
+            Skills.instance.CreateAsset(2, champName);
+        }
+
+        if (RSkill == null)
+        {
+            Skills.instance.CreateAsset(3, champName);
+        }
+
+        if (PSkill == null)
+        {
+            Skills.instance.CreateAsset(4, champName);
+        }
+        */
+
+        if (_type == 0)
         {
             myStats.baseHealth = (float)champion.ChampionsRes[0].champData.data.Champion.stats.hp;
             myStats.baseAD = (float)champion.ChampionsRes[0].champData.data.Champion.stats.attackdamage;

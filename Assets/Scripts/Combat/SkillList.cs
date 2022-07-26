@@ -7,6 +7,7 @@ using TMPro;
 public class SkillList : ScriptableObject
 {
 
+    //string version;
     public SkillBasic basic;
 
     public SkillType skillType;

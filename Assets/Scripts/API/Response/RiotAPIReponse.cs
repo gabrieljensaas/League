@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+
 public class ChampData
 {
     public string type { get; set; }
@@ -135,4 +136,3 @@ public class Stats
     public double attackspeedperlevel { get; set; }
     public double attackspeed { get; set; }
 }
-

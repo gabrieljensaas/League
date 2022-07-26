@@ -8,6 +8,7 @@ using UnityEngine.Networking;
 
 public class ChampionDataManager : MonoBehaviour
 {
+    /*
     public RiotAPIChampionDataResponse championDataResponse;
     Skills skills;
     public Dictionary<string, List<SkillList>> skillList = new();
@@ -26,8 +27,8 @@ public class ChampionDataManager : MonoBehaviour
         skillList.Add("eSkills", skills.eSkills);
         skillList.Add("rSkills", skills.rSkills);
 
-        ChampStats champStats = new ChampStats();
-        champStats.dynamicStatus["Bonus Physical Damage"] = true;
+        //ChampStats champStats = new ChampStats();
+        //champStats.dynamicStatus["Bonus Physical Damage"] = true;
     }
     // Start is called before the first frame update
     void Start()
@@ -71,7 +72,7 @@ public class ChampionDataManager : MonoBehaviour
     void SetChampionData()
     {
         var abilities = championDataResponse.abilities;
-
+        int limit = 5;
         foreach (var title in skillTitle)
         {
             if (!(skillList[title].Count > 0)) return;
@@ -80,9 +81,12 @@ public class ChampionDataManager : MonoBehaviour
 
             for (int effect = 0; effect < effectInAbilities.Count; effect++)
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < limit; i++)
                 {
+                    if (title == "rSkills") limit = 3;
+                    //if(i == 4)
                     // Basic
+                    //Debug.Log(title);
                     if (abilities[skillKey[counter]][0].castTime != "none")
                         skillList[title][^1].basic.castTime = float.Parse(abilities[skillKey[counter]][0].castTime);
 
@@ -92,7 +96,10 @@ public class ChampionDataManager : MonoBehaviour
                         skillList[title][^1].basic.cost[i] = 0;
 
                     skillList[title][^1].basic.name = abilities[skillKey[counter]][0].name;
-                    skillList[title][^1].basic.coolDown[i] = (float)abilities[skillKey[counter]][0].cooldown.modifiers[0].values[i];
+                    if ((abilities[skillKey[counter]][0].cooldown != null))
+                    {
+                        skillList[title][^1].basic.coolDown[i] = (float)abilities[skillKey[counter]][0].cooldown.modifiers[0].values[i];
+                    }
 
                     // Damage
                     // Effect need loop
@@ -106,7 +113,7 @@ public class ChampionDataManager : MonoBehaviour
                                 // Set Damage Type
                                 //skillList[title][^1].skillDamageType = "Physical";
 
-                                if (effectInAbilities[effect].leveling[0].modifiers[modifier].units[0] == "")
+                                if (effectInAbilities[effect].leveling[0].modifiers[modifier].units[1] == "")
                                 {
                                     skillList[title][^1].damage.flatAD[i] = (float)effectInAbilities[effect].leveling[0].modifiers[modifier].values[i];
                                 }
@@ -155,4 +162,5 @@ public class ChampionDataManager : MonoBehaviour
             counter++;
         }        
     }
+    */
 }

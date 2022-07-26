@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: New Skill List
   m_EditorClassIdentifier: 
   basic:
-    champion: Garen
+    champion: Ashe
     name: Demacian Justice
     castTime: 0.435
     inactive: 0
