@@ -261,80 +261,6 @@ public class Skills : MonoBehaviour
         yield return null;
     }
 
-    void InitializeSkill(string champName, int i, SkillList skill, PassiveList passive, int skillIndex)
-    {
-        string[] skillType = { "Q", "W", "E", "R", "P" };
-
-        if (skill != null)
-        {
-            try
-            {
-                skill.basic.castTime = float.Parse(api.abilities[skillType[skillIndex]][i].castTime);
-            }
-            catch
-            {
-                skill.basic.castTime = 0;
-            }
-
-            if (api.abilities[skillType[skillIndex]][i].cooldown != null)
-            {
-                for (int i2 = 0; i2 < api.abilities[skillType[skillIndex]][i].cooldown.modifiers[0].values.Count; i2++)
-                {
-                    try
-                    {
-                        skill.basic.coolDown[i2] = (float)api.abilities[skillType[skillIndex]][i].cooldown.modifiers[0].values[i2];
-                    }
-                    catch
-                    {
-                        if (api.abilities[skillType[skillIndex]][i].targeting == "Passive") skill.basic.inactive = true;
-                        if (i2 >= 5) continue;
-                        skill.basic.coolDown[i2] = 0;
-                    }
-                }
-            }
-            else
-            {
-                skill.basic.coolDown[i] = 0;
-                skill.basic.inactive = true;
-            }
-            CreateAsset(skillIndex, champName, i.ToString(), skill, null);
-        }
-        else
-        {
-
-            try
-            {
-                passive.castTime = float.Parse(api.abilities[skillType[skillIndex]][i].castTime);
-            }
-            catch
-            {
-                passive.castTime = 0;
-            }
-
-            if (api.abilities[skillType[skillIndex]][i].cooldown != null)
-            {
-                for (int i2 = 0; i2 < api.abilities[skillType[skillIndex]][i].cooldown.modifiers[0].values.Count; i2++)
-                {
-                    try
-                    {
-                        passive.coolDown = (float)api.abilities[skillType[skillIndex]][i].cooldown.modifiers[0].values[i2];
-                    }
-                    catch
-                    {
-                        if (api.abilities[skillType[skillIndex]][i].targeting == "Passive") passive.inactive = true;
-                        if (i2 >= 5) continue;
-                        passive.coolDown = 0;
-                    }
-                }
-            }
-            else
-            {
-                passive.coolDown = 0;
-                passive.inactive = true;
-            }
-            CreateAsset(skillIndex, champName, i.ToString(), null, passive);
-        }
-    }
     IEnumerator SetStats(string champName)
     {
         string url = "https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/champions/" + champName + ".json";
@@ -432,6 +358,80 @@ public class Skills : MonoBehaviour
         }
         #endregion
 
+    }
+    void InitializeSkill(string champName, int i, SkillList skill, PassiveList passive, int skillIndex)
+    {
+        string[] skillType = { "Q", "W", "E", "R", "P" };
+
+        if (skill != null)
+        {
+            try
+            {
+                skill.basic.castTime = float.Parse(api.abilities[skillType[skillIndex]][i].castTime);
+            }
+            catch
+            {
+                skill.basic.castTime = 0;
+            }
+
+            if (api.abilities[skillType[skillIndex]][i].cooldown != null)
+            {
+                for (int i2 = 0; i2 < api.abilities[skillType[skillIndex]][i].cooldown.modifiers[0].values.Count; i2++)
+                {
+                    try
+                    {
+                        skill.basic.coolDown[i2] = (float)api.abilities[skillType[skillIndex]][i].cooldown.modifiers[0].values[i2];
+                    }
+                    catch
+                    {
+                        if (api.abilities[skillType[skillIndex]][i].targeting == "Passive") skill.basic.inactive = true;
+                        if (i2 >= 5) continue;
+                        skill.basic.coolDown[i2] = 0;
+                    }
+                }
+            }
+            else
+            {
+                skill.basic.coolDown[i] = 0;
+                skill.basic.inactive = true;
+            }
+            CreateAsset(skillIndex, champName, i.ToString(), skill, null);
+        }
+        else
+        {
+
+            try
+            {
+                passive.castTime = float.Parse(api.abilities[skillType[skillIndex]][i].castTime);
+            }
+            catch
+            {
+                passive.castTime = 0;
+            }
+
+            if (api.abilities[skillType[skillIndex]][i].cooldown != null)
+            {
+                for (int i2 = 0; i2 < api.abilities[skillType[skillIndex]][i].cooldown.modifiers[0].values.Count; i2++)
+                {
+                    try
+                    {
+                        passive.coolDown = (float)api.abilities[skillType[skillIndex]][i].cooldown.modifiers[0].values[i2];
+                    }
+                    catch
+                    {
+                        if (api.abilities[skillType[skillIndex]][i].targeting == "Passive") passive.inactive = true;
+                        if (i2 >= 5) continue;
+                        passive.coolDown = 0;
+                    }
+                }
+            }
+            else
+            {
+                passive.coolDown = 0;
+                passive.inactive = true;
+            }
+            CreateAsset(skillIndex, champName, i.ToString(), null, passive);
+        }
     }
 
 }
