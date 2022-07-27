@@ -29,7 +29,6 @@ public class RiotAPIMatchRequest : MonoBehaviour
     public GameObject sliderValue;
     public Button[] button;
     SimManager simManager;
-    string ver = "12.10.1";
     public bool isMatchLoaded;
     public static int[] selectedChamp = {0,5};
     public List<string> matchChampions;

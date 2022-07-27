@@ -55,12 +55,7 @@ public class RiotAPIRequest : MonoBehaviour
         }
         if (Input.GetMouseButton(0))
         {
-            //Debug.Log(s);
-            //s = "{ \"APIMatchInfo\":{ \"version\":\"12.10.1\",\"championInfo\":[{ \"champName\":\"TahmKench\",\"champLevel\":13,\"items\":[1037,1037,1037,1037,1037,1037]},{ \"champName\":\"Bard\",\"champLevel\":14,\"items\":[0,0,0,0,0,0]}]} }";
-            //LoadData(JsonUtility.ToJson(s));
-            //if (isLoading) return;
             //LoadData(s);
-            //Test();
         }
     }
 
@@ -71,8 +66,7 @@ public class RiotAPIRequest : MonoBehaviour
         matchRequest = GetComponent<RiotAPIMatchRequest>();
         simManager = GetComponent<SimManager>();
         //StartCoroutine(TestRepeat());
-        //Test();
-        s = "{ \"APIMatchInfo\":{ \"version\":\"12.10.1\",\"championInfo\":[{ \"champName\":\"TahmKench\",\"champLevel\":13,\"items\":[1037,0,0,0,0,0]},{ \"champName\":\"Bard\",\"champLevel\":14,\"items\":[0,0,0,0,0,0]}]} }";
+        s = "{ \"APIMatchInfo\":{ \"version\":\"12.13.1\",\"championInfo\":[{ \"champName\":\"TahmKench\",\"champLevel\":13,\"items\":[1037,0,0,0,0,0]},{ \"champName\":\"Bard\",\"champLevel\":14,\"items\":[0,0,0,0,0,0]}]} }";
         //LoadData(s);
     }
 
@@ -91,7 +85,7 @@ public class RiotAPIRequest : MonoBehaviour
         champStats[1].isLoaded = false;
         SimManager.isLoaded = false;
         simManager.ongoing = false;
-        Time.timeScale = 2f;
+        Time.timeScale = 1f;
         simManager.timeText.gameObject.SetActive(false);
         string _c1 = dd1.captionText.text.ToString();
         string _c2 = dd2.captionText.text.ToString();
@@ -125,7 +119,7 @@ public class RiotAPIRequest : MonoBehaviour
         simManager.ongoing = false;
         simManager.outputText.text = "";
         simManager.timeText.text = "";
-        Time.timeScale = 100f;
+        Time.timeScale = 20f;
         LSSAPI = JsonConvert.DeserializeObject<LSSAPIResponse>(data);
         _champ1 = LSSAPI.APIMatchInfo.championInfo[0].champName;
         _champ2 = LSSAPI.APIMatchInfo.championInfo[1].champName;
@@ -151,7 +145,7 @@ public class RiotAPIRequest : MonoBehaviour
             {
               if (champ1Items[i2] != 0)
               {
-                  itemRequest.FetchStats(0, i2, champStats[0], i, champ1Items[i2]);
+                  //itemRequest.FetchStats(0, i2, champStats[0], i, champ1Items[i2]);
               }
             }
 
@@ -159,7 +153,7 @@ public class RiotAPIRequest : MonoBehaviour
             {
                 if (champ2Items[i2] != 0)
                 {
-                    itemRequest.FetchStats(1, i2, champStats[1], i, champ2Items[i2]);
+                    //itemRequest.FetchStats(1, i2, champStats[1], i, champ2Items[i2]);
                 }
             }
         }
@@ -232,7 +226,7 @@ public class RiotAPIRequest : MonoBehaviour
         //FOR TEST ONLY
         myStats.isLoaded = false;
         //
-        /*for (int i = 0; i < skills.qSkills.Count; i++)
+        for (int i = 0; i < skills.qSkills.Count; i++)
         {
             try
             {
@@ -278,7 +272,7 @@ public class RiotAPIRequest : MonoBehaviour
                 }
             }
             catch { Debug.Log("No Skill Yet"); }
-        }*/
+        }
 
         if (myStats.isLoaded) return;
         if (SimManager.isLoaded) return;
