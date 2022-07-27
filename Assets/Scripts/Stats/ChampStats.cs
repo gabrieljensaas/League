@@ -8,6 +8,7 @@ public class ChampStats : MonoBehaviour
     public ExternalJS exportJS;
     public string name;
 
+
     public PassiveList passiveSkill;
     public SkillList qSkill;
     public SkillList wSkill;
@@ -478,7 +479,8 @@ public class ChampStats : MonoBehaviour
         //Debug.Log(targetStats.name + " " + targetStats.totalDamage);
         exportData.myDamage = totalDamage;
         exportData.enemyDamage = targetStats.totalDamage;
-        Debug.Log(JsonUtility.ToJson(exportData));
+        //Debug.Log(JsonUtility.ToJson(exportData));
+        exportJS.SendLogs(output.text);
         exportJS.SendData(JsonUtility.ToJson(exportData));
         LoadingScreenHandler.Hide();
     }
