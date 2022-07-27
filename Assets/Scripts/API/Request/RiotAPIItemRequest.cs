@@ -25,7 +25,7 @@ public class RiotAPIItemRequest : MonoBehaviour
 
     void Start()
     {        
-        Request("12.10.1");
+        Request("12.13.1");
         //dropdownlist.AddOption()
         //itemName.Length = itemId.Length;
     }

@@ -474,10 +474,11 @@ public class ChampStats : MonoBehaviour
         currentHealth = 0;
         UpdateTimer(SimManager.timer);
         output.text += targetStats.name + " has won with " + targetStats.currentHealth.ToString("F0") + " health remaining.\n\n";
-        Debug.Log(name + " " + totalDamage);
-        Debug.Log(targetStats.name + " " + totalDamage);
+        //Debug.Log(name + " " + totalDamage);
+        //Debug.Log(targetStats.name + " " + targetStats.totalDamage);
         exportData.myDamage = totalDamage;
         exportData.enemyDamage = targetStats.totalDamage;
+        Debug.Log(JsonUtility.ToJson(exportData));
         exportJS.SendData(JsonUtility.ToJson(exportData));
         LoadingScreenHandler.Hide();
     }

@@ -194,17 +194,61 @@ public class Skills : MonoBehaviour
             return;
         }
 
+        #region Skills Loading
+        Object[] obj;
+
+        //Load All Q
+        obj = Resources.LoadAll("Skills/12.13.1/Q", typeof(SkillList));
+        foreach(SkillList skill in obj)
+        {
+            qSkills.Add(skill);
+        }
+
+        //Load All W
+        obj = Resources.LoadAll("Skills/12.13.1/W", typeof(SkillList));
+        foreach (SkillList skill in obj)
+        {
+            wSkills.Add(skill);
+        }
+
+        //Load All E
+        obj = Resources.LoadAll("Skills/12.13.1/E", typeof(SkillList));
+        foreach (SkillList skill in obj)
+        {
+            eSkills.Add(skill);
+        }
+
+        //Load All R
+        obj = Resources.LoadAll("Skills/12.13.1/R", typeof(SkillList));
+        foreach (SkillList skill in obj)
+        {
+            rSkills.Add(skill);
+        }
+
+        //Load All P
+        obj = Resources.LoadAll("Skills/12.13.1/P", typeof(PassiveList));
+        foreach (PassiveList skill in obj)
+        {
+            passives.Add(skill);
+        }
+#endregion
+
         StartCoroutine(LoadData());
     }
 
-    public void CreateAsset(int num, string champName, string skillId, SkillList asset)
+    public void CreateAsset(int num, string champName, string skillId, SkillList asset, PassiveList passive)
     {
         string _folderName = folderName[num];
-
-        AssetDatabase.CreateAsset(asset, "Assets/Resources/Skills/"+ver+"/" + _folderName+ "/"+champName + " "+_folderName+"["+ skillId + "].asset");
+        Debug.Log(passive);
+        if (asset != null)
+        {
+            AssetDatabase.CreateAsset(asset, "Assets/Resources/Skills/" + ver + "/" + _folderName + "/" + champName + " " + _folderName + "[" + skillId + "].asset");
+        }
+        else
+        {
+            AssetDatabase.CreateAsset(passive, "Assets/Resources/Skills/" + ver + "/" + _folderName + "/" + champName + " " + _folderName + "[" + skillId + "].asset");
+        }
         AssetDatabase.SaveAssets();
-        EditorUtility.FocusProjectWindow();
-        ReferenceEquals(asset,this);
     }
 
     IEnumerator LoadData()
@@ -212,9 +256,9 @@ public class Skills : MonoBehaviour
         for (int i = 0; i < champions.Length; i++)
         {
             if (champions[i] == "GnarBig") continue;
-            yield return new WaitForSecondsRealtime(0.5f);
             StartCoroutine(SetStats(champions[i]));            
         }
+        yield return null;
     }
 
     IEnumerator SetStats(string champName)
@@ -224,23 +268,30 @@ public class Skills : MonoBehaviour
         yield return www;
         api = JsonConvert.DeserializeObject<RiotAPIChampionDataResponse>(www.text);
 
-        var QSkill = Resources.Load("Skills/" + ver + "/Q/" + champName);
-        var WSkill = Resources.Load("Skills/" + ver + "/W/" + champName);
-        var ESkill = Resources.Load("Skills/" + ver + "/E/" + champName);
-        var RSkill = Resources.Load("Skills/" + ver + "/R/" + champName);
-        var PSkill = Resources.Load("Skills/" + ver + "/P/" + champName);
+        var QSkill = Resources.Load<SkillList>("Skills/" + ver + "/Q/" + champName + " Q[0]");
+        var WSkill = Resources.Load<SkillList>("Skills/" + ver + "/W/" + champName + " W[0]");
+        var ESkill = Resources.Load<SkillList>("Skills/" + ver + "/E/" + champName + " E[0]");
+        var RSkill = Resources.Load<SkillList>("Skills/" + ver + "/R/" + champName + " R[0]");
+        var PSkill = Resources.Load<PassiveList>("Skills/" + ver + "/P/" + champName + " P[0]");
+
+        if (QSkill == null) QSkill = Resources.Load<SkillList>("Skills/" + ver + "/Q/" + champName + " Q[1]");
+        if (WSkill == null) WSkill = Resources.Load<SkillList>("Skills/" + ver + "/W/" + champName + " W[1]");
+        if (ESkill == null) ESkill = Resources.Load<SkillList>("Skills/" + ver + "/E/" + champName + " E[1]");
+        if (RSkill == null) RSkill = Resources.Load<SkillList>("Skills/" + ver + "/R/" + champName + " R[1]");
+        if (PSkill == null) PSkill = Resources.Load<PassiveList>("Skills/" + ver + "/P/" + champName + " P[1]");
 
         #region Q
         for (int i = 0; i < api.abilities["Q"].Count; i++)
         {
-            Debug.Log(api.key + ": " + api.abilities["Q"][i].name);
-            SkillList asset = ScriptableObject.CreateInstance<SkillList>();
-            asset.name = champName;
-            //asset.damage.percentAP = api.effects.
+            //Debug.Log(api.key + ": " + api.abilities["Q"][i].name);
 
             if (QSkill == null)
             {
-                CreateAsset(0, champName,i.ToString(), asset);
+                SkillList asset = ScriptableObject.CreateInstance<SkillList>();
+                asset.basic = new SkillBasic();
+                asset.basic.champion = champName;
+                asset.basic.name = api.abilities["Q"][i].name;
+                InitializeSkill(champName, i, asset, null, 0);
             }
         }
         #endregion
@@ -248,12 +299,15 @@ public class Skills : MonoBehaviour
         #region W
         for (int i = 0; i < api.abilities["W"].Count; i++)
         {
-            Debug.Log(api.key + ": " + api.abilities["W"][i].name);
-            SkillList asset = ScriptableObject.CreateInstance<SkillList>();
+            //Debug.Log(api.key + ": " + api.abilities["W"][i].name);
 
             if (WSkill == null)
             {
-                CreateAsset(1, champName, i.ToString(), asset);
+                SkillList asset = ScriptableObject.CreateInstance<SkillList>();
+                asset.basic = new SkillBasic();
+                asset.basic.champion = champName;
+                asset.basic.name = api.abilities["W"][i].name;
+                InitializeSkill(champName, i, asset, null, 1);
             }
         }
         #endregion
@@ -261,12 +315,15 @@ public class Skills : MonoBehaviour
         #region E
         for (int i = 0; i < api.abilities["E"].Count; i++)
         {
-            Debug.Log(api.key + ": " + api.abilities["E"][i].name);
-            SkillList asset = ScriptableObject.CreateInstance<SkillList>();
+            //Debug.Log(api.key + ": " + api.abilities["E"][i].name);
 
             if (ESkill == null)
             {
-                instance.CreateAsset(2, champName, i.ToString(), asset);
+                SkillList asset = ScriptableObject.CreateInstance<SkillList>();
+                asset.basic = new SkillBasic();
+                asset.basic.champion = champName;
+                asset.basic.name = api.abilities["E"][i].name;
+                InitializeSkill(champName, i, asset, null, 2);
             }
         }
         #endregion
@@ -274,12 +331,15 @@ public class Skills : MonoBehaviour
         #region R
         for (int i = 0; i < api.abilities["R"].Count; i++)
         {
-            Debug.Log(api.key + ": " + api.abilities["R"][i].name);
-            SkillList asset = ScriptableObject.CreateInstance<SkillList>();
+            //Debug.Log(api.key + ": " + api.abilities["R"][i].name);
 
             if (RSkill == null)
             {
-                instance.CreateAsset(3, champName, i.ToString(), asset);
+                SkillList asset = ScriptableObject.CreateInstance<SkillList>();
+                asset.basic = new SkillBasic();
+                asset.basic.champion = champName;
+                asset.basic.name = api.abilities["R"][i].name;
+                InitializeSkill(champName, i, asset, null, 3);
             }
         }
         #endregion
@@ -287,16 +347,91 @@ public class Skills : MonoBehaviour
         #region Passive
         for (int i = 0; i < api.abilities["P"].Count; i++)
         {
-            Debug.Log(api.key + ": " + api.abilities["P"][i].name);
-            SkillList asset = ScriptableObject.CreateInstance<SkillList>();
+            //Debug.Log(api.key + ": " + api.abilities["P"][i].name);
 
             if (PSkill == null)
             {
-                instance.CreateAsset(4, champName, i.ToString(), asset);
+                PassiveList asset = ScriptableObject.CreateInstance<PassiveList>();
+                asset.championName = champName;
+                InitializeSkill(champName, i, null, asset, 4);
             }
         }
         #endregion
 
+    }
+    void InitializeSkill(string champName, int i, SkillList skill, PassiveList passive, int skillIndex)
+    {
+        string[] skillType = { "Q", "W", "E", "R", "P" };
+
+        if (skill != null)
+        {
+            try
+            {
+                skill.basic.castTime = float.Parse(api.abilities[skillType[skillIndex]][i].castTime);
+            }
+            catch
+            {
+                skill.basic.castTime = 0;
+            }
+
+            if (api.abilities[skillType[skillIndex]][i].cooldown != null)
+            {
+                for (int i2 = 0; i2 < api.abilities[skillType[skillIndex]][i].cooldown.modifiers[0].values.Count; i2++)
+                {
+                    try
+                    {
+                        skill.basic.coolDown[i2] = (float)api.abilities[skillType[skillIndex]][i].cooldown.modifiers[0].values[i2];
+                    }
+                    catch
+                    {
+                        if (api.abilities[skillType[skillIndex]][i].targeting == "Passive") skill.basic.inactive = true;
+                        if (i2 >= 5) continue;
+                        skill.basic.coolDown[i2] = 0;
+                    }
+                }
+            }
+            else
+            {
+                skill.basic.coolDown[i] = 0;
+                skill.basic.inactive = true;
+            }
+            CreateAsset(skillIndex, champName, i.ToString(), skill, null);
+        }
+        else
+        {
+
+            try
+            {
+                passive.castTime = float.Parse(api.abilities[skillType[skillIndex]][i].castTime);
+            }
+            catch
+            {
+                passive.castTime = 0;
+            }
+
+            if (api.abilities[skillType[skillIndex]][i].cooldown != null)
+            {
+                for (int i2 = 0; i2 < api.abilities[skillType[skillIndex]][i].cooldown.modifiers[0].values.Count; i2++)
+                {
+                    try
+                    {
+                        passive.coolDown = (float)api.abilities[skillType[skillIndex]][i].cooldown.modifiers[0].values[i2];
+                    }
+                    catch
+                    {
+                        if (api.abilities[skillType[skillIndex]][i].targeting == "Passive") passive.inactive = true;
+                        if (i2 >= 5) continue;
+                        passive.coolDown = 0;
+                    }
+                }
+            }
+            else
+            {
+                passive.coolDown = 0;
+                passive.inactive = true;
+            }
+            CreateAsset(skillIndex, champName, i.ToString(), null, passive);
+        }
     }
 
 }
