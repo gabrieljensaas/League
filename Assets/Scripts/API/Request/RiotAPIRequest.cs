@@ -119,7 +119,7 @@ public class RiotAPIRequest : MonoBehaviour
         simManager.ongoing = false;
         simManager.outputText.text = "";
         simManager.timeText.text = "";
-        Time.timeScale = 20f;
+        Time.timeScale = 100f;
         LSSAPI = JsonConvert.DeserializeObject<LSSAPIResponse>(data);
         _champ1 = LSSAPI.APIMatchInfo.championInfo[0].champName;
         _champ2 = LSSAPI.APIMatchInfo.championInfo[1].champName;

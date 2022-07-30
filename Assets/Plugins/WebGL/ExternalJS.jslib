@@ -5,7 +5,7 @@ mergeInto(LibraryManager.library, {
   },
 
   HelloString2: function (str2) {
-    ReactUnityWebGL.HelloString(UTF8ToString(str2));
+    ReactUnityWebGL.HelloString2(str2);
   }
 
 });

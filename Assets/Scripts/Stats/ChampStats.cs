@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class ChampStats : MonoBehaviour
 {
@@ -479,10 +480,22 @@ public class ChampStats : MonoBehaviour
         //Debug.Log(targetStats.name + " " + targetStats.totalDamage);
         exportData.myDamage = totalDamage;
         exportData.enemyDamage = targetStats.totalDamage;
+        exportData.skirmishLog = new();
+        //SkirmishLog skirmishLog = new();
+        string[] _skirmishLog = output.text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+        foreach (string item in _skirmishLog)
+        {
+            exportData.skirmishLog.Add(item);
+        }
+        //exportJS.SendLogs(skirmishLog);
         //Debug.Log(JsonUtility.ToJson(exportData));
-        exportJS.SendLogs(output.text);
         exportJS.SendData(JsonUtility.ToJson(exportData));
         LoadingScreenHandler.Hide();
+    }
+
+    class SkirmishLog
+    {
+        public List<string> frame;
     }
 
     public void UpdateTimer(float time)
@@ -625,7 +638,8 @@ public class ChampStats : MonoBehaviour
     }
 
     class ExportJSData
-    { 
+    {
+        public List<string> skirmishLog;
         public int myDamage = 0;
         public int enemyDamage = 0;
         public int time = 0;
