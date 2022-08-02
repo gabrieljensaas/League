@@ -756,6 +756,10 @@ public class Skills : MonoBehaviour
     {
         string _folderName = folderName[num];
         //Debug.Log(passive);
+<<<<<<< HEAD
+=======
+        #if UNITY_EDITOR
+>>>>>>> origin/main
         if (asset != null)
         {
             AssetDatabase.CreateAsset(asset, "Assets/Resources/Skills/" + ver + "/" + _folderName + "/" + champName + " " + _folderName + "[" + skillId + "].asset");
@@ -765,6 +769,7 @@ public class Skills : MonoBehaviour
             AssetDatabase.CreateAsset(passive, "Assets/Resources/Skills/" + ver + "/" + _folderName + "/" + champName + " " + _folderName + "[" + skillId + "].asset");
         }
         AssetDatabase.SaveAssets();
+        #endif
     }
 
     IEnumerator LoadData()
@@ -796,7 +801,7 @@ public class Skills : MonoBehaviour
         if (RSkill == null) RSkill = Resources.Load<SkillList>("Skills/" + ver + "/R/" + champName + " R[1]");
         if (PSkill == null) PSkill = Resources.Load<PassiveList>("Skills/" + ver + "/P/" + champName + " P[1]");
 
-        #region Q
+#region Q
         for (int i = 0; i < api.abilities["Q"].Count; i++)
         {
             //Debug.Log(api.key + ": " + api.abilities["Q"][i].name);
@@ -811,9 +816,9 @@ public class Skills : MonoBehaviour
                 InitializeSkill(champName, i, asset, null, 0);
             }
         }
-        #endregion
+#endregion
 
-        #region W
+#region W
         for (int i = 0; i < api.abilities["W"].Count; i++)
         {
             //Debug.Log(api.key + ": " + api.abilities["W"][i].name);
@@ -828,9 +833,9 @@ public class Skills : MonoBehaviour
                 InitializeSkill(champName, i, asset, null, 1);
             }
         }
-        #endregion
+#endregion
 
-        #region E
+#region E
         for (int i = 0; i < api.abilities["E"].Count; i++)
         {
             //Debug.Log(api.key + ": " + api.abilities["E"][i].name);
@@ -845,9 +850,9 @@ public class Skills : MonoBehaviour
                 InitializeSkill(champName, i, asset, null, 2);
             }
         }
-        #endregion
+#endregion
 
-        #region R
+#region R
         for (int i = 0; i < api.abilities["R"].Count; i++)
         {
             //Debug.Log(api.key + ": " + api.abilities["R"][i].name);
@@ -862,9 +867,9 @@ public class Skills : MonoBehaviour
                 InitializeSkill(champName, i, asset, null, 3);
             }
         }
-        #endregion
+#endregion
 
-        #region Passive
+#region Passive
         for (int i = 0; i < api.abilities["P"].Count; i++)
         {
             //Debug.Log(api.key + ": " + api.abilities["P"][i].name);
@@ -876,7 +881,7 @@ public class Skills : MonoBehaviour
                 InitializeSkill(champName, i, null, asset, 4);
             }
         }
-        #endregion
+#endregion
 
     }
     void InitializeSkill(string champName, int i, SkillList skill, PassiveList passive, int skillIndex)
@@ -916,6 +921,7 @@ public class Skills : MonoBehaviour
                 skill.basic.inactive = true;
             }
 
+<<<<<<< HEAD
             var effectInAbilities = api.abilities[skillType[skillIndex]][i].effects;
             var limit = 5;
 
@@ -1184,6 +1190,17 @@ public class Skills : MonoBehaviour
                         }
                     }
                 }
+=======
+            try
+            {
+                if (api.abilities[skillType[skillIndex]][i].effects[0].leveling[0].attribute == "Physical Damage")
+                {
+
+                }
+            }
+            catch
+            { 
+>>>>>>> origin/main
             }
             CreateAsset(skillIndex, champName, i.ToString(), skill, null);
         }

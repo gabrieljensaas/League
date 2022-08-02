@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-[CreateAssetMenu(fileName = "new Spell", menuName = "ScriptableObjects/SkillList")]
+/*[CreateAssetMenu(fileName = "new Spell", menuName = "ScriptableObjects/SkillList")]
 public class SkillList : ScriptableObject
 {
 
@@ -18,7 +18,6 @@ public class SkillList : ScriptableObject
     public SkillMultiHit multihit;
 
     public SkillChargeType charge;
-    public UnitList unit;
     public SkillBasicDamage damage;
     public SkillTrueDamage trueDamage;
     public SkillDamageByHP damageByHP;
@@ -51,9 +50,8 @@ public class SkillList : ScriptableObject
     {
         output = GameObject.FindGameObjectWithTag("Output Content").GetComponent<TextMeshProUGUI>();
         int totalDamage = 0;
-        int tempDamage = 0;
 
-        /*switch (skillDamageType)
+        switch (skillDamageType)
             {
                 case SkillDamageType.Phyiscal:
                     totalDamage = (int)Mathf.Round((damage.flatAD[level] + (myStats.AD * (damage.percentAD[level] / 100))));
@@ -69,19 +67,11 @@ public class SkillList : ScriptableObject
                     totalDamage = (int)trueDamage.flat[level];
                     if (basic.champion == "Olaf")
                     {
-                        totalDamage += (int)Mathf.Round(myStats.AD * (50f / 100));
+                    totalDamage += (int)Mathf.Round(myStats.AD * (50f / 100));
                     }
-                        totalDamage += (int) Mathf.Round((target.maxHealth - target.currentHealth) * (damageByHP.targetMissingHPDamage[level] /100));
+                    totalDamage += (int) Mathf.Round((target.maxHealth - target.currentHealth) * (damageByHP.targetMissingHPDamage[level] /100));
                     break;
-            }*/
-        totalDamage = (int)Mathf.Round((damage.flatAD[level] + (myStats.AD * (damage.percentAD[level] / 100))));
-        tempDamage = (int)Mathf.Round(totalDamage * (100 / (100 + target.armor)));
-
-        totalDamage = (int)Mathf.Round((damage.flatAP[level] + (myStats.AP * (damage.percentAP[level] / 100))));
-        tempDamage += (int)Mathf.Round(totalDamage * (100 / (100 + target.spellBlock)));
-
-        tempDamage = (int)trueDamage.flat[level];
-
+            }
         if (totalDamage < 0)
         {
             totalDamage = 0;
@@ -480,3 +470,4 @@ public class SkillSelfEffects
     public float[] ShieldPercentByBonusAD = new float[5];
     public float[] ShieldDuration = new float[5];
 }
+*/

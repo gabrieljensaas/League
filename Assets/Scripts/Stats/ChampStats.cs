@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class ChampStats : MonoBehaviour
 {
     public ExternalJS exportJS;
     public new string name;
+
 
     public PassiveList passiveSkill;
     public SkillList qSkill;
@@ -478,9 +480,22 @@ public class ChampStats : MonoBehaviour
         //Debug.Log(targetStats.name + " " + targetStats.totalDamage);
         exportData.myDamage = totalDamage;
         exportData.enemyDamage = targetStats.totalDamage;
-        Debug.Log(JsonUtility.ToJson(exportData));
+        exportData.skirmishLog = new();
+        //SkirmishLog skirmishLog = new();
+        string[] _skirmishLog = output.text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+        foreach (string item in _skirmishLog)
+        {
+            exportData.skirmishLog.Add(item);
+        }
+        //exportJS.SendLogs(skirmishLog);
+        //Debug.Log(JsonUtility.ToJson(exportData));
         exportJS.SendData(JsonUtility.ToJson(exportData));
         LoadingScreenHandler.Hide();
+    }
+
+    class SkirmishLog
+    {
+        public List<string> frame;
     }
 
     public void UpdateTimer(float time)
@@ -498,7 +513,7 @@ public class ChampStats : MonoBehaviour
         armor += FlatArmorMod;
         spellBlock += FlatSpellBlockMod;
         attackSpeed *= (1 + (PercentAttackSpeedMod / 100));
-        originalAS = attackSpeed;
+        originalAS = attackSpeed * RiotAPIRequest.GlobalTimeScale;
         //isLoaded = true;
         UpdateStats(isFirst);
     }
@@ -623,7 +638,8 @@ public class ChampStats : MonoBehaviour
     }
 
     class ExportJSData
-    { 
+    {
+        public List<string> skirmishLog;
         public int myDamage = 0;
         public int enemyDamage = 0;
         public int time = 0;
