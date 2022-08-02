@@ -756,10 +756,6 @@ public class Skills : MonoBehaviour
     {
         string _folderName = folderName[num];
         //Debug.Log(passive);
-<<<<<<< HEAD
-=======
-        #if UNITY_EDITOR
->>>>>>> origin/main
         if (asset != null)
         {
             AssetDatabase.CreateAsset(asset, "Assets/Resources/Skills/" + ver + "/" + _folderName + "/" + champName + " " + _folderName + "[" + skillId + "].asset");
@@ -769,7 +765,7 @@ public class Skills : MonoBehaviour
             AssetDatabase.CreateAsset(passive, "Assets/Resources/Skills/" + ver + "/" + _folderName + "/" + champName + " " + _folderName + "[" + skillId + "].asset");
         }
         AssetDatabase.SaveAssets();
-        #endif
+        // #endif
     }
 
     IEnumerator LoadData()
@@ -921,7 +917,6 @@ public class Skills : MonoBehaviour
                 skill.basic.inactive = true;
             }
 
-<<<<<<< HEAD
             var effectInAbilities = api.abilities[skillType[skillIndex]][i].effects;
             var limit = 5;
 
@@ -1190,17 +1185,6 @@ public class Skills : MonoBehaviour
                         }
                     }
                 }
-=======
-            try
-            {
-                if (api.abilities[skillType[skillIndex]][i].effects[0].leveling[0].attribute == "Physical Damage")
-                {
-
-                }
-            }
-            catch
-            { 
->>>>>>> origin/main
             }
             CreateAsset(skillIndex, champName, i.ToString(), skill, null);
         }
