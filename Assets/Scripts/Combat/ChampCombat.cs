@@ -108,7 +108,7 @@ public class ChampCombat : MonoBehaviour
                         myStats.passiveSkill.UseSkill(myStats.level, myStats, targetStats);
                     }
                     myStats.passiveReady = false;
-                    myStats.pCD = myStats.passiveSkill.coolDown;
+                    myStats.pCD = myStats.passiveSkill.coolDown / RiotAPIRequest.GlobalTimeScale;
                 }
             }
         }
@@ -175,7 +175,7 @@ public class ChampCombat : MonoBehaviour
                         StartCoroutine(UpdateCasting(attackCooldown = 1f / (float)myStats.attackSpeed));
                         yield return new WaitForSeconds(attackCooldown = 1f / (float)myStats.attackSpeed);
                         myStats.qReady = true;
-                        myStats.qCD = (float)(attackCooldown = 1f / myStats.attackSpeed);
+                        myStats.qCD = (float)(attackCooldown = 1f / myStats.attackSpeed) / RiotAPIRequest.GlobalTimeScale;
                     }
                     #endregion
 
@@ -202,7 +202,7 @@ public class ChampCombat : MonoBehaviour
 
                     else
                     {
-                        myStats.qCD = myStats.qSkill.basic.coolDown[skillLevel];
+                        myStats.qCD = myStats.qSkill.basic.coolDown[skillLevel] / RiotAPIRequest.GlobalTimeScale;
                     }
                     generateJSON.SendData(false, this.gameObject.name, damage, SimManager.timer, 2, myStats.qSkill.name);
                     if (myStats.passiveSkill.applyOnAbility)
@@ -230,7 +230,7 @@ public class ChampCombat : MonoBehaviour
                 prevDamage = int.Parse(abilitySum[2].text);
                 damage = myStats.wSkill.UseSkill(skillLevel, myStats, targetStats, abilitySum[2], prevDamage);
                 myStats.wReady = false;
-                myStats.wCD = myStats.wSkill.basic.coolDown[skillLevel];
+                myStats.wCD = myStats.wSkill.basic.coolDown[skillLevel] / RiotAPIRequest.GlobalTimeScale;
                 generateJSON.SendData(false, this.gameObject.name, damage, SimManager.timer, 2, myStats.wSkill.name);
 
                 #region Gangplank
@@ -363,7 +363,7 @@ public class ChampCombat : MonoBehaviour
                         StartCoroutine(UpdateCasting(myStats.eSkill.basic.castTime));
                     }
                 }
-                myStats.eCD = myStats.eSkill.basic.coolDown[skillLevel];
+                myStats.eCD = myStats.eSkill.basic.coolDown[skillLevel] / RiotAPIRequest.GlobalTimeScale;
                 generateJSON.SendData(false, this.gameObject.name, damage, SimManager.timer, 2, myStats.eSkill.name);
 
                 #region Fiora
@@ -429,17 +429,17 @@ public class ChampCombat : MonoBehaviour
                     }
                 }
 
-                #region Garen
-                if (myStats.name == "Garen")
-                {
-                    damage = myStats.rSkill.UseSkill(ultLevel, myStats, targetStats, abilitySum[4], prevDamage);
-                    if (myStats.name == "Garen" && damage < targetStats.currentHealth)
-                    {
-                        isCasting = false;
-                        yield break;
-                    }
-                }
-                #endregion
+                //#region Garen
+                //if (myStats.name == "Garen")
+                //{
+                //    damage = myStats.rSkill.UseSkill(ultLevel, myStats, targetStats, abilitySum[4], prevDamage);
+                //    if (myStats.name == "Garen" && damage < targetStats.currentHealth)
+                //    {
+                //        isCasting = false;
+                //        yield break;
+                //    }
+                //}
+                //#endregion
 
                 #region Olaf
                 if (myStats.name == "Olaf")
@@ -502,7 +502,7 @@ public class ChampCombat : MonoBehaviour
                     {
                         myStats.passiveReady = true;
                         myStats.dynamicStatus["Ult First Cast"] = true;
-                        myStats.rCD = 2.5f;
+                        myStats.rCD = 2.5f / RiotAPIRequest.GlobalTimeScale;
                     }
                 }
                 #endregion
@@ -523,7 +523,7 @@ public class ChampCombat : MonoBehaviour
                 myStats.rReady = false;
                 if(myStats.name != "Akali")
                 {
-                    myStats.rCD = myStats.rSkill.basic.coolDown[ultLevel];
+                    myStats.rCD = myStats.rSkill.basic.coolDown[ultLevel] / RiotAPIRequest.GlobalTimeScale;
                 }
                 generateJSON.SendData(false, this.gameObject.name, damage, SimManager.timer, 2, myStats.rSkill.name);
 
@@ -675,31 +675,31 @@ public class ChampCombat : MonoBehaviour
         {
         }
 
-        if (myStats.name == "Jax")
-        {
-            if (myStats.level >= 6)
-            {
-                if (myStats.dynamicStatus.ContainsKey(myStats.rSkill.name))
-                {
-                    myStats.dynamicStatusStacks[myStats.rSkill.name]++;
-                    if (myStats.dynamicStatusStacks[myStats.rSkill.name] >= 2)
-                    {
-
-                        int prevDamage = 0;
-                        myStats.dynamicStatusStacks[myStats.rSkill.name] = 0; 
-                        prevDamage = int.Parse(abilitySum[4].text);
-                        int ultLevel = myStats.level / 6 - 1;
-                        myStats.rSkill.UseSkill(ultLevel, myStats, targetStats, abilitySum[4], prevDamage);
-                        generateJSON.SendData(false, this.gameObject.name, damage, SimManager.timer, 2, myStats.rSkill.name);
-                    }
-                }
-                else
-                {
-                    myStats.dynamicStatus[myStats.rSkill.name] = true;
-                    myStats.dynamicStatusStacks[myStats.rSkill.name] = 1;
-                }
-            }
-        }
+        //if (myStats.name == "Jax")
+        //{
+        //    if (myStats.level >= 6)
+        //    {
+        //        if (myStats.dynamicStatus.ContainsKey(myStats.rSkill.name))
+        //        {
+        //            myStats.dynamicStatusStacks[myStats.rSkill.name]++;
+        //            if (myStats.dynamicStatusStacks[myStats.rSkill.name] >= 2)
+        //            {
+        //
+        //                int prevDamage = 0;
+        //                myStats.dynamicStatusStacks[myStats.rSkill.name] = 0; 
+        //                prevDamage = int.Parse(abilitySum[4].text);
+        //                int ultLevel = myStats.level / 6 - 1;
+        //                myStats.rSkill.UseSkill(ultLevel, myStats, targetStats, abilitySum[4], prevDamage);
+        //                generateJSON.SendData(false, this.gameObject.name, damage, SimManager.timer, 2, myStats.rSkill.name);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            myStats.dynamicStatus[myStats.rSkill.name] = true;
+        //            myStats.dynamicStatusStacks[myStats.rSkill.name] = 1;
+        //        }
+        //    }
+        //}
         #endregion
 
         #region Mordekaiser
@@ -744,7 +744,7 @@ public class ChampCombat : MonoBehaviour
                     {
                         if (targetStats.currentHealth <= 0) return;
                         myStats.passiveReady = false;
-                        myStats.pCD = myStats.passiveSkill.coolDown;
+                        myStats.pCD = myStats.passiveSkill.coolDown / RiotAPIRequest.GlobalTimeScale;
                         int passiveDamage = myStats.passiveSkill.UseSkill(myStats.level, myStats, targetStats);
                         generateJSON.SendData(false, this.gameObject.name, passiveDamage, SimManager.timer, 3, myStats.passiveSkill.name);
                     }
@@ -770,7 +770,7 @@ public class ChampCombat : MonoBehaviour
 
     IEnumerator UpdateCasting(float amount)
     {
-        yield return new WaitForSeconds(amount);
+        yield return new WaitForSeconds(amount / RiotAPIRequest.GlobalTimeScale);
         isCasting = false;
         canAttack = true;
     }

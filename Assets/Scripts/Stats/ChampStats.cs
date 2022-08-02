@@ -513,7 +513,7 @@ public class ChampStats : MonoBehaviour
         armor += FlatArmorMod;
         spellBlock += FlatSpellBlockMod;
         attackSpeed *= (1 + (PercentAttackSpeedMod / 100));
-        originalAS = attackSpeed;
+        originalAS = attackSpeed * RiotAPIRequest.GlobalTimeScale;
         //isLoaded = true;
         UpdateStats(isFirst);
     }

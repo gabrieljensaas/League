@@ -397,9 +397,16 @@ public class Skills : MonoBehaviour
                 skill.basic.coolDown[i] = 0;
                 skill.basic.inactive = true;
             }
-            if (api.abilities[skillType[skillIndex]][i].effects[0].leveling[0].attribute == "Physical Damage")
+
+            try
             {
-                
+                if (api.abilities[skillType[skillIndex]][i].effects[0].leveling[0].attribute == "Physical Damage")
+                {
+
+                }
+            }
+            catch
+            { 
             }
             CreateAsset(skillIndex, champName, i.ToString(), skill, null);
         }

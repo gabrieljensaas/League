@@ -9,6 +9,7 @@ using System.Text;
 
 public class RiotAPIRequest : MonoBehaviour
 {
+    public static float GlobalTimeScale = 10f;
     public RiotAPIResponse champion;
     public LSSAPIResponse LSSAPI;
     SimManager simManager;
@@ -66,8 +67,8 @@ public class RiotAPIRequest : MonoBehaviour
         matchRequest = GetComponent<RiotAPIMatchRequest>();
         simManager = GetComponent<SimManager>();
         //StartCoroutine(TestRepeat());
-        s = "{ \"APIMatchInfo\":{ \"version\":\"12.13.1\",\"championInfo\":[{ \"champName\":\"TahmKench\",\"champLevel\":13,\"items\":[1037,0,0,0,0,0]},{ \"champName\":\"Bard\",\"champLevel\":14,\"items\":[0,0,0,0,0,0]}]} }";
-        //LoadData(s);
+        s = "{ \"APIMatchInfo\":{ \"version\":\"12.13.1\",\"championInfo\":[{ \"champName\":\"Jax\",\"champLevel\":18,\"items\":[0,0,0,0,0,0]},{ \"champName\":\"Garen\",\"champLevel\":18,\"items\":[0,0,0,0,0,0]}]} }";
+        LoadData(s);
     }
 
     IEnumerator TestRepeat()
@@ -86,12 +87,12 @@ public class RiotAPIRequest : MonoBehaviour
         SimManager.isLoaded = false;
         simManager.ongoing = false;
         Time.timeScale = 1f;
-        simManager.timeText.gameObject.SetActive(false);
+        //simManager.timeText.gameObject.SetActive(false);
         string _c1 = dd1.captionText.text.ToString();
         string _c2 = dd2.captionText.text.ToString();
         int _e1 = int.Parse(if1.text);
         int _e2 = int.Parse(if2.text);
-        GetRiotAPIRequest("12.10.1", "Garen", "Jax", 18360, 18360);
+        GetRiotAPIRequest("12.10.1", "Garen", "Ashe", 18360, 18360);
     }
 
     public void ManualSimulate()
@@ -113,13 +114,13 @@ public class RiotAPIRequest : MonoBehaviour
         champStats[0].isLoaded = false;
         champStats[1].isLoaded = false;
         LoadingScreenHandler.Show();
-        simManager.timeText.gameObject.SetActive(false);
+        //simManager.timeText.gameObject.SetActive(false);
         SimManager.timer = 0;
         SimManager._timer = 0;
         simManager.ongoing = false;
         simManager.outputText.text = "";
         simManager.timeText.text = "";
-        Time.timeScale = 100f;
+        //Time.timeScale = 100f;
         LSSAPI = JsonConvert.DeserializeObject<LSSAPIResponse>(data);
         _champ1 = LSSAPI.APIMatchInfo.championInfo[0].champName;
         _champ2 = LSSAPI.APIMatchInfo.championInfo[1].champName;
@@ -226,29 +227,29 @@ public class RiotAPIRequest : MonoBehaviour
         //FOR TEST ONLY
         myStats.isLoaded = false;
         //
-        for (int i = 0; i < skills.qSkills.Count; i++)
+        for (int i = 0; i < skills.champions.Length*5; i++)
         {
             try
             {
-                if (skills.qSkills[i].basic.champion.Replace(" ","") == champName)
-                {
-                    champStats[num].qSkill = skills.qSkills[i];
-                }
-
-                if (skills.wSkills[i].basic.champion.Replace(" ", "") == champName)
-                {
-                    champStats[num].wSkill = skills.wSkills[i];
-                }
-
-                if (skills.eSkills[i].basic.champion.Replace(" ", "") == champName)
-                {
-                    champStats[num].eSkill = skills.eSkills[i];
-                }
-
-                if (skills.rSkills[i].basic.champion.Replace(" ", "") == champName)
-                {
-                    champStats[num].rSkill = skills.rSkills[i];
-                }
+                //if (skills.qSkills[i].basic.champion.Replace(" ","") == champName)
+                //{
+                //    champStats[num].qSkill = skills.qSkills[i];
+                //}
+                //
+                //if (skills.wSkills[i].basic.champion.Replace(" ", "") == champName)
+                //{
+                //    champStats[num].wSkill = skills.wSkills[i];
+                //}
+                //
+                //if (skills.eSkills[i].basic.champion.Replace(" ", "") == champName)
+                //{
+                //    champStats[num].eSkill = skills.eSkills[i];
+                //}
+                //
+                //if (skills.rSkills[i].basic.champion.Replace(" ", "") == champName)
+                //{
+                //    champStats[num].rSkill = skills.rSkills[i];
+                //}
             }
             catch 
             { 
