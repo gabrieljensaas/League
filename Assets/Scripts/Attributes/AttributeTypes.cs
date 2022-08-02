@@ -799,122 +799,149 @@ public class AttributeTypes : MonoBehaviour
 
 	public class TotalShieldStrength
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+		public float[] percentBonusHP = new float[5];
 	}
 
 	public class MagicDamageperOrb
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
 	}
 
 	public class BonusDamagePerChampion
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
 	}
 
 	public class TotalDamageVsChampions
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
 	}
 
 	public class MinimumDamage
 	{
-
+		public float[] flat = new float[5];		
 	}
 
 	public class CappedMonsterDamage
 	{
-
+		public float[] flat = new float[5];
 	}
 
 	public class DamageStored
 	{
-
+		public float[] percentDmgTaken = new float[5];
+		public float[] percentDmgDealt = new float[5];
 	}
 
 	public class MaximumAdditionalBonusAD
 	{
-
+		public float[] flat = new float[5];
 	}
 
 	public class MaximumTotalBonusAD
 	{
-
+		public float[] flat = new float[5];
 	}
 
 	public class MinimumBonusPhysicalDamage
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentBonusHP = new float[5];
 	}
 
 	public class MaximumBonusPhysicalDamage
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentBonusHP = new float[5];
 	}
 
 	public class MinimumNonChampionBonusDamage
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentBonusHP = new float[5];
 	}
 
 	public class MaximumNonChampionBonusDamage
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentBonusHP = new float[5];
 	}
 
 	public class IncreasedBaseHealth
-	{
-
+	{		
+		public float[] percentMissingHP = new float[5];
 	}
 
 	public class TotalHealthRegeneration
 	{
-
+		public float[] percentMaxHP = new float[5];
 	}
 
 	public class RegenerationperSecond
 	{
-
+		public float[] percentMaxHP = new float[5];
 	}
 
 	public class MinimumPhysicalDamage
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+		public float[] percentAD = new float[5];
+		public float[] percentBonusAD = new float[5];
+		public float[] percentPer100BonusAD = new float[5];
+		public float[] percentTargetMissingHP = new float[5];
+		public float[] percentTargetMaxHP = new float[5];
+		public float[] percentPrimaryTargetBonusHP = new float[5];
 	}
 
 	public class MinimumTotalDamage
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+		public float[] percentBonusAD = new float[5];
 	}
 
 	public class OutwardMagicDamage
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
 	}
 
 	public class ReturningMagicDamage
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
 	}
 
 	public class MaxMonsterTotalDamage
 	{
-
+		public float[] flat = new float[5];
 	}
 
 	public class DartDamage
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
 	}
 
 	public class TotalBonusDamage
 	{
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+		public float[] percentBonusAD = new float[5];
+		public float[] percentTargetMaxHP = new float[5];
 
 	}
 
 	public class SpikeDamage
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
 	}
 
 	public class MaximumDamage
@@ -927,142 +954,168 @@ public class AttributeTypes : MonoBehaviour
 
 	public class CharmDuration
 	{
-
+		public float[] flat = new float[5];
 	}
 
 	public class MonsterDuration
 	{
-
+		public float[] flat = new float[5];
 	}
 
 	public class MagicResistanceReduction
 	{
-
+		public float[] percent = new float[5];
 	}
 
 	public class EmpoweredDamage
 	{
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+		public float[] percentTargetCurrentHP = new float[5];
 
 	}
 
 	public class FearDuration
 	{
-
+		public float[] flat = new float[5];
 	}
 
 	public class IncreasedMagicDamage
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+		public float[] percentBonusAD = new float[5];
+		public float[] percentPer100AP = new float[5];
+		public float[] percentTargetCurrentHP = new float[5];
 	}
 
 	public class IncreasedMinimumDamage
 	{
-
+		public float[] flat = new float[5];
 	}
 
 	public class LastTickofDamage
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+		public float[] percentTargetMissingHP = new float[5];
 	}
 
 	public class ChampionHealPercentage
 	{
-
+		public float[] percent = new float[5];
 	}
 
 	public class TotalHealperChampion
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+		public float[] percentTargetMissingHP = new float[5];
 	}
 
 	public class TotalHealperMonster
 	{
-
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+		public float[] percentTargetMissingHP = new float[5];
 	}
 
 	public class TotalHealperMinion
 	{
-
-	}
-
-	public class Criticaldamage
-	{
-
-	}
-
-	public class AdditionalBonusMovementSpeed
-	{
-
-	}
-
-	public class HealperTick
-	{
-
-	}
-
-	public class ManaRefunded
-	{
-
-	}
-
-	public class BonusOnHitDamage
-	{
-
-	}
-
-	public class GuppyDamage
-	{
-
-	}
-
-	public class ChomperDamage
-	{
-
-	}
-
-	public class GigalodonDamage
-	{
-
-	}
-
-	public class GustMagicDamage
-	{
-
-	}
-
-	public class TornadoMagicDamagePerTick
-	{
-
-	}
-
-	public class TotalTornadoMagicDamage
-	{
-
-	}
-
-	public class MagicDamageShield
-	{
-
-	}
-
-	public class MagicDamageReduction
-	{
-
-	}
-
-	public class ChampionMagicDamage
-	{
-
-	}
-
-	public class NonChampionMagicDamage
-	{
-
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+		public float[] percentTargetMissingHP = new float[5];
 	}
 
 	public class CriticalDamage
 	{
+		public float[] flat = new float[5];
+		public float[] percent = new float[5];
+		public float[] percentAD = new float[5];
+	}
 
+	public class AdditionalBonusMovementSpeed
+	{
+		public float[] percent = new float[5];
+	}
+
+	public class HealperTick
+	{
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+		public float[] percentBonusAD = new float[5];
+	}
+
+	public class ManaRefunded
+	{
+		public float[] flat = new float[5];
+	}
+
+	public class BonusOnHitDamage
+	{
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+	}
+
+	public class GuppyDamage
+	{
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+	}
+
+	public class ChomperDamage
+	{
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+	}
+
+	public class GigalodonDamage
+	{
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+	}
+
+	public class GustMagicDamage
+	{
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+	}
+
+	public class TornadoMagicDamagePerTick
+	{
+		public float[] percentTargetMaxHP = new float[5];
+		public float[] percentPer100AP = new float[5];
+	}
+
+	public class TotalTornadoMagicDamage
+	{
+		public float[] percentTargetMaxHP = new float[5];
+		public float[] percentPer100AP = new float[5];
+	}
+
+	public class MagicDamageShield
+	{
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+		public float[] percentMaxHP = new float[5];		
+	}
+
+	public class MagicDamageReduction
+	{
+		public float[] percentPer100AP = new float[5];
+		public float[] percentPer100BonusMagicRS = new float[5];
+	}
+
+	public class ChampionMagicDamage
+	{
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
+	}
+
+	public class NonChampionMagicDamage
+	{
+		public float[] flat = new float[5];
+		public float[] percentAP = new float[5];
 	}
 
 	public class bug
@@ -1072,17 +1125,17 @@ public class AttributeTypes : MonoBehaviour
 
 	public class GoldPlunder
 	{
-
+		public float[] flat = new float[5];
 	}
 
 	public class SilverSerpentPlunder
 	{
-
+		public float[] flat = new float[5];
 	}
 
 	public class Maximumcharges
 	{
-
+		public float[] flat = new float[5];
 	}
 
 	public class ChampionBonusDamage

@@ -6,7 +6,7 @@ using TMPro;
 public class ChampStats : MonoBehaviour
 {
     public ExternalJS exportJS;
-    public string name;
+    public new string name;
 
     public PassiveList passiveSkill;
     public SkillList qSkill;

@@ -18,6 +18,7 @@ public class SkillList : ScriptableObject
     public SkillMultiHit multihit;
 
     public SkillChargeType charge;
+    public UnitList unit;
     public SkillBasicDamage damage;
     public SkillTrueDamage trueDamage;
     public SkillDamageByHP damageByHP;

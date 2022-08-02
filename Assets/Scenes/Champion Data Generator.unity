@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 517365955}
   - component: {fileID: 517365953}
-  - component: {fileID: 517365954}
+  - component: {fileID: 517365956}
   m_Layer: 0
   m_Name: ChampionDataManager
   m_TagString: Untagged
@@ -153,28 +153,185 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7659dade3692e734e92e6342472cefce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  champions:
+  - Aatrox
+  - Ahri
+  - Akali
+  - Akshan
+  - Alistar
+  - Amumu
+  - Anivia
+  - Annie
+  - Aphelios
+  - Ashe
+  - AurelionSol
+  - Azir
+  - Bard
+  - Belveth
+  - Blitzcrank
+  - Brand
+  - Braum
+  - Caitlyn
+  - Camille
+  - Cassiopeia
+  - Chogath
+  - Corki
+  - Darius
+  - Diana
+  - DrMundo
+  - Draven
+  - Ekko
+  - Elise
+  - Evelynn
+  - Ezreal
+  - Fiddlesticks
+  - Fiora
+  - Fizz
+  - Galio
+  - Gangplank
+  - Garen
+  - Gnar
+  - GnarBig
+  - Gragas
+  - Graves
+  - Gwen
+  - Hecarim
+  - Heimerdinger
+  - Illaoi
+  - Irelia
+  - Ivern
+  - Janna
+  - JarvanIV
+  - Jax
+  - Jayce
+  - Jhin
+  - Jinx
+  - Kaisa
+  - Kalista
+  - Karma
+  - Karthus
+  - Kassadin
+  - Katarina
+  - Kayle
+  - Kayn
+  - Kennen
+  - Khazix
+  - Kindred
+  - Kled
+  - KogMaw
+  - Leblanc
+  - LeeSin
+  - Leona
+  - Lillia
+  - Lissandra
+  - Lucian
+  - Lulu
+  - Lux
+  - Malphite
+  - Malzahar
+  - Maokai
+  - MasterYi
+  - MissFortune
+  - MonkeyKing
+  - Mordekaiser
+  - Morgana
+  - Nami
+  - Nasus
+  - Nautilus
+  - Neeko
+  - Nidalee
+  - Nilah
+  - Nocturne
+  - Nunu
+  - Olaf
+  - Orianna
+  - Ornn
+  - Pantheon
+  - Poppy
+  - Pyke
+  - Qiyana
+  - Quinn
+  - Rakan
+  - Rammus
+  - RekSai
+  - Rell
+  - Renata
+  - Renekton
+  - Rengar
+  - Riven
+  - Rumble
+  - Ryze
+  - Samira
+  - Sejuani
+  - Senna
+  - Seraphine
+  - Sett
+  - Shaco
+  - Shen
+  - Shyvana
+  - Singed
+  - Sion
+  - Sivir
+  - Skarner
+  - Sona
+  - Soraka
+  - Swain
+  - Sylas
+  - Syndra
+  - TahmKench
+  - Taliyah
+  - Talon
+  - Taric
+  - Teemo
+  - Thresh
+  - Tristana
+  - Trundle
+  - Tryndamere
+  - TwistedFate
+  - Twitch
+  - Udyr
+  - Urgot
+  - Varus
+  - Vayne
+  - Veigar
+  - Velkoz
+  - Vex
+  - Vi
+  - Viego
+  - Viktor
+  - Vladimir
+  - Volibear
+  - Warwick
+  - Xayah
+  - Xerath
+  - XinZhao
+  - Yasuo
+  - Yone
+  - Yorick
+  - Yuumi
+  - Zac
+  - Zed
+  - Zeri
+  - Ziggs
+  - Zilean
+  - Zoe
+  - Zyra
   passives: []
   qSkills:
-  - {fileID: 11400000, guid: 043d8dce8c3cc294caee24be9ecb3d4d, type: 2}
+  - {fileID: 11400000, guid: 93edcee4cf5bead48aa064df99f08fd9, type: 2}
   wSkills:
-  - {fileID: 11400000, guid: e1d7383809ac6f145ae349c3718e0bb0, type: 2}
+  - {fileID: 11400000, guid: 86aeaf37c53b9de4cae9c51362e07362, type: 2}
   eSkills:
-  - {fileID: 11400000, guid: f833be3d4126a1846bd01793ed9630f3, type: 2}
+  - {fileID: 11400000, guid: de67c83a66c55964ab4cbbada62a11b9, type: 2}
   rSkills:
-  - {fileID: 11400000, guid: ef6e352f4429cc743a795ca5950edeff, type: 2}
---- !u!114 &517365954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 517365952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00d150fcc44c8144587c8d4d7eb8a612, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  name: 
+  - {fileID: 11400000, guid: ba741059f5290ae4b83b3b05d544d8ae, type: 2}
+  folderName:
+  - Q
+  - W
+  - E
+  - R
+  - P
+  ver: 12.13.1
 --- !u!4 &517365955
 Transform:
   m_ObjectHideFlags: 0
@@ -190,6 +347,276 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &517365956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517365952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481b649353ba3d04d945680bbbab2f93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flat:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percent:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  bonusAD:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentAD:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentBonusAD:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentPer100BonusAD:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentAP:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentPer100AP:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  BonusHP:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentBonusHP:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentMaxHP:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentMissingHP:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentHPLost:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentOwnMaxHP:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentOwnBonusHP:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentOwnMissingHP:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentTargetMaxHP:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentTargetMissingHP:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentTargetCurrentHP:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentPrimaryTargetBonusHP:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentMissingMana:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentMaxMana:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentBonusAS:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  armor:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentArmor:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentBonusArmor:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentTargetArmor:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentTotalArmor:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentBonusMR:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentTotalMR:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentDamageTaken:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentDmgDealt:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  x:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentCritStrikeChance:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  units:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  chunckOfIce:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  soldiers:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  siphoningStrikeStacks:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  percentBonusMana:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  lithality:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  mist:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  expendedGrit:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  soul:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
 --- !u!1 &1797299644
 GameObject:
   m_ObjectHideFlags: 0
