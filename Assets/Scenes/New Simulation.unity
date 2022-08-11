@@ -3420,7 +3420,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.00012207031}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -950.33923}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &101636227
 MonoBehaviour:
@@ -4948,7 +4948,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackCooldown: 0
   myStats: {fileID: 0}
-  targetStats: {fileID: 0}
+  targetStats: {fileID: 488366046}
+  output: {fileID: 1912723367}
   combatPriority:
   - 
   - 
@@ -5086,7 +5087,7 @@ MonoBehaviour:
   item: []
   itemList: {fileID: 0}
   itemPrefab: {fileID: 8829407649640576049, guid: 8bc35ee0e65a1d643b2fe15a47e01d0a, type: 3}
-  targetStats: {fileID: 0}
+  targetStats: {fileID: 488366046}
   itemCount: 0
   isLoaded: 0
   isItemsLoaded: 0
@@ -5172,6 +5173,8 @@ MonoBehaviour:
   rFlatEnergyModPerLevel: 0
   PercentLifeStealMod: 0
   PercentSpellVampMod: 0
+  output: {fileID: 1912723367}
+  timer: {fileID: 101636228}
   generateJSON: {fileID: 488965736}
 --- !u!1 &158112003
 GameObject:
@@ -8434,7 +8437,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.00061035156}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -1079.7585}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &284445185
 MonoBehaviour:
@@ -11075,7 +11078,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.00061035156}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -1079.7585}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &421378092
 MonoBehaviour:
@@ -12963,7 +12966,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &473735934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13169,7 +13172,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackCooldown: 0
   myStats: {fileID: 0}
-  targetStats: {fileID: 0}
+  targetStats: {fileID: 155855320}
+  output: {fileID: 1912723367}
   combatPriority:
   - 
   - 
@@ -13198,13 +13202,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0031815f00d90f94083d544da18684a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  exportJS: {fileID: 0}
+  exportJS: {fileID: 991064249}
   name: 
-  passiveSkill: {fileID: 0}
-  qSkill: {fileID: 0}
-  wSkill: {fileID: 0}
-  eSkill: {fileID: 0}
-  rSkill: {fileID: 0}
+  passiveSkill: {fileID: 11400000, guid: 3bb9159fe298c79498d17661620f7bd8, type: 2}
+  qSkill: {fileID: 11400000, guid: 8f18668a93197e54f8b0778e07f7e95e, type: 2}
+  wSkill: {fileID: 11400000, guid: 6d9d7a7917373eb4687c792562b0cbbd, type: 2}
+  eSkill: {fileID: 11400000, guid: 75485d25abdd3e14dbf20483fcf0e920, type: 2}
+  rSkill: {fileID: 11400000, guid: 353d7749e708230439821e69649efa10, type: 2}
   qStacks: 0
   enemyCombat: {fileID: 0}
   buffed: 0
@@ -13307,7 +13311,7 @@ MonoBehaviour:
   item: []
   itemList: {fileID: 0}
   itemPrefab: {fileID: 8829407649640576049, guid: 8bc35ee0e65a1d643b2fe15a47e01d0a, type: 3}
-  targetStats: {fileID: 0}
+  targetStats: {fileID: 155855320}
   itemCount: 0
   isLoaded: 0
   isItemsLoaded: 0
@@ -13393,6 +13397,8 @@ MonoBehaviour:
   rFlatEnergyModPerLevel: 0
   PercentLifeStealMod: 0
   PercentSpellVampMod: 0
+  output: {fileID: 1912723367}
+  timer: {fileID: 101636228}
   generateJSON: {fileID: 488965736}
 --- !u!1 &488965729
 GameObject:
@@ -13613,7 +13619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 999f369f77470b04abe1ac29117d78a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skills: {fileID: 0}
+  skills: {fileID: 502540014}
   testExp: 0000000000000000
   testName:
   - 
@@ -13624,7 +13630,9 @@ MonoBehaviour:
   dd2: {fileID: 2012621513}
   if1: {fileID: 1876513954}
   if2: {fileID: 1799078617}
-  Champions: []
+  Champions:
+  - {fileID: 488366043}
+  - {fileID: 155855317}
   champStats:
   - {fileID: 3035611902072421749}
   - {fileID: 3035611903516029275}
@@ -24191,7 +24199,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &821539517
 RectTransform:
   m_ObjectHideFlags: 0
@@ -27156,9 +27164,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &896729497
 MonoBehaviour:
@@ -32185,9 +32193,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1077488017
 MonoBehaviour:
@@ -34067,7 +34075,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -39553,9 +39561,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1319361276
 MonoBehaviour:
@@ -40726,7 +40734,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 1356002496}
   m_OnClick:
     m_PersistentCalls:
@@ -44237,9 +44245,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1481570114
 MonoBehaviour:
@@ -45082,7 +45090,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -46882,7 +46890,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -56917,7 +56925,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.00012207031}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -950.33923}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1912723366
 MonoBehaviour:
@@ -61450,7 +61458,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -63577,6 +63585,8 @@ MonoBehaviour:
   rFlatEnergyModPerLevel: 0
   PercentLifeStealMod: 0
   PercentSpellVampMod: 0
+  output: {fileID: 0}
+  timer: {fileID: 0}
   generateJSON: {fileID: 488965736}
 --- !u!1 &3035611903516029274
 GameObject:
@@ -63803,6 +63813,8 @@ MonoBehaviour:
   rFlatEnergyModPerLevel: 0
   PercentLifeStealMod: 0
   PercentSpellVampMod: 0
+  output: {fileID: 0}
+  timer: {fileID: 0}
   generateJSON: {fileID: 488965736}
 --- !u!224 &3414144649220478611
 RectTransform:
@@ -65728,6 +65740,7 @@ MonoBehaviour:
   attackCooldown: 0
   myStats: {fileID: 3035611902072421749}
   targetStats: {fileID: 3035611903516029275}
+  output: {fileID: 0}
   combatPriority:
   - 
   - 
@@ -65759,6 +65772,7 @@ MonoBehaviour:
   attackCooldown: 0
   myStats: {fileID: 3035611903516029275}
   targetStats: {fileID: 3035611902072421749}
+  output: {fileID: 0}
   combatPriority:
   - 
   - 

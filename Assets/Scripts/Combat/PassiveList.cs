@@ -79,7 +79,7 @@ public class PassiveList : ScriptableObject
 
     public int UseSkill(int level, ChampStats myStats, ChampStats target)
     {
-        output = GameObject.FindGameObjectWithTag("Output Content").GetComponent<TextMeshProUGUI>();
+        if (output = null) output = SimManager.outputText;
         int damage = 0;
 
         switch (championName)

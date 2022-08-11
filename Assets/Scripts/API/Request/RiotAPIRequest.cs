@@ -10,6 +10,7 @@ using System.Text;
 public class RiotAPIRequest : MonoBehaviour
 {
     public static float GlobalTimeScale = 10f;
+    public static float GlobalGameSpeedMultiplier = 1f / GlobalTimeScale;
     public RiotAPIResponse champion;
     public LSSAPIResponse LSSAPI;
     SimManager simManager;
@@ -62,7 +63,6 @@ public class RiotAPIRequest : MonoBehaviour
 
     void Start()
     {        
-        Champions = GameObject.FindGameObjectsWithTag("Champion");
         itemRequest = GetComponent<RiotAPIItemRequest>();
         matchRequest = GetComponent<RiotAPIMatchRequest>();
         simManager = GetComponent<SimManager>();
@@ -444,6 +444,11 @@ public class RiotAPIRequest : MonoBehaviour
             }
             return new string(array);
         }
+
+    public void UpdateGameSpeed()
+    {
+        GlobalGameSpeedMultiplier = 1f / GlobalGameSpeedMultiplier;
+    }
 }
 
 [System.Serializable]

@@ -12,7 +12,7 @@ public class APITest : MonoBehaviour
 
     void Start()
     {
-        //StartCoroutine(StartRequest());
+        StartCoroutine(StartRequest());
     }
 
     IEnumerator StartRequest()

@@ -11,7 +11,7 @@ public class ChampCombat : MonoBehaviour
     public ChampStats myStats;
     public ChampStats targetStats;
     GameObject[] champions;
-    TextMeshProUGUI output;
+    [SerializeField] TextMeshProUGUI output;
     public string[] combatPriority = {"","","","",""};
     int cpLength = 5; //Combat Priority
     float damage;
@@ -24,11 +24,6 @@ public class ChampCombat : MonoBehaviour
     public TextMeshProUGUI[] abilitySum;
 
     public GenerateJSON generateJSON;
-
-    void Awake()
-    {
-        output = GameObject.Find("Output Content").GetComponent<TextMeshProUGUI>();
-    }
 
     void Start()
     {
@@ -53,18 +48,6 @@ public class ChampCombat : MonoBehaviour
             SimManager.timer = 0;
             SimManager._timer = 0;
             return;
-        }
-
-        if (targetStats.currentHealth <= 0)
-        {
-            StopAllCoroutines();
-            return;
-        }
-
-        if (myStats.currentHealth <= 0) 
-        {
-            StopAllCoroutines();
-            return; 
         }
 
         CheckPassive();
@@ -108,7 +91,7 @@ public class ChampCombat : MonoBehaviour
                         myStats.passiveSkill.UseSkill(myStats.level, myStats, targetStats);
                     }
                     myStats.passiveReady = false;
-                    myStats.pCD = myStats.passiveSkill.coolDown / RiotAPIRequest.GlobalTimeScale;
+                    myStats.pCD = myStats.passiveSkill.coolDown * RiotAPIRequest.GlobalGameSpeedMultiplier;
                 }
             }
         }
@@ -175,7 +158,7 @@ public class ChampCombat : MonoBehaviour
                         StartCoroutine(UpdateCasting(attackCooldown = 1f / (float)myStats.attackSpeed));
                         yield return new WaitForSeconds(attackCooldown = 1f / (float)myStats.attackSpeed);
                         myStats.qReady = true;
-                        myStats.qCD = (float)(attackCooldown = 1f / myStats.attackSpeed) / RiotAPIRequest.GlobalTimeScale;
+                        myStats.qCD = (float)(attackCooldown = 1f / myStats.attackSpeed) * RiotAPIRequest.GlobalGameSpeedMultiplier;
                     }
                     #endregion
 
@@ -202,7 +185,7 @@ public class ChampCombat : MonoBehaviour
 
                     else
                     {
-                        myStats.qCD = myStats.qSkill.basic.coolDown[skillLevel] / RiotAPIRequest.GlobalTimeScale;
+                        myStats.qCD = myStats.qSkill.basic.coolDown[skillLevel] * RiotAPIRequest.GlobalGameSpeedMultiplier;
                     }
                     generateJSON.SendData(false, this.gameObject.name, damage, SimManager.timer, 2, myStats.qSkill.name);
                     if (myStats.passiveSkill.applyOnAbility)
@@ -230,7 +213,7 @@ public class ChampCombat : MonoBehaviour
                 prevDamage = int.Parse(abilitySum[2].text);
                 damage = myStats.wSkill.UseSkill(skillLevel, myStats, targetStats, abilitySum[2], prevDamage);
                 myStats.wReady = false;
-                myStats.wCD = myStats.wSkill.basic.coolDown[skillLevel] / RiotAPIRequest.GlobalTimeScale;
+                myStats.wCD = myStats.wSkill.basic.coolDown[skillLevel] * RiotAPIRequest.GlobalGameSpeedMultiplier;
                 generateJSON.SendData(false, this.gameObject.name, damage, SimManager.timer, 2, myStats.wSkill.name);
 
                 #region Gangplank
@@ -363,7 +346,7 @@ public class ChampCombat : MonoBehaviour
                         StartCoroutine(UpdateCasting(myStats.eSkill.basic.castTime));
                     }
                 }
-                myStats.eCD = myStats.eSkill.basic.coolDown[skillLevel] / RiotAPIRequest.GlobalTimeScale;
+                myStats.eCD = myStats.eSkill.basic.coolDown[skillLevel] * RiotAPIRequest.GlobalGameSpeedMultiplier;
                 generateJSON.SendData(false, this.gameObject.name, damage, SimManager.timer, 2, myStats.eSkill.name);
 
                 #region Fiora
@@ -502,7 +485,7 @@ public class ChampCombat : MonoBehaviour
                     {
                         myStats.passiveReady = true;
                         myStats.dynamicStatus["Ult First Cast"] = true;
-                        myStats.rCD = 2.5f / RiotAPIRequest.GlobalTimeScale;
+                        myStats.rCD = 2.5f * RiotAPIRequest.GlobalGameSpeedMultiplier;
                     }
                 }
                 #endregion
@@ -523,7 +506,7 @@ public class ChampCombat : MonoBehaviour
                 myStats.rReady = false;
                 if(myStats.name != "Akali")
                 {
-                    myStats.rCD = myStats.rSkill.basic.coolDown[ultLevel] / RiotAPIRequest.GlobalTimeScale;
+                    myStats.rCD = myStats.rSkill.basic.coolDown[ultLevel] * RiotAPIRequest.GlobalGameSpeedMultiplier;
                 }
                 generateJSON.SendData(false, this.gameObject.name, damage, SimManager.timer, 2, myStats.rSkill.name);
 
@@ -744,7 +727,7 @@ public class ChampCombat : MonoBehaviour
                     {
                         if (targetStats.currentHealth <= 0) return;
                         myStats.passiveReady = false;
-                        myStats.pCD = myStats.passiveSkill.coolDown / RiotAPIRequest.GlobalTimeScale;
+                        myStats.pCD = myStats.passiveSkill.coolDown * RiotAPIRequest.GlobalGameSpeedMultiplier;
                         int passiveDamage = myStats.passiveSkill.UseSkill(myStats.level, myStats, targetStats);
                         generateJSON.SendData(false, this.gameObject.name, passiveDamage, SimManager.timer, 3, myStats.passiveSkill.name);
                     }
@@ -770,7 +753,7 @@ public class ChampCombat : MonoBehaviour
 
     IEnumerator UpdateCasting(float amount)
     {
-        yield return new WaitForSeconds(amount / RiotAPIRequest.GlobalTimeScale);
+        yield return new WaitForSeconds(amount * RiotAPIRequest.GlobalGameSpeedMultiplier);
         isCasting = false;
         canAttack = true;
     }

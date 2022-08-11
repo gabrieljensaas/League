@@ -14,8 +14,8 @@ public class SimManager : MonoBehaviour
   
     public bool ongoing;
     public RiotAPIRequest riotAPI;
-    public TextMeshProUGUI outputText;
-    public TextMeshProUGUI timeText;
+    public static TextMeshProUGUI outputText;
+    public static TextMeshProUGUI timeText;
     public TextMeshProUGUI ver;
     public TextMeshProUGUI[] champ1Items;
     public TextMeshProUGUI[] champ2Items;  

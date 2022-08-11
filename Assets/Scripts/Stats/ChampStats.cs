@@ -125,15 +125,10 @@ public class ChampStats : MonoBehaviour
     #endregion
 
     public static int stacks;
-    TextMeshProUGUI output;
-    TextMeshProUGUI timer;
+    [SerializeField] TextMeshProUGUI output;
+    [SerializeField] TextMeshProUGUI timer;
 
     [HideInInspector] public GenerateJSON generateJSON;
-    void Awake()
-    {
-        output = GameObject.Find("Output Content").GetComponent<TextMeshProUGUI>();
-        timer = GameObject.Find("Timer Content").GetComponent<TextMeshProUGUI>();
-    }
 
     void Start()
     {
@@ -398,6 +393,9 @@ public class ChampStats : MonoBehaviour
             currentHealth = 0;
             UpdateStats(false);
             Die();
+            champCombat.StopAllCoroutines();
+            enemyCombat.StopAllCoroutines();
+            
         }
         //Debug.Log(name + " " + currentHealth);
         UpdateStats(false);
