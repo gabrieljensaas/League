@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using TMPro;
 using UnityEngine.UI;
+using Simulator.API;
 
 public class RiotAPIMatchRequest : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class RiotAPIMatchRequest : MonoBehaviour
     string puuid;
     string continent;
     string[] matches = {"","","","","","","","","","","","","","","","","","","",""};
-    public RiotAPIRequest apiRequest;
+    public APIRequestManager apiRequest;
     public ChampStats[] champStats;
     RiotAPIItemRequest itemRequest;
     public TextMeshProUGUI[] matchID;
@@ -159,8 +160,8 @@ public class RiotAPIMatchRequest : MonoBehaviour
             champStats[1].isLoaded = false;
             //champStats[0].Reset(1);
             //champStats[1].Reset(1);
-            apiRequest.SimulateFight(0, champName[0],timeline.info.frames[int.Parse(slider.value.ToString())].participantFrames[selectedChamp[0]+1].xp,1);
-            apiRequest.SimulateFight(1, champName[1],timeline.info.frames[int.Parse(slider.value.ToString())].participantFrames[selectedChamp[1]+1].xp,1);                    
+            //apiRequest.SimulateFight(0, champName[0],timeline.info.frames[int.Parse(slider.value.ToString())].participantFrames[selectedChamp[0]+1].xp,1);
+            //apiRequest.SimulateFight(1, champName[1],timeline.info.frames[int.Parse(slider.value.ToString())].participantFrames[selectedChamp[1]+1].xp,1);                    
         }
     }
     

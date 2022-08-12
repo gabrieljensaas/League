@@ -11,7 +11,7 @@ public class OutputManager : MonoBehaviour
     public Scrollbar scrollbar1;
     bool scrollable = false;
     
-    void Update()
+    /*void Update()
     {
         scrollRect1.verticalNormalizedPosition = scrollRect.verticalNormalizedPosition;
         scrollbar1.value = scrollbar.value;
@@ -31,7 +31,7 @@ public class OutputManager : MonoBehaviour
             scrollable = false;
             //StartCoroutine(EndBattle());
         }
-    }
+    }*/
 
     IEnumerator EndBattle()
     {

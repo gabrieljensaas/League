@@ -49,7 +49,7 @@ public class SkillList : ScriptableObject
 
     public int UseSkill(int level, ChampStats myStats, ChampStats target, TextMeshProUGUI text, int prevDamage)
     {
-        if (output = null) output = SimManager.outputText;
+        if (output == null) output = SimManager.outputText;
         int totalDamage = 0;
         int tempDamage = 0;
 

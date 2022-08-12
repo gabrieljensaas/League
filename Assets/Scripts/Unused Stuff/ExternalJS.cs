@@ -10,7 +10,7 @@ public class ExternalJS : MonoBehaviour
 
     public void SendData(string s)
     { 
-        HelloString(s);
+        //HelloString(s);
     }
 
     public void SendLogs(string[] s)

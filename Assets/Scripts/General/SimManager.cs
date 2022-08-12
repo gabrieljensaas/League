@@ -4,16 +4,27 @@ using TMPro;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using Simulator.API;
+using System;
 
 public class SimManager : MonoBehaviour
 {
+    public static float GlobalTimeScale = 1f;
+    public float GlobalGameSpeedMultiplier = 1f / GlobalTimeScale;
     public static bool isLoaded = false;
     public static bool battleStarted = false;
     public static float timer;
     public static float _timer;
-  
+
+    [SerializeField] private ChampStats[] championStats;
+
+    private SkillManager skillManager;
+
+    [SerializeField] private TMP_Dropdown[] championsDropdowns;
+    [SerializeField] private TMP_InputField[] championsExperienceInput;
+
     public bool ongoing;
-    public RiotAPIRequest riotAPI;
+    public APIRequestManager riotAPI;
     public static TextMeshProUGUI outputText;
     public static TextMeshProUGUI timeText;
     public TextMeshProUGUI ver;
@@ -40,7 +51,7 @@ public class SimManager : MonoBehaviour
     RiotAPIItemRequest itemRequest;
     RiotAPIItemResponse itemResponse;    
     RiotAPIMatchRequest matchRequest;
-    RiotAPIRequest apiRequest;
+    APIRequestManager apiRequest;
 
     int champ1ItemNum;
     int champ2ItemNum;
@@ -50,6 +61,37 @@ public class SimManager : MonoBehaviour
     public List<ChampionInput> champ;
 
     public static string MatchID = "";
+    #region Singleton
+    private static SimManager _instance;
+    public static SimManager Instance { get { return _instance; } }
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+    #endregion
+    private void Start()
+    {
+        //matchIDGO.SetActive(false);
+        ShowInput();
+        itemRequest = GetComponent<RiotAPIItemRequest>();
+        matchRequest = GetComponent<RiotAPIMatchRequest>();
+        apiRequest = GetComponent<APIRequestManager>();
+        outputText = output[0];
+        timeText = output[1];
+        skillManager = SkillManager.Instance;
+        //Time.timeScale = speed;
+        //foreach (GameObject item in champOutput)
+        //{
+        //    item.SetActive(false);
+        //}
+    }
 
     public void GetMatchData(Button button)
     {
@@ -71,7 +113,130 @@ public class SimManager : MonoBehaviour
         RiotAPIMatchRequest.selectedChamp[1] = id;
     }
 
-    public void LoadChampion1(Button button)
+    public void LoadMockStats(int championIndex)
+    {
+        var champName = championsDropdowns[championIndex].options[championsDropdowns[championIndex].value].text;
+        var exp = Int32.Parse(championsExperienceInput[championIndex].text);
+        var statsToLoad = APIRequestManager.Instance.GetMockChampionData(champName);
+        ChampStats champStats = championStats[championIndex];
+        champStats.totalDamage = 0;
+        champStats.isLoaded = false;
+
+        FindSkills(champName, champStats);
+
+        champStats.name = champName;
+        champStats.level = GetLevel(exp);
+
+        champStats.baseHealth = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.hp;
+        champStats.baseAD = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.attackdamage;
+        champStats.baseArmor = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.armor;
+        champStats.baseSpellBlock = (float)(statsToLoad.ChampionsRes[0].champData.data.Champion.stats.spellblock);
+        champStats.baseAttackSpeed = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.attackspeed;
+
+        champStats.maxHealth = champStats.baseHealth;
+        champStats.AD = champStats.baseAD;
+        champStats.armor = champStats.baseArmor;
+        champStats.spellBlock = champStats.baseSpellBlock;
+        champStats.attackSpeed = champStats.baseAttackSpeed;
+                   
+        GetStatsByLevel(champStats, statsToLoad);
+        champStats.currentHealth = champStats.maxHealth;
+
+        ExtraStats(champStats);
+
+        champStats.FinalizeStats(true);
+    }
+
+    private void FindSkills(string champName, ChampStats champStats)
+    {
+        for (int i = 0; i < skillManager.passives.Count; i++)
+        {
+            if (skillManager.passives[i].championName == champName)
+            {
+                champStats.passiveSkill = skillManager.passives[i];
+                break;
+            }
+        }
+
+        for (int i = 0; i < skillManager.qSkills.Count; i++)
+        {
+            if (skillManager.qSkills[i].basic.champion == champName)
+            {
+                champStats.qSkill = skillManager.qSkills[i];
+                break;
+            }
+        }
+
+        for (int i = 0; i < skillManager.wSkills.Count; i++)
+        {
+            if (skillManager.wSkills[i].basic.champion == champName)
+            {
+                champStats.wSkill = skillManager.wSkills[i];
+                break;
+            }
+        }
+
+        for (int i = 0; i < skillManager.eSkills.Count; i++)
+        {
+            if (skillManager.eSkills[i].basic.champion == champName)
+            {
+                champStats.eSkill = skillManager.eSkills[i];
+                break;
+            }
+        }
+
+        for (int i = 0; i < skillManager.rSkills.Count; i++)
+        {
+            if (skillManager.rSkills[i].basic.champion == champName)
+            {
+                champStats.rSkill = skillManager.rSkills[i];
+                break;
+            }
+        }
+    }
+    private int GetLevel(int _exp)
+    {
+        int _level = 0;
+        for (int i = 0; i < Constants.MaxLevel; i++)
+        {
+            if (_exp >= Constants.ExpTable[i])
+            {
+                _level++;
+            }
+        }
+        return _level;
+    }
+    private void GetStatsByLevel(ChampStats champ, RiotAPIResponse stats)
+    {
+        int level = champ.level;
+
+        double[] mFactor = { 0, 0.72, 1.4750575, 2.2650575, 3.09, 3.95, 4.8450575, 5.7750575, 6.74, 7.74, 8.7750575, 9.8450575, 10.95, 12.09, 13.2650575, 14.4750575, 15.72, 17 };
+        if (level == 1) return;
+        champ.maxHealth += (float)(stats.ChampionsRes[0].champData.data.Champion.stats.hpperlevel * mFactor[level - 1]);
+        champ.attackSpeed = (float)(champ.baseAttackSpeed * (1 + (stats.ChampionsRes[0].champData.data.Champion.stats.attackspeedperlevel * (level - 1)) / 100));
+        champ.armor += ((float)(stats.ChampionsRes[0].champData.data.Champion.stats.armorperlevel) * (float)mFactor[level - 1]);
+        champ.AD += ((float)(stats.ChampionsRes[0].champData.data.Champion.stats.attackdamageperlevel) * (float)mFactor[level - 1]);
+        champ.spellBlock += ((float)(stats.ChampionsRes[0].champData.data.Champion.stats.spellblockperlevel) * (float)mFactor[level - 1]);
+    }
+
+    private void ExtraStats(ChampStats champStats)
+    {
+        if (champStats.name == "Garen")
+        {
+            champStats.armor += 30;
+            champStats.spellBlock += 30;
+            champStats.armor *= 1.1f;
+            champStats.spellBlock *= 1.1f;
+        }
+
+        if (champStats.name == "Aatrox")
+        {
+            champStats.PercentLifeStealMod = 26;
+            champStats.PercentSpellVampMod = 26;
+        }
+    }
+
+    /*public void LoadChampion1(Button button)
     {
         champStats[0].isLoaded = false;
         string name = button.GetComponentsInChildren<TextMeshProUGUI>()[0].text;
@@ -89,9 +254,9 @@ public class SimManager : MonoBehaviour
             apiRequest.champAbilities[0].champSkills[i].text = apiRequest.allAbilities[RiotAPIMatchRequest.selectedChamp[0]].name[i];
         }
         //apiRequest.LoadItems();
-    }
+    }*/
 
-    public void LoadChampion2(Button button)
+    /*public void LoadChampion2(Button button)
     {
         champStats[1].isLoaded = false;
         string name = button.GetComponentsInChildren<TextMeshProUGUI>()[0].text;
@@ -108,7 +273,7 @@ public class SimManager : MonoBehaviour
             apiRequest.champAbilities[1].champSkills[i].text = apiRequest.allAbilities[RiotAPIMatchRequest.selectedChamp[1]].name[i];
         }
         //apiRequest.LoadItems();
-    }
+    }*/
 
     public void Back()
     {
@@ -124,19 +289,7 @@ public class SimManager : MonoBehaviour
         ShowInput();
     }
 
-    void Start()
-    {
-        //matchIDGO.SetActive(false);
-        ShowInput();
-        itemRequest = GetComponent<RiotAPIItemRequest>();
-        matchRequest = GetComponent<RiotAPIMatchRequest>();
-        apiRequest = GetComponent<RiotAPIRequest>();
-        //Time.timeScale = speed;
-        //foreach (GameObject item in champOutput)
-        //{
-        //    item.SetActive(false);
-        //}
-    }
+
 
     public void ShowMatches(int num)
     {
@@ -167,7 +320,6 @@ public class SimManager : MonoBehaviour
         {
             _timer += Time.unscaledDeltaTime;
             timer = _timer * Time.timeScale;
-            timerTest.text = timer.ToString();
             //Debug.Log(timerTest.text);
         }
         else
@@ -224,6 +376,16 @@ public class SimManager : MonoBehaviour
     public static object GetPropValue(object src, string propName)
     {
         return src.GetType().GetProperty(propName).GetValue(src, null);
+    }
+
+    public static void WriteTime()
+    {
+        timeText.text += timer.ToString() + "/n";
+    }
+
+    public void UpdateGameSpeed()
+    {
+        GlobalGameSpeedMultiplier = 1f / GlobalGameSpeedMultiplier;
     }
 }
 

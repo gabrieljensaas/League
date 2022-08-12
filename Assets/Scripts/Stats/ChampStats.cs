@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using Simulator.API;
 
 public class ChampStats : MonoBehaviour
 {
@@ -128,7 +129,7 @@ public class ChampStats : MonoBehaviour
     [SerializeField] TextMeshProUGUI output;
     [SerializeField] TextMeshProUGUI timer;
 
-    [HideInInspector] public GenerateJSON generateJSON;
+    //[HideInInspector] public GenerateJSON generateJSON;
 
     void Start()
     {
@@ -470,7 +471,6 @@ public class ChampStats : MonoBehaviour
         SimManager.battleStarted = false;
         SimManager.isNew = true;
         SimManager.isLoaded = false;
-        RiotAPIRequest.isLoading = false;
         currentHealth = 0;
         UpdateTimer(SimManager.timer);
         output.text += targetStats.name + " has won with " + targetStats.currentHealth.ToString("F0") + " health remaining.\n\n";
@@ -487,7 +487,7 @@ public class ChampStats : MonoBehaviour
         }
         //exportJS.SendLogs(skirmishLog);
         //Debug.Log(JsonUtility.ToJson(exportData));
-        exportJS.SendData(JsonUtility.ToJson(exportData));
+        //exportJS.SendData(JsonUtility.ToJson(exportData));
         LoadingScreenHandler.Hide();
     }
 
@@ -511,7 +511,7 @@ public class ChampStats : MonoBehaviour
         armor += FlatArmorMod;
         spellBlock += FlatSpellBlockMod;
         attackSpeed *= (1 + (PercentAttackSpeedMod / 100));
-        originalAS = attackSpeed * RiotAPIRequest.GlobalTimeScale;
+        originalAS = attackSpeed * SimManager.Instance.GlobalGameSpeedMultiplier;
         //isLoaded = true;
         UpdateStats(isFirst);
     }

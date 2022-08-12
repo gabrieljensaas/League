@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class Skills : MonoBehaviour
+public class SkillManager : MonoBehaviour
 {
     public string[] champions = {
   "Aatrox",
@@ -172,7 +172,6 @@ public class Skills : MonoBehaviour
     };
     RiotAPIChampionDataResponse api = new RiotAPIChampionDataResponse();
     //RiotOptimized api = new RiotOptimized();
-    public static Skills instance;
     public List<PassiveList> passives;
     public List<SkillList> qSkills;
     public List<SkillList> wSkills;
@@ -697,19 +696,23 @@ public class Skills : MonoBehaviour
 
     public string[] folderName = { "Q", "W", "E", "R", "P" };
     public string ver = "12.13.1";
-
-    private void Start()
+    #region Singleton
+    private static SkillManager _instance;
+    public static SkillManager Instance { get { return _instance; } }
+    private void Awake()
     {
-        if (instance == null)
+        if (_instance != null && _instance != this)
         {
-            instance = this;
+            Destroy(this.gameObject);
         }
         else
         {
-            Destroy(this);
-            return;
+            _instance = this;
         }
-
+    }
+    #endregion
+    private void Start()
+    {
         #region Skills Loading
         Object[] obj;
 
