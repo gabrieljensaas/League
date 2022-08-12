@@ -81,7 +81,7 @@ public class RiotAPIRequest : MonoBehaviour
     {
         Load1 = false;
         Load2 = false;
-        simManager.outputText.text = "";
+        SimManager.outputText.text = "";
         champStats[0].isLoaded = false;
         champStats[1].isLoaded = false;
         SimManager.isLoaded = false;
@@ -101,9 +101,9 @@ public class RiotAPIRequest : MonoBehaviour
         SimManager.timer = 0;
         SimManager._timer = 0;
         simManager.ongoing = false;
-        simManager.timeText.gameObject.SetActive(true);
-        simManager.outputText.text = "";
-        simManager.timeText.text = "";
+        SimManager.timeText.gameObject.SetActive(true);
+        SimManager.outputText.text = "";
+        SimManager.timeText.text = "";
         simManager.StartBattle();
     }
 
@@ -118,8 +118,8 @@ public class RiotAPIRequest : MonoBehaviour
         SimManager.timer = 0;
         SimManager._timer = 0;
         simManager.ongoing = false;
-        simManager.outputText.text = "";
-        simManager.timeText.text = "";
+        SimManager.outputText.text = "";
+        SimManager.timeText.text = "";
         //Time.timeScale = 100f;
         LSSAPI = JsonConvert.DeserializeObject<LSSAPIResponse>(data);
         _champ1 = LSSAPI.APIMatchInfo.championInfo[0].champName;
