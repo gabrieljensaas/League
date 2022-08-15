@@ -5,7 +5,7 @@ using UnityEngine;
 // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class ParticipantFrames
     {
-        public ChampionStats championStats { get; set; }
+        //public ChampionStats championStats { get; set; }
         public int currentGold { get; set; }
         public DamageStats damageStats { get; set; }
         public int goldPerSecond { get; set; }
@@ -19,7 +19,7 @@ using UnityEngine;
         public int xp { get; set; }
     }
 
-    public class ChampionStats
+    /*public class ChampionStats
     {
         public int abilityHaste { get; set; }
         public int abilityPower { get; set; }
@@ -46,7 +46,7 @@ using UnityEngine;
         public int powerMax { get; set; }
         public int powerRegen { get; set; }
         public int spellVamp { get; set; }
-    }
+    }*/
 
     public class DamageStats
     {

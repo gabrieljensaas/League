@@ -2846,122 +2846,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0031815f00d90f94083d544da18684a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  exportJS: {fileID: 991064249}
-  name: 
-  passiveSkill: {fileID: 11400000, guid: 5888de635ad55664f94714cbebc37d41, type: 2}
-  qSkill: {fileID: 11400000, guid: e3a712b2e74adba4294473600b026f64, type: 2}
-  wSkill: {fileID: 11400000, guid: 377ad62a5e28bf0459b42d395bf38060, type: 2}
-  eSkill: {fileID: 11400000, guid: 859ca942a9bd8a949b20a92c43640e2b, type: 2}
-  rSkill: {fileID: 11400000, guid: 817187dd3a82d46479a8053e80162bb1, type: 2}
-  qStacks: 0
-  enemyCombat: {fileID: 488366045}
-  buffed: 0
-  debuffed: 0
-  ccImmune: 0
-  totalDamage: 0
-  shieldValue: 0
-  shieldDuration: 0
-  status:
-    stun: 0
-    stunDuration: 0
-    silence: 0
-    silenceDuration: 0
-    disarm: 0
-    disarmDuration: 0
-    invincible: 0
-    invincibleDuration: 0
-    damageReduction: 0
-    damageReducFlat: 0
-    damageReducPercent: 0
-    damageReducDuration: 0
-  spellInfo:
-  - name: 
-    cooldown:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    damage:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-  - name: 
-    cooldown:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    damage:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-  - name: 
-    cooldown:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    damage:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-  - name: 
-    cooldown:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    damage:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-  qReady: 1
-  wReady: 1
-  eReady: 1
-  rReady: 1
-  passiveReady: 1
-  qCD: 0
-  wCD: 0
-  eCD: 0
-  rCD: 0
-  pCD: 0
-  outputStats:
+  staticStatsUI:
+  - {fileID: 365588432}
   - {fileID: 976647659}
+  - {fileID: 1080342578}
+  - {fileID: 1434022942}
   - {fileID: 633901492}
   - {fileID: 201215811}
+  - {fileID: 960577686}
   - {fileID: 1350401346}
   - {fileID: 1806600693}
   - {fileID: 1046613853}
   - {fileID: 64688240}
   - {fileID: 245803481}
-  outputStats1:
-  - {fileID: 1080342578}
-  - {fileID: 1434022942}
-  - {fileID: 960577686}
-  - {fileID: 936647569}
-  - {fileID: 1877986604}
-  item: []
-  itemList: {fileID: 0}
-  itemPrefab: {fileID: 8829407649640576049, guid: 8bc35ee0e65a1d643b2fe15a47e01d0a, type: 3}
-  targetStats: {fileID: 488366046}
-  itemCount: 0
-  isLoaded: 0
-  isItemsLoaded: 0
-  isMatchLoaded: 0
+  currentHP: {fileID: 936647569}
+  passiveSkill: {fileID: 11400000, guid: 5888de635ad55664f94714cbebc37d41, type: 2}
+  qSkill: {fileID: 11400000, guid: e3a712b2e74adba4294473600b026f64, type: 2}
+  wSkill: {fileID: 11400000, guid: 377ad62a5e28bf0459b42d395bf38060, type: 2}
+  eSkill: {fileID: 11400000, guid: 859ca942a9bd8a949b20a92c43640e2b, type: 2}
+  rSkill: {fileID: 11400000, guid: 817187dd3a82d46479a8053e80162bb1, type: 2}
+  qCD: 0
+  wCD: 0
+  eCD: 0
+  rCD: 0
+  pCD: 0
   level: 0
-  originalAS: 0
   maxHealth: 0
   currentHealth: 0
   AD: 0
@@ -2969,80 +2878,12 @@ MonoBehaviour:
   armor: 0
   spellBlock: 0
   attackSpeed: 0
-  damageMitigation: 0
   baseHealth: 0
   baseAD: 0
   baseAP: 0
   baseArmor: 0
   baseSpellBlock: 0
   baseAttackSpeed: 0
-  FlatHPPoolMod: 0
-  rFlatHPModPerLevel: 0
-  FlatMPPoolMod: 0
-  rFlatMPModPerLevel: 0
-  PercentHPPoolMod: 0
-  PercentMPPoolMod: 0
-  FlatHPRegenMod: 0
-  rFlatHPRegenModPerLevel: 0
-  PercentHPRegenMod: 0
-  FlatMPRegenMod: 0
-  rFlatMPRegenModPerLevel: 0
-  PercentMPRegenMod: 0
-  FlatArmorMod: 0
-  rFlatArmorModPerLevel: 0
-  PercentArmorMod: 0
-  rFlatArmorPenetrationMod: 0
-  rFlatArmorPenetrationModPerLevel: 0
-  rPercentArmorPenetrationMod: 0
-  rPercentArmorPenetrationModPerLevel: 0
-  FlatPhysicalDamageMod: 0
-  rFlatPhysicalDamageModPerLevel: 0
-  PercentPhysicalDamageMod: 0
-  FlatMagicDamageMod: 0
-  rFlatMagicDamageModPerLevel: 0
-  PercentMagicDamageMod: 0
-  FlatMovementSpeedMod: 0
-  rFlatMovementSpeedModPerLevel: 0
-  PercentMovementSpeedMod: 0
-  rPercentMovementSpeedModPerLevel: 0
-  FlatAttackSpeedMod: 0
-  PercentAttackSpeedMod: 0
-  rPercentAttackSpeedModPerLevel: 0
-  rFlatDodgeMod: 0
-  rFlatDodgeModPerLevel: 0
-  PercentDodgeMod: 0
-  FlatCritChanceMod: 0
-  rFlatCritChanceModPerLevel: 0
-  PercentCritChanceMod: 0
-  FlatCritDamageMod: 0
-  rFlatCritDamageModPerLevel: 0
-  PercentCritDamageMod: 0
-  FlatBlockMod: 0
-  PercentBlockMod: 0
-  FlatSpellBlockMod: 0
-  rFlatSpellBlockModPerLevel: 0
-  PercentSpellBlockMod: 0
-  FlatEXPBonus: 0
-  PercentEXPBonus: 0
-  rPercentCooldownMod: 0
-  rPercentCooldownModPerLevel: 0
-  rFlatTimeDeadMod: 0
-  rFlatTimeDeadModPerLevel: 0
-  rPercentTimeDeadMod: 0
-  rPercentTimeDeadModPerLevel: 0
-  rFlatItemGoldPer10Mod: 0
-  rFlatMagicPenetrationMod: 0
-  rFlatMagicPenetrationModPerLevel: 0
-  rPercentMagicPenetrationMod: 0
-  rPercentMagicPenetrationModPerLevel: 0
-  FlatEnergyRegenMod: 0
-  rFlatEnergyRegenModPerLevel: 0
-  FlatEnergyPoolMod: 0
-  rFlatEnergyModPerLevel: 0
-  PercentLifeStealMod: 0
-  PercentSpellVampMod: 0
-  output: {fileID: 1912723367}
-  timer: {fileID: 101636228}
 --- !u!1 &158112003
 GameObject:
   m_ObjectHideFlags: 0
@@ -7387,122 +7228,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0031815f00d90f94083d544da18684a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  exportJS: {fileID: 991064249}
-  name: 
-  passiveSkill: {fileID: 0}
-  qSkill: {fileID: 0}
-  wSkill: {fileID: 0}
-  eSkill: {fileID: 11400000, guid: 75485d25abdd3e14dbf20483fcf0e920, type: 2}
-  rSkill: {fileID: 11400000, guid: 353d7749e708230439821e69649efa10, type: 2}
-  qStacks: 0
-  enemyCombat: {fileID: 155855319}
-  buffed: 0
-  debuffed: 0
-  ccImmune: 0
-  totalDamage: 0
-  shieldValue: 0
-  shieldDuration: 0
-  status:
-    stun: 0
-    stunDuration: 0
-    silence: 0
-    silenceDuration: 0
-    disarm: 0
-    disarmDuration: 0
-    invincible: 0
-    invincibleDuration: 0
-    damageReduction: 0
-    damageReducFlat: 0
-    damageReducPercent: 0
-    damageReducDuration: 0
-  spellInfo:
-  - name: 
-    cooldown:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    damage:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-  - name: 
-    cooldown:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    damage:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-  - name: 
-    cooldown:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    damage:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-  - name: 
-    cooldown:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    damage:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-  qReady: 1
-  wReady: 1
-  eReady: 1
-  rReady: 1
-  passiveReady: 1
-  qCD: 0
-  wCD: 0
-  eCD: 0
-  rCD: 0
-  pCD: 0
-  outputStats:
+  staticStatsUI:
+  - {fileID: 1373135710}
+  - {fileID: 1224494997}
   - {fileID: 853792309}
+  - {fileID: 529529964}
   - {fileID: 2094286396}
+  - {fileID: 1106633805}
   - {fileID: 8403652}
   - {fileID: 110107768}
   - {fileID: 948883191}
   - {fileID: 831104046}
   - {fileID: 647237704}
   - {fileID: 1691049337}
-  outputStats1:
-  - {fileID: 1373135710}
-  - {fileID: 529529964}
-  - {fileID: 1106633805}
-  - {fileID: 1365512289}
-  - {fileID: 374150018}
-  item: []
-  itemList: {fileID: 0}
-  itemPrefab: {fileID: 8829407649640576049, guid: 8bc35ee0e65a1d643b2fe15a47e01d0a, type: 3}
-  targetStats: {fileID: 155855320}
-  itemCount: 0
-  isLoaded: 0
-  isItemsLoaded: 0
-  isMatchLoaded: 0
+  currentHP: {fileID: 1365512289}
+  passiveSkill: {fileID: 0}
+  qSkill: {fileID: 0}
+  wSkill: {fileID: 0}
+  eSkill: {fileID: 0}
+  rSkill: {fileID: 0}
+  qCD: 0
+  wCD: 0
+  eCD: 0
+  rCD: 0
+  pCD: 0
   level: 0
-  originalAS: 0
   maxHealth: 0
   currentHealth: 0
   AD: 0
@@ -7510,80 +7260,12 @@ MonoBehaviour:
   armor: 0
   spellBlock: 0
   attackSpeed: 0
-  damageMitigation: 0
   baseHealth: 0
   baseAD: 0
   baseAP: 0
   baseArmor: 0
   baseSpellBlock: 0
   baseAttackSpeed: 0
-  FlatHPPoolMod: 0
-  rFlatHPModPerLevel: 0
-  FlatMPPoolMod: 0
-  rFlatMPModPerLevel: 0
-  PercentHPPoolMod: 0
-  PercentMPPoolMod: 0
-  FlatHPRegenMod: 0
-  rFlatHPRegenModPerLevel: 0
-  PercentHPRegenMod: 0
-  FlatMPRegenMod: 0
-  rFlatMPRegenModPerLevel: 0
-  PercentMPRegenMod: 0
-  FlatArmorMod: 0
-  rFlatArmorModPerLevel: 0
-  PercentArmorMod: 0
-  rFlatArmorPenetrationMod: 0
-  rFlatArmorPenetrationModPerLevel: 0
-  rPercentArmorPenetrationMod: 0
-  rPercentArmorPenetrationModPerLevel: 0
-  FlatPhysicalDamageMod: 0
-  rFlatPhysicalDamageModPerLevel: 0
-  PercentPhysicalDamageMod: 0
-  FlatMagicDamageMod: 0
-  rFlatMagicDamageModPerLevel: 0
-  PercentMagicDamageMod: 0
-  FlatMovementSpeedMod: 0
-  rFlatMovementSpeedModPerLevel: 0
-  PercentMovementSpeedMod: 0
-  rPercentMovementSpeedModPerLevel: 0
-  FlatAttackSpeedMod: 0
-  PercentAttackSpeedMod: 0
-  rPercentAttackSpeedModPerLevel: 0
-  rFlatDodgeMod: 0
-  rFlatDodgeModPerLevel: 0
-  PercentDodgeMod: 0
-  FlatCritChanceMod: 0
-  rFlatCritChanceModPerLevel: 0
-  PercentCritChanceMod: 0
-  FlatCritDamageMod: 0
-  rFlatCritDamageModPerLevel: 0
-  PercentCritDamageMod: 0
-  FlatBlockMod: 0
-  PercentBlockMod: 0
-  FlatSpellBlockMod: 0
-  rFlatSpellBlockModPerLevel: 0
-  PercentSpellBlockMod: 0
-  FlatEXPBonus: 0
-  PercentEXPBonus: 0
-  rPercentCooldownMod: 0
-  rPercentCooldownModPerLevel: 0
-  rFlatTimeDeadMod: 0
-  rFlatTimeDeadModPerLevel: 0
-  rPercentTimeDeadMod: 0
-  rPercentTimeDeadModPerLevel: 0
-  rFlatItemGoldPer10Mod: 0
-  rFlatMagicPenetrationMod: 0
-  rFlatMagicPenetrationModPerLevel: 0
-  rPercentMagicPenetrationMod: 0
-  rPercentMagicPenetrationModPerLevel: 0
-  FlatEnergyRegenMod: 0
-  rFlatEnergyRegenModPerLevel: 0
-  FlatEnergyPoolMod: 0
-  rFlatEnergyModPerLevel: 0
-  PercentLifeStealMod: 0
-  PercentSpellVampMod: 0
-  output: {fileID: 1912723367}
-  timer: {fileID: 101636228}
 --- !u!1 &488965729
 GameObject:
   m_ObjectHideFlags: 0
@@ -25272,7 +24954,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1532952464}
   m_Layer: 5
-  m_Name: Champion 1 (1)
+  m_Name: Champion 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

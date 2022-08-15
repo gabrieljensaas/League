@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Simulator.Combat;
 
 [CreateAssetMenu(fileName = "new Spell", menuName = "ScriptableObjects/SkillList")]
 public class SkillList : ScriptableObject
@@ -47,7 +48,7 @@ public class SkillList : ScriptableObject
     }
     #endregion
 
-    public int UseSkill(int level, ChampStats myStats, ChampStats target, TextMeshProUGUI text, int prevDamage)
+    public int UseSkill(int level, Simulator.Combat.ChampionStats myStats, Simulator.Combat.ChampionStats target, TextMeshProUGUI text, int prevDamage)
     {
         if (output == null) output = SimManager.outputText;
         int totalDamage = 0;
@@ -89,36 +90,11 @@ public class SkillList : ScriptableObject
 
 #region Special
         #region Garen
-        if (myStats.name == "Garen")
-        {
-            if (basic.name == "Judgement")
-            {
-                totalDamage = (int)Mathf.Round((damage.flatAD[level] + (myStats.AD * (damage.percentAD[level] / 100))));
-                if (target.dynamicStatus.ContainsKey(basic.name))
-                {
-                    if (target.dynamicStatusStacks[basic.name] < 8)
-                    {
-                        target.dynamicStatusStacks[basic.name]++;
-                        for (int i = 0; i < target.dynamicStatusStacks[basic.name]; i++)
-                        {
-                            totalDamage += (int)Mathf.Round(35 + (myStats.AD % 0.5f));
-                        }
-                    }
-                }
-                else
-                {
-                    target.dynamicStatus[basic.name] = true;
-                    target.dynamicStatusStacks[basic.name] = 1;
-                }
-                totalDamage *= (int)Mathf.Round(1.25f);
-                totalDamage = (int)Mathf.Round(totalDamage * (100 / (100 + target.armor)));
-            }
-        }
 
         if (basic.champion == "Garen" && totalDamage < target.currentHealth && skillType == SkillType.ult) return totalDamage;
         #endregion
-
-        #region Fiora
+        /*
+        #region Fiora 
         if (myStats.name == "Fiora")
         {
             if (basic.name == "Bladework")
@@ -138,7 +114,7 @@ public class SkillList : ScriptableObject
             }
         }
         #endregion
-
+        */
         #region Lillia
         if (basic.champion == "Lillia")
         {
@@ -150,11 +126,6 @@ public class SkillList : ScriptableObject
         #endregion
 
         #region Jax        
-        if (basic.name == "Counter Strike")
-        {
-            totalDamage = (int)Mathf.Round((damage.flatAD[level]) * (1 + (myStats.dynamicStatusStacks["Counter Strike"] * 0.2f)));
-            totalDamage = (int)Mathf.Round(totalDamage * (100 / (100 + target.armor)));
-        }
 
         #endregion
 
@@ -168,8 +139,6 @@ public class SkillList : ScriptableObject
                 amount += (int)Mathf.Round((myStats.maxHealth - myStats.currentHealth) * (13 / 100));
                 myStats.currentHealth += amount;
                 output.text += "[HEAL] " + myStats.name + " used " + basic.name + " and heals himself for " + heal + " health.\n\n";
-                myStats.UpdateTimer(SimManager.timer);
-                myStats.UpdateStats(false);
             }
 
             if (basic.name == "Powder Keg")
@@ -177,8 +146,6 @@ public class SkillList : ScriptableObject
                 myStats.eSkill.charge.charges--;
                 totalDamage = (int)Mathf.Round((damage.flatAD[level] + (myStats.AD * (damage.percentAD[level] / 100))));
                 totalDamage = (int)Mathf.Round(totalDamage * (100 / (100 + target.armor * 0.6f)));
-                myStats.eReady = true;
-                myStats.passiveReady = true;
             }
         }
         #endregion
@@ -188,11 +155,8 @@ public class SkillList : ScriptableObject
         {
             int bonusAD = (int)Mathf.Round(myStats.AD * 0.2f);
             myStats.AD += bonusAD;
-            myStats.UpdateStats(false);
             output.text += "[SPECIAL] " + myStats.name + " used " + basic.name + " and gains " + bonusAD + " bonus AD.\n\n";
-            myStats.UpdateTimer(SimManager.timer);
-            myStats.dynamicStatus[basic.name] = true;
-            myStats.dynamicStatusDuration[basic.name] = 15;
+
             int missingHealth = (int)Mathf.Round(100-((myStats.currentHealth / myStats.maxHealth) * 100));
             if (missingHealth > 75)
             {
@@ -226,7 +190,6 @@ public class SkillList : ScriptableObject
         #region Akali
         if (basic.name == "Akali")
         {
-            if (myStats.dynamicStatus.ContainsKey("Ult First Hit"))
             {
                 int missingHealth = (int)Mathf.Round(100 - ((myStats.currentHealth / myStats.maxHealth) * 100));
                 int bonusDamage = (int)Mathf.Round(missingHealth * 1.5f);
@@ -237,34 +200,9 @@ public class SkillList : ScriptableObject
         #endregion
 
         #region Darius
-        if (basic.champion == "Darius")
-        {
-            totalDamage += (int)Mathf.Round(myStats.FlatPhysicalDamageMod * 0.75f);
-            if (skillType == SkillType.ult)
-            {
-                int bonusDamage = 0;
-                try
-                {
-                    bonusDamage = myStats.dynamicStatusStacks[basic.name] * 75 + (int)Mathf.Round(myStats.FlatPhysicalDamageMod * 0.15f);
-                }
-                catch
-                {
-                    bonusDamage = 0;
-                }
-                finally
-                {
-                    totalDamage += bonusDamage;
-                }
-            }
-        }
         #endregion
 
         #endregion
-
-        if (target.status.damageReduction)
-        {
-            totalDamage = (int)Mathf.Round(totalDamage * (1 - (target.status.damageReducPercent / 100)));
-        }
 
         if (totalDamage == 0)
         {
@@ -275,55 +213,38 @@ public class SkillList : ScriptableObject
             //if (myStats.currentHealth-totalDamage <= 0) return 0;
             output.text += "[DAMAGE] " + myStats.name + " used " + basic.name + " and dealt " + totalDamage.ToString() + " damage.\n\n";
         }
-        target.TakeDamage(totalDamage);
-        myStats.UpdateTimer(SimManager.timer);
-
         SelfEffects(level, myStats);
         EnemyEffects(level,target);
         text.text = (prevDamage + totalDamage).ToString();
-        myStats.totalDamage += totalDamage;
         return totalDamage;
     }
 
-    void EnemyEffects(int level, ChampStats target)
+    void EnemyEffects(int level, Simulator.Combat.ChampionStats target)
     {
         if (enemyEffects.stun)
         {
-            if (!target.ccImmune)
-            {
-                target.status.stun = true;
-                target.status.stunDuration = enemyEffects.stunDuration;
                 output.text += "[DEBUFF] " + target.name + " is stunned for " + enemyEffects.stunDuration + " seconds.\n\n";
-                target.UpdateTimer(SimManager.timer);
-            }
+            
         }
 
         if (enemyEffects.silence)
         {
-            target.status.silence = true;
-            target.status.silenceDuration = enemyEffects.silenceDuration;
             output.text += "[DEBUFF] " + target.name + " is silenced for "+enemyEffects.silenceDuration+" seconds.\n\n";
-            target.UpdateTimer(SimManager.timer);
         }
 
         if (enemyEffects.disarm)
         {
-            target.status.disarm = true;
-            target.status.disarmDuration = enemyEffects.disarmDuration;
         }
     }
 
-    void SelfEffects(int level, ChampStats myStats)
+    void SelfEffects(int level, Simulator.Combat.ChampionStats myStats)
     {
         #region Disarm
         if (selfEffects.disarm)
         {
-            if (myStats.status.disarm) return;
-            myStats.status.disarm = true;
-            myStats.status.disarmDuration = selfEffects.disarmDuration;
         }
         #endregion
-
+        /*
         #region AS Increase
         if (selfEffects.ASIncrease)
         {
@@ -334,24 +255,17 @@ public class SkillList : ScriptableObject
             myStats.UpdateTimer(SimManager.timer);
         }
         #endregion
-
+        */
         #region Invincible
         if (selfEffects.Invincible)
         { 
-            myStats.status.invincible = true;
-            myStats.status.invincibleDuration = selfEffects.InvincibleDuration;
         }
         #endregion
 
         #region Damage Reduction
         if (selfEffects.DamageRed)
         {
-            myStats.status.damageReduction = true;
-            myStats.status.damageReducPercent = selfEffects.DamageRedPercent[level];
-            myStats.status.damageReducFlat = selfEffects.DamageRedFlat[level];
-            myStats.status.damageReducDuration = selfEffects.DamageRedDuration[level];
             output.text += "[BUFF] " + myStats.name + " gains " + selfEffects.DamageRedPercent[level] + "% for " + selfEffects.DamageRedDuration[level] + " seconds.\n\n";
-            myStats.UpdateTimer(SimManager.timer);
         }
         #endregion
 
@@ -359,12 +273,8 @@ public class SkillList : ScriptableObject
         if (selfEffects.Shield)
         {
             int shieldValue = (int)selfEffects.ShieldFlat[level];
-            shieldValue += (int)Mathf.Round(myStats.FlatHPPoolMod * (selfEffects.ShieldPercentByHP[level] / 100));
             shieldValue += (int)Mathf.Round(((selfEffects.ShieldPercentByMissingHP[level]/100) * (myStats.maxHealth - myStats.currentHealth)));
-            myStats.shieldValue = shieldValue;
-            myStats.shieldDuration = selfEffects.ShieldDuration[level];
             output.text += "[BUFF] " + myStats.name + " gains " + shieldValue + " shield for " + selfEffects.ShieldDuration[level] + " seconds.\n\n";
-            myStats.UpdateTimer(SimManager.timer);
         }
         #endregion
     }

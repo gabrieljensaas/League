@@ -6,6 +6,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using Simulator.API;
 using System;
+using Simulator.Combat;
 
 public class SimManager : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class SimManager : MonoBehaviour
     public static float timer;
     public static float _timer;
 
-    [SerializeField] private ChampStats[] championStats;
+    [SerializeField] private Simulator.Combat.ChampionStats[] championStats;
 
     private SkillManager skillManager;
 
@@ -36,7 +37,7 @@ public class SimManager : MonoBehaviour
     public Button loadBtn;
     public Button resetBtn;
     public GameObject outputUI;
-    public ChampStats[] champStats;
+    public Simulator.Combat.ChampionStats[] champStats;
     public GameObject matchIDGO;
     public GameObject[] matchID;
     public TextMeshProUGUI[] output;
@@ -118,9 +119,7 @@ public class SimManager : MonoBehaviour
         var champName = championsDropdowns[championIndex].options[championsDropdowns[championIndex].value].text;
         var exp = Int32.Parse(championsExperienceInput[championIndex].text);
         var statsToLoad = APIRequestManager.Instance.GetMockChampionData(champName);
-        ChampStats champStats = championStats[championIndex];
-        champStats.totalDamage = 0;
-        champStats.isLoaded = false;
+        Simulator.Combat.ChampionStats champStats = championStats[championIndex];
 
         FindSkills(champName, champStats);
 
@@ -143,11 +142,11 @@ public class SimManager : MonoBehaviour
         champStats.currentHealth = champStats.maxHealth;
 
         ExtraStats(champStats);
+        champStats.StaticUIUpdate();
 
-        champStats.FinalizeStats(true);
     }
 
-    private void FindSkills(string champName, ChampStats champStats)
+    private void FindSkills(string champName, Simulator.Combat.ChampionStats champStats)
     {
         for (int i = 0; i < skillManager.passives.Count; i++)
         {
@@ -206,12 +205,12 @@ public class SimManager : MonoBehaviour
         }
         return _level;
     }
-    private void GetStatsByLevel(ChampStats champ, RiotAPIResponse stats)
+    private void GetStatsByLevel(Simulator.Combat.ChampionStats champ, RiotAPIResponse stats)
     {
         int level = champ.level;
 
-        double[] mFactor = { 0, 0.72, 1.4750575, 2.2650575, 3.09, 3.95, 4.8450575, 5.7750575, 6.74, 7.74, 8.7750575, 9.8450575, 10.95, 12.09, 13.2650575, 14.4750575, 15.72, 17 };
         if (level == 1) return;
+        double[] mFactor = { 0, 0.72, 1.4750575, 2.2650575, 3.09, 3.95, 4.8450575, 5.7750575, 6.74, 7.74, 8.7750575, 9.8450575, 10.95, 12.09, 13.2650575, 14.4750575, 15.72, 17 };
         champ.maxHealth += (float)(stats.ChampionsRes[0].champData.data.Champion.stats.hpperlevel * mFactor[level - 1]);
         champ.attackSpeed = (float)(champ.baseAttackSpeed * (1 + (stats.ChampionsRes[0].champData.data.Champion.stats.attackspeedperlevel * (level - 1)) / 100));
         champ.armor += ((float)(stats.ChampionsRes[0].champData.data.Champion.stats.armorperlevel) * (float)mFactor[level - 1]);
@@ -219,7 +218,7 @@ public class SimManager : MonoBehaviour
         champ.spellBlock += ((float)(stats.ChampionsRes[0].champData.data.Champion.stats.spellblockperlevel) * (float)mFactor[level - 1]);
     }
 
-    private void ExtraStats(ChampStats champStats)
+    private void ExtraStats(Simulator.Combat.ChampionStats champStats)
     {
         if (champStats.name == "Garen")
         {
@@ -227,12 +226,6 @@ public class SimManager : MonoBehaviour
             champStats.spellBlock += 30;
             champStats.armor *= 1.1f;
             champStats.spellBlock *= 1.1f;
-        }
-
-        if (champStats.name == "Aatrox")
-        {
-            champStats.PercentLifeStealMod = 26;
-            champStats.PercentSpellVampMod = 26;
         }
     }
 
@@ -346,8 +339,6 @@ public class SimManager : MonoBehaviour
     {
         //champStats[0].Reset(0);
         //champStats[1].Reset(0);
-        champStats[0].isLoaded = false;
-        champStats[1].isLoaded = false;
     }
 
     public void Reset()
