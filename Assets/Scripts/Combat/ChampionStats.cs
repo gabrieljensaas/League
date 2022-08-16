@@ -6,6 +6,8 @@ namespace Simulator.Combat
 {
     public class ChampionStats : MonoBehaviour
     {
+        [SerializeField] public ChampionCombat MyCombat;                           //to update attack speed buff
+
         [SerializeField] private TextMeshProUGUI[] staticStatsUI;                   //ui elements that stay same in combat
         [SerializeField] private TextMeshProUGUI currentHP;                         //dynamic hp ui element that gets updated every frame
 
@@ -23,7 +25,7 @@ namespace Simulator.Combat
         [HideInInspector] public float baseHealth, baseAD, baseAP, baseArmor, baseSpellBlock, baseAttackSpeed;
         private void Start()
         {
-            buffManager = new BuffManager(this);
+            buffManager = new BuffManager(this, MyCombat);
         }
 
         private void Update()
@@ -64,6 +66,7 @@ namespace Simulator.Combat
     public class BuffManager
     {
         private ChampionStats stats;
+        private ChampionCombat combat;
         public bool Stunned;                                  //buffs and durations
         public float StunnedDuration;
         public bool Silenced;
@@ -82,10 +85,13 @@ namespace Simulator.Combat
         public float AsheQBuffDuration;
         public bool Frosted;
         public float FrostedDuration;
+        public float Flurry;
+        public float FlurryDuration;
 
-        public BuffManager(ChampionStats stats)
+        public BuffManager(ChampionStats stats, ChampionCombat combat)
         {
             this.stats = stats;
+            this.combat = combat;
         }
 
         public void Update()                                      //check if any expired
@@ -131,6 +137,7 @@ namespace Simulator.Combat
                 AttackSpeedDuration -= Time.deltaTime;
                 if (AttackSpeedDuration <= 0)
                 {
+                    combat.AttackCooldown *= stats.attackSpeed / (stats.attackSpeed - AttackSpeed);
                     stats.attackSpeed -= AttackSpeed;
                     AttackSpeed = 0;
                 }
@@ -146,6 +153,12 @@ namespace Simulator.Combat
             {
                 FrostedDuration -= Time.deltaTime;
                 if (FrostedDuration <= 0) Frosted = false;
+            }
+
+            if(Flurry > 0)
+            {
+                FlurryDuration -= Time.deltaTime;
+                if (FlurryDuration <= 0) Flurry = 0f;
             }
         }
         /// <summary>
@@ -182,6 +195,7 @@ namespace Simulator.Combat
                     DamageReductionPercentDuration = duration;
                     break;
                 case "AttackSpeed":
+                    combat.AttackCooldown *= stats.attackSpeed / (stats.attackSpeed + buffvalue);
                     AttackSpeed = buffvalue;
                     AttackSpeedDuration = duration;
                     stats.attackSpeed += buffvalue;
@@ -193,6 +207,10 @@ namespace Simulator.Combat
                 case "Frosted":
                     Frosted = true;
                     FrostedDuration = duration;
+                    break;
+                case "Flurry":
+                    Flurry = buffvalue;
+                    FlurryDuration = duration;
                     break;
                 default:
                     break;
