@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Simulator.Combat;
+using static AttributeTypes;
 
 [CreateAssetMenu(fileName = "new Spell", menuName = "ScriptableObjects/SkillList")]
 public class SkillList : ScriptableObject
@@ -48,14 +49,31 @@ public class SkillList : ScriptableObject
     }
     #endregion
 
-    public int UseSkill(int level, Simulator.Combat.ChampionStats myStats, Simulator.Combat.ChampionStats target)
+    public float UseSkill(int level, Simulator.Combat.ChampionStats myStats, Simulator.Combat.ChampionStats target)
     {
-        if(basic.champion == "Ashe")
+        float damage = 0;
+        if(basic.name == "Ranger's Focus")
         {
             myStats.buffManager.AddBuff("Flurry", 4, 100 + (5 * (level+1)));
             SelfEffects(level, myStats);
             return 0;
         }
+
+        switch (skillDamageType)
+        {
+            case SkillDamageType.Phyiscal:
+                damage = (int)Mathf.Round((unit.flat[level] + (myStats.AD * (unit.percentAD[level] / 100))));
+                damage = (int)Mathf.Round(damage * (100 / (100 + target.armor)));
+                break;
+            case SkillDamageType.Spell:
+                damage = (int)Mathf.Round((unit.flat[level] + (myStats.AP * (unit.percentAP[level] / 100))));
+                damage = (int)Mathf.Round(damage * (100 / (100 + target.spellBlock)));
+                break;
+            default:
+                break;
+        }
+
+
         //if (output == null) output = SimManager.outputText;
         //int totalDamage = 0;
         //int tempDamage = 0;
@@ -221,18 +239,22 @@ public class SkillList : ScriptableObject
           //  output.text += "[DAMAGE] " + myStats.name + " used " + basic.name + " and dealt " + totalDamage.ToString() + " damage.\n\n";
         //}
         SelfEffects(level, myStats);
-        EnemyEffects(level,target);
+        EnemyEffects(level, target);
         //text.text = (prevDamage + totalDamage).ToString();
         //return totalDamage;
-        return 0;
+        return damage;
     }
 
     void EnemyEffects(int level, Simulator.Combat.ChampionStats target)
     {
+        if (basic.champion == "Ashe")
+        {
+            target.buffManager.AddBuff("Frost", 2, 0);
+        }
+
         if (enemyEffects.stun)
         {
-                output.text += "[DEBUFF] " + target.name + " is stunned for " + enemyEffects.stunDuration + " seconds.\n\n";
-            
+            target.buffManager.AddBuff("Stunned", enemyEffects.stunDuration, 0);     
         }
 
         if (enemyEffects.silence)

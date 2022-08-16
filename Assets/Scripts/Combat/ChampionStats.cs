@@ -202,6 +202,7 @@ namespace Simulator.Combat
                     break;
                 case "AsheQBuff":
                     AsheQBuff++;
+                    if (AsheQBuff > 4) AsheQBuff = 4;
                     AsheQBuffDuration = duration;
                     break;
                 case "Frosted":
