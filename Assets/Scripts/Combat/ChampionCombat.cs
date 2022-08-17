@@ -12,13 +12,19 @@ namespace Simulator.Combat
         [SerializeField] private TextMeshProUGUI aaSum;
         [SerializeField] private TextMeshProUGUI[] abilitySum;
         [SerializeField] private TextMeshProUGUI healSum;
+        [SerializeField] private TextMeshProUGUI combatPriority;
+        [SerializeField] private SimManager simulationManager;
 
         [HideInInspector] public float AttackCooldown;
         
         private float aSum, hSum, qSum, wSum, eSum, rSum, pSum;
-        private string[] combatPriority = { "", "", "", "", "" };
+        private string[] combatPrio = { "", "", "", "", "" };
         private bool isCasting = false;
 
+        private void Start()
+        {
+            simulationManager = SimManager.Instance;
+        }
 
         public void CombatUpdate()
         {
@@ -26,67 +32,41 @@ namespace Simulator.Combat
 
             if (!isCasting)
             {
-                CheckAvailableSkills();
+                CheckSkills();
             }
 
-            #region Mordekaiser
-            #endregion
-
             AttackCooldown -= Time.deltaTime;
-        }
-
-        IEnumerator DynamicPassive(float cooldown)
-        {
-            yield return new WaitForSeconds(cooldown);
-
         }
 
         private void CheckPassive()
         {
             if (myStats.passiveSkill.inactive) return;
-            //myStats.passiveSkill.alwaysActive
 
+            if (myStats.pCD > 0) return;
 
-            if (myStats.passiveSkill.alwaysActive)
-                {
-                    /*if (myStats.name == "Mordekaiser")
-                    {
-                        myStats.passiveSkill.UseSkill(19, myStats, targetStats);
-                    }
-                    else
-                    {
-                        myStats.passiveSkill.UseSkill(myStats.level, myStats, targetStats);
-                    }
-                    myStats.pCD = myStats.passiveSkill.coolDown * SimManager.Instance.GlobalGameSpeedMultiplier;
-                    */
-                }
-            
+            /*if (myStats.passiveSkill.alwaysActive)
+            {
+
+            }*/    
         }
 
-        void CheckAvailableSkills()
+        private void CheckSkills()
         {
             for (int i = 0; i < 5; i++)
             {
-                StartCoroutine(CheckIfReady(combatPriority[i]));
-                
+                StartCoroutine(ExecuteSkillIfReady(combatPrio[i]));                
             }
         }
 
-
-
-        IEnumerator CheckIfReady(string skill)
+        IEnumerator ExecuteSkillIfReady(string skill)
         {
-            /*int skillLevel = 4;
-            int ultLevel = 2;
-            int damage = 0;
-            int passiveDamage = 0;
-            int prevDamage = 0;*/
             switch (skill)
             {
                 case "Q":
                     if (isCasting) yield break;
                     if (myStats.buffManager.Stunned) yield break;
                     if (myStats.buffManager.Silenced) yield break;
+                    if (myStats.qCD > 0) yield break;
                     if (myStats.qSkill.basic.inactive)
                     {
                         if(myStats.buffManager.AsheQBuff != 4) yield break;
@@ -95,241 +75,73 @@ namespace Simulator.Combat
                     isCasting = true;
                     StartCoroutine(UpdateCasting(myStats.qSkill.basic.castTime));
                     yield return new WaitForSeconds(myStats.qSkill.basic.castTime);
-
-                    /*if (myStats.qSkill.multihit.multiHit)
-                    {
-                        for (int i = 0; i < myStats.qSkill.multihit.hits[skillLevel]; i++)
-                        {
-                            damage = myStats.qSkill.UseSkill(skillLevel, myStats, targetStats, abilitySum[1], prevDamage);
-                            {
-                                damage *= (int)Mathf.Round(1.1f);
-                            }
-                            yield return new WaitForSeconds(0.01f * SimManager.Instance.GlobalGameSpeedMultiplier);
-                        }
-                    }*/
-                    /*else
-                    {*/
-                    qSum += myStats.qSkill.UseSkill(4, myStats, targetStats);
+                    
+                    targetCombat.TakeDamage(qSum += myStats.qSkill.UseSkill(4, myStats, targetStats));
                     abilitySum[0].text = qSum.ToString();
                     myStats.qCD = myStats.qSkill.basic.coolDown[4];
-                    //}
-
-                    /*if (myStats.passiveSkill.applyOnAbility)
-                    {
-                        passiveDamage = myStats.passiveSkill.UseSkill(myStats.level, myStats, targetStats);
-                    }*/
                     break;
                 case "W":
                     if (isCasting) yield break;
                     if (myStats.buffManager.Stunned) yield break;
                     if (myStats.buffManager.Silenced) yield break;
+                    if (myStats.wCD > 0) yield break;
                     if (myStats.wSkill.basic.inactive) yield break;
 
                     isCasting = true;
                     StartCoroutine(UpdateCasting(myStats.wSkill.basic.castTime));
                     yield return new WaitForSeconds(myStats.wSkill.basic.castTime);
-                    wSum += myStats.wSkill.UseSkill(4, myStats, targetStats);
+                    targetCombat.TakeDamage(wSum += myStats.wSkill.UseSkill(4, myStats, targetStats));
                     abilitySum[1].text = wSum.ToString();
                     myStats.wCD = myStats.wSkill.basic.coolDown[4];
 
                     break;
-
-                /*#region Ability E
                 case "E":
                     if (isCasting) yield break;
-                    if (myStats.eSkill == null) yield break;
+                    if (myStats.buffManager.Stunned) yield break;
+                    if (myStats.buffManager.Silenced) yield break;
+                    if (myStats.eCD > 0) yield break;
                     if (myStats.eSkill.basic.inactive) yield break;
-                    //prevDamage = int.Parse(abilitySum[3].text);
 
                     isCasting = true;
-
-                    #region Gangplank
-                    if (myStats.name == "Gangplank")
+                    StartCoroutine(UpdateCasting(myStats.eSkill.basic.castTime));
+                    yield return new WaitForSeconds(myStats.eSkill.basic.castTime);
+                    if (myStats.name == "Garen")
                     {
-                        if (myStats.eSkill.charge.chargeable)
-                        {
-                            if (myStats.eSkill.charge.charges > 0)
-                            {
-                                //myStats.eSkill.charges--;
-                                damage = myStats.eSkill.UseSkill(skillLevel, myStats, targetStats, abilitySum[3], prevDamage);
-                            }
-                            else
-                            {
-                                yield break;
-                            }
-                        }
+                        myStats.eCD = myStats.eSkill.basic.coolDown[4];
+                        myStats.buffManager.AddBuff("CantAA", 3f, 0, myStats.eSkill.basic.name);
+                        StartCoroutine(GarenE(3f / 7f, 0));
+                        break;
                     }
-                    #endregion
+                    targetCombat.TakeDamage(eSum += myStats.eSkill.UseSkill(4, myStats, targetStats));
+                    abilitySum[2].text = eSum.ToString();
+                    myStats.eCD = myStats.eSkill.basic.coolDown[4];
 
-                    #region Riven
-
-                    #endregion
-
-                    #region Lucian
-
-                    #endregion
-
-                    #region Akali
-
-                    #endregion
-
-
-                    yield return new WaitForSeconds(myStats.eSkill.basic.castTime * SimManager.Instance.GlobalGameSpeedMultiplier);
-
-
-                   /* if (myStats.eSkill.multihit.multiHit)
-                    {
-                        for (int i = 0; i < myStats.eSkill.multihit.hits[skillLevel]; i++)
-                        {
-                            #region Garen
-                            if (myStats.name == "Garen")
-                            {
-                                float timeToWait = 3f / (myStats.eSkill.multihit.hits[skillLevel] * SimManager.Instance.GlobalGameSpeedMultiplier);
-                                yield return new WaitForSeconds(timeToWait);
-                            }
-                            #endregion
-                        }
-                        StartCoroutine(UpdateCasting(0f));
-                    }*/
-                    /*else
-                    {
-                        #region Jax
-                        if (myStats.name == "Jax")
-                        {
-                            output.text += "[ABILITY] " + myStats.name + " used " + myStats.eSkill.basic.name + "\n\n";
-                            SimManager.WriteTime();
-                            StartCoroutine(UpdateCasting(0f));
-                        }
-                        #endregion
-
-                        else
-                        {
-                            damage = myStats.eSkill.UseSkill(skillLevel, myStats, targetStats, abilitySum[3], prevDamage);
-                            StartCoroutine(UpdateCasting(myStats.eSkill.basic.castTime * SimManager.Instance.GlobalGameSpeedMultiplier));
-                        }
-                    }
-                    myStats.eCD = myStats.eSkill.basic.coolDown[skillLevel] * SimManager.Instance.GlobalGameSpeedMultiplier;*/
-
-                    /*#region Fiora
-                    if (myStats.name == "Fiora") yield break;
-                    #endregion
-
-                    #region Olaf
-                    #endregion*/
-
-                    /*prevDamage = int.Parse(abilitySum[3].text);
-                    //abilitySum[3].text = (prevDamage + damage).ToString();
-
-                    if (myStats.passiveSkill.applyOnAbility)
-                    {
-                        passiveDamage = myStats.passiveSkill.UseSkill(myStats.level, myStats, targetStats);
-                    }
-                    break;*/
+                    break;
                 case "R":
                     if (isCasting) yield break;
                     if (myStats.buffManager.Stunned) yield break;
                     if (myStats.buffManager.Silenced) yield break;
+                    if (myStats.rCD > 0) yield break;
                     if (myStats.rSkill.basic.inactive) yield break;
 
                     isCasting = true;
                     StartCoroutine(UpdateCasting(myStats.rSkill.basic.castTime));
                     yield return new WaitForSeconds(myStats.rSkill.basic.castTime);
-                    rSum += myStats.rSkill.UseSkill(2, myStats, targetStats);
+                    targetCombat.TakeDamage(rSum += myStats.rSkill.UseSkill(2, myStats, targetStats));
                     abilitySum[3].text = rSum.ToString();
                     myStats.rCD = myStats.rSkill.basic.coolDown[2];
 
+                    if (myStats.name == "Garen")
+                    {
+                        StopCoroutine("GarenE");          //if 2 GarenE coroutine exists this could leat to some bugs
+                        myStats.buffManager.CantAA = false;
+                    }
                     break;
-                /*if (myStats.rSkill.multihit.multiHit)
-                {
-                    for (int i = 0; i < myStats.rSkill.multihit.hits[skillLevel]; i++)
-                    {
-                        #region Gangplank
-                        if (myStats.name == "Gangplank")
-                        {
-                            StartCoroutine(UpdateCasting(0f));
-                            float timeToWait = myStats.rSkill.multihit.multiHitInterval;
-                            if (targetStats.currentHealth <= 0) yield break;
-                            damage = myStats.rSkill.UseSkill(ultLevel, myStats, targetStats, abilitySum[4], prevDamage);
-                            if (targetStats.currentHealth - damage <= 0) yield break;
-                            yield return new WaitForSeconds(timeToWait);
-                        }
-                        #endregion
-                    }
-                    if (myStats.name == "Gangplank")
-                    {
-                        int bonusDamage = (int)Mathf.Round(300 + (myStats.AP * 30 / 100));
-                        if (targetStats.currentHealth - bonusDamage <= 0) yield break;
-                        output.text += "[SPECIAL] " + myStats.name + " Death's Daughter is triggered dealing " + bonusDamage.ToString() + " damage.\n\n";
-                        SimManager.WriteTime();
-                    }
-                }*/
-
-                //#region Garen
-                //if (myStats.name == "Garen")
-                //{
-                //    damage = myStats.rSkill.UseSkill(ultLevel, myStats, targetStats, abilitySum[4], prevDamage);
-                //    if (myStats.name == "Garen" && damage < targetStats.currentHealth)
-                //    {
-                //        isCasting = false;
-                //        yield break;
-                //    }
-                //}
-                //#endregion
-
-                /*#region Olaf
-                if (myStats.name == "Olaf")
-                {
-                    int bonusAD = (int)Mathf.Round(30 + (myStats.AD * 0.25f));
-                    myStats.AD += bonusAD;
-                    StartCoroutine(UpdateCasting(myStats.rSkill.basic.castTime));
-                    output.text += "[BUFF] " + myStats.name + " gains " + bonusAD + " Bonus AD for 3 seconds.\n\n";
-                    SimManager.WriteTime();
-                }
-                #endregion
-
-                #region Riven
-                #endregion
-
-                #region Aatrox
-                if (myStats.name == "Aatrox")
-                {
-                    myStats.AD = Mathf.Round(myStats.AD * 1.4f);
-                    output.text += "[SPECIAL] " + myStats.name + " used " + myStats.rSkill.basic.name + " and gains " + Mathf.Round(myStats.AD * 0.4f) + " bonus AD.\n\n";
-                    SimManager.WriteTime();
-                    output.text += "[SPECIAL] " + myStats.name + " used " + myStats.rSkill.basic.name + " and fears the enemy for 3 seconds.\n\n";
-                    SimManager.WriteTime();
-                    StartCoroutine(UpdateCasting(myStats.rSkill.basic.castTime));
-                }
-                #endregion*/
-
-                /*else
-                {
-                    if (myStats.name != "Gangplank")
-                    {
-                        StartCoroutine(UpdateCasting(myStats.rSkill.basic.castTime));
-                    }
-                }
-
-                yield return new WaitForSeconds(myStats.rSkill.basic.castTime);
-
-                if (targetStats.currentHealth <= 0) yield break;
-                damage = myStats.rSkill.UseSkill(ultLevel, myStats, targetStats, abilitySum[4], prevDamage);
-                if (myStats.name != "Akali")
-                {
-                    myStats.rCD = myStats.rSkill.basic.coolDown[ultLevel] * SimManager.Instance.GlobalGameSpeedMultiplier;
-                }*/
-
-                //prevDamage = int.Parse(abilitySum[4].text);
-                //abilitySum[4].text = (prevDamage + damage).ToString();
-                /*if (myStats.passiveSkill.applyOnAbility)
-                {
-                    passiveDamage = myStats.passiveSkill.UseSkill(myStats.level, myStats, targetStats);
-                }
-                break;*/
                 case "A":
                     if (isCasting) yield break;
                     if (myStats.buffManager.Stunned) yield break;
                     if (myStats.buffManager.Disarmed) yield break;
+                    if (myStats.buffManager.CantAA) yield break;
                     if (AttackCooldown <= 0)
                     {
                         isCasting = true;
@@ -337,32 +149,29 @@ namespace Simulator.Combat
                         yield return new WaitForSeconds(0.1f);
                         AutoAttack();
                     }
+                    else yield break;
                     break;
                 default:
                     break;
             }
         }
 
-        /*public void Attack(Simulator.Combat.ChampionStats target, float amount)
+        private IEnumerator GarenE(float seconds, int spinCount)
         {
-            int prevDamage = int.Parse(aaSum.text);
-            aaSum.text = (prevDamage + amount).ToString();
-
-            //if (targetStats.currentHealth - damage <= 0)
-            //{
-            //    return;
-            //}
-            //if (myStats.currentHealth - damage <= 0)
-            //{ 
-            //    return;
-            //}
+            yield return new WaitForSeconds(seconds);
+            targetCombat.TakeDamage(eSum += myStats.eSkill.UseSkill(4, myStats, targetStats));
+            abilitySum[2].text = eSum.ToString();
+            spinCount++;
+            if(spinCount >= 6)
             {
-                if (myStats.currentHealth > myStats.maxHealth)
-                {
-                    myStats.currentHealth = myStats.maxHealth;
-                }
+                targetStats.buffManager.AddBuff("ArmorReduction", 6, 25, "Judgment");
             }
-        }*/
+            if(spinCount > 6)
+            {
+                yield break;
+            }
+            StartCoroutine(GarenE(3f / 7f, spinCount));
+        }
 
         private void AutoAttack()
         {
@@ -371,84 +180,32 @@ namespace Simulator.Combat
             {
                 damage = 0;
             }
-            /*
-            #region Fiora
-            try
-            {
-                if (myStats.dynamicStatusStacks["Bladework"] >= 1)
-                {
-                    myStats.dynamicStatusStacks["Bladework"]--;
-                    if (myStats.dynamicStatusStacks["Bladework"] <= 0)
-                    {
-                        myStats.dynamicStatus.Remove("Bladework");
-                        myStats.dynamicStatusStacks.Remove("Bladework");
-                        myStats.PercentAttackSpeedMod = 0;
-                        myStats.attackSpeed = myStats.originalAS;
-                        myStats.UpdateStats(false);
-                        myStats.buffed = false;
-                    }
-                }
-            }
-            catch { }
-            #endregion
-            */
-            //if (myStats.name == "Jax")
-            //{
-            //    if (myStats.level >= 6)
-            //    {
-            //        if (myStats.dynamicStatus.ContainsKey(myStats.rSkill.name))
-            //        {
-            //            myStats.dynamicStatusStacks[myStats.rSkill.name]++;
-            //            if (myStats.dynamicStatusStacks[myStats.rSkill.name] >= 2)
-            //            {
-            //
-            //                int prevDamage = 0;
-            //                myStats.dynamicStatusStacks[myStats.rSkill.name] = 0; 
-            //                prevDamage = int.Parse(abilitySum[4].text);
-            //                int ultLevel = myStats.level / 6 - 1;
-            //                myStats.rSkill.UseSkill(ultLevel, myStats, targetStats, abilitySum[4], prevDamage);
-            //                generateJSON.SendData(false, this.gameObject.name, damage, SimManager.timer, 2, myStats.rSkill.name);
-            //            }
-            //        }
-            //        else
-            //        {
-            //            myStats.dynamicStatus[myStats.rSkill.name] = true;
-            //            myStats.dynamicStatusStacks[myStats.rSkill.name] = 1;
-            //        }
-            //    }
-            //}
-            //if (targetStats.currentHealth-damage <= 0) return;
-            //Attack(targetStats, damage);
             if(myStats.buffManager.Flurry > 0)
             {
                 damage *= myStats.buffManager.Flurry;
             }
 
-            targetCombat.TakeDamage(damage);
+            if(myStats.buffManager.DecisiveStrike > 0)
+            {
+                damage += myStats.buffManager.DecisiveStrike;
+                myStats.buffManager.DecisiveStrike = 0f;
+                targetStats.buffManager.AddBuff("Silenced", 1.5f, 0, "Decisive Strike");
+            }
+         
+            myStats.buffManager.DecisiveStrike = 0f;
+
+            targetCombat.TakeDamageAA(damage);
 
             if (myStats.name == "Ashe")
             {
-                targetStats.buffManager.AddBuff("Frosted", 2, 0);
+                targetStats.buffManager.AddBuff("Frosted", 2, 0, "Ashe's Auto Attack");
+                //simulationManager.ShowText(targetStats.name + " Frosted", "Ashe's Auto Attack");
 
                 if(myStats.buffManager.Flurry == 0)
                 {
-                    myStats.buffManager.AddBuff("AsheQBuff", 1, 0);
+                    myStats.buffManager.AddBuff("AsheQBuff", 4, 0, "Ashe's Auto Attack");
                 }
             }
-
-                /*if (myStats.passiveSkill.applyOnAttack)
-                {
-                    if (!myStats.passiveSkill.inactive)
-                    {
-
-                        if (targetStats.currentHealth <= 0) return;
-                    myStats.pCD = myStats.passiveSkill.coolDown;
-                        int passiveDamage = myStats.passiveSkill.UseSkill(myStats.level, myStats, targetStats);
-
-                    }
-                }*/
-            
-            ///
 
             AttackCooldown = 1f / myStats.attackSpeed;
         }
@@ -459,10 +216,32 @@ namespace Simulator.Combat
             isCasting = false;
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamageAA(float damage)
         {
             if (myStats.buffManager.Invincible) return;
-            if (myStats.buffManager.Frosted) damage *= 1.1f;
+            if (myStats.buffManager.Frosted)
+            {
+                //simulationManager.ShowText("  " + myStats.name + " Took Extra " + (damage * 0.1f).ToString() + "Becuase of Frost");
+                pSum += damage * 0.1f;
+                damage *= 1.1f;
+            }
+            if(myStats.buffManager.DamageReductionPercent > 0)
+            {
+                simulationManager.ShowText($"{myStats.name} Reduced {damage * myStats.buffManager.DamageReductionPercent / 100} Damage!");
+                damage *= (100 - myStats.buffManager.DamageReductionPercent) / 100;
+            }
+            if(myStats.buffManager.Shield > 0)
+            {
+                if (myStats.buffManager.Shield >= damage)
+                {
+                    myStats.buffManager.Shield -= damage;
+                }
+                else
+                {
+                    damage -= myStats.buffManager.Shield;
+                    myStats.buffManager.Shield = 0;
+                }
+            }
 
             myStats.currentHealth -= damage;
 
@@ -471,50 +250,80 @@ namespace Simulator.Combat
                 //DIE
             }
         }
-
-        public void UpdatePriority(string name)
+        public void TakeDamage(float damage)
         {
-            switch (name)
+            if (myStats.buffManager.Invincible) return;
+            if (myStats.buffManager.DamageReductionPercent > 0)
+            {
+                simulationManager.ShowText($"{myStats.name} Reduced {damage * myStats.buffManager.DamageReductionPercent / 100} Damage!");
+                damage *= (100 - myStats.buffManager.DamageReductionPercent) / 100;
+            }
+            if (myStats.buffManager.Shield > 0)
+            {
+                if (myStats.buffManager.Shield >= damage)
+                {
+                    myStats.buffManager.Shield -= damage;
+                }
+                else
+                {
+                    damage -= myStats.buffManager.Shield;
+                    myStats.buffManager.Shield = 0;
+                }
+            }
+
+            myStats.currentHealth -= damage;
+
+            if (myStats.currentHealth <= 0)
+            {
+                //DIE
+            }
+        }
+
+        public void UpdatePriority()
+        {
+            switch (myStats.name)
             {
                 case "Ashe":
-                    combatPriority[0] = "Q";
-                    combatPriority[1] = "A";
-                    combatPriority[2] = "W";
-                    combatPriority[3] = "R";
+                    combatPrio[0] = "Q";
+                    combatPrio[1] = "A";
+                    combatPrio[2] = "W";
+                    combatPrio[3] = "R";
                     break;
 
                 case "Garen":
-                    combatPriority[0] = "R";
-                    combatPriority[1] = "W";
-                    combatPriority[2] = "Q";
-                    combatPriority[3] = "A";
-                    combatPriority[4] = "E";
+                    combatPrio[0] = "R";
+                    combatPrio[1] = "W";
+                    combatPrio[2] = "Q";
+                    combatPrio[3] = "A";
+                    combatPrio[4] = "E";
                     break;
 
                 case "Gangplank":
-                    combatPriority[0] = "A";
-                    combatPriority[1] = "R";
-                    combatPriority[2] = "E";
-                    combatPriority[3] = "W";
-                    combatPriority[4] = "Q";
+                    combatPrio[0] = "A";
+                    combatPrio[1] = "R";
+                    combatPrio[2] = "E";
+                    combatPrio[3] = "W";
+                    combatPrio[4] = "Q";
                     break;
 
                 case "Riven":
-                    combatPriority[0] = "A";
-                    combatPriority[1] = "Q";
-                    combatPriority[2] = "W";
-                    combatPriority[3] = "E";
-                    combatPriority[4] = "R";
+                    combatPrio[0] = "A";
+                    combatPrio[1] = "Q";
+                    combatPrio[2] = "W";
+                    combatPrio[3] = "E";
+                    combatPrio[4] = "R";
                     break;
 
                 default:
-                    combatPriority[0] = "Q";
-                    combatPriority[1] = "W";
-                    combatPriority[2] = "E";
-                    combatPriority[3] = "R";
-                    combatPriority[4] = "A";
+                    combatPrio[0] = "Q";
+                    combatPrio[1] = "W";
+                    combatPrio[2] = "E";
+                    combatPrio[3] = "R";
+                    combatPrio[4] = "A";
                     break;
             }
+
+            combatPriority.text = string.Join(", ", combatPrio);
         }
     }
 }

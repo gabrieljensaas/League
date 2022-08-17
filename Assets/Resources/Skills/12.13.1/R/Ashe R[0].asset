@@ -35,8 +35,8 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  skillType: 0
-  skillDamageType: 0
+  skillType: 1
+  skillDamageType: 1
   multihit:
     multiHit: 0
     hits: 0000000000000000000000000000000000000000
@@ -418,8 +418,8 @@ MonoBehaviour:
     - 0
     - 0
   enemyEffects:
-    stun: 0
-    stunDuration: 0
+    stun: 1
+    stunDuration: 1.5
     silence: 0
     silenceDuration: 0
     disarm: 0

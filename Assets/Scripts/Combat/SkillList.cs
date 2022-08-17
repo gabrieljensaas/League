@@ -15,7 +15,7 @@ public class SkillList : ScriptableObject
     public SkillType skillType;
     public SkillDamageType skillDamageType;
 
-    private TextMeshProUGUI output;
+    private SimManager simulationManager;
 
     public SkillMultiHit multihit;
 
@@ -29,8 +29,6 @@ public class SkillList : ScriptableObject
     [Header("Buffs/Debuffs")]
     public SkillEnemyEffects enemyEffects;
     public SkillSelfEffects selfEffects;
-
-    #region Enums
     public enum SkillDamageType    
     { 
         Phyiscal,
@@ -47,16 +45,32 @@ public class SkillList : ScriptableObject
         ult,
         passive
     }
-    #endregion
 
     public float UseSkill(int level, Simulator.Combat.ChampionStats myStats, Simulator.Combat.ChampionStats target)
     {
+        if(simulationManager == null) simulationManager = SimManager.Instance;
         float damage = 0;
         if(basic.name == "Ranger's Focus")
         {
-            myStats.buffManager.AddBuff("Flurry", 4, 100 + (5 * (level+1)));
+            myStats.buffManager.AddBuff("Flurry", 4, 100 + (5 * (level+1)), basic.name);
+            simulationManager.ShowText($"Ashe Used Ranger's Focus Her Auto Attacks Will Do Extra {100 + (5 * (level+1))} Damage For 4 Seconds!");
+            myStats.buffManager.AsheQBuff = 0;
             SelfEffects(level, myStats);
             return 0;
+        }
+
+        if(basic.name == "Decisive Strike")
+        {
+            myStats.buffManager.AddBuff("Decisive Strike", 4.5f, ((level + 1) * 30) + myStats.AD * 0.5f, basic.name);
+            simulationManager.ShowText($"Garen Used Decisive Strike His Next Auto Attack In 4.5 Seconds Will Do Extra {((level + 1) * 30) + myStats.AD * 0.5f} Damage!");
+            return 0;
+        }
+
+        if(basic.name == "Judgment")
+        {
+            damage = (int)Mathf.Round((unit.flat[level] + Constants.GarenEDamageByLevelTable[myStats.level - 1] + (myStats.AD * (unit.percentAD[level] / 100))));
+            damage = (int)Mathf.Round(damage * (100 / (100 + target.armor)));
+            return damage;
         }
 
         switch (skillDamageType)
@@ -69,240 +83,52 @@ public class SkillList : ScriptableObject
                 damage = (int)Mathf.Round((unit.flat[level] + (myStats.AP * (unit.percentAP[level] / 100))));
                 damage = (int)Mathf.Round(damage * (100 / (100 + target.spellBlock)));
                 break;
+            case SkillDamageType.True:
+                damage = (int)Mathf.Round(unit.flat[level] + (target.currentHealth / target.maxHealth * (unit.percentTargetMissingHP[level] / 100)));
+                break;
             default:
                 break;
         }
 
-
-        //if (output == null) output = SimManager.outputText;
-        //int totalDamage = 0;
-        //int tempDamage = 0;
-
-        /*switch (skillDamageType)
-            {
-                case SkillDamageType.Phyiscal:
-                    totalDamage = (int)Mathf.Round((damage.flatAD[level] + (myStats.AD * (damage.percentAD[level] / 100))));
-                    totalDamage = (int)Mathf.Round(totalDamage * (100 / (100 + target.armor)));
-                    break;
-
-                case SkillDamageType.Spell:
-                    totalDamage = (int)Mathf.Round((damage.flatAP[level] + (myStats.AP * (damage.percentAP[level] / 100))));
-                    totalDamage = (int)Mathf.Round(totalDamage * (100 / (100 + target.spellBlock)));
-                    break;
-
-                case SkillDamageType.True:
-                    totalDamage = (int)trueDamage.flat[level];
-                    if (basic.champion == "Olaf")
-                    {
-                        totalDamage += (int)Mathf.Round(myStats.AD * (50f / 100));
-                    }
-                        totalDamage += (int) Mathf.Round((target.maxHealth - target.currentHealth) * (damageByHP.targetMissingHPDamage[level] /100));
-                    break;
-            }*/
-        //totalDamage = (int)Mathf.Round((damage.flatAD[level] + (myStats.AD * (damage.percentAD[level] / 100))));
-        //tempDamage = (int)Mathf.Round(totalDamage * (100 / (100 + target.armor)));
-
-        //totalDamage = (int)Mathf.Round((damage.flatAP[level] + (myStats.AP * (damage.percentAP[level] / 100))));
-        //tempDamage += (int)Mathf.Round(totalDamage * (100 / (100 + target.spellBlock)));
-
-        //tempDamage = (int)trueDamage.flat[level];
-
-        //if (totalDamage < 0)
-        {
-            //totalDamage = 0;
-        }
-
-
-#region Special
-        #region Garen
-
-        //if (basic.champion == "Garen" && totalDamage < target.currentHealth && skillType == SkillType.ult) return totalDamage;
-        #endregion
-        /*
-        #region Fiora 
-        if (myStats.name == "Fiora")
-        {
-            if (basic.name == "Bladework")
-            {
-                if (!myStats.buffed)
-                {
-                    myStats.dynamicStatus["Bladework"] = true;
-                    myStats.dynamicStatusStacks["Bladework"] = 2;
-                    myStats.dynamicStatusPercent["Bladework"] = 90;
-                    myStats.PercentAttackSpeedMod += myStats.dynamicStatusPercent["Bladework"];
-                    myStats.attackSpeed *= (1 + (myStats.PercentAttackSpeedMod / 100));
-                    myStats.UpdateStats(false);
-                    output.text += "[BUFF] " + myStats.name + " gains 90% AS increase for 2 attacks.\n\n";
-                    myStats.UpdateTimer(SimManager.timer);
-                    myStats.buffed = true;
-                }
-            }
-        }
-        #endregion
-        */
-        #region Lillia
-        if (basic.champion == "Lillia")
-        {
-            if (basic.name == "Watch Out! Eep!")
-            {
-                //totalDamage *= 3;
-            }
-        }
-        #endregion
-
-        #region Jax        
-
-        #endregion
-
-        #region Gangplank
-        if (basic.champion == "Gangplank")
-        {
-            if (basic.name == "Remove Scurvy")            
-            {
-                int amount = (int)heal.flat[level];
-                amount += (int)Mathf.Round(myStats.AP * (heal.flatByAP[level] / 100));
-                amount += (int)Mathf.Round((myStats.maxHealth - myStats.currentHealth) * (13 / 100));
-                myStats.currentHealth += amount;
-                output.text += "[HEAL] " + myStats.name + " used " + basic.name + " and heals himself for " + heal + " health.\n\n";
-            }
-
-            if (basic.name == "Powder Keg")
-            {
-                myStats.eSkill.charge.charges--;
-                //totalDamage = (int)Mathf.Round((damage.flatAD[level] + (myStats.AD * (damage.percentAD[level] / 100))));
-                //totalDamage = (int)Mathf.Round(totalDamage * (100 / (100 + target.armor * 0.6f)));
-            }
-        }
-        #endregion
-
-        #region Riven
-        if (basic.champion == "Riven" && skillType == SkillType.ult)
-        {
-            int bonusAD = (int)Mathf.Round(myStats.AD * 0.2f);
-            myStats.AD += bonusAD;
-            output.text += "[SPECIAL] " + myStats.name + " used " + basic.name + " and gains " + bonusAD + " bonus AD.\n\n";
-
-            int missingHealth = (int)Mathf.Round(100-((myStats.currentHealth / myStats.maxHealth) * 100));
-            if (missingHealth > 75)
-            {
-                missingHealth = 75;
-            }
-            int bonusDamage = (int)Mathf.Round(missingHealth * 2.667f);
-            //totalDamage = totalDamage * (1 + (bonusDamage / 100));
-        }
-        #endregion
-
-        #region Mordekaiser
-        if (basic.name == "Obliterate")
-        {
-            //totalDamage = (int)Mathf.Round(totalDamage * 1.6f);
-        }
-        #endregion
-
-        #region Veigar
-        if (basic.champion == "Veigar")
-        {
-            if (skillType == SkillType.ult)
-            {
-                int missingHealth = (int)Mathf.Round(100 - ((myStats.currentHealth / myStats.maxHealth) * 100));
-                int bonusDamage = (int)Mathf.Round(missingHealth * 1.5f);
-                //totalDamage = (int)Mathf.Round(totalDamage * (100 / (100 + target.spellBlock)));
-                //totalDamage = totalDamage * (1 + (bonusDamage / 100));
-            }
-        }
-        #endregion
-
-        #region Akali
-        if (basic.name == "Akali")
-        {
-            {
-                int missingHealth = (int)Mathf.Round(100 - ((myStats.currentHealth / myStats.maxHealth) * 100));
-                int bonusDamage = (int)Mathf.Round(missingHealth * 1.5f);
-                //totalDamage = totalDamage * (1 + (bonusDamage / 100));
-                //totalDamage = (int)Mathf.Round(totalDamage * (100 / (100 + target.spellBlock)));
-            }
-        }
-        #endregion
-
-        #region Darius
-        #endregion
-
-        #endregion
-
-        //if (totalDamage == 0)
-        
-            //output.text += "[ABILITY] " + myStats.name + " used " + basic.name + ".\n\n";
-        
-        //else
-        //{
-            //if (myStats.currentHealth-totalDamage <= 0) return 0;
-          //  output.text += "[DAMAGE] " + myStats.name + " used " + basic.name + " and dealt " + totalDamage.ToString() + " damage.\n\n";
-        //}
         SelfEffects(level, myStats);
         EnemyEffects(level, target);
-        //text.text = (prevDamage + totalDamage).ToString();
-        //return totalDamage;
         return damage;
     }
 
-    void EnemyEffects(int level, Simulator.Combat.ChampionStats target)
+    private void EnemyEffects(int level, Simulator.Combat.ChampionStats target)
     {
         if (basic.champion == "Ashe")
         {
-            target.buffManager.AddBuff("Frost", 2, 0);
+            target.buffManager.AddBuff("Frost", 2, 0, basic.name);
         }
 
         if (enemyEffects.stun)
         {
-            target.buffManager.AddBuff("Stunned", enemyEffects.stunDuration, 0);     
-        }
-
-        if (enemyEffects.silence)
-        {
-            output.text += "[DEBUFF] " + target.name + " is silenced for "+enemyEffects.silenceDuration+" seconds.\n\n";
-        }
-
-        if (enemyEffects.disarm)
-        {
+            target.buffManager.AddBuff("Stunned", enemyEffects.stunDuration, 0, basic.name);
         }
     }
 
-    void SelfEffects(int level, Simulator.Combat.ChampionStats myStats)
+    private void SelfEffects(int level, Simulator.Combat.ChampionStats myStats)
     {
-        #region Disarm
-        if (selfEffects.disarm)
+        if (selfEffects.Tenacity)
         {
+            myStats.buffManager.AddBuff("Tenacity", selfEffects.TenacityDuration[level], selfEffects.TenacityPercent[level], basic.name);
         }
-        #endregion
         
-        #region AS Increase
         if (selfEffects.ASIncrease)
         {
-            myStats.buffManager.AddBuff("AttackSpeed", selfEffects.ASIncreaseDuration[level], myStats.baseAttackSpeed * 0.01f * selfEffects.ASIncreasePercent[level]);
-        }
-        #endregion
-        
-        #region Invincible
-        if (selfEffects.Invincible)
-        { 
-        }
-        #endregion
+            myStats.buffManager.AddBuff("AttackSpeed", selfEffects.ASIncreaseDuration[level], myStats.baseAttackSpeed * 0.01f * selfEffects.ASIncreasePercent[level], basic.name);
+        }        
 
-        #region Damage Reduction
         if (selfEffects.DamageRed)
         {
-            output.text += "[BUFF] " + myStats.name + " gains " + selfEffects.DamageRedPercent[level] + "% for " + selfEffects.DamageRedDuration[level] + " seconds.\n\n";
+            myStats.buffManager.AddBuff("DamageReductionPercent", selfEffects.DamageRedDuration[level], selfEffects.DamageRedPercent[level], basic.name);
         }
-        #endregion
 
-        #region Shield
         if (selfEffects.Shield)
         {
-            int shieldValue = (int)selfEffects.ShieldFlat[level];
-            shieldValue += (int)Mathf.Round(((selfEffects.ShieldPercentByMissingHP[level]/100) * (myStats.maxHealth - myStats.currentHealth)));
-            output.text += "[BUFF] " + myStats.name + " gains " + shieldValue + " shield for " + selfEffects.ShieldDuration[level] + " seconds.\n\n";
+            myStats.buffManager.AddBuff("Shield", selfEffects.ShieldDuration[level], selfEffects.ShieldFlat[level], basic.name);       //bonus health scaling doesnt work because no items or runes implemented yet
         }
-        #endregion
     }
 }
 

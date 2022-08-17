@@ -24,6 +24,7 @@ public class SimManager : MonoBehaviour
     [SerializeField] private TMP_Dropdown[] championsDropdowns;
     [SerializeField] private TMP_InputField[] championsExperienceInput;
 
+    private float time;
     public bool ongoing;
     public APIRequestManager riotAPI;
     public static TextMeshProUGUI outputText;
@@ -38,6 +39,7 @@ public class SimManager : MonoBehaviour
     public Button resetBtn;
     public GameObject outputUI;
     public Simulator.Combat.ChampionStats[] champStats;
+    public Simulator.Combat.ChampionCombat[] champCombat;
     public GameObject matchIDGO;
     public GameObject[] matchID;
     public TextMeshProUGUI[] output;
@@ -94,7 +96,7 @@ public class SimManager : MonoBehaviour
         //}
     }
 
-    public void GetMatchData(Button button)
+    /*public void GetMatchData(Button button)
     {
         Clear();
         matchRequest.GetMatchData(button.GetComponentsInChildren<TextMeshProUGUI>()[0].text);
@@ -112,7 +114,7 @@ public class SimManager : MonoBehaviour
     public void SelectChampion2(int id)
     {
         RiotAPIMatchRequest.selectedChamp[1] = id;
-    }
+    }*/
 
     public void LoadMockStats(int championIndex)
     {
@@ -143,7 +145,7 @@ public class SimManager : MonoBehaviour
 
         ExtraStats(champStats);
         champStats.StaticUIUpdate();
-
+        champStats.MyCombat.UpdatePriority();
     }
 
     private void FindSkills(string champName, Simulator.Combat.ChampionStats champStats)
@@ -295,35 +297,17 @@ public class SimManager : MonoBehaviour
 
     void Update()
     {        
-        if(isLoaded)
-        {
-            if(!ongoing)
-            {
-                //startBtn.interactable = true;
-                StartBattle();
-                //StartCoroutine(StartingBattle());
-            }
-            else
-            {
-                startBtn.interactable = false;
-            }
-        }
-
         if (battleStarted)
         {
-            _timer += Time.unscaledDeltaTime;
-            timer = _timer * Time.timeScale;
-            //Debug.Log(timerTest.text);
+            time += Time.deltaTime;
+            champCombat[0].CombatUpdate();
+            champCombat[1].CombatUpdate();
         }
-        else
-        {
-            if (isNew)
-            {
-                timer = 0;
-                battleStarted = false;
-            }
-        }
-        //Debug.Log(isLoaded);
+    }
+
+    public void ShowText(string text)
+    {
+        outputText.text += $"{time:F3}   {text}\n\n";
     }
     
     public void StartBattle()
@@ -333,6 +317,7 @@ public class SimManager : MonoBehaviour
         loadBtn.interactable = false;
         resetBtn.interactable = true;
         battleStarted = true;
+        time = 0f;
     }
 
     public void Clear()
