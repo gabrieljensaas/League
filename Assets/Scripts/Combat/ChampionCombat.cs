@@ -76,7 +76,7 @@ namespace Simulator.Combat
                     StartCoroutine(UpdateCasting(myStats.qSkill.basic.castTime));
                     yield return new WaitForSeconds(myStats.qSkill.basic.castTime);
                     
-                    targetCombat.TakeDamage(qSum += myStats.qSkill.UseSkill(4, myStats, targetStats));
+                    qSum += targetCombat.TakeDamage(myStats.qSkill.UseSkill(4, myStats, targetStats), myStats.qSkill.basic.name);
                     abilitySum[0].text = qSum.ToString();
                     myStats.qCD = myStats.qSkill.basic.coolDown[4];
                     break;
@@ -90,9 +90,14 @@ namespace Simulator.Combat
                     isCasting = true;
                     StartCoroutine(UpdateCasting(myStats.wSkill.basic.castTime));
                     yield return new WaitForSeconds(myStats.wSkill.basic.castTime);
-                    targetCombat.TakeDamage(wSum += myStats.wSkill.UseSkill(4, myStats, targetStats));
+                    wSum += targetCombat.TakeDamage(myStats.wSkill.UseSkill(4, myStats, targetStats), myStats.wSkill.basic.name);
                     abilitySum[1].text = wSum.ToString();
                     myStats.wCD = myStats.wSkill.basic.coolDown[4];
+
+                    if (myStats.name == "Ashe")
+                    {
+                        targetStats.buffManager.AddBuff("Frosted", 2, 0, myStats.wSkill.basic.name);
+                    }
 
                     break;
                 case "E":
@@ -107,12 +112,13 @@ namespace Simulator.Combat
                     yield return new WaitForSeconds(myStats.eSkill.basic.castTime);
                     if (myStats.name == "Garen")
                     {
+                        simulationManager.ShowText($"Garen Used Judgment!");
                         myStats.eCD = myStats.eSkill.basic.coolDown[4];
                         myStats.buffManager.AddBuff("CantAA", 3f, 0, myStats.eSkill.basic.name);
-                        StartCoroutine(GarenE(3f / 7f, 0));
+                        StartCoroutine(GarenE(0, 0));
                         break;
                     }
-                    targetCombat.TakeDamage(eSum += myStats.eSkill.UseSkill(4, myStats, targetStats));
+                    eSum += targetCombat.TakeDamage(myStats.eSkill.UseSkill(4, myStats, targetStats), myStats.eSkill.basic.name);
                     abilitySum[2].text = eSum.ToString();
                     myStats.eCD = myStats.eSkill.basic.coolDown[4];
 
@@ -127,7 +133,7 @@ namespace Simulator.Combat
                     isCasting = true;
                     StartCoroutine(UpdateCasting(myStats.rSkill.basic.castTime));
                     yield return new WaitForSeconds(myStats.rSkill.basic.castTime);
-                    targetCombat.TakeDamage(rSum += myStats.rSkill.UseSkill(2, myStats, targetStats));
+                    rSum += targetCombat.TakeDamage( myStats.rSkill.UseSkill(2, myStats, targetStats), myStats.rSkill.basic.name);
                     abilitySum[3].text = rSum.ToString();
                     myStats.rCD = myStats.rSkill.basic.coolDown[2];
 
@@ -136,6 +142,12 @@ namespace Simulator.Combat
                         StopCoroutine("GarenE");          //if 2 GarenE coroutine exists this could leat to some bugs
                         myStats.buffManager.CantAA = false;
                     }
+
+                    if (myStats.name == "Ashe")
+                    {
+                        targetStats.buffManager.AddBuff("Frosted", 2, 0, myStats.rSkill.basic.name);
+                    }
+
                     break;
                 case "A":
                     if (isCasting) yield break;
@@ -159,7 +171,7 @@ namespace Simulator.Combat
         private IEnumerator GarenE(float seconds, int spinCount)
         {
             yield return new WaitForSeconds(seconds);
-            targetCombat.TakeDamage(eSum += myStats.eSkill.UseSkill(4, myStats, targetStats));
+            eSum += targetCombat.TakeDamage(myStats.eSkill.UseSkill(4, myStats, targetStats), myStats.eSkill.basic.name);
             abilitySum[2].text = eSum.ToString();
             spinCount++;
             if(spinCount >= 6)
@@ -182,24 +194,26 @@ namespace Simulator.Combat
             }
             if(myStats.buffManager.Flurry > 0)
             {
-                damage *= myStats.buffManager.Flurry;
+                damage *= myStats.buffManager.Flurry / 100;
+                qSum += myStats.buffManager.Flurry * damage / 100;
+                abilitySum[0].text = qSum.ToString();
             }
 
             if(myStats.buffManager.DecisiveStrike > 0)
             {
                 damage += myStats.buffManager.DecisiveStrike;
+                qSum += myStats.buffManager.DecisiveStrike;
+                abilitySum[0].text = qSum.ToString();
                 myStats.buffManager.DecisiveStrike = 0f;
                 targetStats.buffManager.AddBuff("Silenced", 1.5f, 0, "Decisive Strike");
             }
-         
-            myStats.buffManager.DecisiveStrike = 0f;
 
-            targetCombat.TakeDamageAA(damage);
+            aSum += targetCombat.TakeDamageAA(damage, $"{myStats.name}'s Auto Attack");
+            aaSum.text = aSum.ToString();
 
             if (myStats.name == "Ashe")
             {
                 targetStats.buffManager.AddBuff("Frosted", 2, 0, "Ashe's Auto Attack");
-                //simulationManager.ShowText(targetStats.name + " Frosted", "Ashe's Auto Attack");
 
                 if(myStats.buffManager.Flurry == 0)
                 {
@@ -216,18 +230,15 @@ namespace Simulator.Combat
             isCasting = false;
         }
 
-        public void TakeDamageAA(float damage)
+        public float TakeDamageAA(float damage, string source)
         {
-            if (myStats.buffManager.Invincible) return;
+            if (myStats.buffManager.Invincible) return 0;
             if (myStats.buffManager.Frosted)
             {
-                //simulationManager.ShowText("  " + myStats.name + " Took Extra " + (damage * 0.1f).ToString() + "Becuase of Frost");
-                pSum += damage * 0.1f;
                 damage *= 1.1f;
             }
             if(myStats.buffManager.DamageReductionPercent > 0)
             {
-                simulationManager.ShowText($"{myStats.name} Reduced {damage * myStats.buffManager.DamageReductionPercent / 100} Damage!");
                 damage *= (100 - myStats.buffManager.DamageReductionPercent) / 100;
             }
             if(myStats.buffManager.Shield > 0)
@@ -235,27 +246,33 @@ namespace Simulator.Combat
                 if (myStats.buffManager.Shield >= damage)
                 {
                     myStats.buffManager.Shield -= damage;
+                    simulationManager.ShowText($"{myStats.name}'s Shield Absorbed {damage} Damage!");
                 }
                 else
                 {
+                    simulationManager.ShowText($"{myStats.name}'s Shield Absorbed {myStats.buffManager.Shield} Damage!");
                     damage -= myStats.buffManager.Shield;
                     myStats.buffManager.Shield = 0;
                 }
             }
 
             myStats.currentHealth -= damage;
+            simulationManager.ShowText($"{myStats.name} Took {damage} Damage From {source}!");
 
-            if(myStats.currentHealth <= 0)
+            if (myStats.currentHealth <= 0)
             {
-                //DIE
+                SimManager.battleStarted = false;
+                simulationManager.ShowText($"{myStats.name} Has Died! {targetStats.name} Won With {targetStats.currentHealth} Health Remaining!");
             }
+
+            return damage;
         }
-        public void TakeDamage(float damage)
+        public float TakeDamage(float damage, string source)
         {
-            if (myStats.buffManager.Invincible) return;
+            if (myStats.buffManager.Invincible) return 0;
+            if (damage == 0) return 0;
             if (myStats.buffManager.DamageReductionPercent > 0)
             {
-                simulationManager.ShowText($"{myStats.name} Reduced {damage * myStats.buffManager.DamageReductionPercent / 100} Damage!");
                 damage *= (100 - myStats.buffManager.DamageReductionPercent) / 100;
             }
             if (myStats.buffManager.Shield > 0)
@@ -263,20 +280,26 @@ namespace Simulator.Combat
                 if (myStats.buffManager.Shield >= damage)
                 {
                     myStats.buffManager.Shield -= damage;
+                    simulationManager.ShowText($"{myStats.name}'s Shield Absorbed {damage} Damage!");
                 }
                 else
                 {
+                    simulationManager.ShowText($"{myStats.name}'s Shield Absorbed {myStats.buffManager.Shield} Damage!");
                     damage -= myStats.buffManager.Shield;
                     myStats.buffManager.Shield = 0;
                 }
             }
 
             myStats.currentHealth -= damage;
+            simulationManager.ShowText($"{myStats.name} Took {damage} Damage From {source}!");
 
             if (myStats.currentHealth <= 0)
             {
-                //DIE
+                SimManager.battleStarted = false;
+                simulationManager.ShowText($"{myStats.name} Has Died! {targetStats.name} Won With {targetStats.currentHealth} Health Remaining!");
             }
+
+            return damage;
         }
 
         public void UpdatePriority()
@@ -324,6 +347,14 @@ namespace Simulator.Combat
             }
 
             combatPriority.text = string.Join(", ", combatPrio);
+        }
+
+        public bool ChecksForAsheQSelf()
+        {
+            if (isCasting) return false;
+            if (myStats.qCD > 0) return false;
+            if (myStats.buffManager.AsheQBuff != 4) return false;
+            return true;
         }
     }
 }

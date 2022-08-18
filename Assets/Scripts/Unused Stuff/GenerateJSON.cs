@@ -2,9 +2,15 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using System.IO;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
+using System.Text.RegularExpressions;
+using TMPro;
 
 public class GenerateJSON : MonoBehaviour
 {    
+    public OutputText outputText = new OutputText();
+    public TextMeshProUGUI outputContext;
+
     public string fileName = "jsonOutput";
     string fileEXT = ".json";
     string folderName = "/JSON/";
@@ -39,6 +45,13 @@ public class GenerateJSON : MonoBehaviour
     private void Start()
     {
         //data = new OutputJSON { fightData = new FightData { } };        
+    }
+
+    public void GenerateOutputText()
+    {
+        outputText.text = outputContext.text.Split('\n');
+        string strOutput = JsonUtility.ToJson(outputText);
+        File.WriteAllText("C://Users//recep//Desktop" + "/output.txt", strOutput);
     }
 
     public void CreateFile(object obj)
@@ -109,4 +122,10 @@ public class GenerateJSON : MonoBehaviour
 
         CreateFile(data);
     }
+}
+
+[System.Serializable]
+public class OutputText
+{
+    public string[] text;
 }

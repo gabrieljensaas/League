@@ -53,7 +53,6 @@ public class SkillList : ScriptableObject
         if(basic.name == "Ranger's Focus")
         {
             myStats.buffManager.AddBuff("Flurry", 4, 100 + (5 * (level+1)), basic.name);
-            simulationManager.ShowText($"Ashe Used Ranger's Focus Her Auto Attacks Will Do Extra {100 + (5 * (level+1))} Damage For 4 Seconds!");
             myStats.buffManager.AsheQBuff = 0;
             SelfEffects(level, myStats);
             return 0;
@@ -61,8 +60,7 @@ public class SkillList : ScriptableObject
 
         if(basic.name == "Decisive Strike")
         {
-            myStats.buffManager.AddBuff("Decisive Strike", 4.5f, ((level + 1) * 30) + myStats.AD * 0.5f, basic.name);
-            simulationManager.ShowText($"Garen Used Decisive Strike His Next Auto Attack In 4.5 Seconds Will Do Extra {((level + 1) * 30) + myStats.AD * 0.5f} Damage!");
+            myStats.buffManager.AddBuff("DecisiveStrike", 4.5f, ((level + 1) * 30) + myStats.AD * 0.5f, basic.name);
             return 0;
         }
 

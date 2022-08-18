@@ -293,7 +293,7 @@ namespace Simulator.Combat
                 case "Invincible":
                     Invincible = true;
                     InvincibleDuration = duration;
-                    simulationManager.ShowText($"{stats.name} Gained Invincibility By {source} For {InvincibleDuration:F3} Seconds!");
+                    simulationManager.ShowText($"{stats.name} Gained Invincibility By {source} For {InvincibleDuration} Seconds!");
                     break;
                 case "DamageReductionFlat":
                     DamageReductionFlat = buffvalue;
@@ -336,12 +336,12 @@ namespace Simulator.Combat
                     Tenacity = buffvalue;
                     TenacityDuration = duration;
                     stats.tenacity += buffvalue;
-                    simulationManager.ShowText($"{stats.name} Gained {buffvalue}% Percent Tenacity for {duration} Seconds!");
+                    simulationManager.ShowText($"{stats.name} Gained {buffvalue}% Percent Tenacity from {source} for {duration} Seconds!");
                     break;
                 case "Shield":
                     Shield = buffvalue;
                     ShieldDuration = duration;
-                    simulationManager.ShowText($"{stats.name} Gained {buffvalue} Shield for {duration} Seconds!");
+                    simulationManager.ShowText($"{stats.name} Gained {buffvalue} Shield from {source} for {duration} Seconds!");
                     break;
                 case "CantAA":
                     CantAA = true;
