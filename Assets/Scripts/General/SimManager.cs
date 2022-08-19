@@ -145,7 +145,7 @@ public class SimManager : MonoBehaviour
 
         ExtraStats(champStats);
         champStats.StaticUIUpdate();
-        champStats.MyCombat.UpdatePriority();
+        champStats.MyCombat.UpdatePriorityAndChecks();
     }
 
     private void FindSkills(string champName, Simulator.Combat.ChampionStats champStats)

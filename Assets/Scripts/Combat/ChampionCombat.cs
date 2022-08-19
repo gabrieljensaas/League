@@ -1,6 +1,11 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
+using static AttributeTypes;
+using static Simulator.Combat.BuffManager;
+using System.Linq;
+
 namespace Simulator.Combat
 {
     public class ChampionCombat : MonoBehaviour
@@ -16,7 +21,15 @@ namespace Simulator.Combat
         [SerializeField] private SimManager simulationManager;
 
         [HideInInspector] public float AttackCooldown;
-        
+        [HideInInspector] public List<Check> checksq = new List<Check>();
+        [HideInInspector] public List<Check> checksw = new List<Check>();
+        [HideInInspector] public List<Check> checkse = new List<Check>();
+        [HideInInspector] public List<Check> checksr = new List<Check>();
+        [HideInInspector] public List<Check> checksa = new List<Check>();
+        [HideInInspector] public List<Check> checktakedamageaa = new List<Check>();
+        [HideInInspector] public List<Check> checktakedamage = new List<Check>();
+        [HideInInspector] public Check autoattackcheck;
+
         private float aSum, hSum, qSum, wSum, eSum, rSum, pSum;
         private string[] combatPrio = { "", "", "", "", "" };
         private bool isCasting = false;
@@ -63,14 +76,7 @@ namespace Simulator.Combat
             switch (skill)
             {
                 case "Q":
-                    if (isCasting) yield break;
-                    if (myStats.buffManager.Stunned) yield break;
-                    if (myStats.buffManager.Silenced) yield break;
-                    if (myStats.qCD > 0) yield break;
-                    if (myStats.qSkill.basic.inactive)
-                    {
-                        if(myStats.buffManager.AsheQBuff != 4) yield break;
-                    }
+                    if (!CheckForQ()) yield break;
 
                     isCasting = true;
                     StartCoroutine(UpdateCasting(myStats.qSkill.basic.castTime));
@@ -81,11 +87,7 @@ namespace Simulator.Combat
                     myStats.qCD = myStats.qSkill.basic.coolDown[4];
                     break;
                 case "W":
-                    if (isCasting) yield break;
-                    if (myStats.buffManager.Stunned) yield break;
-                    if (myStats.buffManager.Silenced) yield break;
-                    if (myStats.wCD > 0) yield break;
-                    if (myStats.wSkill.basic.inactive) yield break;
+                    if (!CheckForW()) yield break;
 
                     isCasting = true;
                     StartCoroutine(UpdateCasting(myStats.wSkill.basic.castTime));
@@ -94,18 +96,9 @@ namespace Simulator.Combat
                     abilitySum[1].text = wSum.ToString();
                     myStats.wCD = myStats.wSkill.basic.coolDown[4];
 
-                    if (myStats.name == "Ashe")
-                    {
-                        targetStats.buffManager.AddBuff("Frosted", 2, 0, myStats.wSkill.basic.name);
-                    }
-
                     break;
                 case "E":
-                    if (isCasting) yield break;
-                    if (myStats.buffManager.Stunned) yield break;
-                    if (myStats.buffManager.Silenced) yield break;
-                    if (myStats.eCD > 0) yield break;
-                    if (myStats.eSkill.basic.inactive) yield break;
+                    if (!CheckForE()) yield break;
 
                     isCasting = true;
                     StartCoroutine(UpdateCasting(myStats.eSkill.basic.castTime));
@@ -114,7 +107,7 @@ namespace Simulator.Combat
                     {
                         simulationManager.ShowText($"Garen Used Judgment!");
                         myStats.eCD = myStats.eSkill.basic.coolDown[4];
-                        myStats.buffManager.AddBuff("CantAA", 3f, 0, myStats.eSkill.basic.name);
+                        myStats.buffManager.buffs.Add(new CantAABuff(3f, myStats.buffManager, myStats.eSkill.basic.name));
                         StartCoroutine(GarenE(0, 0));
                         break;
                     }
@@ -124,11 +117,7 @@ namespace Simulator.Combat
 
                     break;
                 case "R":
-                    if (isCasting) yield break;
-                    if (myStats.buffManager.Stunned) yield break;
-                    if (myStats.buffManager.Silenced) yield break;
-                    if (myStats.rCD > 0) yield break;
-                    if (myStats.rSkill.basic.inactive) yield break;
+                    if (!CheckForR()) yield break;
 
                     isCasting = true;
                     StartCoroutine(UpdateCasting(myStats.rSkill.basic.castTime));
@@ -140,28 +129,22 @@ namespace Simulator.Combat
                     if (myStats.name == "Garen")
                     {
                         StopCoroutine("GarenE");          //if 2 GarenE coroutine exists this could leat to some bugs
-                        myStats.buffManager.CantAA = false;
-                    }
-
-                    if (myStats.name == "Ashe")
-                    {
-                        targetStats.buffManager.AddBuff("Frosted", 2, 0, myStats.rSkill.basic.name);
+                        if(myStats.buffManager.buffs.OfType<CantAABuff>().Any())
+                        {
+                            myStats.buffManager.buffs.OfType<CantAABuff>().FirstOrDefault().Kill();
+                            myStats.buffManager.buffs.Remove(myStats.buffManager.buffs.OfType<CantAABuff>().First());
+                        }
                     }
 
                     break;
                 case "A":
-                    if (isCasting) yield break;
-                    if (myStats.buffManager.Stunned) yield break;
-                    if (myStats.buffManager.Disarmed) yield break;
-                    if (myStats.buffManager.CantAA) yield break;
-                    if (AttackCooldown <= 0)
-                    {
-                        isCasting = true;
-                        StartCoroutine(UpdateCasting(0.1f));
-                        yield return new WaitForSeconds(0.1f);
-                        AutoAttack();
-                    }
-                    else yield break;
+                    if (!CheckForA()) yield break;
+
+                    isCasting = true;
+                    StartCoroutine(UpdateCasting(0.1f));
+                    yield return new WaitForSeconds(0.1f);
+                    AutoAttack();
+                    
                     break;
                 default:
                     break;
@@ -176,7 +159,7 @@ namespace Simulator.Combat
             spinCount++;
             if(spinCount >= 6)
             {
-                targetStats.buffManager.AddBuff("ArmorReduction", 6, 25, "Judgment");
+                targetStats.buffManager.buffs.Add(new ArmorReductionBuff(6, targetStats.buffManager, "Judgment", 25));
             }
             if(spinCount > 6)
             {
@@ -192,34 +175,11 @@ namespace Simulator.Combat
             {
                 damage = 0;
             }
-            if(myStats.buffManager.Flurry > 0)
-            {
-                damage *= myStats.buffManager.Flurry / 100;
-                qSum += myStats.buffManager.Flurry * damage / 100;
-                abilitySum[0].text = qSum.ToString();
-            }
 
-            if(myStats.buffManager.DecisiveStrike > 0)
-            {
-                damage += myStats.buffManager.DecisiveStrike;
-                qSum += myStats.buffManager.DecisiveStrike;
-                abilitySum[0].text = qSum.ToString();
-                myStats.buffManager.DecisiveStrike = 0f;
-                targetStats.buffManager.AddBuff("Silenced", 1.5f, 0, "Decisive Strike");
-            }
+            if (autoattackcheck != null) damage = autoattackcheck.Control(damage);
 
             aSum += targetCombat.TakeDamageAA(damage, $"{myStats.name}'s Auto Attack");
             aaSum.text = aSum.ToString();
-
-            if (myStats.name == "Ashe")
-            {
-                targetStats.buffManager.AddBuff("Frosted", 2, 0, "Ashe's Auto Attack");
-
-                if(myStats.buffManager.Flurry == 0)
-                {
-                    myStats.buffManager.AddBuff("AsheQBuff", 4, 0, "Ashe's Auto Attack");
-                }
-            }
 
             AttackCooldown = 1f / myStats.attackSpeed;
         }
@@ -232,29 +192,7 @@ namespace Simulator.Combat
 
         public float TakeDamageAA(float damage, string source)
         {
-            if (myStats.buffManager.Invincible) return 0;
-            if (myStats.buffManager.Frosted)
-            {
-                damage *= 1.1f;
-            }
-            if(myStats.buffManager.DamageReductionPercent > 0)
-            {
-                damage *= (100 - myStats.buffManager.DamageReductionPercent) / 100;
-            }
-            if(myStats.buffManager.Shield > 0)
-            {
-                if (myStats.buffManager.Shield >= damage)
-                {
-                    myStats.buffManager.Shield -= damage;
-                    simulationManager.ShowText($"{myStats.name}'s Shield Absorbed {damage} Damage!");
-                }
-                else
-                {
-                    simulationManager.ShowText($"{myStats.name}'s Shield Absorbed {myStats.buffManager.Shield} Damage!");
-                    damage -= myStats.buffManager.Shield;
-                    myStats.buffManager.Shield = 0;
-                }
-            }
+            damage = CheckForDamageAA(damage);
 
             myStats.currentHealth -= damage;
             simulationManager.ShowText($"{myStats.name} Took {damage} Damage From {source}!");
@@ -269,26 +207,8 @@ namespace Simulator.Combat
         }
         public float TakeDamage(float damage, string source)
         {
-            if (myStats.buffManager.Invincible) return 0;
             if (damage == 0) return 0;
-            if (myStats.buffManager.DamageReductionPercent > 0)
-            {
-                damage *= (100 - myStats.buffManager.DamageReductionPercent) / 100;
-            }
-            if (myStats.buffManager.Shield > 0)
-            {
-                if (myStats.buffManager.Shield >= damage)
-                {
-                    myStats.buffManager.Shield -= damage;
-                    simulationManager.ShowText($"{myStats.name}'s Shield Absorbed {damage} Damage!");
-                }
-                else
-                {
-                    simulationManager.ShowText($"{myStats.name}'s Shield Absorbed {myStats.buffManager.Shield} Damage!");
-                    damage -= myStats.buffManager.Shield;
-                    myStats.buffManager.Shield = 0;
-                }
-            }
+            damage = CheckForDamage(damage);
 
             myStats.currentHealth -= damage;
             simulationManager.ShowText($"{myStats.name} Took {damage} Damage From {source}!");
@@ -302,7 +222,7 @@ namespace Simulator.Combat
             return damage;
         }
 
-        public void UpdatePriority()
+        public void UpdatePriorityAndChecks()
         {
             switch (myStats.name)
             {
@@ -311,6 +231,24 @@ namespace Simulator.Combat
                     combatPrio[1] = "A";
                     combatPrio[2] = "W";
                     combatPrio[3] = "R";
+                    checksq.Add(new CheckIfCasting(this));
+                    checksq.Add(new CheckQCD(this));
+                    checksq.Add(new CheckAsheQ(this));
+                    targetCombat.checksq.Add(new CheckIfStunned(targetCombat));
+                    checksw.Add(new CheckIfCasting(this));
+                    checksw.Add(new CheckWCD(this));
+                    targetCombat.checksw.Add(new CheckIfStunned(targetCombat));
+                    checkse.Add(new CheckIfCasting(this));
+                    checkse.Add(new CheckECD(this));
+                    targetCombat.checkse.Add(new CheckIfStunned(targetCombat));
+                    checksr.Add(new CheckIfCasting(this));
+                    checksr.Add(new CheckRCD(this));
+                    targetCombat.checksr.Add(new CheckIfStunned(targetCombat));
+                    checksa.Add(new CheckIfCasting(this));
+                    checksa.Add(new CheckACD(this));
+                    targetCombat.checksa.Add(new CheckIfStunned(targetCombat));
+                    autoattackcheck = new AsheAACheck(this);
+                    targetCombat.checktakedamageaa.Add(new CheckIfFrosted(targetCombat));
                     break;
 
                 case "Garen":
@@ -319,6 +257,26 @@ namespace Simulator.Combat
                     combatPrio[2] = "Q";
                     combatPrio[3] = "A";
                     combatPrio[4] = "E";
+                    checksq.Add(new CheckIfCasting(this));
+                    checksq.Add(new CheckQCD(this));
+                    targetCombat.checksq.Add(new CheckIfSilenced(targetCombat));
+                    checksw.Add(new CheckIfCasting(this));
+                    checksw.Add(new CheckWCD(this));
+                    targetCombat.checksw.Add(new CheckIfSilenced(targetCombat));
+                    checkse.Add(new CheckIfCasting(this));
+                    checkse.Add(new CheckECD(this));
+                    targetCombat.checkse.Add(new CheckIfSilenced(targetCombat));
+                    checksr.Add(new CheckIfCasting(this));
+                    checksr.Add(new CheckRCD(this));
+                    targetCombat.checksr.Add(new CheckIfSilenced(targetCombat));
+                    checksa.Add(new CheckIfCasting(this));
+                    checksa.Add(new CheckIfCantAA(this));
+                    checksa.Add(new CheckACD(this));
+                    autoattackcheck = new GarenAACheck(this);
+                    checktakedamage.Add(new CheckDamageReductionPercent(this));
+                    checktakedamageaa.Add(new CheckDamageReductionPercent(this));
+                    checktakedamage.Add(new CheckShield(this));
+                    checktakedamageaa.Add(new CheckShield(this));
                     break;
 
                 case "Gangplank":
@@ -349,12 +307,380 @@ namespace Simulator.Combat
             combatPriority.text = string.Join(", ", combatPrio);
         }
 
-        public bool ChecksForAsheQSelf()
+        public bool CheckForQ()
         {
-            if (isCasting) return false;
-            if (myStats.qCD > 0) return false;
-            if (myStats.buffManager.AsheQBuff != 4) return false;
+            foreach (var item in checksq)
+            {
+                if (!item.Control()) return false;
+            }
             return true;
+        }
+        public bool CheckForW()
+        {
+            foreach (var item in checksw)
+            {
+                if (!item.Control()) return false;
+            }
+            return true;
+        }
+        public bool CheckForE()
+        {
+            foreach (var item in checkse)
+            {
+                if (!item.Control()) return false;
+            }
+            return true;
+        }
+        public bool CheckForR()
+        {
+            foreach (var item in checksr)
+            {
+                if (!item.Control()) return false;
+            }
+            return true;
+        }
+
+        public bool CheckForA()
+        {
+            foreach (var item in checksa)
+            {
+                if (!item.Control()) return false;
+            }
+            return true;
+        }
+
+        public float CheckForDamageAA(float damage)
+        {
+            foreach (var item in checktakedamageaa)
+            {
+                damage = item.Control(damage);
+            }
+
+            return damage;
+        }
+        public float CheckForDamage(float damage)
+        {
+            foreach (var item in checktakedamage)
+            {
+                damage = item.Control(damage);
+            }
+
+            return damage;
+        }
+
+        public abstract class Check
+        {
+            protected ChampionCombat combat;
+            protected Check(ChampionCombat ccombat)
+            {
+                combat = ccombat;
+            }
+
+            public abstract bool Control();
+            public abstract float Control(float damage);
+        }
+
+        public class CheckIfCasting : Check
+        {
+            public CheckIfCasting(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override bool Control()
+            {
+                if (combat.isCasting) return false;
+                return true;
+            }
+
+            public override float Control(float damage)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public class CheckQCD : Check
+        {
+            public CheckQCD(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override bool Control()
+            {
+                if (combat.myStats.qCD > 0) return false;
+                return true;
+            }
+
+            public override float Control(float damage)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public class CheckWCD : Check
+        {
+            public CheckWCD(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override bool Control()
+            {
+                if (combat.myStats.wCD > 0) return false;
+                return true;
+            }
+
+            public override float Control(float damage)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public class CheckECD : Check
+        {
+            public CheckECD(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override bool Control()
+            {
+                if (combat.myStats.eCD > 0) return false;
+                return true;
+            }
+            public override float Control(float damage)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+        public class CheckRCD : Check
+        {
+            public CheckRCD(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override bool Control()
+            {
+                if (combat.myStats.rCD > 0) return false;
+                return true;
+            }
+            public override float Control(float damage)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+        public class CheckACD : Check
+        {
+            public CheckACD(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override bool Control()
+            {
+                if (combat.AttackCooldown > 0) return false;
+                return true;
+            }
+
+            public override float Control(float damage)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public class CheckAsheQ : Check
+        {
+            public CheckAsheQ(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override bool Control()
+            {
+                return combat.myStats.buffManager.Has4AsheQ();
+            }
+
+            public override float Control(float damage)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public class CheckIfStunned : Check
+        {
+            public CheckIfStunned(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override bool Control()
+            {
+                return !combat.myStats.buffManager.IsStunned();
+            }
+            public override float Control(float damage)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public class CheckIfSilenced : Check
+        {
+            public CheckIfSilenced(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override bool Control()
+            {
+                return !combat.myStats.buffManager.IsSilenced();
+            }
+            public override float Control(float damage)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public class CheckIfDisarmed : Check
+        {
+            public CheckIfDisarmed(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override bool Control()
+            {
+                return !combat.myStats.buffManager.IsDisarmed();
+            }
+            public override float Control(float damage)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public class CheckIfCantAA : Check
+        {
+            public CheckIfCantAA(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override bool Control()
+            {
+                return combat.myStats.buffManager.CanAA();
+            }
+            public override float Control(float damage)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+        public class CheckIfFrosted : Check
+        {
+            public CheckIfFrosted(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override bool Control()
+            {
+                throw new System.NotImplementedException();
+            }
+            public override float Control(float damage)
+            {
+                return damage * 1.1f;
+            }
+        }
+
+        public class AsheAACheck : Check
+        {
+            public AsheAACheck(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override float Control(float damage)
+            {
+                if (combat.myStats.buffManager.FlurryDamage() > 0)
+                {
+                    damage *= combat.myStats.buffManager.FlurryDamage() / 100;
+                    combat.qSum += combat.myStats.buffManager.FlurryDamage() * damage / 100;
+                    combat.abilitySum[0].text = combat.qSum.ToString();
+                }
+
+                combat.targetStats.buffManager.buffs.Add(new FrostedBuff(2, combat.targetStats.buffManager, "Ashe's Auto Attack"));
+                if (combat.myStats.buffManager.FlurryDamage() == 0)
+                {
+                    combat.myStats.buffManager.buffs.Add(new AsheQBuff(4, combat.myStats.buffManager, "Ashe's Auto Attack"));
+                }
+                return damage;
+            }
+
+            public override bool Control()
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+        public class GarenAACheck : Check
+        {
+            public GarenAACheck(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override float Control(float damage)
+            {
+                if (combat.myStats.buffManager.DecisiveStrikeDamage() > 0)
+                {
+                    damage += combat.myStats.buffManager.DecisiveStrikeDamage();
+                    combat.qSum += combat.myStats.buffManager.DecisiveStrikeDamage();
+                    combat.abilitySum[0].text = combat.qSum.ToString();
+                    combat.myStats.buffManager.buffs.Remove(combat.myStats.buffManager.buffs.OfType<DecisiveStrikeBuff>().FirstOrDefault());
+                    combat.targetStats.buffManager.buffs.Add(new SilenceBuff(1.5f, combat.targetStats.buffManager, "Decisive Strike"));
+                }
+                return damage;
+            }
+
+            public override bool Control()
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+        public class CheckDamageReductionPercent : Check
+        {
+            public CheckDamageReductionPercent(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override float Control(float damage)
+            {
+                if (combat.myStats.buffManager.DamageRed() > 0)
+                {
+                    damage *= (100 - combat.myStats.buffManager.DamageRed()) / 100;
+                }
+                return damage;
+            }
+
+            public override bool Control()
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+        public class CheckShield : Check
+        {
+            public CheckShield(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override float Control(float damage)
+            {
+                if (combat.myStats.buffManager.Shield() > 0)
+                {
+                    if (combat.myStats.buffManager.Shield() >= damage)
+                    {
+                        combat.myStats.buffManager.buffs.OfType<ShieldBuff>().FirstOrDefault().shield -= damage;
+                        combat.simulationManager.ShowText($"{combat.myStats.name}'s Shield Absorbed {damage} Damage!");
+                    }
+                    else
+                    {
+                        combat.simulationManager.ShowText($"{combat.myStats.name}'s Shield Absorbed {combat.myStats.buffManager.Shield()} Damage!");
+                        damage -= combat.myStats.buffManager.Shield();
+                        combat.myStats.buffManager.buffs.Remove(combat.myStats.buffManager.buffs.OfType<ShieldBuff>().FirstOrDefault());
+                    }
+                }
+                return damage;
+            }
+
+            public override bool Control()
+            {
+                throw new System.NotImplementedException();
+            }
         }
     }
 }

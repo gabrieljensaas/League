@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Simulator.Combat;
 using static AttributeTypes;
+using static Simulator.Combat.BuffManager;
 
 [CreateAssetMenu(fileName = "new Spell", menuName = "ScriptableObjects/SkillList")]
 public class SkillList : ScriptableObject
@@ -52,15 +53,14 @@ public class SkillList : ScriptableObject
         float damage = 0;
         if(basic.name == "Ranger's Focus")
         {
-            myStats.buffManager.AddBuff("Flurry", 4, 100 + (5 * (level+1)), basic.name);
-            myStats.buffManager.AsheQBuff = 0;
+            myStats.buffManager.buffs.Add(new FlurryBuff(4, myStats.buffManager, basic.name, 100 + (5 * (level + 1))));
             SelfEffects(level, myStats);
             return 0;
         }
 
         if(basic.name == "Decisive Strike")
         {
-            myStats.buffManager.AddBuff("DecisiveStrike", 4.5f, ((level + 1) * 30) + myStats.AD * 0.5f, basic.name);
+            myStats.buffManager.buffs.Add(new DecisiveStrikeBuff(4.5f, myStats.buffManager, basic.name, ((level + 1) * 30) + myStats.AD * 0.5f));
             return 0;
         }
 
@@ -97,12 +97,12 @@ public class SkillList : ScriptableObject
     {
         if (basic.champion == "Ashe")
         {
-            target.buffManager.AddBuff("Frost", 2, 0, basic.name);
+            target.buffManager.buffs.Add(new FrostedBuff(2, target.buffManager,basic.name));
         }
 
         if (enemyEffects.stun)
         {
-            target.buffManager.AddBuff("Stunned", enemyEffects.stunDuration, 0, basic.name);
+            target.buffManager.buffs.Add(new StunBuff(enemyEffects.stunDuration, target.buffManager, basic.name));
         }
     }
 
@@ -110,22 +110,22 @@ public class SkillList : ScriptableObject
     {
         if (selfEffects.Tenacity)
         {
-            myStats.buffManager.AddBuff("Tenacity", selfEffects.TenacityDuration[level], selfEffects.TenacityPercent[level], basic.name);
+            myStats.buffManager.buffs.Add(new TenacityBuff(selfEffects.TenacityDuration[level], myStats.buffManager, basic.name, selfEffects.TenacityPercent[level]));
         }
         
         if (selfEffects.ASIncrease)
         {
-            myStats.buffManager.AddBuff("AttackSpeed", selfEffects.ASIncreaseDuration[level], myStats.baseAttackSpeed * 0.01f * selfEffects.ASIncreasePercent[level], basic.name);
+            myStats.buffManager.buffs.Add(new AttackSpeedBuff(selfEffects.ASIncreaseDuration[level], myStats.buffManager, basic.name, myStats.baseAttackSpeed * 0.01f * selfEffects.ASIncreasePercent[level]));
         }        
 
         if (selfEffects.DamageRed)
         {
-            myStats.buffManager.AddBuff("DamageReductionPercent", selfEffects.DamageRedDuration[level], selfEffects.DamageRedPercent[level], basic.name);
+            myStats.buffManager.buffs.Add(new DamageRedPercentBuff(selfEffects.DamageRedDuration[level], myStats.buffManager, basic.name, selfEffects.DamageRedPercent[level]));
         }
 
         if (selfEffects.Shield)
         {
-            myStats.buffManager.AddBuff("Shield", selfEffects.ShieldDuration[level], selfEffects.ShieldFlat[level], basic.name);       //bonus health scaling doesnt work because no items or runes implemented yet
+            myStats.buffManager.buffs.Add(new ShieldBuff(selfEffects.ShieldDuration[level], myStats.buffManager, basic.name, selfEffects.ShieldFlat[level]));
         }
     }
 }
