@@ -941,6 +941,7 @@ public class SkillManager : MonoBehaviour
                                     if (effectInAbilities[effect].leveling[level].attribute == atr)
                                     {
                                         var unit = effectInAbilities[effect].leveling[level].modifiers[modifier].units[0];
+                                        if (i3 >= effectInAbilities[effect].leveling[level].modifiers[modifier].values.Count) continue;
                                         var value = effectInAbilities[effect].leveling[level].modifiers[modifier].values[i3];
 
                                         if (unit == "" || unit == "flat")

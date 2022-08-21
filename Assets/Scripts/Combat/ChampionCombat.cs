@@ -279,6 +279,14 @@ namespace Simulator.Combat
                     checktakedamageaa.Add(new CheckShield(this));
                     break;
 
+                case "Aatrox":
+                    combatPrio[0] = "R";
+                    combatPrio[1] = "Q";
+                    combatPrio[2] = "W";
+                    combatPrio[3] = "A";
+
+                    break;
+
                 case "Gangplank":
                     combatPrio[0] = "A";
                     combatPrio[1] = "R";
