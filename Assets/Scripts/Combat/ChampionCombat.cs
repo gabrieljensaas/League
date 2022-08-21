@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using static AttributeTypes;
 using static Simulator.Combat.BuffManager;
 using System.Linq;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Simulator.Combat
 {
@@ -57,10 +58,10 @@ namespace Simulator.Combat
 
             if (myStats.pCD > 0) return;
 
-            /*if (myStats.passiveSkill.alwaysActive)
+            if(myStats.name == "Aatrox" && !myStats.buffManager.buffs.OfType<DeathBringerStanceBuff>().Any())
             {
-
-            }*/    
+                myStats.buffManager.buffs.Add(new DeathBringerStanceBuff(float.MaxValue, myStats.buffManager, myStats.passiveSkill.name));
+            }
         }
 
         private void CheckSkills()
@@ -69,6 +70,23 @@ namespace Simulator.Combat
             {
                 StartCoroutine(ExecuteSkillIfReady(combatPrio[i]));                
             }
+        }
+
+        protected  void ExecuteQ()
+        {
+            StartCoroutine(QExecute());
+        }
+
+        IEnumerator QExecute()
+        {
+            if (!CheckForQ()) yield break;
+
+            isCasting = true;
+            StartCoroutine(UpdateCasting(myStats.qSkill.basic.castTime));
+            yield return new WaitForSeconds(myStats.qSkill.basic.castTime);
+            qSum += targetCombat.TakeDamage(myStats.qSkill.UseSkill(4, myStats, targetStats), myStats.qSkill.basic.name);
+            abilitySum[0].text = qSum.ToString();
+            myStats.qCD = myStats.qSkill.basic.coolDown[4];
         }
 
         IEnumerator ExecuteSkillIfReady(string skill)
@@ -81,7 +99,6 @@ namespace Simulator.Combat
                     isCasting = true;
                     StartCoroutine(UpdateCasting(myStats.qSkill.basic.castTime));
                     yield return new WaitForSeconds(myStats.qSkill.basic.castTime);
-                    
                     qSum += targetCombat.TakeDamage(myStats.qSkill.UseSkill(4, myStats, targetStats), myStats.qSkill.basic.name);
                     abilitySum[0].text = qSum.ToString();
                     myStats.qCD = myStats.qSkill.basic.coolDown[4];
@@ -201,6 +218,8 @@ namespace Simulator.Combat
             {
                 SimManager.battleStarted = false;
                 simulationManager.ShowText($"{myStats.name} Has Died! {targetStats.name} Won With {targetStats.currentHealth} Health Remaining!");
+                StopAllCoroutines();
+                targetCombat.StopAllCoroutines();
             }
 
             return damage;
@@ -217,6 +236,8 @@ namespace Simulator.Combat
             {
                 SimManager.battleStarted = false;
                 simulationManager.ShowText($"{myStats.name} Has Died! {targetStats.name} Won With {targetStats.currentHealth} Health Remaining!");
+                StopAllCoroutines();
+                targetCombat.StopAllCoroutines();
             }
 
             return damage;
@@ -284,7 +305,10 @@ namespace Simulator.Combat
                     combatPrio[1] = "Q";
                     combatPrio[2] = "W";
                     combatPrio[3] = "A";
-
+                    checksq.Add(new CheckIfCasting(this));
+                    checksa.Add(new CheckIfCasting(this));
+                    checksa.Add(new CheckACD(this));
+                    autoattackcheck = new AatroxAACheck(this);
                     break;
 
                 case "Gangplank":
@@ -409,6 +433,24 @@ namespace Simulator.Combat
         public class CheckQCD : Check
         {
             public CheckQCD(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override bool Control()
+            {
+                if (combat.myStats.qCD > 0) return false;
+                return true;
+            }
+
+            public override float Control(float damage)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public class CheckQCDAatrox : Check
+        {
+            public CheckQCDAatrox(ChampionCombat ccombat) : base(ccombat)
             {
             }
 
@@ -632,6 +674,34 @@ namespace Simulator.Combat
                     combat.myStats.buffManager.buffs.Remove(combat.myStats.buffManager.buffs.OfType<DecisiveStrikeBuff>().FirstOrDefault());
                     combat.targetStats.buffManager.buffs.Add(new SilenceBuff(1.5f, combat.targetStats.buffManager, "Decisive Strike"));
                 }
+                return damage;
+            }
+
+            public override bool Control()
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public class AatroxAACheck : Check
+        {
+            public AatroxAACheck(ChampionCombat ccombat) : base(ccombat)
+            {
+            }
+
+            public override float Control(float damage)
+            {
+                if (combat.myStats.buffManager.HasDeathbringerStance())
+                {
+                    damage += combat.targetStats.maxHealth * (5 + (7 / 17 * (combat.myStats.level - 1))) / 100 * (100 / (100 + combat.targetStats.armor));
+                    combat.pSum += combat.targetStats.maxHealth * (5 + (7 / 17 * (combat.myStats.level - 1))) / 100 * (100 / (100 + combat.targetStats.armor));
+                    combat.abilitySum[4].text = combat.pSum.ToString();
+                    combat.myStats.buffManager.buffs.Remove(combat.myStats.buffManager.buffs.OfType<DeathBringerStanceBuff>().FirstOrDefault());
+                    combat.myStats.Heal(damage);
+                    combat.simulationManager.ShowText($"{combat.name} Healed From Death Bringer Stance For {damage}!");
+                    combat.myStats.pCD = combat.myStats.passiveSkill.coolDown;
+                }
+                else combat.myStats.pCD -= 2;
                 return damage;
             }
 

@@ -65,6 +65,12 @@ namespace Simulator.Combat
             staticStatsUI[10].text = spellBlock.ToString();
             staticStatsUI[11].text = attackSpeed.ToString();
         }
+
+        public void Heal(float heal)
+        {
+            if (currentHealth + heal > maxHealth) currentHealth = maxHealth;
+            else currentHealth += heal;
+        }
     }
     /// <summary>
     /// stats which states champion status and buffs/debuffs it has
@@ -136,6 +142,11 @@ namespace Simulator.Combat
         public bool CanAA()
         {
             return !buffs.OfType<CantAABuff>().Any();
+        }
+
+        public bool HasDeathbringerStance()
+        {
+            return buffs.OfType<DeathBringerStanceBuff>().Any();
         }
 
         public abstract class Buff
@@ -421,6 +432,24 @@ namespace Simulator.Combat
             {
                 manager.simulationManager.ShowText($"{manager.stats.name} Has No Longer {reduction}% Percent Reduced Armor From {source}!");
                 manager.stats.armor *= 100 / (100 - reduction);
+            }
+        }
+        public class DeathBringerStanceBuff : Buff
+        {
+            public DeathBringerStanceBuff(float duration, BuffManager manager, string source) : base(manager)
+            {
+                base.duration = duration;
+                base.source = source;
+                manager.simulationManager.ShowText($"{manager.stats.name} Has DeathBringer Stance!");
+            }
+
+            public override void Update()
+            {
+                duration -= Time.deltaTime;
+            }
+            public override void Kill()
+            {
+                manager.simulationManager.ShowText($"{manager.stats.name} Has No Longer DeathBringer Stance!");
             }
         }
     }

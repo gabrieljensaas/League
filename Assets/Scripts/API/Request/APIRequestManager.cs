@@ -120,6 +120,53 @@ namespace Simulator.API
                     }
                 }
             };
+            else if (name == "Aatrox") return new RiotAPIResponse()
+            {
+                ChampionsRes = new List<ChampionsRe>()
+                {
+                    new ChampionsRe()
+                    {
+                        _id = "Aatrox",
+                        champData = new ChampData()
+                        {
+                            type = "champion",
+                            format = "standAloneComplex",
+                            version = "12.7.1",
+                            data = new Data()
+                            {
+                                Champion = new Champion()
+                                {
+                                    name = "Aatrox",
+                                    key ="266",
+                                    stats = new Stats()
+                                    {
+                                        hp = 580,
+                                        mp = 0,
+                                        hpperlevel = 90,
+                                        mpperlevel = 0,
+                                        movespeed = 345,
+                                        armor = 38,
+                                        armorperlevel = 3.25d,
+                                        spellblock = 32,
+                                        spellblockperlevel = 1.25d,
+                                        attackrange = 175,
+                                        hpregen = 3d,
+                                        hpregenperlevel = 1d,
+                                        mpregen = 0d,
+                                        mpregenperlevel = 0d,
+                                        crit = 0,
+                                        critperlevel = 0,
+                                        attackdamage = 60,
+                                        attackdamageperlevel = 5d,
+                                        attackspeed = 0.651d,
+                                        attackspeedperlevel = 2.5d,
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
             else return null;
         }
     }

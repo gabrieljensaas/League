@@ -229,6 +229,11 @@ public class SimManager : MonoBehaviour
             champStats.armor *= 1.1f;
             champStats.spellBlock *= 1.1f;
         }
+
+        if(champStats.name == "Aatrox")
+        {
+            champStats.passiveSkill.coolDown = Constants.AatroxPassiveCooldownByLevelTable[champStats.level - 1];
+        }
     }
 
     /*public void LoadChampion1(Button button)
