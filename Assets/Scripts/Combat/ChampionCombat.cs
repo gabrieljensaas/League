@@ -94,7 +94,7 @@ namespace Simulator.Combat
                 case "W":
                     if (!CheckForAbilityControl(checksW)) yield break;
 
-                    yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
+                    yield return StartCoroutine(StartCastingAbility(myStats.wSkill.basic.castTime));
                     UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill, 4);
                     myStats.wCD = myStats.wSkill.basic.coolDown[4];
 
@@ -102,7 +102,7 @@ namespace Simulator.Combat
                 case "E":
                     if (!CheckForAbilityControl(checksE)) yield break;
 
-                    yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
+                    yield return StartCoroutine(StartCastingAbility(myStats.eSkill.basic.castTime));
                     if (myStats.name == "Garen")
                     {
                         simulationManager.ShowText($"Garen Used Judgment!");
@@ -118,8 +118,8 @@ namespace Simulator.Combat
                 case "R":
                     if (!CheckForAbilityControl(checksR)) yield break;
 
-                    yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
-                    UpdateAbilityTotalDamage(ref qSum, 3, myStats.qSkill, 2);
+                    yield return StartCoroutine(StartCastingAbility(myStats.rSkill.basic.castTime));
+                    UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill, 2);
                     myStats.rCD = myStats.rSkill.basic.coolDown[2];
 
                     if (myStats.name == "Garen")
