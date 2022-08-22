@@ -51,9 +51,7 @@ namespace Simulator.Combat
 
         private void CheckPassive()
         {
-            if (myStats.passiveSkill.inactive) return;
-
-            if (myStats.pCD > 0) return;
+            if (myStats.passiveSkill.inactive || myStats.pCD > 0) return;
 
             if (myStats.name == "Aatrox" && !myStats.buffManager.buffs.ContainsKey("DeathbringerStance"))
             {
@@ -69,21 +67,17 @@ namespace Simulator.Combat
             }
         }
 
-        protected  void ExecuteQ()
+        IEnumerator StartCastingAbility(float castTime)
         {
-            StartCoroutine(QExecute());
+            isCasting = true;
+            yield return new WaitForSeconds(castTime);
+            isCasting = false;
         }
 
-        IEnumerator QExecute()
+        private void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level)
         {
-            if (!CheckForQ()) yield break;
-
-            isCasting = true;
-            StartCoroutine(UpdateCasting(myStats.qSkill.basic.castTime));
-            yield return new WaitForSeconds(myStats.qSkill.basic.castTime);
-            qSum += targetCombat.TakeDamage(myStats.qSkill.UseSkill(4, myStats, targetStats), myStats.qSkill.basic.name);
-            abilitySum[0].text = qSum.ToString();
-            myStats.qCD = myStats.qSkill.basic.coolDown[4];
+            totalDamage += targetCombat.TakeDamage(skill.UseSkill(level, myStats, targetStats), skill.basic.name);
+            abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
         IEnumerator ExecuteSkillIfReady(string skill)
@@ -93,30 +87,22 @@ namespace Simulator.Combat
                 case "Q":
                     if (!CheckForQ()) yield break;
 
-                    isCasting = true;
-                    StartCoroutine(UpdateCasting(myStats.qSkill.basic.castTime));
-                    yield return new WaitForSeconds(myStats.qSkill.basic.castTime);
-                    qSum += targetCombat.TakeDamage(myStats.qSkill.UseSkill(4, myStats, targetStats), myStats.qSkill.basic.name);
-                    abilitySum[0].text = qSum.ToString();
+                    yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
+                    UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill, 4);
                     myStats.qCD = myStats.qSkill.basic.coolDown[4];
                     break;
                 case "W":
                     if (!CheckForW()) yield break;
 
-                    isCasting = true;
-                    StartCoroutine(UpdateCasting(myStats.wSkill.basic.castTime));
-                    yield return new WaitForSeconds(myStats.wSkill.basic.castTime);
-                    wSum += targetCombat.TakeDamage(myStats.wSkill.UseSkill(4, myStats, targetStats), myStats.wSkill.basic.name);
-                    abilitySum[1].text = wSum.ToString();
+                    yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
+                    UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill, 4);
                     myStats.wCD = myStats.wSkill.basic.coolDown[4];
 
                     break;
                 case "E":
                     if (!CheckForE()) yield break;
 
-                    isCasting = true;
-                    StartCoroutine(UpdateCasting(myStats.eSkill.basic.castTime));
-                    yield return new WaitForSeconds(myStats.eSkill.basic.castTime);
+                    yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
                     if (myStats.name == "Garen")
                     {
                         simulationManager.ShowText($"Garen Used Judgment!");
@@ -125,19 +111,15 @@ namespace Simulator.Combat
                         StartCoroutine(GarenE(0, 0));
                         break;
                     }
-                    eSum += targetCombat.TakeDamage(myStats.eSkill.UseSkill(4, myStats, targetStats), myStats.eSkill.basic.name);
-                    abilitySum[2].text = eSum.ToString();
+                    UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill, 4);
                     myStats.eCD = myStats.eSkill.basic.coolDown[4];
 
                     break;
                 case "R":
                     if (!CheckForR()) yield break;
 
-                    isCasting = true;
-                    StartCoroutine(UpdateCasting(myStats.rSkill.basic.castTime));
-                    yield return new WaitForSeconds(myStats.rSkill.basic.castTime);
-                    rSum += targetCombat.TakeDamage( myStats.rSkill.UseSkill(2, myStats, targetStats), myStats.rSkill.basic.name);
-                    abilitySum[3].text = rSum.ToString();
+                    yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
+                    UpdateAbilityTotalDamage(ref qSum, 3, myStats.qSkill, 2);
                     myStats.rCD = myStats.rSkill.basic.coolDown[2];
 
                     if (myStats.name == "Garen")
@@ -153,9 +135,7 @@ namespace Simulator.Combat
                 case "A":
                     if (!CheckForA()) yield break;
 
-                    isCasting = true;
-                    StartCoroutine(UpdateCasting(0.1f));
-                    yield return new WaitForSeconds(0.1f);
+                    yield return StartCoroutine(StartCastingAbility(0.1f));
                     AutoAttack();
                     
                     break;
