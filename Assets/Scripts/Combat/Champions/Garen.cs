@@ -1,0 +1,121 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Simulator.Combat;
+
+public class Garen : ChampionCombat
+{
+    public override void UpdatePriorityAndChecks()
+    {
+        combatPrio[0] = "R";
+        combatPrio[1] = "W";
+        combatPrio[2] = "Q";
+        combatPrio[3] = "A";
+        combatPrio[4] = "E";
+        checksQ.Add(new CheckIfCasting(this));
+        checksQ.Add(new CheckQCD(this));
+        targetCombat.checksQ.Add(new CheckIfSilenced(targetCombat));
+        checksW.Add(new CheckIfCasting(this));
+        checksW.Add(new CheckWCD(this));
+        targetCombat.checksW.Add(new CheckIfSilenced(targetCombat));
+        checksE.Add(new CheckIfCasting(this));
+        checksE.Add(new CheckECD(this));
+        targetCombat.checksE.Add(new CheckIfSilenced(targetCombat));
+        checksR.Add(new CheckIfCasting(this));
+        checksR.Add(new CheckRCD(this));
+        targetCombat.checksR.Add(new CheckIfSilenced(targetCombat));
+        checksA.Add(new CheckIfCasting(this));
+        checksA.Add(new CheckIfCantAA(this));
+        checksA.Add(new CheckACD(this));
+        autoattackcheck = new GarenAACheck(this);
+        checkTakeDamage.Add(new CheckDamageReductionPercent(this));
+        checkTakeDamageAA.Add(new CheckDamageReductionPercent(this));
+        checkTakeDamage.Add(new CheckShield(this));
+        checkTakeDamageAA.Add(new CheckShield(this));
+    }
+
+    protected override IEnumerator ExecuteSkillIfReady(string skill)
+    {
+        switch (skill)
+        {
+            case "Q":
+                if (!CheckForAbilityControl(checksQ)) yield break;
+
+                yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
+                UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill, 4);
+                myStats.qCD = myStats.qSkill.basic.coolDown[4];
+                break;
+            case "W":
+                if (!CheckForAbilityControl(checksW)) yield break;
+
+                yield return StartCoroutine(StartCastingAbility(myStats.wSkill.basic.castTime));
+                UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill, 4);
+                myStats.wCD = myStats.wSkill.basic.coolDown[4];
+
+                break;
+            case "E":
+                if (!CheckForAbilityControl(checksE)) yield break;
+
+                yield return StartCoroutine(StartCastingAbility(myStats.eSkill.basic.castTime));
+                if (myStats.name == "Garen")
+                {
+                    simulationManager.ShowText($"Garen Used Judgment!");
+                    myStats.eCD = myStats.eSkill.basic.coolDown[4];
+                    myStats.buffManager.buffs.Add("CantAA", new CantAABuff(3f, myStats.buffManager, myStats.eSkill.basic.name));
+                    StartCoroutine(GarenE(0, 0));
+                    break;
+                }
+                UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill, 4);
+                myStats.eCD = myStats.eSkill.basic.coolDown[4];
+
+                break;
+            case "R":
+                if (!CheckForAbilityControl(checksR)) yield break;
+
+                yield return StartCoroutine(StartCastingAbility(myStats.rSkill.basic.castTime));
+                UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill, 2);
+                myStats.rCD = myStats.rSkill.basic.coolDown[2];
+
+                if (myStats.name == "Garen")
+                {
+                    StopCoroutine("GarenE");          //if 2 GarenE coroutine exists this could leat to some bugs
+                    if (myStats.buffManager.buffs.ContainsKey("CantAA"))
+                    {
+                        myStats.buffManager.buffs.Remove("CantAA");
+                    }
+                }
+
+                break;
+            case "A":
+                if (!CheckForAbilityControl(checksA)) yield break;
+
+                yield return StartCoroutine(StartCastingAbility(0.1f));
+                AutoAttack();
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    private IEnumerator GarenE(float seconds, int spinCount)
+    {
+        yield return new WaitForSeconds(seconds);
+        eSum += targetCombat.TakeDamage(myStats.eSkill.UseSkill(4, myStats, targetStats), myStats.eSkill.basic.name);
+        myUI.abilitySum[2].text = eSum.ToString();
+        spinCount++;
+        if (spinCount >= 6 && targetStats.buffManager.buffs.ContainsKey("Judgment"))
+        {
+            targetStats.buffManager.buffs["Judgment"].duration = 6;
+        }
+        else if (spinCount >= 6)
+        {
+            targetStats.buffManager.buffs.Add("Judgment", new ArmorReductionBuff(6, targetStats.buffManager, "Judgment", 25, "Judgment"));
+        }
+        if (spinCount > 6)
+        {
+            yield break;
+        }
+        StartCoroutine(GarenE(3f / 7f, spinCount));
+    }
+}

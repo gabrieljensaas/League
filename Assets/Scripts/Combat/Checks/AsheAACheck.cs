@@ -12,7 +12,7 @@ public class AsheAACheck : Check
         {
             damage *= value.value / 100;
             combat.qSum += value.value * damage / 100;
-            combat.abilitySum[0].text = combat.qSum.ToString();
+            combat.myUI.abilitySum[0].text = combat.qSum.ToString();
         }
         else
         {

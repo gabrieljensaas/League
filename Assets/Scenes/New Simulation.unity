@@ -2779,6 +2779,7 @@ GameObject:
   - component: {fileID: 155855318}
   - component: {fileID: 155855320}
   - component: {fileID: 155855319}
+  - component: {fileID: 155855321}
   m_Layer: 0
   m_Name: Champion Prototype 2
   m_TagString: Champion
@@ -2818,18 +2819,17 @@ MonoBehaviour:
   myStats: {fileID: 155855320}
   targetStats: {fileID: 488366046}
   targetCombat: {fileID: 488366045}
-  output: {fileID: 1912723367}
-  aaSum: {fileID: 1690183375}
-  abilitySum:
-  - {fileID: 146497631}
-  - {fileID: 430729441}
-  - {fileID: 585903474}
-  - {fileID: 685751160}
-  - {fileID: 1575644729}
-  healSum: {fileID: 514740057}
-  combatPriority: {fileID: 1877986604}
+  myUI: {fileID: 0}
   simulationManager: {fileID: 0}
-  AttackCooldown: 0
+  attackCooldown: 0
+  aSum: 0
+  hSum: 0
+  qSum: 0
+  wSum: 0
+  eSum: 0
+  rSum: 0
+  pSum: 0
+  isCasting: 0
 --- !u!114 &155855320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2882,6 +2882,28 @@ MonoBehaviour:
   baseArmor: 0
   baseSpellBlock: 0
   baseAttackSpeed: 0
+--- !u!114 &155855321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155855317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7edea6dbff2e42045905390924068c22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  output: {fileID: 1912723367}
+  aaSum: {fileID: 1690183375}
+  abilitySum:
+  - {fileID: 146497631}
+  - {fileID: 430729441}
+  - {fileID: 585903474}
+  - {fileID: 685751160}
+  - {fileID: 1575644729}
+  healSum: {fileID: 514740057}
+  combatPriority: {fileID: 1877986604}
 --- !u!1 &158112003
 GameObject:
   m_ObjectHideFlags: 0
@@ -7207,6 +7229,7 @@ GameObject:
   - component: {fileID: 488366044}
   - component: {fileID: 488366046}
   - component: {fileID: 488366045}
+  - component: {fileID: 488366047}
   m_Layer: 0
   m_Name: Champion Prototype
   m_TagString: Champion
@@ -7246,18 +7269,17 @@ MonoBehaviour:
   myStats: {fileID: 488366046}
   targetStats: {fileID: 155855320}
   targetCombat: {fileID: 155855319}
-  output: {fileID: 1912723367}
-  aaSum: {fileID: 1446184276}
-  abilitySum:
-  - {fileID: 1621950358}
-  - {fileID: 503529161}
-  - {fileID: 1180676954}
-  - {fileID: 1027007981}
-  - {fileID: 1790924761}
-  healSum: {fileID: 1371663533}
-  combatPriority: {fileID: 374150018}
+  myUI: {fileID: 0}
   simulationManager: {fileID: 0}
-  AttackCooldown: 0
+  attackCooldown: 0
+  aSum: 0
+  hSum: 0
+  qSum: 0
+  wSum: 0
+  eSum: 0
+  rSum: 0
+  pSum: 0
+  isCasting: 0
 --- !u!114 &488366046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7310,6 +7332,28 @@ MonoBehaviour:
   baseArmor: 0
   baseSpellBlock: 0
   baseAttackSpeed: 0
+--- !u!114 &488366047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488366043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7edea6dbff2e42045905390924068c22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  output: {fileID: 1912723367}
+  aaSum: {fileID: 1446184276}
+  abilitySum:
+  - {fileID: 1621950358}
+  - {fileID: 503529161}
+  - {fileID: 1180676954}
+  - {fileID: 1027007981}
+  - {fileID: 1790924761}
+  healSum: {fileID: 1371663533}
+  combatPriority: {fileID: 374150018}
 --- !u!1 &488965729
 GameObject:
   m_ObjectHideFlags: 0

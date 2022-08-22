@@ -38,8 +38,8 @@ public class SimManager : MonoBehaviour
     public Button loadBtn;
     public Button resetBtn;
     public GameObject outputUI;
-    public Simulator.Combat.ChampionStats[] champStats;
-    public Simulator.Combat.ChampionCombat[] champCombat;
+    public ChampionStats[] champStats;
+    public ChampionCombat[] champCombat;
     public GameObject matchIDGO;
     public GameObject[] matchID;
     public TextMeshProUGUI[] output;
@@ -71,7 +71,7 @@ public class SimManager : MonoBehaviour
     {
         if (_instance != null && _instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
         else
         {
@@ -121,31 +121,38 @@ public class SimManager : MonoBehaviour
         var champName = championsDropdowns[championIndex].options[championsDropdowns[championIndex].value].text;
         var exp = Int32.Parse(championsExperienceInput[championIndex].text);
         var statsToLoad = APIRequestManager.Instance.GetMockChampionData(champName);
-        Simulator.Combat.ChampionStats champStats = championStats[championIndex];
+        ChampionStats newChampStats;
 
-        FindSkills(champName, champStats);
+        newChampStats = championStats[championIndex];
+        if (champName == "Ashe")
+            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Ashe>();
+        else if (champName == "Garen")
+            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Garen>();
+        champStats[championIndex] = newChampStats;
+        champCombat[championIndex] = newChampStats.MyCombat;
 
-        champStats.name = champName;
-        champStats.level = GetLevel(exp);
+        FindSkills(champName, newChampStats);
 
-        champStats.baseHealth = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.hp;
-        champStats.baseAD = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.attackdamage;
-        champStats.baseArmor = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.armor;
-        champStats.baseSpellBlock = (float)(statsToLoad.ChampionsRes[0].champData.data.Champion.stats.spellblock);
-        champStats.baseAttackSpeed = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.attackspeed;
+        newChampStats.name = champName;
+        newChampStats.level = GetLevel(exp);
 
-        champStats.maxHealth = champStats.baseHealth;
-        champStats.AD = champStats.baseAD;
-        champStats.armor = champStats.baseArmor;
-        champStats.spellBlock = champStats.baseSpellBlock;
-        champStats.attackSpeed = champStats.baseAttackSpeed;
+        newChampStats.baseHealth = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.hp;
+        newChampStats.baseAD = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.attackdamage;
+        newChampStats.baseArmor = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.armor;
+        newChampStats.baseSpellBlock = (float)(statsToLoad.ChampionsRes[0].champData.data.Champion.stats.spellblock);
+        newChampStats.baseAttackSpeed = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.attackspeed;
+
+        newChampStats.maxHealth = newChampStats.baseHealth;
+        newChampStats.AD = newChampStats.baseAD;
+        newChampStats.armor = newChampStats.baseArmor;
+        newChampStats.spellBlock = newChampStats.baseSpellBlock;
+        newChampStats.attackSpeed = newChampStats.baseAttackSpeed;
                    
-        GetStatsByLevel(champStats, statsToLoad);
-        champStats.currentHealth = champStats.maxHealth;
+        GetStatsByLevel(newChampStats, statsToLoad);
+        newChampStats.currentHealth = newChampStats.maxHealth;
 
-        ExtraStats(champStats);
-        champStats.StaticUIUpdate();
-        champStats.MyCombat.UpdatePriorityAndChecks();
+        ExtraStats(newChampStats);
+        newChampStats.StaticUIUpdate();
     }
 
     private void FindSkills(string champName, Simulator.Combat.ChampionStats champStats)
@@ -207,7 +214,7 @@ public class SimManager : MonoBehaviour
         }
         return _level;
     }
-    private void GetStatsByLevel(Simulator.Combat.ChampionStats champ, RiotAPIResponse stats)
+    private void GetStatsByLevel(ChampionStats champ, RiotAPIResponse stats)
     {
         int level = champ.level;
 
@@ -220,7 +227,7 @@ public class SimManager : MonoBehaviour
         champ.spellBlock += ((float)(stats.ChampionsRes[0].champData.data.Champion.stats.spellblockperlevel) * (float)mFactor[level - 1]);
     }
 
-    private void ExtraStats(Simulator.Combat.ChampionStats champStats)
+    private void ExtraStats(ChampionStats champStats)
     {
         if (champStats.name == "Garen")
         {
@@ -317,6 +324,11 @@ public class SimManager : MonoBehaviour
     
     public void StartBattle()
     {
+        champStats[0].MyCombat.UpdateTarget(1);
+        champStats[1].MyCombat.UpdateTarget(0);
+        champStats[0].MyCombat.UpdatePriorityAndChecks();
+        champStats[1].MyCombat.UpdatePriorityAndChecks();
+
         ShowOutput();
         ongoing = true;
         loadBtn.interactable = false;

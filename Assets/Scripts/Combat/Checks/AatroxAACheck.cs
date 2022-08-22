@@ -12,7 +12,7 @@ public class AatroxAACheck : Check
         {
             damage += combat.targetStats.maxHealth * (5 + (7 / 17 * (combat.myStats.level - 1))) / 100 * (100 / (100 + combat.targetStats.armor));
             combat.pSum += combat.targetStats.maxHealth * (5 + (7 / 17 * (combat.myStats.level - 1))) / 100 * (100 / (100 + combat.targetStats.armor));
-            combat.abilitySum[4].text = combat.pSum.ToString();
+            combat.myUI.abilitySum[4].text = combat.pSum.ToString();
             combat.myStats.buffManager.buffs.Remove("DeathbringerStance");
             combat.myStats.Heal(damage);
             combat.simulationManager.ShowText($"{combat.name} Healed From Death Bringer Stance For {damage}!");

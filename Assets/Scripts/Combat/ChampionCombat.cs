@@ -10,12 +10,8 @@ namespace Simulator.Combat
     {
         [SerializeField] public ChampionStats myStats;
         [SerializeField] public ChampionStats targetStats;
-        [SerializeField] private ChampionCombat targetCombat;
-        [SerializeField] private TextMeshProUGUI output;
-        [SerializeField] private TextMeshProUGUI aaSum;
-        [SerializeField] public TextMeshProUGUI[] abilitySum;
-        [SerializeField] private TextMeshProUGUI healSum;
-        [SerializeField] private TextMeshProUGUI combatPriority;
+        [SerializeField] protected ChampionCombat targetCombat;
+        [SerializeField] public ChampionUI myUI;
         [SerializeField] public SimManager simulationManager;
 
         [HideInInspector] public float attackCooldown;
@@ -29,12 +25,14 @@ namespace Simulator.Combat
         [HideInInspector] public Check autoattackcheck;
 
         public float aSum, hSum, qSum, wSum, eSum, rSum, pSum;
-        private string[] combatPrio = { "", "", "", "", "" };
+        protected string[] combatPrio = { "", "", "", "", "" };
         public bool isCasting = false;
 
         private void Start()
         {
             simulationManager = SimManager.Instance;
+            myStats = GetComponent<ChampionStats>();
+            myUI = GetComponent<ChampionUI>();
         }
 
         public void CombatUpdate()
@@ -67,20 +65,20 @@ namespace Simulator.Combat
             }
         }
 
-        IEnumerator StartCastingAbility(float castTime)
+        protected IEnumerator StartCastingAbility(float castTime)
         {
             isCasting = true;
             yield return new WaitForSeconds(castTime);
             isCasting = false;
         }
 
-        private void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level)
+        protected void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level)
         {
             totalDamage += targetCombat.TakeDamage(skill.UseSkill(level, myStats, targetStats), skill.basic.name);
-            abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
+            myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
-        IEnumerator ExecuteSkillIfReady(string skill)
+        protected virtual IEnumerator ExecuteSkillIfReady(string skill)
         {
             switch (skill)
             {
@@ -103,14 +101,6 @@ namespace Simulator.Combat
                     if (!CheckForAbilityControl(checksE)) yield break;
 
                     yield return StartCoroutine(StartCastingAbility(myStats.eSkill.basic.castTime));
-                    if (myStats.name == "Garen")
-                    {
-                        simulationManager.ShowText($"Garen Used Judgment!");
-                        myStats.eCD = myStats.eSkill.basic.coolDown[4];
-                        myStats.buffManager.buffs.Add("CantAA" ,new CantAABuff(3f, myStats.buffManager, myStats.eSkill.basic.name));
-                        StartCoroutine(GarenE(0, 0));
-                        break;
-                    }
                     UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill, 4);
                     myStats.eCD = myStats.eSkill.basic.coolDown[4];
 
@@ -121,16 +111,6 @@ namespace Simulator.Combat
                     yield return StartCoroutine(StartCastingAbility(myStats.rSkill.basic.castTime));
                     UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill, 2);
                     myStats.rCD = myStats.rSkill.basic.coolDown[2];
-
-                    if (myStats.name == "Garen")
-                    {
-                        StopCoroutine("GarenE");          //if 2 GarenE coroutine exists this could leat to some bugs
-                        if (myStats.buffManager.buffs.ContainsKey("CantAA"))
-                        {
-                            myStats.buffManager.buffs.Remove("CantAA");
-                        }
-                    }
-
                     break;
                 case "A":
                     if (!CheckForAbilityControl(checksA)) yield break;
@@ -144,28 +124,7 @@ namespace Simulator.Combat
             }
         }
 
-        private IEnumerator GarenE(float seconds, int spinCount)
-        {
-            yield return new WaitForSeconds(seconds);
-            eSum += targetCombat.TakeDamage(myStats.eSkill.UseSkill(4, myStats, targetStats), myStats.eSkill.basic.name);
-            abilitySum[2].text = eSum.ToString();
-            spinCount++;
-            if (spinCount >= 6 && targetStats.buffManager.buffs.ContainsKey("Judgment"))
-            {
-                targetStats.buffManager.buffs["Judgment"].duration = 6;
-            }
-            else if(spinCount >= 6)
-            {
-                targetStats.buffManager.buffs.Add("Judgment", new ArmorReductionBuff(6, targetStats.buffManager, "Judgment", 25, "Judgment"));
-            }
-            if (spinCount > 6)
-            {
-                yield break;
-            }
-            StartCoroutine(GarenE(3f / 7f, spinCount));
-        }
-
-        private void AutoAttack()
+        protected void AutoAttack()
         {
             float damage = Mathf.Round(myStats.AD * (100 / (100 + targetStats.armor)));
             if (damage < 0)
@@ -176,7 +135,7 @@ namespace Simulator.Combat
             if (autoattackcheck != null) damage = autoattackcheck.Control(damage);
 
             aSum += targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack", true);
-            aaSum.text = aSum.ToString();
+            myUI.aaSum.text = aSum.ToString();
 
             attackCooldown = 1f / myStats.attackSpeed;
         }
@@ -204,63 +163,16 @@ namespace Simulator.Combat
             return damage;
         }
 
-        public void UpdatePriorityAndChecks()
+        public void UpdateTarget(int index)
+        {
+            targetStats = SimManager.Instance.champStats[index];
+            targetCombat = targetStats.MyCombat;
+        }
+
+        public virtual void UpdatePriorityAndChecks()
         {
             switch (myStats.name)
             {
-                case "Ashe":
-                    combatPrio[0] = "Q";
-                    combatPrio[1] = "A";
-                    combatPrio[2] = "W";
-                    combatPrio[3] = "R";
-                    checksQ.Add(new CheckIfCasting(this));
-                    checksQ.Add(new CheckQCD(this));
-                    checksQ.Add(new CheckAsheQ(this));
-                    targetCombat.checksQ.Add(new CheckIfStunned(targetCombat));
-                    checksW.Add(new CheckIfCasting(this));
-                    checksW.Add(new CheckWCD(this));
-                    targetCombat.checksW.Add(new CheckIfStunned(targetCombat));
-                    checksE.Add(new CheckIfCasting(this));
-                    checksE.Add(new CheckECD(this));
-                    targetCombat.checksE.Add(new CheckIfStunned(targetCombat));
-                    checksR.Add(new CheckIfCasting(this));
-                    checksR.Add(new CheckRCD(this));
-                    targetCombat.checksR.Add(new CheckIfStunned(targetCombat));
-                    checksA.Add(new CheckIfCasting(this));
-                    checksA.Add(new CheckACD(this));
-                    targetCombat.checksA.Add(new CheckIfStunned(targetCombat));
-                    autoattackcheck = new AsheAACheck(this);
-                    targetCombat.checkTakeDamageAA.Add(new CheckIfFrosted(targetCombat));
-                    break;
-
-                case "Garen":
-                    combatPrio[0] = "R";
-                    combatPrio[1] = "W";
-                    combatPrio[2] = "Q";
-                    combatPrio[3] = "A";
-                    combatPrio[4] = "E";
-                    checksQ.Add(new CheckIfCasting(this));
-                    checksQ.Add(new CheckQCD(this));
-                    targetCombat.checksQ.Add(new CheckIfSilenced(targetCombat));
-                    checksW.Add(new CheckIfCasting(this));
-                    checksW.Add(new CheckWCD(this));
-                    targetCombat.checksW.Add(new CheckIfSilenced(targetCombat));
-                    checksE.Add(new CheckIfCasting(this));
-                    checksE.Add(new CheckECD(this));
-                    targetCombat.checksE.Add(new CheckIfSilenced(targetCombat));
-                    checksR.Add(new CheckIfCasting(this));
-                    checksR.Add(new CheckRCD(this));
-                    targetCombat.checksR.Add(new CheckIfSilenced(targetCombat));
-                    checksA.Add(new CheckIfCasting(this));
-                    checksA.Add(new CheckIfCantAA(this));
-                    checksA.Add(new CheckACD(this));
-                    autoattackcheck = new GarenAACheck(this);
-                    checkTakeDamage.Add(new CheckDamageReductionPercent(this));
-                    checkTakeDamageAA.Add(new CheckDamageReductionPercent(this));
-                    checkTakeDamage.Add(new CheckShield(this));
-                    checkTakeDamageAA.Add(new CheckShield(this));
-                    break;
-
                 case "Aatrox":
                     combatPrio[0] = "R";
                     combatPrio[1] = "Q";
@@ -297,7 +209,7 @@ namespace Simulator.Combat
                     break;
             }
 
-            combatPriority.text = string.Join(", ", combatPrio);
+            myUI.combatPriority.text = string.Join(", ", combatPrio);
         }
 
         public bool CheckForAbilityControl(List<Check> checks)
