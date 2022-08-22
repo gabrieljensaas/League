@@ -4,7 +4,6 @@ using UnityEngine;
 using TMPro;
 using Simulator.Combat;
 using static AttributeTypes;
-using static Simulator.Combat.BuffManager;
 
 [CreateAssetMenu(fileName = "new Spell", menuName = "ScriptableObjects/SkillList")]
 public class SkillList : ScriptableObject
@@ -53,14 +52,14 @@ public class SkillList : ScriptableObject
         float damage = 0;
         if(basic.name == "Ranger's Focus")
         {
-            myStats.buffManager.buffs.Add(new FlurryBuff(4, myStats.buffManager, basic.name, 100 + (5 * (level + 1))));
+            myStats.buffManager.buffs.Add("Flurry", new FlurryBuff(4, myStats.buffManager, basic.name, 100 + (5 * (level + 1))));
             SelfEffects(level, myStats);
             return 0;
         }
 
         if(basic.name == "Decisive Strike")
         {
-            myStats.buffManager.buffs.Add(new DecisiveStrikeBuff(4.5f, myStats.buffManager, basic.name, ((level + 1) * 30) + myStats.AD * 0.5f));
+            myStats.buffManager.buffs.Add("DecisiveStrike", new DecisiveStrikeBuff(4.5f, myStats.buffManager, basic.name, ((level + 1) * 30) + myStats.AD * 0.5f));
             return 0;
         }
 
@@ -97,12 +96,16 @@ public class SkillList : ScriptableObject
     {
         if (basic.champion == "Ashe")
         {
-            target.buffManager.buffs.Add(new FrostedBuff(2, target.buffManager,basic.name));
+            if(!target.buffManager.buffs.TryAdd("Frosted",new FrostedBuff(2, target.buffManager, basic.name)))
+            {
+                target.buffManager.buffs["Frosted"].duration = 2;
+                target.buffManager.buffs["Frosted"].source = basic.name;
+            }
         }
 
         if (enemyEffects.stun)
         {
-            target.buffManager.buffs.Add(new StunBuff(enemyEffects.stunDuration, target.buffManager, basic.name));
+            target.buffManager.buffs.Add("Stun", new StunBuff(enemyEffects.stunDuration, target.buffManager, basic.name));
         }
     }
 
@@ -110,22 +113,25 @@ public class SkillList : ScriptableObject
     {
         if (selfEffects.Tenacity)
         {
-            myStats.buffManager.buffs.Add(new TenacityBuff(selfEffects.TenacityDuration[level], myStats.buffManager, basic.name, selfEffects.TenacityPercent[level]));
+            myStats.buffManager.buffs.Add("Tenacity", new TenacityBuff(selfEffects.TenacityDuration[level], myStats.buffManager, basic.name, selfEffects.TenacityPercent[level], basic.name));
         }
         
         if (selfEffects.ASIncrease)
         {
-            myStats.buffManager.buffs.Add(new AttackSpeedBuff(selfEffects.ASIncreaseDuration[level], myStats.buffManager, basic.name, myStats.baseAttackSpeed * 0.01f * selfEffects.ASIncreasePercent[level]));
+            if(!myStats.buffManager.buffs.TryAdd(basic.name, new AttackSpeedBuff(selfEffects.ASIncreaseDuration[level], myStats.buffManager, basic.name, myStats.baseAttackSpeed * 0.01f * selfEffects.ASIncreasePercent[level], basic.name)))
+            {
+                //myStats.buffManager.buffs["AttackSpeed"].duration = selfEffects.ASIncreaseDuration[level];
+            }
         }        
 
         if (selfEffects.DamageRed)
         {
-            myStats.buffManager.buffs.Add(new DamageRedPercentBuff(selfEffects.DamageRedDuration[level], myStats.buffManager, basic.name, selfEffects.DamageRedPercent[level]));
+            myStats.buffManager.buffs.Add("Damage Reduction" ,new DamageReductionPercentBuff(selfEffects.DamageRedDuration[level], myStats.buffManager, basic.name, selfEffects.DamageRedPercent[level]));
         }
 
         if (selfEffects.Shield)
         {
-            myStats.buffManager.buffs.Add(new ShieldBuff(selfEffects.ShieldDuration[level], myStats.buffManager, basic.name, selfEffects.ShieldFlat[level]));
+            myStats.buffManager.buffs.Add("Shield" , new ShieldBuff(selfEffects.ShieldDuration[level], myStats.buffManager, basic.name, selfEffects.ShieldFlat[level], basic.name));
         }
     }
 }

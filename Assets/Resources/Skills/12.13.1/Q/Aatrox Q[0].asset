@@ -53,11 +53,11 @@ MonoBehaviour:
     - 0
   unit:
     flat:
-    - 24
-    - 72
-    - 120
-    - 168
-    - 216
+    - 10
+    - 30
+    - 50
+    - 70
+    - 90
     percent:
     - 0
     - 0
@@ -77,11 +77,11 @@ MonoBehaviour:
     - 0
     - 0
     percentAD:
-    - 144
-    - 156
-    - 168
-    - 180
-    - 192
+    - 60
+    - 65
+    - 70
+    - 75
+    - 80
     percentBonusAD:
     - 0
     - 0

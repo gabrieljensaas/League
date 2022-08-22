@@ -2,24 +2,21 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
-using static AttributeTypes;
-using static Simulator.Combat.BuffManager;
 using System.Linq;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Simulator.Combat
 {
     public class ChampionCombat : MonoBehaviour
     {
-        [SerializeField] private ChampionStats myStats;
-        [SerializeField] private ChampionStats targetStats;
+        [SerializeField] public ChampionStats myStats;
+        [SerializeField] public ChampionStats targetStats;
         [SerializeField] private ChampionCombat targetCombat;
         [SerializeField] private TextMeshProUGUI output;
         [SerializeField] private TextMeshProUGUI aaSum;
-        [SerializeField] private TextMeshProUGUI[] abilitySum;
+        [SerializeField] public TextMeshProUGUI[] abilitySum;
         [SerializeField] private TextMeshProUGUI healSum;
         [SerializeField] private TextMeshProUGUI combatPriority;
-        [SerializeField] private SimManager simulationManager;
+        [SerializeField] public SimManager simulationManager;
 
         [HideInInspector] public float AttackCooldown;
         [HideInInspector] public List<Check> checksq = new List<Check>();
@@ -31,9 +28,9 @@ namespace Simulator.Combat
         [HideInInspector] public List<Check> checktakedamage = new List<Check>();
         [HideInInspector] public Check autoattackcheck;
 
-        private float aSum, hSum, qSum, wSum, eSum, rSum, pSum;
+        public float aSum, hSum, qSum, wSum, eSum, rSum, pSum;
         private string[] combatPrio = { "", "", "", "", "" };
-        private bool isCasting = false;
+        public bool isCasting = false;
 
         private void Start()
         {
@@ -58,9 +55,9 @@ namespace Simulator.Combat
 
             if (myStats.pCD > 0) return;
 
-            if(myStats.name == "Aatrox" && !myStats.buffManager.buffs.OfType<DeathBringerStanceBuff>().Any())
+            if (myStats.name == "Aatrox" && !myStats.buffManager.buffs.ContainsKey("DeathbringerStance"))
             {
-                myStats.buffManager.buffs.Add(new DeathBringerStanceBuff(float.MaxValue, myStats.buffManager, myStats.passiveSkill.name));
+                myStats.buffManager.buffs.Add("DeathbringerStance" ,new DeathbringerStanceBuff(float.MaxValue, myStats.buffManager, myStats.passiveSkill.name));
             }
         }
 
@@ -124,7 +121,7 @@ namespace Simulator.Combat
                     {
                         simulationManager.ShowText($"Garen Used Judgment!");
                         myStats.eCD = myStats.eSkill.basic.coolDown[4];
-                        myStats.buffManager.buffs.Add(new CantAABuff(3f, myStats.buffManager, myStats.eSkill.basic.name));
+                        myStats.buffManager.buffs.Add("CantAA" ,new CantAABuff(3f, myStats.buffManager, myStats.eSkill.basic.name));
                         StartCoroutine(GarenE(0, 0));
                         break;
                     }
@@ -146,10 +143,9 @@ namespace Simulator.Combat
                     if (myStats.name == "Garen")
                     {
                         StopCoroutine("GarenE");          //if 2 GarenE coroutine exists this could leat to some bugs
-                        if(myStats.buffManager.buffs.OfType<CantAABuff>().Any())
+                        if (myStats.buffManager.buffs.ContainsKey("CantAA"))
                         {
-                            myStats.buffManager.buffs.OfType<CantAABuff>().FirstOrDefault().Kill();
-                            myStats.buffManager.buffs.Remove(myStats.buffManager.buffs.OfType<CantAABuff>().First());
+                            myStats.buffManager.buffs.Remove("CantAA");
                         }
                     }
 
@@ -174,11 +170,15 @@ namespace Simulator.Combat
             eSum += targetCombat.TakeDamage(myStats.eSkill.UseSkill(4, myStats, targetStats), myStats.eSkill.basic.name);
             abilitySum[2].text = eSum.ToString();
             spinCount++;
-            if(spinCount >= 6)
+            if (spinCount >= 6 && targetStats.buffManager.buffs.ContainsKey("Judgment"))
             {
-                targetStats.buffManager.buffs.Add(new ArmorReductionBuff(6, targetStats.buffManager, "Judgment", 25));
+                targetStats.buffManager.buffs["Judgment"].duration = 6;
             }
-            if(spinCount > 6)
+            else if(spinCount >= 6)
+            {
+                targetStats.buffManager.buffs.Add("Judgment", new ArmorReductionBuff(6, targetStats.buffManager, "Judgment", 25, "Judgment"));
+            }
+            if (spinCount > 6)
             {
                 yield break;
             }
@@ -398,367 +398,6 @@ namespace Simulator.Combat
             }
 
             return damage;
-        }
-
-        public abstract class Check
-        {
-            protected ChampionCombat combat;
-            protected Check(ChampionCombat ccombat)
-            {
-                combat = ccombat;
-            }
-
-            public abstract bool Control();
-            public abstract float Control(float damage);
-        }
-
-        public class CheckIfCasting : Check
-        {
-            public CheckIfCasting(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override bool Control()
-            {
-                if (combat.isCasting) return false;
-                return true;
-            }
-
-            public override float Control(float damage)
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-
-        public class CheckQCD : Check
-        {
-            public CheckQCD(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override bool Control()
-            {
-                if (combat.myStats.qCD > 0) return false;
-                return true;
-            }
-
-            public override float Control(float damage)
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-
-        public class CheckQCDAatrox : Check
-        {
-            public CheckQCDAatrox(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override bool Control()
-            {
-                if (combat.myStats.qCD > 0) return false;
-                return true;
-            }
-
-            public override float Control(float damage)
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-
-        public class CheckWCD : Check
-        {
-            public CheckWCD(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override bool Control()
-            {
-                if (combat.myStats.wCD > 0) return false;
-                return true;
-            }
-
-            public override float Control(float damage)
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-
-        public class CheckECD : Check
-        {
-            public CheckECD(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override bool Control()
-            {
-                if (combat.myStats.eCD > 0) return false;
-                return true;
-            }
-            public override float Control(float damage)
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-        public class CheckRCD : Check
-        {
-            public CheckRCD(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override bool Control()
-            {
-                if (combat.myStats.rCD > 0) return false;
-                return true;
-            }
-            public override float Control(float damage)
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-        public class CheckACD : Check
-        {
-            public CheckACD(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override bool Control()
-            {
-                if (combat.AttackCooldown > 0) return false;
-                return true;
-            }
-
-            public override float Control(float damage)
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-
-        public class CheckAsheQ : Check
-        {
-            public CheckAsheQ(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override bool Control()
-            {
-                return combat.myStats.buffManager.Has4AsheQ();
-            }
-
-            public override float Control(float damage)
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-
-        public class CheckIfStunned : Check
-        {
-            public CheckIfStunned(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override bool Control()
-            {
-                return !combat.myStats.buffManager.IsStunned();
-            }
-            public override float Control(float damage)
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-
-        public class CheckIfSilenced : Check
-        {
-            public CheckIfSilenced(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override bool Control()
-            {
-                return !combat.myStats.buffManager.IsSilenced();
-            }
-            public override float Control(float damage)
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-
-        public class CheckIfDisarmed : Check
-        {
-            public CheckIfDisarmed(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override bool Control()
-            {
-                return !combat.myStats.buffManager.IsDisarmed();
-            }
-            public override float Control(float damage)
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-
-        public class CheckIfCantAA : Check
-        {
-            public CheckIfCantAA(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override bool Control()
-            {
-                return combat.myStats.buffManager.CanAA();
-            }
-            public override float Control(float damage)
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-        public class CheckIfFrosted : Check
-        {
-            public CheckIfFrosted(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override bool Control()
-            {
-                throw new System.NotImplementedException();
-            }
-            public override float Control(float damage)
-            {
-                return damage * 1.1f;
-            }
-        }
-
-        public class AsheAACheck : Check
-        {
-            public AsheAACheck(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override float Control(float damage)
-            {
-                if (combat.myStats.buffManager.FlurryDamage() > 0)
-                {
-                    damage *= combat.myStats.buffManager.FlurryDamage() / 100;
-                    combat.qSum += combat.myStats.buffManager.FlurryDamage() * damage / 100;
-                    combat.abilitySum[0].text = combat.qSum.ToString();
-                }
-
-                combat.targetStats.buffManager.buffs.Add(new FrostedBuff(2, combat.targetStats.buffManager, "Ashe's Auto Attack"));
-                if (combat.myStats.buffManager.FlurryDamage() == 0)
-                {
-                    combat.myStats.buffManager.buffs.Add(new AsheQBuff(4, combat.myStats.buffManager, "Ashe's Auto Attack"));
-                }
-                return damage;
-            }
-
-            public override bool Control()
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-        public class GarenAACheck : Check
-        {
-            public GarenAACheck(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override float Control(float damage)
-            {
-                if (combat.myStats.buffManager.DecisiveStrikeDamage() > 0)
-                {
-                    damage += combat.myStats.buffManager.DecisiveStrikeDamage();
-                    combat.qSum += combat.myStats.buffManager.DecisiveStrikeDamage();
-                    combat.abilitySum[0].text = combat.qSum.ToString();
-                    combat.myStats.buffManager.buffs.Remove(combat.myStats.buffManager.buffs.OfType<DecisiveStrikeBuff>().FirstOrDefault());
-                    combat.targetStats.buffManager.buffs.Add(new SilenceBuff(1.5f, combat.targetStats.buffManager, "Decisive Strike"));
-                }
-                return damage;
-            }
-
-            public override bool Control()
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-
-        public class AatroxAACheck : Check
-        {
-            public AatroxAACheck(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override float Control(float damage)
-            {
-                if (combat.myStats.buffManager.HasDeathbringerStance())
-                {
-                    damage += combat.targetStats.maxHealth * (5 + (7 / 17 * (combat.myStats.level - 1))) / 100 * (100 / (100 + combat.targetStats.armor));
-                    combat.pSum += combat.targetStats.maxHealth * (5 + (7 / 17 * (combat.myStats.level - 1))) / 100 * (100 / (100 + combat.targetStats.armor));
-                    combat.abilitySum[4].text = combat.pSum.ToString();
-                    combat.myStats.buffManager.buffs.Remove(combat.myStats.buffManager.buffs.OfType<DeathBringerStanceBuff>().FirstOrDefault());
-                    combat.myStats.Heal(damage);
-                    combat.simulationManager.ShowText($"{combat.name} Healed From Death Bringer Stance For {damage}!");
-                    combat.myStats.pCD = combat.myStats.passiveSkill.coolDown;
-                }
-                else combat.myStats.pCD -= 2;
-                return damage;
-            }
-
-            public override bool Control()
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-        public class CheckDamageReductionPercent : Check
-        {
-            public CheckDamageReductionPercent(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override float Control(float damage)
-            {
-                if (combat.myStats.buffManager.DamageRed() > 0)
-                {
-                    damage *= (100 - combat.myStats.buffManager.DamageRed()) / 100;
-                }
-                return damage;
-            }
-
-            public override bool Control()
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-        public class CheckShield : Check
-        {
-            public CheckShield(ChampionCombat ccombat) : base(ccombat)
-            {
-            }
-
-            public override float Control(float damage)
-            {
-                if (combat.myStats.buffManager.Shield() > 0)
-                {
-                    if (combat.myStats.buffManager.Shield() >= damage)
-                    {
-                        combat.myStats.buffManager.buffs.OfType<ShieldBuff>().FirstOrDefault().shield -= damage;
-                        combat.simulationManager.ShowText($"{combat.myStats.name}'s Shield Absorbed {damage} Damage!");
-                    }
-                    else
-                    {
-                        combat.simulationManager.ShowText($"{combat.myStats.name}'s Shield Absorbed {combat.myStats.buffManager.Shield()} Damage!");
-                        damage -= combat.myStats.buffManager.Shield();
-                        combat.myStats.buffManager.buffs.Remove(combat.myStats.buffManager.buffs.OfType<ShieldBuff>().FirstOrDefault());
-                    }
-                }
-                return damage;
-            }
-
-            public override bool Control()
-            {
-                throw new System.NotImplementedException();
-            }
         }
     }
 }
