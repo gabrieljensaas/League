@@ -18,14 +18,14 @@ namespace Simulator.Combat
         [SerializeField] private TextMeshProUGUI combatPriority;
         [SerializeField] public SimManager simulationManager;
 
-        [HideInInspector] public float AttackCooldown;
-        [HideInInspector] public List<Check> checksq = new List<Check>();
-        [HideInInspector] public List<Check> checksw = new List<Check>();
-        [HideInInspector] public List<Check> checkse = new List<Check>();
-        [HideInInspector] public List<Check> checksr = new List<Check>();
-        [HideInInspector] public List<Check> checksa = new List<Check>();
-        [HideInInspector] public List<Check> checktakedamageaa = new List<Check>();
-        [HideInInspector] public List<Check> checktakedamage = new List<Check>();
+        [HideInInspector] public float attackCooldown;
+        [HideInInspector] public List<Check> checksQ = new List<Check>();
+        [HideInInspector] public List<Check> checksW = new List<Check>();
+        [HideInInspector] public List<Check> checksE = new List<Check>();
+        [HideInInspector] public List<Check> checksR = new List<Check>();
+        [HideInInspector] public List<Check> checksA = new List<Check>();
+        [HideInInspector] public List<Check> checkTakeDamageAA = new List<Check>();
+        [HideInInspector] public List<Check> checkTakeDamage = new List<Check>();
         [HideInInspector] public Check autoattackcheck;
 
         public float aSum, hSum, qSum, wSum, eSum, rSum, pSum;
@@ -46,7 +46,7 @@ namespace Simulator.Combat
                 CheckSkills();
             }
 
-            AttackCooldown -= Time.deltaTime;
+            attackCooldown -= Time.deltaTime;
         }
 
         private void CheckPassive()
@@ -85,14 +85,14 @@ namespace Simulator.Combat
             switch (skill)
             {
                 case "Q":
-                    if (!CheckForQ()) yield break;
+                    if (!CheckForAbilityControl(checksQ)) yield break;
 
                     yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
                     UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill, 4);
                     myStats.qCD = myStats.qSkill.basic.coolDown[4];
                     break;
                 case "W":
-                    if (!CheckForW()) yield break;
+                    if (!CheckForAbilityControl(checksW)) yield break;
 
                     yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
                     UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill, 4);
@@ -100,7 +100,7 @@ namespace Simulator.Combat
 
                     break;
                 case "E":
-                    if (!CheckForE()) yield break;
+                    if (!CheckForAbilityControl(checksE)) yield break;
 
                     yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
                     if (myStats.name == "Garen")
@@ -116,7 +116,7 @@ namespace Simulator.Combat
 
                     break;
                 case "R":
-                    if (!CheckForR()) yield break;
+                    if (!CheckForAbilityControl(checksR)) yield break;
 
                     yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
                     UpdateAbilityTotalDamage(ref qSum, 3, myStats.qSkill, 2);
@@ -133,7 +133,7 @@ namespace Simulator.Combat
 
                     break;
                 case "A":
-                    if (!CheckForA()) yield break;
+                    if (!CheckForAbilityControl(checksA)) yield break;
 
                     yield return StartCoroutine(StartCastingAbility(0.1f));
                     AutoAttack();
@@ -175,39 +175,20 @@ namespace Simulator.Combat
 
             if (autoattackcheck != null) damage = autoattackcheck.Control(damage);
 
-            aSum += targetCombat.TakeDamageAA(damage, $"{myStats.name}'s Auto Attack");
+            aSum += targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack", true);
             aaSum.text = aSum.ToString();
 
-            AttackCooldown = 1f / myStats.attackSpeed;
+            attackCooldown = 1f / myStats.attackSpeed;
         }
 
-        IEnumerator UpdateCasting(float amount)
+        public float TakeDamage(float damage, string source, bool isAutoAttack = false)
         {
-            yield return new WaitForSeconds(amount);
-            isCasting = false;
-        }
+            if (damage <= 0) return 0;
 
-        public float TakeDamageAA(float damage, string source)
-        {
-            damage = CheckForDamageAA(damage);
-
-            myStats.currentHealth -= damage;
-            simulationManager.ShowText($"{myStats.name} Took {damage} Damage From {source}!");
-
-            if (myStats.currentHealth <= 0)
-            {
-                SimManager.battleStarted = false;
-                simulationManager.ShowText($"{myStats.name} Has Died! {targetStats.name} Won With {targetStats.currentHealth} Health Remaining!");
-                StopAllCoroutines();
-                targetCombat.StopAllCoroutines();
-            }
-
-            return damage;
-        }
-        public float TakeDamage(float damage, string source)
-        {
-            if (damage == 0) return 0;
-            damage = CheckForDamage(damage);
+            if(!isAutoAttack)
+                damage = CheckForDamageControl(checkTakeDamage, damage);
+            else
+                damage = CheckForDamageControl(checkTakeDamageAA, damage);
 
             myStats.currentHealth -= damage;
             simulationManager.ShowText($"{myStats.name} Took {damage} Damage From {source}!");
@@ -232,24 +213,24 @@ namespace Simulator.Combat
                     combatPrio[1] = "A";
                     combatPrio[2] = "W";
                     combatPrio[3] = "R";
-                    checksq.Add(new CheckIfCasting(this));
-                    checksq.Add(new CheckQCD(this));
-                    checksq.Add(new CheckAsheQ(this));
-                    targetCombat.checksq.Add(new CheckIfStunned(targetCombat));
-                    checksw.Add(new CheckIfCasting(this));
-                    checksw.Add(new CheckWCD(this));
-                    targetCombat.checksw.Add(new CheckIfStunned(targetCombat));
-                    checkse.Add(new CheckIfCasting(this));
-                    checkse.Add(new CheckECD(this));
-                    targetCombat.checkse.Add(new CheckIfStunned(targetCombat));
-                    checksr.Add(new CheckIfCasting(this));
-                    checksr.Add(new CheckRCD(this));
-                    targetCombat.checksr.Add(new CheckIfStunned(targetCombat));
-                    checksa.Add(new CheckIfCasting(this));
-                    checksa.Add(new CheckACD(this));
-                    targetCombat.checksa.Add(new CheckIfStunned(targetCombat));
+                    checksQ.Add(new CheckIfCasting(this));
+                    checksQ.Add(new CheckQCD(this));
+                    checksQ.Add(new CheckAsheQ(this));
+                    targetCombat.checksQ.Add(new CheckIfStunned(targetCombat));
+                    checksW.Add(new CheckIfCasting(this));
+                    checksW.Add(new CheckWCD(this));
+                    targetCombat.checksW.Add(new CheckIfStunned(targetCombat));
+                    checksE.Add(new CheckIfCasting(this));
+                    checksE.Add(new CheckECD(this));
+                    targetCombat.checksE.Add(new CheckIfStunned(targetCombat));
+                    checksR.Add(new CheckIfCasting(this));
+                    checksR.Add(new CheckRCD(this));
+                    targetCombat.checksR.Add(new CheckIfStunned(targetCombat));
+                    checksA.Add(new CheckIfCasting(this));
+                    checksA.Add(new CheckACD(this));
+                    targetCombat.checksA.Add(new CheckIfStunned(targetCombat));
                     autoattackcheck = new AsheAACheck(this);
-                    targetCombat.checktakedamageaa.Add(new CheckIfFrosted(targetCombat));
+                    targetCombat.checkTakeDamageAA.Add(new CheckIfFrosted(targetCombat));
                     break;
 
                 case "Garen":
@@ -258,26 +239,26 @@ namespace Simulator.Combat
                     combatPrio[2] = "Q";
                     combatPrio[3] = "A";
                     combatPrio[4] = "E";
-                    checksq.Add(new CheckIfCasting(this));
-                    checksq.Add(new CheckQCD(this));
-                    targetCombat.checksq.Add(new CheckIfSilenced(targetCombat));
-                    checksw.Add(new CheckIfCasting(this));
-                    checksw.Add(new CheckWCD(this));
-                    targetCombat.checksw.Add(new CheckIfSilenced(targetCombat));
-                    checkse.Add(new CheckIfCasting(this));
-                    checkse.Add(new CheckECD(this));
-                    targetCombat.checkse.Add(new CheckIfSilenced(targetCombat));
-                    checksr.Add(new CheckIfCasting(this));
-                    checksr.Add(new CheckRCD(this));
-                    targetCombat.checksr.Add(new CheckIfSilenced(targetCombat));
-                    checksa.Add(new CheckIfCasting(this));
-                    checksa.Add(new CheckIfCantAA(this));
-                    checksa.Add(new CheckACD(this));
+                    checksQ.Add(new CheckIfCasting(this));
+                    checksQ.Add(new CheckQCD(this));
+                    targetCombat.checksQ.Add(new CheckIfSilenced(targetCombat));
+                    checksW.Add(new CheckIfCasting(this));
+                    checksW.Add(new CheckWCD(this));
+                    targetCombat.checksW.Add(new CheckIfSilenced(targetCombat));
+                    checksE.Add(new CheckIfCasting(this));
+                    checksE.Add(new CheckECD(this));
+                    targetCombat.checksE.Add(new CheckIfSilenced(targetCombat));
+                    checksR.Add(new CheckIfCasting(this));
+                    checksR.Add(new CheckRCD(this));
+                    targetCombat.checksR.Add(new CheckIfSilenced(targetCombat));
+                    checksA.Add(new CheckIfCasting(this));
+                    checksA.Add(new CheckIfCantAA(this));
+                    checksA.Add(new CheckACD(this));
                     autoattackcheck = new GarenAACheck(this);
-                    checktakedamage.Add(new CheckDamageReductionPercent(this));
-                    checktakedamageaa.Add(new CheckDamageReductionPercent(this));
-                    checktakedamage.Add(new CheckShield(this));
-                    checktakedamageaa.Add(new CheckShield(this));
+                    checkTakeDamage.Add(new CheckDamageReductionPercent(this));
+                    checkTakeDamageAA.Add(new CheckDamageReductionPercent(this));
+                    checkTakeDamage.Add(new CheckShield(this));
+                    checkTakeDamageAA.Add(new CheckShield(this));
                     break;
 
                 case "Aatrox":
@@ -285,9 +266,9 @@ namespace Simulator.Combat
                     combatPrio[1] = "Q";
                     combatPrio[2] = "W";
                     combatPrio[3] = "A";
-                    checksq.Add(new CheckIfCasting(this));
-                    checksa.Add(new CheckIfCasting(this));
-                    checksa.Add(new CheckACD(this));
+                    checksQ.Add(new CheckIfCasting(this));
+                    checksA.Add(new CheckIfCasting(this));
+                    checksA.Add(new CheckACD(this));
                     autoattackcheck = new AatroxAACheck(this);
                     break;
 
@@ -319,63 +300,18 @@ namespace Simulator.Combat
             combatPriority.text = string.Join(", ", combatPrio);
         }
 
-        public bool CheckForQ()
+        public bool CheckForAbilityControl(List<Check> checks)
         {
-            foreach (var item in checksq)
-            {
+            foreach (Check item in checks)
                 if (!item.Control()) return false;
-            }
-            return true;
-        }
-        public bool CheckForW()
-        {
-            foreach (var item in checksw)
-            {
-                if (!item.Control()) return false;
-            }
-            return true;
-        }
-        public bool CheckForE()
-        {
-            foreach (var item in checkse)
-            {
-                if (!item.Control()) return false;
-            }
-            return true;
-        }
-        public bool CheckForR()
-        {
-            foreach (var item in checksr)
-            {
-                if (!item.Control()) return false;
-            }
+
             return true;
         }
 
-        public bool CheckForA()
+        public float CheckForDamageControl(List<Check> checks, float damage)
         {
-            foreach (var item in checksa)
-            {
-                if (!item.Control()) return false;
-            }
-            return true;
-        }
-
-        public float CheckForDamageAA(float damage)
-        {
-            foreach (var item in checktakedamageaa)
-            {
+            foreach (Check item in checks)
                 damage = item.Control(damage);
-            }
-
-            return damage;
-        }
-        public float CheckForDamage(float damage)
-        {
-            foreach (var item in checktakedamage)
-            {
-                damage = item.Control(damage);
-            }
 
             return damage;
         }

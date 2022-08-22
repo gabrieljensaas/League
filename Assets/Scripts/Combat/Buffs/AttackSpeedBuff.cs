@@ -5,7 +5,7 @@ public class AttackSpeedBuff : Buff
     public string uniqueKey;
     public AttackSpeedBuff(float duration, BuffManager manager, string source, float attackSpeed, string uniqueKey) : base(manager)
     {
-        manager.combat.AttackCooldown *= manager.stats.attackSpeed / (manager.stats.attackSpeed + attackSpeed);
+        manager.combat.attackCooldown *= manager.stats.attackSpeed / (manager.stats.attackSpeed + attackSpeed);
         manager.stats.attackSpeed += attackSpeed;
         this.value = attackSpeed;
         base.duration = duration;
@@ -22,7 +22,7 @@ public class AttackSpeedBuff : Buff
     public override void Kill()
     {
         manager.simulationManager.ShowText($"{manager.stats.name} Has No Longer {value} Extra Attack Speed From {source}!");
-        manager.combat.AttackCooldown *= manager.stats.attackSpeed / (manager.stats.attackSpeed - value);
+        manager.combat.attackCooldown *= manager.stats.attackSpeed / (manager.stats.attackSpeed - value);
         manager.stats.attackSpeed -= value;
         manager.buffs.Remove(uniqueKey);
     }

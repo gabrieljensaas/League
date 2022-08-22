@@ -8,7 +8,7 @@ public class CheckACD : Check
 
     public override bool Control()
     {
-        return combat.AttackCooldown > 0 ? false : true;
+        return combat.attackCooldown > 0 ? false : true;
     }
 
     public override float Control(float damage)
