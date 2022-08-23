@@ -167,6 +167,53 @@ namespace Simulator.API
                     }
                 }
             };
+            else if (name == "Annie") return new RiotAPIResponse()
+            {
+                ChampionsRes = new List<ChampionsRe>()
+                {
+                    new ChampionsRe()
+                    {
+                        _id = "Annie",
+                        champData = new ChampData()
+                        {
+                            type = "champion",
+                            format = "standAloneComplex",
+                            version = "12.7.1",
+                            data = new Data()
+                            {
+                                Champion = new Champion()
+                                {
+                                    name = "Annie",
+                                    key ="1",
+                                    stats = new Stats()
+                                    {
+                                        hp = 524,
+                                        mp = 418,
+                                        hpperlevel = 88,
+                                        mpperlevel = 25,
+                                        movespeed = 335,
+                                        armor = 19,
+                                        armorperlevel = 4d,
+                                        spellblock = 30,
+                                        spellblockperlevel = 0.5d,
+                                        attackrange = 625,
+                                        hpregen = 5.5d,
+                                        hpregenperlevel = 0.55d,
+                                        mpregen = 8d,
+                                        mpregenperlevel = 0.8d,
+                                        crit = 0,
+                                        critperlevel = 0,
+                                        attackdamage = 50,
+                                        attackdamageperlevel = 2.63d,
+                                        attackspeed = 0.579d,
+                                        attackspeedperlevel = 1.36d,
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
             else return null;
         }
     }
