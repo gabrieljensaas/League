@@ -9,7 +9,7 @@ public class CheckShield : Check
 
     public override float Control(float damage)
     {
-        foreach (var item in combat.myStats.buffManager.sheilds.Values.ToList())
+        foreach (var item in combat.myStats.buffManager.shields.Values.ToList())
         {
             if (item.value >= damage)
             {
@@ -21,7 +21,7 @@ public class CheckShield : Check
             {
                 combat.simulationManager.ShowText($"{combat.myStats.name}'s Shield Absorbed {item.value} Damage!");
                 damage -= item.value;
-                combat.myStats.buffManager.sheilds.Remove(item.uniqueKey);
+                combat.myStats.buffManager.shields.Remove(item.uniqueKey);
             }
         }
         return damage;

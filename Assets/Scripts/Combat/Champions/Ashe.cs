@@ -7,8 +7,7 @@ public class Ashe : ChampionCombat
 {
     public override void UpdatePriorityAndChecks()
     {
-        base.UpdatePriorityAndChecks();
-        combatPrio = new string[] { "Q", "A", "W", "R" };
+        combatPrio = new string[] { "Q", "A", "W", "R", "" };
         checksQ.Add(new CheckIfCasting(this));
         checksQ.Add(new CheckQCD(this));
         checksQ.Add(new CheckAsheQ(this));
@@ -28,5 +27,6 @@ public class Ashe : ChampionCombat
         autoattackcheck = new AsheAACheck(this);
         targetCombat.checkTakeDamageAA.Add(new CheckIfFrosted(targetCombat));
         myUI.combatPriority.text = string.Join(", ", combatPrio);
+        base.UpdatePriorityAndChecks();
     }
 }

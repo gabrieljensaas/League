@@ -25,7 +25,7 @@ namespace Simulator.Combat
         [HideInInspector] public Check autoattackcheck;
 
         public float aSum, hSum, qSum, wSum, eSum, rSum, pSum;
-        protected string[] combatPrio = { "", "", "", "", "" };
+        protected string[] combatPrio;
         public bool isCasting = false;
 
         private void Start()
@@ -56,7 +56,7 @@ namespace Simulator.Combat
         {
             for (int i = 0; i < 5; i++)
             {
-                StartCoroutine(ExecuteSkillIfReady(combatPrio[i]));                
+                StartCoroutine(ExecuteSkillIfReady(combatPrio[i]));
             }
         }
 

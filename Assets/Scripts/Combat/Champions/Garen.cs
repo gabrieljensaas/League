@@ -7,7 +7,6 @@ public class Garen : ChampionCombat
 {
     public override void UpdatePriorityAndChecks()
     {
-        base.UpdatePriorityAndChecks();
         combatPrio = new string[] { "R", "W", "Q", "A", "E" };
         checksQ.Add(new CheckIfCasting(this));
         checksQ.Add(new CheckQCD(this));
@@ -29,6 +28,7 @@ public class Garen : ChampionCombat
         checkTakeDamageAA.Add(new CheckDamageReductionPercent(this));
         checkTakeDamage.Add(new CheckShield(this));
         checkTakeDamageAA.Add(new CheckShield(this));
+        base.UpdatePriorityAndChecks();
     }
 
     public override IEnumerator ExecuteE()

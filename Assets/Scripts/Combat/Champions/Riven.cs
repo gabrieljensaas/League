@@ -7,7 +7,7 @@ public class Riven : ChampionCombat
 {
     public override void UpdatePriorityAndChecks()
     {
-        base.UpdatePriorityAndChecks();
         combatPrio = new string[] { "A", "Q", "W", "E", "R" };
+        base.UpdatePriorityAndChecks();
     }
 }

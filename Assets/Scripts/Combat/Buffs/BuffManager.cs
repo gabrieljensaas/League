@@ -10,7 +10,7 @@ public class BuffManager
     public ChampionCombat combat;
     public SimManager simulationManager;
     public Dictionary<string,Buff> buffs = new Dictionary<string,Buff>();                                 //buffs and durations
-    public Dictionary<string, ShieldBuff> sheilds = new Dictionary<string,ShieldBuff>();                                 //buffs and durations
+    public Dictionary<string, ShieldBuff> shields = new Dictionary<string,ShieldBuff>();                                 //buffs and durations
 
     public BuffManager(ChampionStats stats, ChampionCombat combat, SimManager simManager)
     {
@@ -26,7 +26,7 @@ public class BuffManager
             item.Update();
         }
 
-        foreach (var item in sheilds.Values.ToList())
+        foreach (var item in shields.Values.ToList())
         {
             item.Update();
         }

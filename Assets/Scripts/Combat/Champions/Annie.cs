@@ -9,7 +9,6 @@ public class Annie : ChampionCombat
     private CheckAnnieP annieP;
     public override void UpdatePriorityAndChecks()
     {
-        base.UpdatePriorityAndChecks();
         combatPrio = new string[] { "R", "E", "W", "Q", "A" };
         annieP = new CheckAnnieP(this);
         checksQ.Add(new CheckIfCasting(this));
@@ -30,7 +29,7 @@ public class Annie : ChampionCombat
         checkTakeDamage.Add(new CheckShield(this));
         checkTakeDamageAA.Add(new CheckMoltenShield(this));
         checkTakeDamageAA.Add(new CheckShield(this));
-        myUI.combatPriority.text = string.Join(", ", combatPrio);
+        base.UpdatePriorityAndChecks();
     }
 
     public override IEnumerator ExecuteQ()

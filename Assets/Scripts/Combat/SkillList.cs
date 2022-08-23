@@ -70,6 +70,12 @@ public class SkillList : ScriptableObject
             return damage;
         }
 
+        if(basic.name == "Molten Shield")
+        {
+            SelfEffects(level, myStats);
+            return 0;
+        }
+
         switch (skillDamageType)
         {
             case SkillDamageType.Phyiscal:
@@ -131,7 +137,7 @@ public class SkillList : ScriptableObject
 
         if (selfEffects.Shield)
         {
-            myStats.buffManager.sheilds.Add(basic.name, new ShieldBuff(selfEffects.ShieldDuration[level], myStats.buffManager, basic.name, selfEffects.ShieldFlat[level], basic.name));
+            myStats.buffManager.shields.Add(basic.name, new ShieldBuff(selfEffects.ShieldDuration[level], myStats.buffManager, basic.name, selfEffects.ShieldFlat[level], basic.name));
         }
     }
 }
