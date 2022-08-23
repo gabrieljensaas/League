@@ -23,6 +23,7 @@ namespace Simulator.Combat
         [HideInInspector] public List<Check> checkTakeDamageAA = new List<Check>();
         [HideInInspector] public List<Check> checkTakeDamage = new List<Check>();
         [HideInInspector] public Check autoattackcheck;
+        protected List<Pet> pets = new List<Pet>();
 
         public float aSum, hSum, qSum, wSum, eSum, rSum, pSum;
         protected string[] combatPrio;
@@ -169,15 +170,23 @@ namespace Simulator.Combat
             myStats.currentHealth -= damage;
             simulationManager.ShowText($"{myStats.name} Took {damage} Damage From {source}!");
 
-            if (myStats.currentHealth <= 0)
-            {
-                SimManager.battleStarted = false;
-                simulationManager.ShowText($"{myStats.name} Has Died! {targetStats.name} Won With {targetStats.currentHealth} Health Remaining!");
-                StopAllCoroutines();
-                targetCombat.StopAllCoroutines();
-            }
+            CheckDeath();
 
             return damage;
+        }
+
+        protected virtual void CheckDeath()
+        {
+            if (myStats.currentHealth <= 0)
+                EndBattle();
+        }
+
+        protected void EndBattle()
+        {
+            SimManager.battleStarted = false;
+            simulationManager.ShowText($"{myStats.name} Has Died! {targetStats.name} Won With {targetStats.currentHealth} Health Remaining!");
+            StopAllCoroutines();
+            targetCombat.StopAllCoroutines();
         }
 
         public void UpdateTarget(int index)
@@ -191,7 +200,7 @@ namespace Simulator.Combat
             myUI.combatPriority.text = string.Join(", ", combatPrio);
         }
 
-        public bool CheckForAbilityControl(List<Check> checks)
+        protected bool CheckForAbilityControl(List<Check> checks)
         {
             foreach (Check item in checks)
                 if (!item.Control()) return false;
@@ -199,7 +208,7 @@ namespace Simulator.Combat
             return true;
         }
 
-        public float CheckForDamageControl(List<Check> checks, float damage)
+        protected float CheckForDamageControl(List<Check> checks, float damage)
         {
             foreach (Check item in checks)
                 damage = item.Control(damage);

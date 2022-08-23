@@ -8,7 +8,6 @@ using Unity.VisualScripting;
 public class Annie : ChampionCombat
 {
     private CheckAnnieP annieP;
-    private List<Pet> pets = new List<Pet>();
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "E", "W", "Q", "A" };
@@ -44,6 +43,22 @@ public class Annie : ChampionCombat
         }
     }
 
+    protected override void CheckDeath()
+    {
+        if (myStats.currentHealth <= 0 && pets.Count > 0)
+            StartCoroutine(TibbersRevenge());
+        else if (myStats.currentHealth <= 0)
+            EndBattle();
+    }
+
+    private IEnumerator TibbersRevenge()
+    {
+        Tibbers tibbers = (Tibbers)pets[0];
+        tibbers.Enrage(10);
+        yield return new WaitForSeconds(10);
+        EndBattle();
+    }
+
     public override IEnumerator ExecuteQ()
     {
         if (!CheckForAbilityControl(checksQ)) yield break;
@@ -53,6 +68,7 @@ public class Annie : ChampionCombat
         UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill, 4);
         myStats.qCD = myStats.qSkill.basic.coolDown[4];
     }
+
     public override IEnumerator ExecuteW()
     {
         if (!CheckForAbilityControl(checksW)) yield break;
