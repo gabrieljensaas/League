@@ -1,4 +1,5 @@
 using Simulator.Combat;
+using System.Linq;
 
 public class CheckShield : Check
 {
@@ -8,7 +9,7 @@ public class CheckShield : Check
 
     public override float Control(float damage)
     {
-        foreach (var item in combat.myStats.buffManager.sheilds.Values)
+        foreach (var item in combat.myStats.buffManager.sheilds.Values.ToList())
         {
             if (item.value >= damage)
             {

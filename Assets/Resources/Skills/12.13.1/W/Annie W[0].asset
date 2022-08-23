@@ -36,7 +36,7 @@ MonoBehaviour:
     - 0
     - 0
   skillType: 0
-  skillDamageType: 0
+  skillDamageType: 1
   multihit:
     multiHit: 0
     hits: 0000000000000000000000000000000000000000

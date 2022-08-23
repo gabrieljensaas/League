@@ -10,7 +10,7 @@ namespace Simulator.Combat
     {
         [SerializeField] public ChampionStats myStats;
         [SerializeField] public ChampionStats targetStats;
-        [SerializeField] protected ChampionCombat targetCombat;
+        [SerializeField] public ChampionCombat targetCombat;
         [SerializeField] public ChampionUI myUI;
         [SerializeField] public SimManager simulationManager;
 

@@ -128,6 +128,8 @@ public class SimManager : MonoBehaviour
             newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Ashe>();
         else if (champName == "Garen")
             newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Garen>();
+        else if(champName == "Annie")
+            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Annie>();
         champStats[championIndex] = newChampStats;
         champCombat[championIndex] = newChampStats.MyCombat;
 

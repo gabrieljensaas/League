@@ -36,7 +36,7 @@ MonoBehaviour:
     - 0
     - 0
   skillType: 0
-  skillDamageType: 0
+  skillDamageType: 1
   multihit:
     multiHit: 0
     hits: 0000000000000000000000000000000000000000
@@ -607,13 +607,13 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-    Shield: 0
+    Shield: 1
     ShieldFlat:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+    - 40
+    - 85
+    - 130
+    - 175
+    - 220
     ShieldPercent:
     - 0
     - 0
@@ -639,8 +639,8 @@ MonoBehaviour:
     - 0
     - 0
     ShieldDuration:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+    - 3
+    - 3
+    - 3
+    - 3
+    - 3

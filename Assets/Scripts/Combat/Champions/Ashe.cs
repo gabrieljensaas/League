@@ -29,5 +29,6 @@ public class Ashe : ChampionCombat
         targetCombat.checksA.Add(new CheckIfStunned(targetCombat));
         autoattackcheck = new AsheAACheck(this);
         targetCombat.checkTakeDamageAA.Add(new CheckIfFrosted(targetCombat));
+        myUI.combatPriority.text = string.Join(", ", combatPrio);
     }
 }

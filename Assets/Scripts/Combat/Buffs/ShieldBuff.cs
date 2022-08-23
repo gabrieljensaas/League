@@ -19,7 +19,7 @@ public class ShieldBuff : Buff
     }
     public override void Kill()
     {
-        manager.simulationManager.ShowText($"{manager.stats.name} Has No Longer Any Shield!");
+        manager.simulationManager.ShowText($"{manager.stats.name} Has No Longer Shield From {source}!");
         manager.buffs.Remove(uniqueKey);
     }
 }

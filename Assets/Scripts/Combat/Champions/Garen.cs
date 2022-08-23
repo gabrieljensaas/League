@@ -32,6 +32,7 @@ public class Garen : ChampionCombat
         checkTakeDamageAA.Add(new CheckDamageReductionPercent(this));
         checkTakeDamage.Add(new CheckShield(this));
         checkTakeDamageAA.Add(new CheckShield(this));
+        myUI.combatPriority.text = string.Join(", ", combatPrio);
     }
 
     protected override IEnumerator ExecuteSkillIfReady(string skill)

@@ -131,7 +131,7 @@ public class SkillList : ScriptableObject
 
         if (selfEffects.Shield)
         {
-            myStats.buffManager.buffs.Add("Shield" , new ShieldBuff(selfEffects.ShieldDuration[level], myStats.buffManager, basic.name, selfEffects.ShieldFlat[level], basic.name));
+            myStats.buffManager.sheilds.Add(basic.name, new ShieldBuff(selfEffects.ShieldDuration[level], myStats.buffManager, basic.name, selfEffects.ShieldFlat[level], basic.name));
         }
     }
 }
