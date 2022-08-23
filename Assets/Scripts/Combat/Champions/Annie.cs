@@ -38,23 +38,7 @@ public class Annie : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
-        if (annieP.Control())
-        {
-            targetStats.buffManager.buffs.Add("Stun", new StunBuff(Constants.GetAnnieStunDurationByLevel(myStats.level), targetStats.buffManager, myStats.passiveSkill.skillName));
-            myStats.buffManager.buffs.Remove("Pyromania");
-        }
-        else
-        {
-            if (myStats.buffManager.buffs.TryGetValue("Pyromania", out Buff value))
-            {
-                value.value++;
-                simulationManager.ShowText($"{myStats.name} Gained A Stack of Pyromania From {myStats.qSkill.basic.name}");
-            }
-            else
-            {
-                myStats.buffManager.buffs.Add("Pyromania", new PyromaniaBuff(myStats.buffManager, myStats.qSkill.basic.name));
-            }
-        }
+        CheckAnniePassiveStun(myStats.qSkill.basic.name);
         UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill, 4);
         myStats.qCD = myStats.qSkill.basic.coolDown[4];
     }
@@ -63,23 +47,7 @@ public class Annie : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill.basic.castTime));
-        if (annieP.Control())
-        {
-            targetStats.buffManager.buffs.Add("Stun", new StunBuff(Constants.GetAnnieStunDurationByLevel(myStats.level), targetStats.buffManager, myStats.passiveSkill.skillName));
-            myStats.buffManager.buffs.Remove("Pyromania");
-        }
-        else
-        {
-            if (myStats.buffManager.buffs.TryGetValue("Pyromania", out Buff pyromania))
-            {
-                pyromania.value++;
-                simulationManager.ShowText($"{myStats.name} Gained A Stack of Pyromania From {myStats.wSkill.basic.name}");
-            }
-            else
-            {
-                myStats.buffManager.buffs.Add("Pyromania", new PyromaniaBuff(myStats.buffManager, myStats.wSkill.basic.name));
-            }
-        }
+        CheckAnniePassiveStun(myStats.wSkill.basic.name);
         UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill, 4);
         myStats.wCD = myStats.wSkill.basic.coolDown[4];
     }
@@ -89,13 +57,10 @@ public class Annie : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill.basic.castTime));
-        if (myStats.buffManager.buffs.TryGetValue("Pyromania", out Buff buff))
+        if (myStats.buffManager.buffs.TryGetValue("Pyromania", out Buff buff) && buff.value < 4)
         {
-            if (buff.value < 4)
-            {
-                buff.value++;
-                simulationManager.ShowText($"{myStats.name} Gained A Stack of Pyromania From {myStats.eSkill.basic.name}");
-            }
+            buff.value++;
+            simulationManager.ShowText($"{myStats.name} Gained A Stack of Pyromania From {myStats.eSkill.basic.name}");
         }
         else
         {
@@ -111,24 +76,26 @@ public class Annie : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill.basic.castTime));
+        CheckAnniePassiveStun(myStats.rSkill.basic.name);
+        UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill, 2);
+        myStats.rCD = myStats.rSkill.basic.coolDown[2];
+    }
+
+    private void CheckAnniePassiveStun(string skillName)
+    {
         if (annieP.Control())
         {
             targetStats.buffManager.buffs.Add("Stun", new StunBuff(Constants.GetAnnieStunDurationByLevel(myStats.level), targetStats.buffManager, myStats.passiveSkill.skillName));
             myStats.buffManager.buffs.Remove("Pyromania");
         }
+        else if (myStats.buffManager.buffs.TryGetValue("Pyromania", out Buff pyromania))
+        {
+            pyromania.value++;
+            simulationManager.ShowText($"{myStats.name} Gained A Stack of Pyromania From {skillName}");
+        }
         else
         {
-            if (myStats.buffManager.buffs.TryGetValue("Pyromania", out Buff annieBuff))
-            {
-                annieBuff.value++;
-                simulationManager.ShowText($"{myStats.name} Gained A Stack of Pyromania From {myStats.rSkill.basic.name}");
-            }
-            else
-            {
-                myStats.buffManager.buffs.Add("Pyromania", new PyromaniaBuff(myStats.buffManager, myStats.rSkill.basic.name));
-            }
+            myStats.buffManager.buffs.Add("Pyromania", new PyromaniaBuff(myStats.buffManager, skillName));
         }
-        UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill, 2);
-        myStats.rCD = myStats.rSkill.basic.coolDown[2];
     }
 }
