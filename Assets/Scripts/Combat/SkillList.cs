@@ -70,12 +70,6 @@ public class SkillList : ScriptableObject
             return damage;
         }
 
-        if(basic.name == "Molten Shield")
-        {
-            SelfEffects(level, myStats);
-            return 0;
-        }
-
         switch (skillDamageType)
         {
             case SkillDamageType.Phyiscal:
