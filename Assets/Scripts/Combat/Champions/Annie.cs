@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Simulator.Combat;
 using static AttributeTypes;
+using Unity.VisualScripting;
 
 public class Annie : ChampionCombat
 {
     private CheckAnnieP annieP;
+    private List<Pet> pets = new List<Pet>();
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "E", "W", "Q", "A" };
@@ -30,6 +32,16 @@ public class Annie : ChampionCombat
         checkTakeDamageAA.Add(new CheckMoltenShield(this));
         checkTakeDamageAA.Add(new CheckShield(this));
         base.UpdatePriorityAndChecks();
+    }
+
+    public override void CombatUpdate()
+    {
+        base.CombatUpdate();
+
+        foreach (var item in pets)
+        {
+            item.Update();
+        }
     }
 
     public override IEnumerator ExecuteQ()
@@ -78,6 +90,7 @@ public class Annie : ChampionCombat
         CheckAnniePassiveStun(myStats.rSkill.basic.name);
         UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill, 2);
         myStats.rCD = myStats.rSkill.basic.coolDown[2];
+        pets.Add(new Tibbers(this, 3100, 100 + (myStats.AP * 15 / 100), 0.625f, 90, 90)); //all stats are for max level change when level adjusting of skills done
     }
 
     private void CheckAnniePassiveStun(string skillName)

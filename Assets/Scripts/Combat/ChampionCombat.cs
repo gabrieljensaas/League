@@ -35,7 +35,7 @@ namespace Simulator.Combat
             myUI = GetComponent<ChampionUI>();
         }
 
-        public void CombatUpdate()
+        public virtual void CombatUpdate()
         {
             CheckPassive();
 
