@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Simulator.Combat
 {
-    public class ChampionCombat : MonoBehaviour
+    public class ChampionCombat : MonoBehaviour, IExecuteQ, IExecuteW, IExecuteE, IExecuteR, IExecuteA
     {
         [SerializeField] public ChampionStats myStats;
         [SerializeField] public ChampionStats targetStats;
@@ -47,14 +47,9 @@ namespace Simulator.Combat
             attackCooldown -= Time.deltaTime;
         }
 
-        private void CheckPassive()
+        protected virtual void CheckPassive()
         {
             if (myStats.passiveSkill.inactive || myStats.pCD > 0) return;
-
-            if (myStats.name == "Aatrox" && !myStats.buffManager.buffs.ContainsKey("DeathbringerStance"))
-            {
-                myStats.buffManager.buffs.Add("DeathbringerStance" ,new DeathbringerStanceBuff(float.MaxValue, myStats.buffManager, myStats.passiveSkill.name));
-            }
         }
 
         private void CheckSkills()
@@ -78,46 +73,68 @@ namespace Simulator.Combat
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
+        public virtual IEnumerator ExecuteQ()
+        {
+            if (!CheckForAbilityControl(checksQ)) yield break;
+
+            yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
+            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill, 4);
+            myStats.qCD = myStats.qSkill.basic.coolDown[4];
+        }
+
+        public virtual IEnumerator ExecuteW()
+        {
+            if (!CheckForAbilityControl(checksW)) yield break;
+
+            yield return StartCoroutine(StartCastingAbility(myStats.wSkill.basic.castTime));
+            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill, 4);
+            myStats.wCD = myStats.wSkill.basic.coolDown[4];
+        }
+
+        public virtual IEnumerator ExecuteE()
+        {
+            if (!CheckForAbilityControl(checksE)) yield break;
+
+            yield return StartCoroutine(StartCastingAbility(myStats.eSkill.basic.castTime));
+            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill, 4);
+            myStats.eCD = myStats.eSkill.basic.coolDown[4];
+        }
+
+        public virtual IEnumerator ExecuteR()
+        {
+            if (!CheckForAbilityControl(checksR)) yield break;
+
+            yield return StartCoroutine(StartCastingAbility(myStats.rSkill.basic.castTime));
+            UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill, 2);
+            myStats.rCD = myStats.rSkill.basic.coolDown[2];
+        }
+
+        public virtual IEnumerator ExecuteA()
+        {
+            if (!CheckForAbilityControl(checksA)) yield break;
+
+            yield return StartCoroutine(StartCastingAbility(0.1f));
+            AutoAttack();
+        }
+
         protected virtual IEnumerator ExecuteSkillIfReady(string skill)
         {
             switch (skill)
             {
                 case "Q":
-                    if (!CheckForAbilityControl(checksQ)) yield break;
-
-                    yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
-                    UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill, 4);
-                    myStats.qCD = myStats.qSkill.basic.coolDown[4];
+                    yield return ExecuteQ();
                     break;
                 case "W":
-                    if (!CheckForAbilityControl(checksW)) yield break;
-
-                    yield return StartCoroutine(StartCastingAbility(myStats.wSkill.basic.castTime));
-                    UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill, 4);
-                    myStats.wCD = myStats.wSkill.basic.coolDown[4];
-
+                    yield return ExecuteW();
                     break;
                 case "E":
-                    if (!CheckForAbilityControl(checksE)) yield break;
-
-                    yield return StartCoroutine(StartCastingAbility(myStats.eSkill.basic.castTime));
-                    UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill, 4);
-                    myStats.eCD = myStats.eSkill.basic.coolDown[4];
-
+                    yield return ExecuteE();
                     break;
                 case "R":
-                    if (!CheckForAbilityControl(checksR)) yield break;
-
-                    yield return StartCoroutine(StartCastingAbility(myStats.rSkill.basic.castTime));
-                    UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill, 2);
-                    myStats.rCD = myStats.rSkill.basic.coolDown[2];
+                    yield return ExecuteR();
                     break;
                 case "A":
-                    if (!CheckForAbilityControl(checksA)) yield break;
-
-                    yield return StartCoroutine(StartCastingAbility(0.1f));
-                    AutoAttack();
-                    
+                    yield return ExecuteA();
                     break;
                 default:
                     break;
@@ -171,44 +188,6 @@ namespace Simulator.Combat
 
         public virtual void UpdatePriorityAndChecks()
         {
-            switch (myStats.name)
-            {
-                case "Aatrox":
-                    combatPrio[0] = "R";
-                    combatPrio[1] = "Q";
-                    combatPrio[2] = "W";
-                    combatPrio[3] = "A";
-                    checksQ.Add(new CheckIfCasting(this));
-                    checksA.Add(new CheckIfCasting(this));
-                    checksA.Add(new CheckACD(this));
-                    autoattackcheck = new AatroxAACheck(this);
-                    break;
-
-                case "Gangplank":
-                    combatPrio[0] = "A";
-                    combatPrio[1] = "R";
-                    combatPrio[2] = "E";
-                    combatPrio[3] = "W";
-                    combatPrio[4] = "Q";
-                    break;
-
-                case "Riven":
-                    combatPrio[0] = "A";
-                    combatPrio[1] = "Q";
-                    combatPrio[2] = "W";
-                    combatPrio[3] = "E";
-                    combatPrio[4] = "R";
-                    break;
-
-                default:
-                    combatPrio[0] = "Q";
-                    combatPrio[1] = "W";
-                    combatPrio[2] = "E";
-                    combatPrio[3] = "R";
-                    combatPrio[4] = "A";
-                    break;
-            }
-
             myUI.combatPriority.text = string.Join(", ", combatPrio);
         }
 

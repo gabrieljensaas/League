@@ -7,6 +7,7 @@ public class Ashe : ChampionCombat
 {
     public override void UpdatePriorityAndChecks()
     {
+        base.UpdatePriorityAndChecks();
         combatPrio[0] = "Q";
         combatPrio[1] = "A";
         combatPrio[2] = "W";

@@ -7,6 +7,7 @@ public class Garen : ChampionCombat
 {
     public override void UpdatePriorityAndChecks()
     {
+        base.UpdatePriorityAndChecks();
         combatPrio[0] = "R";
         combatPrio[1] = "W";
         combatPrio[2] = "Q";
@@ -32,70 +33,33 @@ public class Garen : ChampionCombat
         checkTakeDamageAA.Add(new CheckDamageReductionPercent(this));
         checkTakeDamage.Add(new CheckShield(this));
         checkTakeDamageAA.Add(new CheckShield(this));
-        myUI.combatPriority.text = string.Join(", ", combatPrio);
     }
 
-    protected override IEnumerator ExecuteSkillIfReady(string skill)
+    public override IEnumerator ExecuteE()
     {
-        switch (skill)
+        if (!CheckForAbilityControl(checksE)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(myStats.eSkill.basic.castTime));
+        simulationManager.ShowText($"Garen Used Judgment!");
+        myStats.eCD = myStats.eSkill.basic.coolDown[4];
+        myStats.buffManager.buffs.Add("CantAA", new CantAABuff(3f, myStats.buffManager, myStats.eSkill.basic.name));
+        StartCoroutine(GarenE(0, 0));
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill, 4);
+        myStats.eCD = myStats.eSkill.basic.coolDown[4];
+    }
+
+    public override IEnumerator ExecuteR()
+    {
+        if (!CheckForAbilityControl(checksR)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill.basic.castTime));
+        UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill, 2);
+        myStats.rCD = myStats.rSkill.basic.coolDown[2];
+
+        StopCoroutine("GarenE");          //if 2 GarenE coroutine exists this could leat to some bugs
+        if (myStats.buffManager.buffs.ContainsKey("CantAA"))
         {
-            case "Q":
-                if (!CheckForAbilityControl(checksQ)) yield break;
-
-                yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
-                UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill, 4);
-                myStats.qCD = myStats.qSkill.basic.coolDown[4];
-                break;
-            case "W":
-                if (!CheckForAbilityControl(checksW)) yield break;
-
-                yield return StartCoroutine(StartCastingAbility(myStats.wSkill.basic.castTime));
-                UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill, 4);
-                myStats.wCD = myStats.wSkill.basic.coolDown[4];
-
-                break;
-            case "E":
-                if (!CheckForAbilityControl(checksE)) yield break;
-
-                yield return StartCoroutine(StartCastingAbility(myStats.eSkill.basic.castTime));
-                if (myStats.name == "Garen")
-                {
-                    simulationManager.ShowText($"Garen Used Judgment!");
-                    myStats.eCD = myStats.eSkill.basic.coolDown[4];
-                    myStats.buffManager.buffs.Add("CantAA", new CantAABuff(3f, myStats.buffManager, myStats.eSkill.basic.name));
-                    StartCoroutine(GarenE(0, 0));
-                    break;
-                }
-                UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill, 4);
-                myStats.eCD = myStats.eSkill.basic.coolDown[4];
-
-                break;
-            case "R":
-                if (!CheckForAbilityControl(checksR)) yield break;
-
-                yield return StartCoroutine(StartCastingAbility(myStats.rSkill.basic.castTime));
-                UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill, 2);
-                myStats.rCD = myStats.rSkill.basic.coolDown[2];
-
-                if (myStats.name == "Garen")
-                {
-                    StopCoroutine("GarenE");          //if 2 GarenE coroutine exists this could leat to some bugs
-                    if (myStats.buffManager.buffs.ContainsKey("CantAA"))
-                    {
-                        myStats.buffManager.buffs.Remove("CantAA");
-                    }
-                }
-
-                break;
-            case "A":
-                if (!CheckForAbilityControl(checksA)) yield break;
-
-                yield return StartCoroutine(StartCastingAbility(0.1f));
-                AutoAttack();
-
-                break;
-            default:
-                break;
+            myStats.buffManager.buffs.Remove("CantAA");
         }
     }
 
