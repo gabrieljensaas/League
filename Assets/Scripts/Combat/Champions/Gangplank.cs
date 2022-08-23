@@ -8,10 +8,6 @@ public class Gangplank : ChampionCombat
     public override void UpdatePriorityAndChecks()
     {
         base.UpdatePriorityAndChecks();
-        combatPrio[0] = "A";
-        combatPrio[1] = "R";
-        combatPrio[2] = "E";
-        combatPrio[3] = "W";
-        combatPrio[4] = "Q";
+        combatPrio = new string[] { "A", "R", "E", "W", "Q" };
     }
 }

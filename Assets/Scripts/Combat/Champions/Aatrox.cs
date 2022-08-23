@@ -8,10 +8,7 @@ public class Aatrox : ChampionCombat
     public override void UpdatePriorityAndChecks()
     {
         base.UpdatePriorityAndChecks();
-        combatPrio[0] = "R";
-        combatPrio[1] = "Q";
-        combatPrio[2] = "W";
-        combatPrio[3] = "A";
+        combatPrio = new string[] { "R", "Q", "W", "A"};
         checksQ.Add(new CheckIfCasting(this));
         checksA.Add(new CheckIfCasting(this));
         checksA.Add(new CheckACD(this));

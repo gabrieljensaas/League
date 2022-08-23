@@ -8,7 +8,7 @@ public class CheckECD : Check
 
     public override bool Control()
     {
-        return combat.myStats.eCD > 0 ? false : true;
+        return combat.myStats.eCD <= 0;
     }
     public override float Control(float damage)
     {

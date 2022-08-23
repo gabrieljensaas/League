@@ -8,11 +8,7 @@ public class Garen : ChampionCombat
     public override void UpdatePriorityAndChecks()
     {
         base.UpdatePriorityAndChecks();
-        combatPrio[0] = "R";
-        combatPrio[1] = "W";
-        combatPrio[2] = "Q";
-        combatPrio[3] = "A";
-        combatPrio[4] = "E";
+        combatPrio = new string[] { "R", "W", "Q", "A", "E" };
         checksQ.Add(new CheckIfCasting(this));
         checksQ.Add(new CheckQCD(this));
         targetCombat.checksQ.Add(new CheckIfSilenced(targetCombat));

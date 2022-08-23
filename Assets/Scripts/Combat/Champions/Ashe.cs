@@ -8,10 +8,7 @@ public class Ashe : ChampionCombat
     public override void UpdatePriorityAndChecks()
     {
         base.UpdatePriorityAndChecks();
-        combatPrio[0] = "Q";
-        combatPrio[1] = "A";
-        combatPrio[2] = "W";
-        combatPrio[3] = "R";
+        combatPrio = new string[] { "Q", "A", "W", "R" };
         checksQ.Add(new CheckIfCasting(this));
         checksQ.Add(new CheckQCD(this));
         checksQ.Add(new CheckAsheQ(this));

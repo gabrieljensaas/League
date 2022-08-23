@@ -13,9 +13,9 @@ public class CheckAnnieP : Check
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("Pyromania", out Buff value))
         {
-            return value.value == 4 ? true : false;
+            return value.value == 4;
         }
-        else return false;
+        return false;
     }
 
     public override float Control(float damage)

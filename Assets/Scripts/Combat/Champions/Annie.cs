@@ -10,11 +10,7 @@ public class Annie : ChampionCombat
     public override void UpdatePriorityAndChecks()
     {
         base.UpdatePriorityAndChecks();
-        combatPrio[0] = "R";
-        combatPrio[1] = "E";
-        combatPrio[2] = "W";
-        combatPrio[3] = "Q";
-        combatPrio[4] = "A";
+        combatPrio = new string[] { "R", "E", "W", "Q", "A" };
         annieP = new CheckAnnieP(this);
         checksQ.Add(new CheckIfCasting(this));
         checksQ.Add(new CheckQCD(this));
