@@ -17,7 +17,7 @@ public class SimManager : MonoBehaviour
     public static float timer;
     public static float _timer;
 
-    [SerializeField] private Simulator.Combat.ChampionStats[] championStats;
+    [SerializeField] private ChampionStats[] championStats;
 
     private SkillManager skillManager;
 
@@ -128,8 +128,17 @@ public class SimManager : MonoBehaviour
             newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Ashe>();
         else if (champName == "Garen")
             newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Garen>();
-        else if(champName == "Annie")
+        else if (champName == "Annie")
             newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Annie>();
+
+        else
+        {
+            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<PracticeDummy>();
+            champStats[championIndex] = newChampStats;
+            champCombat[championIndex] = newChampStats.MyCombat;
+            return;
+        }
+
         champStats[championIndex] = newChampStats;
         champCombat[championIndex] = newChampStats.MyCombat;
 
@@ -157,7 +166,7 @@ public class SimManager : MonoBehaviour
         newChampStats.StaticUIUpdate();
     }
 
-    private void FindSkills(string champName, Simulator.Combat.ChampionStats champStats)
+    private void FindSkills(string champName, ChampionStats champStats)
     {
         for (int i = 0; i < skillManager.passives.Count; i++)
         {

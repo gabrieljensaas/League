@@ -29,7 +29,7 @@ namespace Simulator.Combat
         protected string[] combatPrio;
         public bool isCasting = false;
 
-        private void Start()
+        protected virtual void Start()
         {
             simulationManager = SimManager.Instance;
             myStats = GetComponent<ChampionStats>();

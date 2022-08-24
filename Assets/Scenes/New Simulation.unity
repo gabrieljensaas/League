@@ -15885,6 +15885,8 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Annie
       m_Image: {fileID: 0}
+    - m_Text: Practice Dummy
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -27088,6 +27090,8 @@ MonoBehaviour:
     - m_Text: Aatrox
       m_Image: {fileID: 0}
     - m_Text: Annie
+      m_Image: {fileID: 0}
+    - m_Text: Practice Dummy
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
