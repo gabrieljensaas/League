@@ -74,6 +74,12 @@ namespace Simulator.Combat
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
+        protected void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level)
+        {
+            totalHeal += HealHealth(skill.UseSkill(level, myStats, targetStats), skill.basic.name);
+            myUI.healSum.text = totalHeal.ToString();
+        }
+
         public virtual IEnumerator ExecuteQ()
         {
             if (!CheckForAbilityControl(checksQ)) yield break;
@@ -171,6 +177,7 @@ namespace Simulator.Combat
 
             myStats.currentHealth -= damage;
             simulationManager.ShowText($"{myStats.name} Took {damage} Damage From {source}!");
+            TextFileManager.WriteString(targetStats.name, $"{myStats.name} Took {damage} Damage From {source}!");
 
             CheckDeath();
 
@@ -181,6 +188,22 @@ namespace Simulator.Combat
         {
             if (myStats.currentHealth <= 0)
                 EndBattle();
+        }
+
+        public float HealHealth(float health, string source)
+        {
+            if (health <= 0) return 0;
+
+            //add checks here
+
+            myStats.currentHealth += health;
+            if (myStats.currentHealth >= myStats.maxHealth)
+                myStats.maxHealth = myStats.currentHealth;
+
+            simulationManager.ShowText($"{myStats.name} Took {health} Damage From {source}!");
+            TextFileManager.WriteString(targetStats.name, $"{myStats.name} Took {health} Damage From {source}!");
+
+            return health;
         }
 
         protected void EndBattle()
