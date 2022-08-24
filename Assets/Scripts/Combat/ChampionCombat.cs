@@ -167,6 +167,8 @@ namespace Simulator.Combat
             else
                 damage = CheckForDamageControl(checkTakeDamageAA, damage);
 
+            if (damage <= 0) return 0;
+
             myStats.currentHealth -= damage;
             simulationManager.ShowText($"{myStats.name} Took {damage} Damage From {source}!");
 
