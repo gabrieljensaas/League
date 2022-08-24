@@ -9,20 +9,20 @@ public class Ashe : ChampionCombat
     {
         combatPrio = new string[] { "Q", "A", "W", "R", "" };
         checksQ.Add(new CheckIfCasting(this));
-        checksQ.Add(new CheckQCD(this));
         checksQ.Add(new CheckAsheQ(this));
         targetCombat.checksQ.Add(new CheckIfStunned(targetCombat));
         checksW.Add(new CheckIfCasting(this));
-        checksW.Add(new CheckWCD(this));
         targetCombat.checksW.Add(new CheckIfStunned(targetCombat));
         checksE.Add(new CheckIfCasting(this));
-        checksE.Add(new CheckECD(this));
         targetCombat.checksE.Add(new CheckIfStunned(targetCombat));
         checksR.Add(new CheckIfCasting(this));
-        checksR.Add(new CheckRCD(this));
         targetCombat.checksR.Add(new CheckIfStunned(targetCombat));
         checksA.Add(new CheckIfCasting(this));
-        checksA.Add(new CheckACD(this));
+        checksQ.Add(new CheckCD(this, "Q"));
+        checksW.Add(new CheckCD(this, "W"));
+        checksE.Add(new CheckCD(this, "E"));
+        checksR.Add(new CheckCD(this, "R"));
+        checksA.Add(new CheckCD(this, "A"));
         targetCombat.checksA.Add(new CheckIfStunned(targetCombat));
         autoattackcheck = new AsheAACheck(this);
         targetCombat.checkTakeDamageAA.Add(new CheckIfFrosted(targetCombat));

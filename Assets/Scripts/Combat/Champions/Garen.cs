@@ -9,25 +9,26 @@ public class Garen : ChampionCombat
     {
         combatPrio = new string[] { "R", "W", "Q", "A", "E" };
         checksQ.Add(new CheckIfCasting(this));
-        checksQ.Add(new CheckQCD(this));
         targetCombat.checksQ.Add(new CheckIfSilenced(targetCombat));
         checksW.Add(new CheckIfCasting(this));
-        checksW.Add(new CheckWCD(this));
         targetCombat.checksW.Add(new CheckIfSilenced(targetCombat));
         checksE.Add(new CheckIfCasting(this));
-        checksE.Add(new CheckECD(this));
         targetCombat.checksE.Add(new CheckIfSilenced(targetCombat));
         checksR.Add(new CheckIfCasting(this));
-        checksR.Add(new CheckRCD(this));
         targetCombat.checksR.Add(new CheckIfSilenced(targetCombat));
         checksA.Add(new CheckIfCasting(this));
         checksA.Add(new CheckIfCantAA(this));
-        checksA.Add(new CheckACD(this));
+        checksQ.Add(new CheckCD(this, "Q"));
+        checksW.Add(new CheckCD(this, "W"));
+        checksE.Add(new CheckCD(this, "E"));
+        checksR.Add(new CheckCD(this, "R"));
+        checksA.Add(new CheckCD(this, "A"));
         autoattackcheck = new GarenAACheck(this);
         checkTakeDamage.Add(new CheckDamageReductionPercent(this));
         checkTakeDamageAA.Add(new CheckDamageReductionPercent(this));
         checkTakeDamage.Add(new CheckShield(this));
         checkTakeDamageAA.Add(new CheckShield(this));
+        checksR.Add(new CheckIfExecutes(this, "R"));
         base.UpdatePriorityAndChecks();
     }
 

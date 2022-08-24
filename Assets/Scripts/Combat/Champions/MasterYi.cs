@@ -8,15 +8,15 @@ public class MasterYi : ChampionCombat
         combatPrio = new string[] { "R", "E", "Q", "W", "A" };
 
         checksQ.Add(new CheckIfCasting(this));
-        checksQ.Add(new CheckQCD(this));
         checksW.Add(new CheckIfCasting(this));
-        checksW.Add(new CheckWCD(this));
         checksE.Add(new CheckIfCasting(this));
-        checksE.Add(new CheckECD(this));
         checksR.Add(new CheckIfCasting(this));
-        checksR.Add(new CheckRCD(this));
         checksA.Add(new CheckIfCasting(this));
-        checksA.Add(new CheckACD(this));
+        checksQ.Add(new CheckCD(this, "Q"));
+        checksW.Add(new CheckCD(this, "W"));
+        checksE.Add(new CheckCD(this, "E"));
+        checksR.Add(new CheckCD(this, "R"));
+        checksA.Add(new CheckCD(this, "A"));
         autoattackcheck = new MasterYiAACheck(this);
         targetCombat.checksQ.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksW.Add(new CheckIfEnemyTargetable(targetCombat));
