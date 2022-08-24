@@ -10,7 +10,6 @@ public class Aatrox : ChampionCombat
         combatPrio = new string[] { "R", "Q", "W", "A", ""};
         checksQ.Add(new CheckIfCasting(this));
         checksA.Add(new CheckIfCasting(this));
-        checksA.Add(new CheckACD(this));
         autoattackcheck = new AatroxAACheck(this);
         base.UpdatePriorityAndChecks();
     }

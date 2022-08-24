@@ -39,10 +39,7 @@ public class PracticeDummy : ChampionCombat
         combatPrio = new string[] { "", "", "", "", "" };
     }
 
-    protected override void CheckPassive()
-    {
-
-    }
+    protected override void CheckPassive() { }
 
     protected override void CheckDeath()
     {
