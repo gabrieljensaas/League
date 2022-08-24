@@ -68,9 +68,9 @@ namespace Simulator.Combat
             isCasting = false;
         }
 
-        protected void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level)
+        protected void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, float damageModifier = 1)
         {
-            totalDamage += targetCombat.TakeDamage(skill.UseSkill(level, myStats, targetStats), skill.basic.name);
+            totalDamage += targetCombat.TakeDamage(damageModifier * skill.UseSkill(level, myStats, targetStats), skill.basic.name);
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
