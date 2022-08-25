@@ -130,7 +130,8 @@ public class SimManager : MonoBehaviour
             newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Garen>();
         else if (champName == "Annie")
             newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Annie>();
-
+        else if (champName == "Master Yi")
+            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<MasterYi>();
         else
         {
             newChampStats.MyCombat = newChampStats.gameObject.AddComponent<PracticeDummy>();

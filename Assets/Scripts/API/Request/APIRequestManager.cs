@@ -214,6 +214,53 @@ namespace Simulator.API
                     }
                 }
             };
+            else if (name == "Master Yi") return new RiotAPIResponse()
+            {
+                ChampionsRes = new List<ChampionsRe>()
+                {
+                    new ChampionsRe()
+                    {
+                        _id = "Master Yi",
+                        champData = new ChampData()
+                        {
+                            type = "champion",
+                            format = "standAloneComplex",
+                            version = "12.7.1",
+                            data = new Data()
+                            {
+                                Champion = new Champion()
+                                {
+                                    name = "Master Yi",
+                                    key ="11",
+                                    stats = new Stats()
+                                    {
+                                        hp = 599,
+                                        mp = 251,
+                                        hpperlevel = 92,
+                                        mpperlevel = 42,
+                                        movespeed = 355,
+                                        armor = 33,
+                                        armorperlevel = 3d,
+                                        spellblock = 32,
+                                        spellblockperlevel = 1.25d,
+                                        attackrange = 125,
+                                        hpregen = 7.5d,
+                                        hpregenperlevel = 0.65d,
+                                        mpregen = 7.26d,
+                                        mpregenperlevel = 0.45d,
+                                        crit = 0,
+                                        critperlevel = 0,
+                                        attackdamage = 66,
+                                        attackdamageperlevel = 3d,
+                                        attackspeed = 0.679d,
+                                        attackspeedperlevel = 2d,
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
             else return null;
         }
     }

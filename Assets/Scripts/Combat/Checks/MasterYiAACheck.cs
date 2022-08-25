@@ -9,6 +9,7 @@ public class MasterYiAACheck : Check
     public override float Control(float damage)
     {
         combat.myStats.qCD--;
+        if (combat.myStats.buffManager.buffs.TryGetValue("WujuStyle", out Buff buff)) damage += buff.value;
         if (combat.myStats.buffManager.buffs.TryGetValue("DoubleStrike", out Buff value))
         {
             if(value.value == 3)

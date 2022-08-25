@@ -200,8 +200,8 @@ namespace Simulator.Combat
             if (myStats.currentHealth >= myStats.maxHealth)
                 myStats.maxHealth = myStats.currentHealth;
 
-            simulationManager.ShowText($"{myStats.name} Took {health} Damage From {source}!");
-            TextFileManager.WriteString(targetStats.name, $"{myStats.name} Took {health} Damage From {source}!");
+            simulationManager.ShowText($"{myStats.name} Took {health} Heal From {source}!");
+            TextFileManager.WriteString(targetStats.name, $"{myStats.name} Took {health} Heal From {source}!");
 
             return health;
         }
@@ -240,5 +240,7 @@ namespace Simulator.Combat
 
             return damage;
         }
+
+        public virtual void StopChanneling(string uniqueKey) { }
     }
 }

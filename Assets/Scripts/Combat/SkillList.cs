@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Simulator.Combat;
 using static AttributeTypes;
+using System;
 
 [CreateAssetMenu(fileName = "new Spell", menuName = "ScriptableObjects/SkillList")]
 public class SkillList : ScriptableObject
@@ -81,7 +82,7 @@ public class SkillList : ScriptableObject
                 damage = (int)Mathf.Round(damage * (100 / (100 + target.spellBlock)));
                 break;
             case SkillDamageType.True:
-                damage = (int)Mathf.Round(unit.flat[level] + (target.currentHealth / target.maxHealth * (unit.percentTargetMissingHP[level] / 100)));
+                damage = (int)Mathf.Round((unit.flat[level] + ((target.maxHealth - target.currentHealth) * (unit.percentTargetMissingHP[level] / 100))) + (unit.percentOwnMissingHP[level] * (unit.flat[level] * ((float)(100 - ((int)(100 * myStats.currentHealth/myStats.maxHealth))) / 100f))));
                 break;
             default:
                 break;
@@ -126,7 +127,7 @@ public class SkillList : ScriptableObject
 
         if (selfEffects.DamageRed)
         {
-            myStats.buffManager.buffs.Add("Damage Reduction" ,new DamageReductionPercentBuff(selfEffects.DamageRedDuration[level], myStats.buffManager, basic.name, selfEffects.DamageRedPercent[level]));
+            myStats.buffManager.buffs.TryAdd("DamageReductionPercent" ,new DamageReductionPercentBuff(selfEffects.DamageRedDuration[level], myStats.buffManager, basic.name, selfEffects.DamageRedPercent[level]));
         }
 
         if (selfEffects.Shield)

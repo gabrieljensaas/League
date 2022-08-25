@@ -6,6 +6,10 @@ public class SilenceBuff : Buff
     {
         base.duration = duration * (100 - manager.stats.tenacity) / 100;
         base.source = source;
+        if(manager.buffs.TryGetValue("Channeling", out Buff value))
+        {
+            value.Kill();
+        }
         manager.simulationManager.ShowText($"{manager.stats.name} Got Silenced By {source} For {base.duration:F3} Seconds!");
     }
 

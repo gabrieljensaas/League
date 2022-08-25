@@ -4,6 +4,7 @@ public abstract class Buff
     public string source;
     protected BuffManager manager;
     public float value;
+    public bool paused = false;
     protected Buff(BuffManager manager)
     {
         this.manager = manager;
