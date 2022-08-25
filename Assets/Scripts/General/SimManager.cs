@@ -397,6 +397,57 @@ public class SimManager : MonoBehaviour
     {
         timeText.text += timer.ToString() + "/n";
     }
+
+    public void LoadStats(RiotAPIResponse response, int index)
+    {
+        var champName = championsDropdowns[index].options[championsDropdowns[index].value].text;
+        var exp = Int32.Parse(championsExperienceInput[index].text);
+        var statsToLoad = response;
+        ChampionStats newChampStats;
+
+        newChampStats = championStats[index];
+        if (champName == "Ashe")
+            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Ashe>();
+        else if (champName == "Garen")
+            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Garen>();
+        else if (champName == "Annie")
+            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Annie>();
+        else if (champName == "Master Yi")
+            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<MasterYi>();
+        else
+        {
+            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<PracticeDummy>();
+            champStats[index] = newChampStats;
+            champCombat[index] = newChampStats.MyCombat;
+            return;
+        }
+
+        champStats[index] = newChampStats;
+        champCombat[index] = newChampStats.MyCombat;
+
+        FindSkills(champName, newChampStats);
+
+        newChampStats.name = champName;
+        newChampStats.level = GetLevel(exp);
+
+        newChampStats.baseHealth = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.hp;
+        newChampStats.baseAD = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.attackdamage;
+        newChampStats.baseArmor = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.armor;
+        newChampStats.baseSpellBlock = (float)(statsToLoad.ChampionsRes[0].champData.data.Champion.stats.spellblock);
+        newChampStats.baseAttackSpeed = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.attackspeed;
+
+        newChampStats.maxHealth = newChampStats.baseHealth;
+        newChampStats.AD = newChampStats.baseAD;
+        newChampStats.armor = newChampStats.baseArmor;
+        newChampStats.spellBlock = newChampStats.baseSpellBlock;
+        newChampStats.attackSpeed = newChampStats.baseAttackSpeed;
+
+        GetStatsByLevel(newChampStats, statsToLoad);
+        newChampStats.currentHealth = newChampStats.maxHealth;
+
+        ExtraStats(newChampStats);
+        newChampStats.StaticUIUpdate();
+    }
 }
 
 [System.Serializable]

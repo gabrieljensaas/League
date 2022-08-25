@@ -4,6 +4,7 @@ namespace Simulator.API
 {
     public class APIRequestManager : MonoBehaviour
     {
+        SimManager simManager;
         #region Singleton
         private static APIRequestManager _instance;
         public static APIRequestManager Instance { get { return _instance; } }
@@ -19,6 +20,10 @@ namespace Simulator.API
             }
         }
         #endregion
+        private void Start()
+        {
+            simManager = SimManager.Instance;
+        }
         /// <summary>
         /// Generates a hand written mock up data of ashe or garen
         /// </summary>
@@ -262,6 +267,11 @@ namespace Simulator.API
                 }
             };
             else return null;
+        }
+
+        public void LoadChampionData(string response, int championIndex)
+        {
+            simManager.LoadStats(JsonUtility.FromJson<RiotAPIResponse>(response), championIndex);
         }
     }
 }
