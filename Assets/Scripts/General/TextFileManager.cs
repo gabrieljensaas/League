@@ -19,10 +19,17 @@ public class TextFileManager : MonoBehaviour
     }
     #endregion
 
+    public static void DeleteFileExists(string fileName)
+    {
+        string path = Application.persistentDataPath + "/" + fileName + ".txt";
+        if(File.Exists(path))
+            File.Delete(path);
+    }
+
     public static void WriteString(string fileName, string text)
     {
         string path = Application.persistentDataPath + "/" + fileName + ".txt";
-        StreamWriter writer = new StreamWriter(path, true);
+        StreamWriter writer = new(path, true);
         writer.WriteLine(text);
         writer.Close();
     }

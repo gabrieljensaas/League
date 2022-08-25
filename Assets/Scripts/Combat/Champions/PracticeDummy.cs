@@ -41,9 +41,9 @@ public class PracticeDummy : ChampionCombat
 
     protected override void CheckPassive() { }
 
-    protected override void CheckDeath()
-    {
-        if (myStats.currentHealth <= 0)
-            myStats.currentHealth = 1000;
-    }
+    //protected override void CheckDeath()
+    //{
+    //    if (myStats.currentHealth <= 0)
+    //        myStats.currentHealth = 1000;
+    //}
 }

@@ -10,12 +10,14 @@ using Simulator.Combat;
 
 public class SimManager : MonoBehaviour
 {
-    public static float GlobalTimeScale = 1f;
-    public float GlobalGameSpeedMultiplier = 1f / GlobalTimeScale;
+    [Header("Simulation Time")]
+    [SerializeField] private int _simulatorTargetedFPS = 60;
+    [SerializeField] private float _simulatorTimeScale = 10;
+    [SerializeField] private float _simulatorFixedTimeStep = 0.01f; //original time step = 0.02f
+
     public static bool isLoaded = false;
     public static bool battleStarted = false;
     public static float timer;
-    public static float _timer;
 
     [SerializeField] private ChampionStats[] championStats;
 
@@ -81,6 +83,9 @@ public class SimManager : MonoBehaviour
     #endregion
     private void Start()
     {
+        Application.targetFrameRate = _simulatorTargetedFPS;
+        Time.fixedDeltaTime = _simulatorFixedTimeStep;
+
         //matchIDGO.SetActive(false);
         ShowInput();
         itemRequest = GetComponent<RiotAPIItemRequest>();
@@ -319,11 +324,11 @@ public class SimManager : MonoBehaviour
         }
     }
 
-    void Update()
-    {        
+    private void FixedUpdate()
+    {
         if (battleStarted)
         {
-            time += Time.deltaTime;
+            time += Time.fixedDeltaTime;
             champCombat[0].CombatUpdate();
             champCombat[1].CombatUpdate();
         }
@@ -331,11 +336,16 @@ public class SimManager : MonoBehaviour
 
     public void ShowText(string text)
     {
-        outputText.text += $"{time:F3}   {text}\n\n";
+        outputText.text += $"[{time:F2}] {text}\n\n";
+        TextFileManager.WriteString("Logs", $"[{time:F2}] {text}");
     }
     
     public void StartBattle()
     {
+        Time.timeScale = _simulatorTimeScale;
+        TextFileManager.DeleteFileExists("Logs");
+        ShowText($"TargetFrameRate = {_simulatorTargetedFPS}; TimeScale = {_simulatorTimeScale}; TimeStep = {Time.fixedDeltaTime}");
+
         champStats[0].MyCombat.UpdateTarget(1);
         champStats[1].MyCombat.UpdateTarget(0);
         champStats[0].MyCombat.UpdatePriorityAndChecks();
@@ -386,11 +396,6 @@ public class SimManager : MonoBehaviour
     public static void WriteTime()
     {
         timeText.text += timer.ToString() + "/n";
-    }
-
-    public void UpdateGameSpeed()
-    {
-        GlobalGameSpeedMultiplier = 1f / GlobalGameSpeedMultiplier;
     }
 }
 

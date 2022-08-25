@@ -177,7 +177,6 @@ namespace Simulator.Combat
 
             myStats.currentHealth -= damage;
             simulationManager.ShowText($"{myStats.name} Took {damage} Damage From {source}!");
-            TextFileManager.WriteString(targetStats.name, $"{myStats.name} Took {damage} Damage From {source}!");
 
             CheckDeath();
 
@@ -201,13 +200,13 @@ namespace Simulator.Combat
                 myStats.maxHealth = myStats.currentHealth;
 
             simulationManager.ShowText($"{myStats.name} Took {health} Heal From {source}!");
-            TextFileManager.WriteString(targetStats.name, $"{myStats.name} Took {health} Heal From {source}!");
 
             return health;
         }
 
         protected void EndBattle()
         {
+            Time.timeScale = 1;
             SimManager.battleStarted = false;
             simulationManager.ShowText($"{myStats.name} Has Died! {targetStats.name} Won With {targetStats.currentHealth} Health Remaining!");
             StopAllCoroutines();
