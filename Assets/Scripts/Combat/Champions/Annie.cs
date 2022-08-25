@@ -40,14 +40,6 @@ public class Annie : ChampionCombat
         }
     }
 
-    protected override void CheckDeath()
-    {
-        if (myStats.currentHealth <= 0 && pets.Count > 0)
-            StartCoroutine(TibbersRevenge());
-        else if (myStats.currentHealth <= 0)
-            EndBattle();
-    }
-
     private IEnumerator TibbersRevenge()
     {
         Tibbers tibbers = (Tibbers)pets[0];

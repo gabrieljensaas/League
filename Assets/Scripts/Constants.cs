@@ -16,4 +16,12 @@ public class Constants : MonoBehaviour
         if (level < 11) return 1.5f;
         return 1.75f;
     }
+    public static int GetDariusNoxianMightByLevel(int level)
+    {
+        if (level < 10) return 30 + (5 * (level - 1));
+        else if (level < 13) return 75 + (10 * (level - 10));
+        else return 105 + (25 * (level - 13));
+    }
+
+    public static float GetDariusHemorrhageByLevel(int level, int stack) => (3 * stack) + (0.25f * stack * level);
 }
