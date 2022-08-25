@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Simulator.Combat;
 
 public class Ashe : ChampionCombat

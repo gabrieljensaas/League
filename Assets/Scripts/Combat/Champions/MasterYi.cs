@@ -1,8 +1,6 @@
 using Simulator.Combat;
-using System;
 using System.Collections;
 using UnityEngine;
-using static AttributeTypes;
 
 public class MasterYi : ChampionCombat
 {

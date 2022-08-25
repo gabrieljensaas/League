@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Simulator.Combat;
-using static AttributeTypes;
-using Unity.VisualScripting;
 
 public class Annie : ChampionCombat
 {
