@@ -754,23 +754,21 @@ public class SkillManager : MonoBehaviour
 
         StartCoroutine(LoadData());
     }
-
     public void CreateAsset(int num, string champName, string skillId, SkillList asset, PassiveList passive)
     {
         string _folderName = folderName[num];
         //Debug.Log(passive);
         if (asset != null)
         {
-            AssetDatabase.CreateAsset(asset, "Assets/Resources/Skills/" + ver + "/" + _folderName + "/" + champName + " " + _folderName + "[" + skillId + "].asset");
+            //AssetDatabase.CreateAsset(asset, "Assets/Resources/Skills/" + ver + "/" + _folderName + "/" + champName + " " + _folderName + "[" + skillId + "].asset");
         }
         else
         {
-            AssetDatabase.CreateAsset(passive, "Assets/Resources/Skills/" + ver + "/" + _folderName + "/" + champName + " " + _folderName + "[" + skillId + "].asset");
+            //AssetDatabase.CreateAsset(passive, "Assets/Resources/Skills/" + ver + "/" + _folderName + "/" + champName + " " + _folderName + "[" + skillId + "].asset");
         }
-        AssetDatabase.SaveAssets();
+        //AssetDatabase.SaveAssets();
         // #endif
     }
-
     IEnumerator LoadData()
     {
         for (int i = 0; i < champions.Length; i++)

@@ -165,7 +165,7 @@ public class SimManager : MonoBehaviour
         newChampStats.spellBlock = newChampStats.baseSpellBlock;
         newChampStats.attackSpeed = newChampStats.baseAttackSpeed;
                    
-        GetStatsByLevel(newChampStats, statsToLoad);
+        //GetStatsByLevel(newChampStats, statsToLoad);
         newChampStats.currentHealth = newChampStats.maxHealth;
 
         ExtraStats(newChampStats);
@@ -231,17 +231,17 @@ public class SimManager : MonoBehaviour
         }
         return _level;
     }
-    private void GetStatsByLevel(ChampionStats champ, RiotAPIResponse stats)
+    private void GetStatsByLevel(ChampionStats champ, ChampionsRe stats)
     {
         int level = champ.level;
 
         if (level == 1) return;
         double[] mFactor = { 0, 0.72, 1.4750575, 2.2650575, 3.09, 3.95, 4.8450575, 5.7750575, 6.74, 7.74, 8.7750575, 9.8450575, 10.95, 12.09, 13.2650575, 14.4750575, 15.72, 17 };
-        champ.maxHealth += (float)(stats.ChampionsRes[0].champData.data.Champion.stats.hpperlevel * mFactor[level - 1]);
-        champ.attackSpeed = (float)(champ.baseAttackSpeed * (1 + (stats.ChampionsRes[0].champData.data.Champion.stats.attackspeedperlevel * (level - 1)) / 100));
-        champ.armor += ((float)(stats.ChampionsRes[0].champData.data.Champion.stats.armorperlevel) * (float)mFactor[level - 1]);
-        champ.AD += ((float)(stats.ChampionsRes[0].champData.data.Champion.stats.attackdamageperlevel) * (float)mFactor[level - 1]);
-        champ.spellBlock += ((float)(stats.ChampionsRes[0].champData.data.Champion.stats.spellblockperlevel) * (float)mFactor[level - 1]);
+        champ.maxHealth += (float)(stats.champData.data.Champion.stats.hpperlevel * mFactor[level - 1]);
+        champ.attackSpeed = (float)(champ.baseAttackSpeed * (1 + (stats.champData.data.Champion.stats.attackspeedperlevel * (level - 1)) / 100));
+        champ.armor += ((float)(stats.champData.data.Champion.stats.armorperlevel) * (float)mFactor[level - 1]);
+        champ.AD += ((float)(stats.champData.data.Champion.stats.attackdamageperlevel) * (float)mFactor[level - 1]);
+        champ.spellBlock += ((float)(stats.champData.data.Champion.stats.spellblockperlevel) * (float)mFactor[level - 1]);
     }
 
     private void ExtraStats(ChampionStats champStats)
@@ -398,7 +398,7 @@ public class SimManager : MonoBehaviour
         timeText.text += timer.ToString() + "/n";
     }
 
-    public void LoadStats(RiotAPIResponse response, int index)
+    public void LoadStats(ChampionsRe response, int index)
     {
         var champName = championsDropdowns[index].options[championsDropdowns[index].value].text;
         var exp = Int32.Parse(championsExperienceInput[index].text);
@@ -430,11 +430,11 @@ public class SimManager : MonoBehaviour
         newChampStats.name = champName;
         newChampStats.level = GetLevel(exp);
 
-        newChampStats.baseHealth = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.hp;
-        newChampStats.baseAD = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.attackdamage;
-        newChampStats.baseArmor = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.armor;
-        newChampStats.baseSpellBlock = (float)(statsToLoad.ChampionsRes[0].champData.data.Champion.stats.spellblock);
-        newChampStats.baseAttackSpeed = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.attackspeed;
+        newChampStats.baseHealth = (float)statsToLoad.champData.data.Champion.stats.hp;
+        newChampStats.baseAD = (float)statsToLoad.champData.data.Champion.stats.attackdamage;
+        newChampStats.baseArmor = (float)statsToLoad.champData.data.Champion.stats.armor;
+        newChampStats.baseSpellBlock = (float)(statsToLoad.champData.data.Champion.stats.spellblock);
+        newChampStats.baseAttackSpeed = (float)statsToLoad.champData.data.Champion.stats.attackspeed;
 
         newChampStats.maxHealth = newChampStats.baseHealth;
         newChampStats.AD = newChampStats.baseAD;
@@ -447,6 +447,11 @@ public class SimManager : MonoBehaviour
 
         ExtraStats(newChampStats);
         newChampStats.StaticUIUpdate();
+    }
+
+    public void LoadChampionData(string data)
+    {
+        apiRequest.LoadChampionData(data);
     }
 }
 

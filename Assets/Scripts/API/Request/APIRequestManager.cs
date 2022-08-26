@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 namespace Simulator.API
@@ -269,9 +270,18 @@ namespace Simulator.API
             else return null;
         }
 
-        public void LoadChampionData(string response, int championIndex)
+        public void LoadChampionData(string response)
         {
-            simManager.LoadStats(JsonUtility.FromJson<RiotAPIResponse>(response), championIndex);
+            var obj = JsonUtility.FromJson<LSSAPIResponse>(response);
+            simManager.LoadStats(GetMockChampionData(obj.APIMatchInfo.championInfo[0].champName).ChampionsRes[0], 0);
+            simManager.LoadStats(GetMockChampionData(obj.APIMatchInfo.championInfo[1].champName).ChampionsRes[0], 1);
+            StartCoroutine(StartBattle());
+        }
+
+        public IEnumerator StartBattle()
+        {
+            yield return new WaitForSeconds(3f);
+            simManager.StartBattle();
         }
     }
 }
