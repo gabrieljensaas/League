@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using System.Linq;
+using Simulator.API;
 
 namespace Simulator.Combat
 {
@@ -211,6 +212,7 @@ namespace Simulator.Combat
             simulationManager.ShowText($"{myStats.name} Has Died! {targetStats.name} Won With {targetStats.currentHealth} Health Remaining!");
             StopAllCoroutines();
             targetCombat.StopAllCoroutines();
+            APIRequestManager.Instance.SendOutput(simulationManager.output[0].text.Split("\n"));
         }
 
         public void UpdateTarget(int index)

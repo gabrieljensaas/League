@@ -13,6 +13,7 @@ namespace Simulator.API
         public RiotAPIResponse RiotAPIResponse => _riotAPIResponse;
 
         SimManager simManager;
+        ExternalJS extarnaljs;
         #region Singleton
         private static APIRequestManager _instance;
         public static APIRequestManager Instance { get { return _instance; } }
@@ -31,6 +32,7 @@ namespace Simulator.API
         private void Start()
         {
             simManager = SimManager.Instance;
+            extarnaljs = GetComponent<ExternalJS>();
         }
         /// <summary>
         /// Generates a hand written mock up data of ashe or garen
@@ -351,6 +353,11 @@ namespace Simulator.API
         {
             yield return new WaitForSeconds(3f);
             simManager.StartBattle();
+        }
+
+        public void SendOutput(string[] str)
+        {
+            extarnaljs.SendData(str);
         }
     }
 }
