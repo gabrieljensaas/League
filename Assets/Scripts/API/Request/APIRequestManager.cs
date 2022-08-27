@@ -1,10 +1,17 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
+using UnityEngine.Networking;
+
 namespace Simulator.API
 {
     public class APIRequestManager : MonoBehaviour
     {
+        private RiotAPIResponse _riotAPIResponse;
+        public RiotAPIResponse RiotAPIResponse => _riotAPIResponse;
+
         SimManager simManager;
         #region Singleton
         private static APIRequestManager _instance;
@@ -269,6 +276,68 @@ namespace Simulator.API
             };
             else return null;
         }
+
+        public IEnumerator GetChampionData(string name)
+        {
+            string url = "https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/champions/" + name + ".json";
+            UnityWebRequest www = UnityWebRequest.Get(url);
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+                Debug.Log(www.error);
+            else
+            {
+                RiotAPIChampionDataResponse championData = JsonConvert.DeserializeObject<RiotAPIChampionDataResponse>(www.downloadHandler.text);
+                _riotAPIResponse = new RiotAPIResponse()
+                {
+                    ChampionsRes = new List<ChampionsRe>()
+                    {
+                        new ChampionsRe()
+                        {
+                            _id = championData.key,
+                            champData = new ChampData()
+                            {
+                                type = "champion", //hardcoded
+                                format = "standAloneComplex", //hardcoded
+                                version = "12.16.1", //hardcoded
+                                data = new Data()
+                                {
+                                    Champion = new Champion()
+                                    {
+                                        name = championData.name,
+                                        key = championData.id.ToString(),
+                                        stats = new Stats()
+                                        {
+                                            hp = championData.stats.health.flat,
+                                            mp = championData.stats.mana.flat,
+                                            hpperlevel = championData.stats.health.perLevel,
+                                            mpperlevel = championData.stats.mana.perLevel,
+                                            movespeed = championData.stats.movespeed.flat,
+                                            armor = championData.stats.armor.flat,
+                                            armorperlevel = championData.stats.armor.perLevel,
+                                            spellblock = championData.stats.magicResistance.flat,
+                                            spellblockperlevel = championData.stats.magicResistance.perLevel,
+                                            attackrange = championData.stats.attackRange.flat,
+                                            hpregen = championData.stats.healthRegen.flat,
+                                            hpregenperlevel = championData.stats.healthRegen.perLevel,
+                                            mpregen = championData.stats.manaRegen.flat,
+                                            mpregenperlevel = championData.stats.manaRegen.perLevel,
+                                            crit = 0, //hardcoded
+                                            critperlevel = 0, //hardcoded
+                                            attackdamage = championData.stats.attackDamage.flat,
+                                            attackdamageperlevel = championData.stats.attackDamage.perLevel,
+                                            attackspeed = championData.stats.attackSpeed.flat,
+                                            attackspeedperlevel = championData.stats.attackSpeed.perLevel,
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+            }
+        }
+
 
         public void LoadChampionData(string response)
         {

@@ -16021,7 +16021,7 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Garen
       m_Image: {fileID: 0}
-    - m_Text: Master Yi
+    - m_Text: MasterYi
       m_Image: {fileID: 0}
     - m_Text: Practice Dummy
       m_Image: {fileID: 0}
@@ -27408,7 +27408,7 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Garen
       m_Image: {fileID: 0}
-    - m_Text: Master Yi
+    - m_Text: MasterYi
       m_Image: {fileID: 0}
     - m_Text: Practice Dummy
       m_Image: {fileID: 0}

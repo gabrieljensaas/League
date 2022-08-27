@@ -121,28 +121,37 @@ public class SimManager : MonoBehaviour
         RiotAPIMatchRequest.selectedChamp[1] = id;
     }*/
 
-    public void LoadMockStats(int championIndex)
+    private IEnumerator LoadMockStatsEnumerator(int championIndex)
     {
         var champName = championsDropdowns[championIndex].options[championsDropdowns[championIndex].value].text;
         var exp = Int32.Parse(championsExperienceInput[championIndex].text);
-        var statsToLoad = APIRequestManager.Instance.GetMockChampionData(champName);
+        yield return StartCoroutine(APIRequestManager.Instance.GetChampionData(champName));
+
         ChampionStats newChampStats;
 
         newChampStats = championStats[championIndex];
-        if (champName == "Ashe")
-            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Ashe>();
-        else if (champName == "Garen")
-            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Garen>();
-        else if (champName == "Annie")
-            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Annie>();
-        else if (champName == "Master Yi")
-            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<MasterYi>();
-        else
+        switch (champName)
         {
-            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<PracticeDummy>();
-            champStats[championIndex] = newChampStats;
-            champCombat[championIndex] = newChampStats.MyCombat;
-            return;
+            case "Ashe":
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Ashe>();
+                break;
+            case "Garen":
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Garen>();
+                break;
+            case "Annie":
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Annie>();
+                break;
+            case "MasterYi":
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<MasterYi>();
+                break;
+            case "Darius":
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Darius>();
+                break;
+            default:
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<PracticeDummy>();
+                champStats[championIndex] = newChampStats;
+                champCombat[championIndex] = newChampStats.MyCombat;
+                yield break;
         }
 
         champStats[championIndex] = newChampStats;
@@ -153,23 +162,28 @@ public class SimManager : MonoBehaviour
         newChampStats.name = champName;
         newChampStats.level = GetLevel(exp);
 
-        newChampStats.baseHealth = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.hp;
-        newChampStats.baseAD = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.attackdamage;
-        newChampStats.baseArmor = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.armor;
-        newChampStats.baseSpellBlock = (float)(statsToLoad.ChampionsRes[0].champData.data.Champion.stats.spellblock);
-        newChampStats.baseAttackSpeed = (float)statsToLoad.ChampionsRes[0].champData.data.Champion.stats.attackspeed;
+        newChampStats.baseHealth = (float)APIRequestManager.Instance.RiotAPIResponse.ChampionsRes[0].champData.data.Champion.stats.hp;
+        newChampStats.baseAD = (float)APIRequestManager.Instance.RiotAPIResponse.ChampionsRes[0].champData.data.Champion.stats.attackdamage;
+        newChampStats.baseArmor = (float)APIRequestManager.Instance.RiotAPIResponse.ChampionsRes[0].champData.data.Champion.stats.armor;
+        newChampStats.baseSpellBlock = (float)APIRequestManager.Instance.RiotAPIResponse.ChampionsRes[0].champData.data.Champion.stats.spellblock;
+        newChampStats.baseAttackSpeed = (float)APIRequestManager.Instance.RiotAPIResponse.ChampionsRes[0].champData.data.Champion.stats.attackspeed;
 
         newChampStats.maxHealth = newChampStats.baseHealth;
         newChampStats.AD = newChampStats.baseAD;
         newChampStats.armor = newChampStats.baseArmor;
         newChampStats.spellBlock = newChampStats.baseSpellBlock;
         newChampStats.attackSpeed = newChampStats.baseAttackSpeed;
-                   
+
         //GetStatsByLevel(newChampStats, statsToLoad);
         newChampStats.currentHealth = newChampStats.maxHealth;
 
         ExtraStats(newChampStats);
         newChampStats.StaticUIUpdate();
+    }
+
+    public void LoadMockStats(int championIndex)
+    {
+        StartCoroutine(LoadMockStatsEnumerator(championIndex));
     }
 
     private void FindSkills(string champName, ChampionStats champStats)
@@ -406,20 +420,28 @@ public class SimManager : MonoBehaviour
         ChampionStats newChampStats;
 
         newChampStats = championStats[index];
-        if (champName == "Ashe")
-            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Ashe>();
-        else if (champName == "Garen")
-            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Garen>();
-        else if (champName == "Annie")
-            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Annie>();
-        else if (champName == "Master Yi")
-            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<MasterYi>();
-        else
+        switch (champName)
         {
-            newChampStats.MyCombat = newChampStats.gameObject.AddComponent<PracticeDummy>();
-            champStats[index] = newChampStats;
-            champCombat[index] = newChampStats.MyCombat;
-            return;
+            case "Ashe":
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Ashe>();
+                break;
+            case "Garen":
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Garen>();
+                break;
+            case "Annie":
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Annie>();
+                break;
+            case "Master Yi":
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<MasterYi>();
+                break;
+            case "Darius":
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Darius>();
+                break;
+            default:
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<PracticeDummy>();
+                champStats[index] = newChampStats;
+                champCombat[index] = newChampStats.MyCombat;
+                return;
         }
 
         champStats[index] = newChampStats;
