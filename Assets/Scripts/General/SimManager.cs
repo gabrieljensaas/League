@@ -21,7 +21,7 @@ public class SimManager : MonoBehaviour
 
     [SerializeField] private ChampionStats[] championStats;
 
-    private SkillManager skillManager;
+    private ChampionManager championManager;
 
     [SerializeField] private TMP_Dropdown[] championsDropdowns;
     [SerializeField] private TMP_InputField[] championsExperienceInput;
@@ -93,7 +93,7 @@ public class SimManager : MonoBehaviour
         apiRequest = GetComponent<APIRequestManager>();
         outputText = output[0];
         timeText = output[1];
-        skillManager = SkillManager.Instance;
+        championManager = ChampionManager.Instance;
         //Time.timeScale = speed;
         //foreach (GameObject item in champOutput)
         //{
@@ -125,7 +125,7 @@ public class SimManager : MonoBehaviour
     {
         var champName = championsDropdowns[championIndex].options[championsDropdowns[championIndex].value].text;
         var exp = Int32.Parse(championsExperienceInput[championIndex].text);
-        yield return StartCoroutine(APIRequestManager.Instance.GetChampionData(champName));
+        StatsList stats = championManager.ChampionStats(champName);
 
         ChampionStats newChampStats;
 
@@ -162,11 +162,11 @@ public class SimManager : MonoBehaviour
         newChampStats.name = champName;
         newChampStats.level = GetLevel(exp);
 
-        newChampStats.baseHealth = (float)APIRequestManager.Instance.RiotAPIResponse.ChampionsRes[0].champData.data.Champion.stats.hp;
-        newChampStats.baseAD = (float)APIRequestManager.Instance.RiotAPIResponse.ChampionsRes[0].champData.data.Champion.stats.attackdamage;
-        newChampStats.baseArmor = (float)APIRequestManager.Instance.RiotAPIResponse.ChampionsRes[0].champData.data.Champion.stats.armor;
-        newChampStats.baseSpellBlock = (float)APIRequestManager.Instance.RiotAPIResponse.ChampionsRes[0].champData.data.Champion.stats.spellblock;
-        newChampStats.baseAttackSpeed = (float)APIRequestManager.Instance.RiotAPIResponse.ChampionsRes[0].champData.data.Champion.stats.attackspeed;
+        newChampStats.baseHealth = (float)stats.health.flat;
+        newChampStats.baseAD = (float)stats.attackDamage.flat;
+        newChampStats.baseArmor = (float)stats.armor.flat;
+        newChampStats.baseSpellBlock = (float)stats.magicResistance.flat;
+        newChampStats.baseAttackSpeed = (float)stats.attackSpeed.flat;
 
         newChampStats.maxHealth = newChampStats.baseHealth;
         newChampStats.AD = newChampStats.baseAD;
@@ -188,47 +188,47 @@ public class SimManager : MonoBehaviour
 
     private void FindSkills(string champName, ChampionStats champStats)
     {
-        for (int i = 0; i < skillManager.passives.Count; i++)
+        for (int i = 0; i < championManager.passives.Count; i++)
         {
-            if (skillManager.passives[i].championName == champName)
+            if (championManager.passives[i].championName == champName)
             {
-                champStats.passiveSkill = skillManager.passives[i];
+                champStats.passiveSkill = championManager.passives[i];
                 break;
             }
         }
 
-        for (int i = 0; i < skillManager.qSkills.Count; i++)
+        for (int i = 0; i < championManager.qSkills.Count; i++)
         {
-            if (skillManager.qSkills[i].basic.champion == champName)
+            if (championManager.qSkills[i].basic.champion == champName)
             {
-                champStats.qSkill = skillManager.qSkills[i];
+                champStats.qSkill = championManager.qSkills[i];
                 break;
             }
         }
 
-        for (int i = 0; i < skillManager.wSkills.Count; i++)
+        for (int i = 0; i < championManager.wSkills.Count; i++)
         {
-            if (skillManager.wSkills[i].basic.champion == champName)
+            if (championManager.wSkills[i].basic.champion == champName)
             {
-                champStats.wSkill = skillManager.wSkills[i];
+                champStats.wSkill = championManager.wSkills[i];
                 break;
             }
         }
 
-        for (int i = 0; i < skillManager.eSkills.Count; i++)
+        for (int i = 0; i < championManager.eSkills.Count; i++)
         {
-            if (skillManager.eSkills[i].basic.champion == champName)
+            if (championManager.eSkills[i].basic.champion == champName)
             {
-                champStats.eSkill = skillManager.eSkills[i];
+                champStats.eSkill = championManager.eSkills[i];
                 break;
             }
         }
 
-        for (int i = 0; i < skillManager.rSkills.Count; i++)
+        for (int i = 0; i < championManager.rSkills.Count; i++)
         {
-            if (skillManager.rSkills[i].basic.champion == champName)
+            if (championManager.rSkills[i].basic.champion == champName)
             {
-                champStats.rSkill = skillManager.rSkills[i];
+                champStats.rSkill = championManager.rSkills[i];
                 break;
             }
         }
@@ -358,7 +358,7 @@ public class SimManager : MonoBehaviour
     {
         Time.timeScale = _simulatorTimeScale;
         TextFileManager.DeleteFileExists("Logs");
-        ShowText($"TargetFrameRate = {_simulatorTargetedFPS}; TimeScale = {_simulatorTimeScale}; TimeStep = {Time.fixedDeltaTime}");
+        ShowText($"TargetFrameRate = {_simulatorTargetedFPS}; TimeScale = {Time.timeScale}; TimeStep = {Time.fixedDeltaTime}");
 
         champStats[0].MyCombat.UpdateTarget(1);
         champStats[1].MyCombat.UpdateTarget(0);

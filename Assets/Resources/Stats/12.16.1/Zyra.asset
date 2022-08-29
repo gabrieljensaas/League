@@ -1,0 +1,149 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639410e96266b0a458722b1d42766575, type: 3}
+  m_Name: Zyra
+  m_EditorClassIdentifier: 
+  health:
+    flat: 574
+    percent: 0
+    perLevel: 93
+    percentPerLevel: 0
+  healthRegen:
+    flat: 5.5
+    percent: 0
+    perLevel: 0.5
+    percentPerLevel: 0
+  mana:
+    flat: 418
+    percent: 0
+    perLevel: 25
+    percentPerLevel: 0
+  manaRegen:
+    flat: 13
+    percent: 0
+    perLevel: 0.4
+    percentPerLevel: 0
+  armor:
+    flat: 29
+    percent: 0
+    perLevel: 4.2
+    percentPerLevel: 0
+  magicResistance:
+    flat: 30
+    percent: 0
+    perLevel: 1.3
+    percentPerLevel: 0
+  attackDamage:
+    flat: 53
+    percent: 0
+    perLevel: 3.2
+    percentPerLevel: 0
+  acquisitionRadius:
+    flat: 575
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  selectionRadius:
+    flat: 120
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  pathingRadius:
+    flat: 35
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  gameplayRadius:
+    flat: 65
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  criticalStrikeDamage:
+    flat: 200
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  criticalStrikeDamageModifier:
+    flat: 1
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  attackSpeed:
+    flat: 0.625
+    percent: 0
+    perLevel: 2.11
+    percentPerLevel: 0
+  attackSpeedRatio:
+    flat: 0.625
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  attackCastTime:
+    flat: 0.3
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  attackTotalTime:
+    flat: 1.6
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  attackDelayOffset:
+    flat: -0.154166668653488
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  attackRange:
+    flat: 575
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  aramDamageTaken:
+    flat: 1.05
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  aramDamageDealt:
+    flat: 0.9
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  aramHealing:
+    flat: 1
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  aramShielding:
+    flat: 1
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  urfDamageTaken:
+    flat: 1
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  urfDamageDealt:
+    flat: 1
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  urfHealing:
+    flat: 1
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0
+  urfShielding:
+    flat: 1
+    percent: 0
+    perLevel: 0
+    percentPerLevel: 0

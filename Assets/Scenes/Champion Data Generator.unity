@@ -132,7 +132,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 517365955}
-  - component: {fileID: 517365953}
   - component: {fileID: 517365956}
   m_Layer: 0
   m_Name: ChampionDataManager
@@ -140,29 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &517365953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 517365952}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7659dade3692e734e92e6342472cefce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 12.16.1
-  passives: []
-  qSkills:
-  - {fileID: 11400000, guid: 93edcee4cf5bead48aa064df99f08fd9, type: 2}
-  wSkills:
-  - {fileID: 11400000, guid: 86aeaf37c53b9de4cae9c51362e07362, type: 2}
-  eSkills:
-  - {fileID: 11400000, guid: de67c83a66c55964ab4cbbada62a11b9, type: 2}
-  rSkills:
-  - {fileID: 11400000, guid: ba741059f5290ae4b83b3b05d544d8ae, type: 2}
+  m_IsActive: 1
 --- !u!4 &517365955
 Transform:
   m_ObjectHideFlags: 0

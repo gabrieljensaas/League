@@ -143,7 +143,7 @@ public class SkillsList
     public string name;
 }
 
-[System.Serializable]
+[Serializable]
 public class SkillEnemyEffects
 {
     [Header("Basic")]

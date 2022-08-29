@@ -711,7 +711,7 @@ public class ChampionDataGenerator : MonoBehaviour
     {
         for (int i = 0; i < champions.Length; i++)
         {
-            if (champions[i] == "GnarBig") continue;
+            if (champions[i] == "GnarBig") continue; //Q2 BUG
             StartCoroutine(LoadChampionData(champions[i]));
         }
         yield return null;
@@ -726,12 +726,47 @@ public class ChampionDataGenerator : MonoBehaviour
 
         if (www.result != UnityWebRequest.Result.Success) yield break;
 
+        LoadChampionStats(champName);
         LoadChampionSkills(champName);
     }
 
     private void LoadChampionStats(string champName)
     {
+        if (Resources.Load<StatsList>($"Stats/{version}/{champName}]") == null)
+        {
+            StatsList asset = ScriptableObject.CreateInstance<StatsList>();
+            asset.health = api.stats.health;
+            asset.healthRegen = api.stats.healthRegen;
+            asset.mana = api.stats.mana;
+            asset.manaRegen = api.stats.manaRegen;
+            asset.armor = api.stats.armor;
+            asset.magicResistance = api.stats.magicResistance;
+            asset.attackDamage = api.stats.attackDamage;
+            asset.movespeed = api.stats.movespeed;
+            asset.acquisitionRadius = api.stats.acquisitionRadius;
+            asset.selectionRadius = api.stats.selectionRadius;
+            asset.pathingRadius = api.stats.pathingRadius;
+            asset.gameplayRadius = api.stats.gameplayRadius;
+            asset.criticalStrikeDamage = api.stats.criticalStrikeDamage;
+            asset.criticalStrikeDamageModifier = api.stats.criticalStrikeDamageModifier;
+            asset.attackSpeed = api.stats.attackSpeed;
+            asset.attackSpeedRatio = api.stats.attackSpeedRatio;
+            asset.attackCastTime = api.stats.attackCastTime;
+            asset.attackTotalTime = api.stats.attackTotalTime;
+            asset.attackDelayOffset = api.stats.attackDelayOffset;
+            asset.attackRange = api.stats.attackRange;
+            asset.aramDamageTaken = api.stats.aramDamageTaken;
+            asset.aramDamageDealt = api.stats.aramDamageDealt;
+            asset.aramHealing = api.stats.aramHealing;
+            asset.aramShielding = api.stats.aramShielding;
+            asset.urfDamageTaken = api.stats.urfDamageTaken;
+            asset.urfDamageDealt = api.stats.urfDamageDealt;
+            asset.urfHealing = api.stats.urfHealing;
+            asset.urfShielding = api.stats.urfShielding;
 
+            AssetDatabase.CreateAsset(asset, $"Assets/Resources/Stats/{version}/{champName}.asset");
+            AssetDatabase.SaveAssets();
+        }
     }
 
     private void LoadChampionSkills(string champName)
