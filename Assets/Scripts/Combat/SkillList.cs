@@ -47,7 +47,7 @@ public class SkillList : ScriptableObject
         passive
     }
 
-    public float UseSkill(int level, Simulator.Combat.ChampionStats myStats, Simulator.Combat.ChampionStats target)
+    public float UseSkill(int level, ChampionStats myStats, ChampionStats target)
     {
         if(simulationManager == null) simulationManager = SimManager.Instance;
         float damage = 0;
