@@ -160,13 +160,12 @@ public class SimManager : MonoBehaviour
         FindSkills(champName, newChampStats);
 
         newChampStats.name = champName;
-        newChampStats.level = GetLevel(exp);
-
-        newChampStats.baseHealth = (float)stats.health.flat;
-        newChampStats.baseAD = (float)stats.attackDamage.flat;
-        newChampStats.baseArmor = (float)stats.armor.flat;
-        newChampStats.baseSpellBlock = (float)stats.magicResistance.flat;
-        newChampStats.baseAttackSpeed = (float)stats.attackSpeed.flat;
+        int level = newChampStats.level = GetLevel(exp);
+        newChampStats.baseHealth = (float)stats.health.flat + ((float) stats.health.perLevel * (level - 1));
+        newChampStats.baseAD = (float)stats.attackDamage.flat + ((float)stats.attackDamage.perLevel * (level - 1));
+        newChampStats.baseArmor = (float)stats.armor.flat + ((float)stats.armor.perLevel * (level - 1));
+        newChampStats.baseSpellBlock = (float)stats.magicResistance.flat + ((float)stats.magicResistance.perLevel * (level - 1));
+        newChampStats.baseAttackSpeed = (float)stats.attackSpeed.flat * (1 + ((float)stats.attackSpeed.perLevel * (level - 1) * (0.7025f + (0.0175f * (level - 1))) / 100));
 
         newChampStats.maxHealth = newChampStats.baseHealth;
         newChampStats.AD = newChampStats.baseAD;
@@ -233,17 +232,17 @@ public class SimManager : MonoBehaviour
             }
         }
     }
-    private int GetLevel(int _exp)
+    private int GetLevel(int exp)
     {
-        int _level = 0;
+        int level = 0;
         for (int i = 0; i < Constants.MaxLevel; i++)
         {
-            if (_exp >= Constants.ExpTable[i])
-            {
-                _level++;
-            }
+            if (exp >= Constants.ExpTable[i])
+                level++;
+            else
+                break;
         }
-        return _level;
+        return level;
     }
     private void GetStatsByLevel(ChampionStats champ, ChampionsRe stats)
     {

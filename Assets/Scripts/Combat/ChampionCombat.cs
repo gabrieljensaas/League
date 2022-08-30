@@ -75,6 +75,12 @@ namespace Simulator.Combat
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
+        public void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, float damage, string skillName)
+        {
+            totalDamage += targetCombat.TakeDamage(damage, skillName);
+            myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
+        }
+
         protected void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level)
         {
             totalHeal += HealHealth(skill.UseSkill(level, myStats, targetStats), skill.basic.name);

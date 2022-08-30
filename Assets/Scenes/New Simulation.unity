@@ -15337,6 +15337,8 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Ashe
       m_Image: {fileID: 0}
+    - m_Text: Darius
+      m_Image: {fileID: 0}
     - m_Text: Garen
       m_Image: {fileID: 0}
     - m_Text: MasterYi
@@ -26723,6 +26725,8 @@ MonoBehaviour:
     - m_Text: Annie
       m_Image: {fileID: 0}
     - m_Text: Ashe
+      m_Image: {fileID: 0}
+    - m_Text: Darius
       m_Image: {fileID: 0}
     - m_Text: Garen
       m_Image: {fileID: 0}
