@@ -20,7 +20,7 @@ public class HemorrhageBuff : Buff
         if(_hemorrhageTimer >= 1.25f)
         {
             _hemorrhageTimer = 0f;
-            manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.pSum, 4, damage, $"Hemorrhage {value}");
+            manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.pSum, 4, damage, $"Hemorrhage {value}", SkillList.SkillDamageType.PhysAndSpell);
         }
 
         duration -= Time.deltaTime;

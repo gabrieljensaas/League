@@ -44,7 +44,7 @@ public class Olaf : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill.basic.castTime));
-        TakeDamage(75 + (myStats.AD * 0.15f), myStats.eSkill.basic.name); //health cost
+        TakeDamage(75 + (myStats.AD * 0.15f), myStats.eSkill.basic.name, SkillList.SkillDamageType.True); //health cost
         UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill, 4);
         myStats.eCD = myStats.eSkill.basic.coolDown[4];
         if (myStats.buffManager.buffs.TryGetValue(myStats.rSkill.basic.name, out Buff value))

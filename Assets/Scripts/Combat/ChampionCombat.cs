@@ -4,6 +4,7 @@ using TMPro;
 using System.Collections.Generic;
 using System.Linq;
 using Simulator.API;
+using static SkillList;
 
 namespace Simulator.Combat
 {
@@ -71,19 +72,25 @@ namespace Simulator.Combat
 
         protected void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, float damageModifier = 1)
         {
-            totalDamage += targetCombat.TakeDamage(damageModifier * skill.UseSkill(level, myStats, targetStats), skill.basic.name);
+            totalDamage += targetCombat.TakeDamage(damageModifier * skill.UseSkill(level, myStats, targetStats), skill.basic.name, skill.skillDamageType);
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
-        public void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, float damage, string skillName)
+        public void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, float damage, string skillName, SkillDamageType skillDamageType)
         {
-            totalDamage += targetCombat.TakeDamage(damage, skillName);
+            totalDamage += targetCombat.TakeDamage(damage, skillName, skillDamageType);
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
         protected void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level)
         {
             totalHeal += HealHealth(skill.UseSkill(level, myStats, targetStats), skill.basic.name);
+            myUI.healSum.text = totalHeal.ToString();
+        }
+
+        protected void UpdateTotalHeal(ref float totalHeal, float heal, string skillName)
+        {
+            totalHeal += HealHealth(heal, skillName);
             myUI.healSum.text = totalHeal.ToString();
         }
 
@@ -165,7 +172,7 @@ namespace Simulator.Combat
 
             if (autoattackcheck != null) damage = autoattackcheck.Control(damage);
 
-            aSum += targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack", true);
+            aSum += targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack", SkillDamageType.Phyiscal, true);
             hSum += HealHealth(damage * myStats.lifesteal, "Lifesteal");
             myUI.aaSum.text = aSum.ToString();
             myUI.healSum.text = hSum.ToString();
@@ -173,23 +180,26 @@ namespace Simulator.Combat
             attackCooldown = 1f / myStats.attackSpeed;
         }
 
-        public float TakeDamage(float damage, string source, bool isAutoAttack = false)
+        public float TakeDamage(float rawDamage, string source, SkillDamageType damageType, bool isAutoAttack = false)
         {
-            if (damage <= 0) return 0;
-
             if(!isAutoAttack)
-                damage = CheckForDamageControl(checkTakeDamage, damage);
+                rawDamage = CheckForDamageControl(checkTakeDamage, rawDamage);
             else
-                damage = CheckForDamageControl(checkTakeDamageAA, damage);
+                rawDamage = CheckForDamageControl(checkTakeDamageAA, rawDamage);
 
-            if (damage <= 0) return 0;
+            float postMitigationDamage = 0;
+            if (damageType == SkillDamageType.Phyiscal) postMitigationDamage = rawDamage * 100 / (100 + myStats.baseArmor);
+            else if (damageType == SkillDamageType.Spell) postMitigationDamage = rawDamage * 100 / (100 + myStats.baseSpellBlock);
+            else if (damageType == SkillDamageType.True) postMitigationDamage = rawDamage;
 
-            myStats.currentHealth -= damage;
-            simulationManager.ShowText($"{myStats.name} Took {damage} Damage From {source}!");
+            if (postMitigationDamage <= 0) return 0;
+
+            myStats.currentHealth -= postMitigationDamage;
+            simulationManager.ShowText($"{myStats.name} Took {postMitigationDamage} Damage From {source}!");
 
             CheckDeath();
 
-            return damage;
+            return postMitigationDamage;
         }
 
         protected virtual void CheckDeath()
