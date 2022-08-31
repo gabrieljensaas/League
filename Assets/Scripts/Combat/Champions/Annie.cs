@@ -52,49 +52,49 @@ public class Annie : ChampionCombat
     {
         if (!CheckForAbilityControl(checksQ)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
-        CheckAnniePassiveStun(myStats.qSkill.basic.name);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill, 4);
-        myStats.qCD = myStats.qSkill.basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
+        CheckAnniePassiveStun(myStats.qSkill[0].basic.name);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4);
+        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteW()
     {
         if (!CheckForAbilityControl(checksW)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.wSkill.basic.castTime));
-        CheckAnniePassiveStun(myStats.wSkill.basic.name);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill, 4);
-        myStats.wCD = myStats.wSkill.basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
+        CheckAnniePassiveStun(myStats.wSkill[0].basic.name);
+        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4);
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteE()
     {
         if (!CheckForAbilityControl(checksE)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.eSkill.basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         if (myStats.buffManager.buffs.TryGetValue("Pyromania", out Buff buff) && buff.value < 4)
         {
             buff.value++;
-            simulationManager.ShowText($"{myStats.name} Gained A Stack of Pyromania From {myStats.eSkill.basic.name}");
+            simulationManager.ShowText($"{myStats.name} Gained A Stack of Pyromania From {myStats.eSkill[0].basic.name}");
         }
         else
         {
-            myStats.buffManager.buffs.Add("Pyromania", new PyromaniaBuff(myStats.buffManager, myStats.eSkill.basic.name));
+            myStats.buffManager.buffs.Add("Pyromania", new PyromaniaBuff(myStats.buffManager, myStats.eSkill[0].basic.name));
         }
         //UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill, 4);
-        myStats.eSkill.UseSkill(4, myStats, targetStats);
-        myStats.eCD = myStats.eSkill.basic.coolDown[4];
+        myStats.eSkill[0].UseSkill(4, myStats, targetStats);
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteR()
     {
         if (!CheckForAbilityControl(checksR)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill.basic.castTime));
-        CheckAnniePassiveStun(myStats.rSkill.basic.name);
-        UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill, 2);
-        myStats.rCD = myStats.rSkill.basic.coolDown[2];
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        CheckAnniePassiveStun(myStats.rSkill[0].basic.name);
+        UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill[0], 2);
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         pets.Add(new Tibbers(this, 3100, 100 + (myStats.AP * 15 / 100), 0.625f, 90, 90)); //all stats are for max level change when level adjusting of skills done
     }
 

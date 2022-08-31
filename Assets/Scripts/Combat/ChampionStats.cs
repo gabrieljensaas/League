@@ -18,10 +18,10 @@ namespace Simulator.Combat
 
         [HideInInspector] public BuffManager buffManager;                    //class to manage buffs
         [HideInInspector] public PassiveList passiveSkill;
-        [HideInInspector] public SkillList qSkill;
-        [HideInInspector] public SkillList wSkill;
-        [HideInInspector] public SkillList eSkill;
-        [HideInInspector] public SkillList rSkill;
+        [HideInInspector] public SkillList[] qSkill = new SkillList[5];
+        [HideInInspector] public SkillList[] wSkill = new SkillList[5];
+        [HideInInspector] public SkillList[] eSkill = new SkillList[5];
+        [HideInInspector] public SkillList[] rSkill = new SkillList[5];
         [HideInInspector] public float qCD, wCD, eCD, rCD, pCD;                                          //cooldown of skills
 
 

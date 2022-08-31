@@ -48,30 +48,30 @@ public class Darius : ChampionCombat
     {
         if (!CheckForAbilityControl(checksQ)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill, 4);
-        UpdateTotalHeal(ref hSum, (myStats.maxHealth - myStats.currentHealth) * 0.13f , myStats.qSkill.basic.name);
-        CheckDariusPassiveHemorrhage(myStats.qSkill.basic.name);
-        myStats.qCD = myStats.qSkill.basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4);
+        UpdateTotalHeal(ref hSum, (myStats.maxHealth - myStats.currentHealth) * 0.13f , myStats.qSkill[0].basic.name);
+        CheckDariusPassiveHemorrhage(myStats.qSkill[0].basic.name);
+        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteW()
     {
         if (!CheckForAbilityControl(checksW)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.wSkill.basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill, 4);
-        CheckDariusPassiveHemorrhage(myStats.wSkill.basic.name);
-        myStats.wCD = myStats.wSkill.basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
+        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4);
+        CheckDariusPassiveHemorrhage(myStats.wSkill[0].basic.name);
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteR()
     {
         if (!CheckForAbilityControl(checksR)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill.basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         UpdateAbilityTotalDamage(ref rSum, 3, Constants.GetDariusNoxianGuillotineByLevel(myStats.level, (int)targetStats.buffManager.buffs["Hemorrhage"]?.value), "Noxian Guillotine", SkillList.SkillDamageType.True);
-        myStats.rCD = myStats.rSkill.basic.coolDown[2];
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
     private void CheckDariusPassiveHemorrhage(string skillName)

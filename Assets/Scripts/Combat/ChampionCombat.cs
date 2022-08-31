@@ -98,36 +98,36 @@ namespace Simulator.Combat
         {
             if (!CheckForAbilityControl(checksQ)) yield break;
 
-            yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
-            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill, 4);
-            myStats.qCD = myStats.qSkill.basic.coolDown[4];
+            yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
+            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4);
+            myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         }
 
         public virtual IEnumerator ExecuteW()
         {
             if (!CheckForAbilityControl(checksW)) yield break;
 
-            yield return StartCoroutine(StartCastingAbility(myStats.wSkill.basic.castTime));
-            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill, 4);
-            myStats.wCD = myStats.wSkill.basic.coolDown[4];
+            yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
+            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4);
+            myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         }
 
         public virtual IEnumerator ExecuteE()
         {
             if (!CheckForAbilityControl(checksE)) yield break;
 
-            yield return StartCoroutine(StartCastingAbility(myStats.eSkill.basic.castTime));
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill, 4);
-            myStats.eCD = myStats.eSkill.basic.coolDown[4];
+            yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
+            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4);
+            myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         }
 
         public virtual IEnumerator ExecuteR()
         {
             if (!CheckForAbilityControl(checksR)) yield break;
 
-            yield return StartCoroutine(StartCastingAbility(myStats.rSkill.basic.castTime));
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill, 2);
-            myStats.rCD = myStats.rSkill.basic.coolDown[2];
+            yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2);
+            myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         }
 
         public virtual IEnumerator ExecuteA()

@@ -16,6 +16,15 @@ public class Constants : MonoBehaviour
         if (level < 11) return 1.5f;
         return 1.75f;
     }
+    public static float GetRivenPassiveDamagePercentByLevel(int level)
+    {
+        if (level == 1) return 30f;
+        if (level < 7) return 36f;
+        if (level < 10) return 42f;
+        if (level < 13) return 48f;
+        if (level < 16) return 54f;
+        return 60f;
+    }
     public static int GetDariusNoxianMightByLevel(int level)
     {
         if (level < 10) return 30 + (5 * (level - 1));

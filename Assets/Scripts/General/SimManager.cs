@@ -199,39 +199,40 @@ public class SimManager : MonoBehaviour
             }
         }
 
+        int skillIndex = 0;
         for (int i = 0; i < championManager.qSkills.Count; i++)
         {
             if (championManager.qSkills[i].basic.champion == champName)
             {
-                champStats.qSkill = championManager.qSkills[i];
-                break;
+                champStats.qSkill[skillIndex] = championManager.qSkills[i];
+                skillIndex++;
             }
         }
-
+        skillIndex = 0;
         for (int i = 0; i < championManager.wSkills.Count; i++)
         {
             if (championManager.wSkills[i].basic.champion == champName)
             {
-                champStats.wSkill = championManager.wSkills[i];
-                break;
+                champStats.wSkill[skillIndex] = championManager.wSkills[i];
+                skillIndex++;
             }
         }
-
+        skillIndex = 0;
         for (int i = 0; i < championManager.eSkills.Count; i++)
         {
             if (championManager.eSkills[i].basic.champion == champName)
             {
-                champStats.eSkill = championManager.eSkills[i];
-                break;
+                champStats.eSkill[skillIndex] = championManager.eSkills[i];
+                skillIndex++;
             }
         }
-
+        skillIndex = 0;
         for (int i = 0; i < championManager.rSkills.Count; i++)
         {
             if (championManager.rSkills[i].basic.champion == champName)
             {
-                champStats.rSkill = championManager.rSkills[i];
-                break;
+                champStats.rSkill[skillIndex] = championManager.rSkills[i];
+                skillIndex++;
             }
         }
     }

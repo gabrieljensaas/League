@@ -35,22 +35,22 @@ public class Garen : ChampionCombat
     {
         if (!CheckForAbilityControl(checksE)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.eSkill.basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         simulationManager.ShowText($"Garen Used Judgment!");
-        myStats.eCD = myStats.eSkill.basic.coolDown[4];
-        myStats.buffManager.buffs.Add("CantAA", new CantAABuff(3f, myStats.buffManager, myStats.eSkill.basic.name));
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        myStats.buffManager.buffs.Add("CantAA", new CantAABuff(3f, myStats.buffManager, myStats.eSkill[0].basic.name));
         StartCoroutine(GarenE(0, 0));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill, 4);
-        myStats.eCD = myStats.eSkill.basic.coolDown[4];
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4);
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteR()
     {
         if (!CheckForAbilityControl(checksR)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill.basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill, 2);
-        myStats.rCD = myStats.rSkill.basic.coolDown[2];
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill[0], 2);
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
 
         StopCoroutine("GarenE");          //if 2 GarenE coroutine exists this could leat to some bugs
         if (myStats.buffManager.buffs.ContainsKey("CantAA"))
@@ -62,7 +62,7 @@ public class Garen : ChampionCombat
     private IEnumerator GarenE(float seconds, int spinCount)
     {
         yield return new WaitForSeconds(seconds);
-        eSum += targetCombat.TakeDamage(myStats.eSkill.UseSkill(4, myStats, targetStats), myStats.eSkill.basic.name, SkillList.SkillDamageType.Phyiscal);
+        eSum += targetCombat.TakeDamage(myStats.eSkill[0].UseSkill(4, myStats, targetStats), myStats.eSkill[0].basic.name, SkillList.SkillDamageType.Phyiscal);
         myUI.abilitySum[2].text = eSum.ToString();
         spinCount++;
         if (spinCount >= 6 && targetStats.buffManager.buffs.ContainsKey("Judgment"))

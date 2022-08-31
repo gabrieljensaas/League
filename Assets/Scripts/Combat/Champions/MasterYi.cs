@@ -45,23 +45,23 @@ public class MasterYi : ChampionCombat
     {
         if (!CheckForAbilityControl(checksQ)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
-        myStats.buffManager.buffs.Add("Untargetable", new UntargetableBuff(0.858f, myStats.buffManager, myStats.qSkill.basic.name));
-        myStats.buffManager.buffs.Add("UnableToAct", new UnableToActBuff(0.858f, myStats.buffManager, myStats.qSkill.basic.name));
-        myStats.qCD = myStats.qSkill.basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
+        myStats.buffManager.buffs.Add("Untargetable", new UntargetableBuff(0.858f, myStats.buffManager, myStats.qSkill[0].basic.name));
+        myStats.buffManager.buffs.Add("UnableToAct", new UnableToActBuff(0.858f, myStats.buffManager, myStats.qSkill[0].basic.name));
+        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         if (myStats.buffManager.buffs.TryGetValue("WujuStyle", out Buff value)) value.paused = true;
         if (myStats.buffManager.buffs.TryGetValue("Highlander", out Buff highlander)) highlander.paused = true;
         yield return new WaitForSeconds(0.231f);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill, 4, 0.25f);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, 0.25f);
 
         yield return new WaitForSeconds(0.231f);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill, 4, 0.25f);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, 0.25f);
 
         yield return new WaitForSeconds(0.231f);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill, 4, 0.25f);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, 0.25f);
 
         yield return new WaitForSeconds(0.165f);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill, 4);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4);
         if (myStats.buffManager.buffs.TryGetValue("WujuStyle", out Buff wuju)) wuju.paused = false;
         if (myStats.buffManager.buffs.TryGetValue("Highlander", out Buff highland)) highland.paused = false;
     }
@@ -70,13 +70,13 @@ public class MasterYi : ChampionCombat
     {
         if (!CheckForAbilityControl(checksW)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.wSkill.basic.castTime));
-        myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(4, myStats.buffManager, myStats.wSkill.basic.name, "Meditate"));
-        myStats.buffManager.buffs.Add("DamageReductionPercent", new DamageReductionPercentBuff(4, myStats.buffManager, myStats.wSkill.basic.name, 90));
+        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
+        myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(4, myStats.buffManager, myStats.wSkill[0].basic.name, "Meditate"));
+        myStats.buffManager.buffs.Add("DamageReductionPercent", new DamageReductionPercentBuff(4, myStats.buffManager, myStats.wSkill[0].basic.name, 90));
         if (myStats.buffManager.buffs.TryGetValue("WujuStyle", out Buff value)) value.paused = true;
         if (myStats.buffManager.buffs.TryGetValue("Highlander", out Buff highlander)) highlander.paused = true;
         StartCoroutine(Meditate());
-        myStats.wCD = myStats.wSkill.basic.coolDown[4];
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         attackCooldown = 0f;
     }
 
@@ -84,22 +84,22 @@ public class MasterYi : ChampionCombat
     {
         if (!CheckForAbilityControl(checksE)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.eSkill.basic.castTime));
-        myStats.eCD = myStats.eSkill.basic.coolDown[4];
-        myStats.buffManager.buffs.Add("WujuStyle", new WujuStyleBuff(5, myStats.buffManager, myStats.eSkill.basic.name, 50));  //when the bonus ad and skill level comes do the calculation
+        yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        myStats.buffManager.buffs.Add("WujuStyle", new WujuStyleBuff(5, myStats.buffManager, myStats.eSkill[0].basic.name, 50));  //when the bonus ad and skill level comes do the calculation
     }
 
     private IEnumerator Meditate()
     {
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalHeal(ref hSum, myStats.wSkill, 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
         if(myStats.buffManager.buffs.TryGetValue("DamageReductionPercent", out Buff value))
         {
             value.value = Constants.MasterYiWDamageReductionPercents[4];          //when skill level is done change index to variable
         }
         //pause wuju style and highlander durations
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalHeal(ref hSum, myStats.wSkill, 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
         if (myStats.buffManager.buffs.TryGetValue("DoubleStrike", out Buff val))
         {
             if (val.value < 3)
@@ -114,10 +114,10 @@ public class MasterYi : ChampionCombat
             myStats.buffManager.buffs.Add("DoubleStrike", new DoubleStrikeBuff(4, myStats.buffManager, "Double Strike"));
         }
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalHeal(ref hSum, myStats.wSkill, 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
 
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalHeal(ref hSum, myStats.wSkill, 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
         if (myStats.buffManager.buffs.TryGetValue("DoubleStrike", out Buff buff))
         {
             if (buff.value < 3)
@@ -132,11 +132,11 @@ public class MasterYi : ChampionCombat
             myStats.buffManager.buffs.Add("DoubleStrike", new DoubleStrikeBuff(4, myStats.buffManager, "Double Strike"));
         }
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalHeal(ref hSum, myStats.wSkill, 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
 
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalHeal(ref hSum, myStats.wSkill, 4);
-        UpdateTotalHeal(ref hSum, myStats.wSkill, 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
         if (myStats.buffManager.buffs.TryGetValue("DoubleStrike", out Buff buf))
         {
             if (buf.value < 3)
@@ -151,11 +151,11 @@ public class MasterYi : ChampionCombat
             myStats.buffManager.buffs.Add("DoubleStrike", new DoubleStrikeBuff(4, myStats.buffManager, "Double Strike"));
         }
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalHeal(ref hSum, myStats.wSkill, 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
 
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalHeal(ref hSum, myStats.wSkill, 4);
-        UpdateTotalHeal(ref hSum, myStats.wSkill, 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
         if (myStats.buffManager.buffs.TryGetValue("DoubleStrike", out Buff doubleStrike))
         {
             if (doubleStrike.value < 3)

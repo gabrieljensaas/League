@@ -80,7 +80,9 @@ public class SkillList : ScriptableObject
         switch (skillDamageType)
         {
             case SkillDamageType.Phyiscal:
-                damage = (int)Mathf.Round(unit.flat[level] + (myStats.AD * (unit.percentAD[level] / 100)));
+                var targetmissingHealth = target.maxHealth - target.currentHealth;
+                if (myStats.name == "Riven" && targetmissingHealth > target.maxHealth * 0.75f) targetmissingHealth = target.maxHealth * 0.75f;
+                damage = (int)Mathf.Round(unit.flat[level] + (myStats.AD * (unit.percentAD[level] / 100)) + unit.percentTargetMissingHP[level] * (targetmissingHealth / target.maxHealth) * 100);
                 break;
             case SkillDamageType.Spell:
                 damage = (int)Mathf.Round(unit.flat[level] + (myStats.AP * (unit.percentAP[level] / 100)));

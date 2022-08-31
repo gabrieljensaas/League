@@ -75,7 +75,7 @@ public class Fiora : ChampionCombat
     {
         if (!CheckForAbilityControl(checksR)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill.basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
 
         if (targetStats.buffManager.buffs.TryGetValue("Vitals", out Buff vitals))
             vitals.Kill();
@@ -87,7 +87,7 @@ public class Fiora : ChampionCombat
         };
         targetStats.buffManager.buffs.Add("VitalsGrandChallenge", vitalsBuff);
 
-        myStats.rCD = myStats.rSkill.basic.coolDown[2];
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
     private void CheckVitals()
