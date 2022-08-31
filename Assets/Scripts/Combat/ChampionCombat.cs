@@ -126,7 +126,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksR)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(myStats.rSkill.basic.castTime));
-            UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill, 2);
+            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill, 2);
             myStats.rCD = myStats.rSkill.basic.coolDown[2];
         }
 
@@ -213,8 +213,7 @@ namespace Simulator.Combat
             //add checks here
 
             myStats.currentHealth += (int)health;
-            if (myStats.currentHealth >= myStats.maxHealth)
-                myStats.maxHealth = myStats.currentHealth;
+            if (myStats.currentHealth > myStats.maxHealth) myStats.currentHealth = myStats.maxHealth;
 
             simulationManager.ShowText($"{myStats.name} Took {health} Heal From {source}!");
 

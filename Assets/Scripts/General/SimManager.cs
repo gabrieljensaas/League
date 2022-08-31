@@ -147,6 +147,9 @@ public class SimManager : MonoBehaviour
             case "Darius":
                 newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Darius>();
                 break;
+            case "Fiora":
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Fiora>();
+                break;
             default:
                 newChampStats.MyCombat = newChampStats.gameObject.AddComponent<PracticeDummy>();
                 champStats[championIndex] = newChampStats;

@@ -2876,6 +2876,7 @@ MonoBehaviour:
   spellBlock: 0
   attackSpeed: 0
   tenacity: 0
+  lifesteal: 0
   baseHealth: 0
   baseAD: 0
   baseAP: 0
@@ -7326,6 +7327,7 @@ MonoBehaviour:
   spellBlock: 0
   attackSpeed: 0
   tenacity: 0
+  lifesteal: 0
   baseHealth: 0
   baseAD: 0
   baseAP: 0
@@ -15338,6 +15340,8 @@ MonoBehaviour:
     - m_Text: Ashe
       m_Image: {fileID: 0}
     - m_Text: Darius
+      m_Image: {fileID: 0}
+    - m_Text: Fiora
       m_Image: {fileID: 0}
     - m_Text: Garen
       m_Image: {fileID: 0}
@@ -26727,6 +26731,8 @@ MonoBehaviour:
     - m_Text: Ashe
       m_Image: {fileID: 0}
     - m_Text: Darius
+      m_Image: {fileID: 0}
+    - m_Text: Fiora
       m_Image: {fileID: 0}
     - m_Text: Garen
       m_Image: {fileID: 0}
