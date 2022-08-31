@@ -164,11 +164,9 @@ namespace Simulator.Combat
 
         protected void AutoAttack()
         {
-            float damage = Mathf.Round(myStats.AD * (100 / (100 + targetStats.armor)));
+            float damage = myStats.AD;
             if (damage < 0)
-            {
                 damage = 0;
-            }
 
             if (autoattackcheck != null) damage = autoattackcheck.Control(damage);
 
@@ -188,8 +186,8 @@ namespace Simulator.Combat
                 rawDamage = CheckForDamageControl(checkTakeDamageAA, rawDamage);
 
             int postMitigationDamage = 0;
-            if (damageType == SkillDamageType.Phyiscal) postMitigationDamage = (int)(rawDamage * 100 / (100 + myStats.baseArmor));
-            else if (damageType == SkillDamageType.Spell) postMitigationDamage = (int)(rawDamage * 100 / (100 + myStats.baseSpellBlock));
+            if (damageType == SkillDamageType.Phyiscal) postMitigationDamage = (int)(rawDamage * 100 / (100 + myStats.armor));
+            else if (damageType == SkillDamageType.Spell) postMitigationDamage = (int)(rawDamage * 100 / (100 + myStats.spellBlock));
             else if (damageType == SkillDamageType.True) postMitigationDamage = (int)rawDamage;
 
             if (postMitigationDamage <= 0) return 0;

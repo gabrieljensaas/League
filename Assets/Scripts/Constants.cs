@@ -24,7 +24,7 @@ public class Constants : MonoBehaviour
     }
 
     public static float GetDariusHemorrhageByLevel(int level, int stack) => (3f * stack) + (0.25f * stack * level);
-
+    public static float GetDariusArmorReductionByLevel(int level) => 10 + (level * 5);
     public static float GetDariusNoxianGuillotineByLevel(int level, int stack)
     {
         if (level < 6) return 125 + (stack * .2f * 125);

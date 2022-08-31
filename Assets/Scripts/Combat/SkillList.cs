@@ -71,6 +71,12 @@ public class SkillList : ScriptableObject
             return damage;
         }
 
+        if(basic.name == "Crippling Strike")
+        {
+            myStats.buffManager.buffs.Add("Crippling Strike", new CripplingStrikeBuff(4, myStats.buffManager, basic.name, (135 + ((level + 1) * 5)) / 100 * myStats.AD));
+            return 0;
+        }
+
         switch (skillDamageType)
         {
             case SkillDamageType.Phyiscal:

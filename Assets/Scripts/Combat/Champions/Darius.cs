@@ -29,6 +29,7 @@ public class Darius : ChampionCombat
 
         autoattackcheck = new DariusAACheck(this);
         dariusP = new CheckDariusP(this);
+        targetStats.armor *= (100 - Constants.GetDariusArmorReductionByLevel(5)) / 100;
 
         myUI.combatPriority.text = string.Join(", ", combatPrio);
         base.UpdatePriorityAndChecks();
@@ -63,8 +64,6 @@ public class Darius : ChampionCombat
         CheckDariusPassiveHemorrhage(myStats.wSkill.basic.name);
         myStats.wCD = myStats.wSkill.basic.coolDown[4];
     }
-
-    //WHEN ARE WE ACCOUNTING FOR ARMOR TO EXECUTE E?
 
     public override IEnumerator ExecuteR()
     {
