@@ -187,10 +187,10 @@ namespace Simulator.Combat
             else
                 rawDamage = CheckForDamageControl(checkTakeDamageAA, rawDamage);
 
-            float postMitigationDamage = 0;
-            if (damageType == SkillDamageType.Phyiscal) postMitigationDamage = rawDamage * 100 / (100 + myStats.baseArmor);
-            else if (damageType == SkillDamageType.Spell) postMitigationDamage = rawDamage * 100 / (100 + myStats.baseSpellBlock);
-            else if (damageType == SkillDamageType.True) postMitigationDamage = rawDamage;
+            int postMitigationDamage = 0;
+            if (damageType == SkillDamageType.Phyiscal) postMitigationDamage = (int)(rawDamage * 100 / (100 + myStats.baseArmor));
+            else if (damageType == SkillDamageType.Spell) postMitigationDamage = (int)(rawDamage * 100 / (100 + myStats.baseSpellBlock));
+            else if (damageType == SkillDamageType.True) postMitigationDamage = (int)rawDamage;
 
             if (postMitigationDamage <= 0) return 0;
 
@@ -214,7 +214,7 @@ namespace Simulator.Combat
 
             //add checks here
 
-            myStats.currentHealth += health;
+            myStats.currentHealth += (int)health;
             if (myStats.currentHealth >= myStats.maxHealth)
                 myStats.maxHealth = myStats.currentHealth;
 
