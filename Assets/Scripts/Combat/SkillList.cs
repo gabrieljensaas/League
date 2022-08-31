@@ -132,7 +132,10 @@ public class SkillList : ScriptableObject
 
         if (selfEffects.Shield)
         {
-            myStats.buffManager.shields.Add(basic.name, new ShieldBuff(selfEffects.ShieldDuration[level], myStats.buffManager, basic.name, selfEffects.ShieldFlat[level], basic.name));
+            var missingHealth = myStats.maxHealth - myStats.currentHealth;
+            if(myStats.name == "Olaf" && missingHealth > myStats.maxHealth * 0.7f) missingHealth = myStats.maxHealth * 0.7f;
+
+            myStats.buffManager.shields.Add(basic.name, new ShieldBuff(selfEffects.ShieldDuration[level], myStats.buffManager, basic.name, selfEffects.ShieldFlat[level] + (selfEffects.ShieldPercentByMissingHP[level] * 0.01f * missingHealth), basic.name));
         }
     }
 }

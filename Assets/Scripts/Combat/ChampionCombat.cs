@@ -166,7 +166,9 @@ namespace Simulator.Combat
             if (autoattackcheck != null) damage = autoattackcheck.Control(damage);
 
             aSum += targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack", true);
+            hSum += HealHealth(damage * myStats.lifesteal, "Lifesteal");
             myUI.aaSum.text = aSum.ToString();
+            myUI.healSum.text = hSum.ToString();
 
             attackCooldown = 1f / myStats.attackSpeed;
         }

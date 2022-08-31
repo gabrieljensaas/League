@@ -26,7 +26,7 @@ namespace Simulator.Combat
 
 
         [HideInInspector] public int level;                                            //stats of champion
-        [HideInInspector] public float maxHealth, currentHealth, AD, AP, armor, spellBlock, attackSpeed, tenacity = 0f;
+        [HideInInspector] public float maxHealth, currentHealth, AD, AP, armor, spellBlock, attackSpeed, tenacity = 0f, lifesteal = 0f;
         [HideInInspector] public float baseHealth, baseAD, baseAP, baseArmor, baseSpellBlock, baseAttackSpeed;
         private void Start()
         {

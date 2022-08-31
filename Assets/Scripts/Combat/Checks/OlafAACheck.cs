@@ -1,0 +1,28 @@
+using Simulator.Combat;
+
+public class OlafAACheck : Check
+{
+    public OlafAACheck(ChampionCombat ccombat) : base(ccombat)
+    {
+    }
+
+    public override float Control(float damage)
+    {
+        combat.myStats.eCD--;
+
+        if(combat.myStats.buffManager.buffs.TryGetValue(combat.myStats.rSkill.basic.name, out Buff value))
+        {
+            value.duration += 2.5f;
+        }
+        if(combat.myStats.buffManager.buffs.TryGetValue(combat.myStats.rSkill.basic.name + " ", out Buff val))
+        {
+            val.duration += 2.5f;
+        }
+        return damage;
+    }
+
+    public override bool Control()
+    {
+        throw new System.NotImplementedException();
+    }
+}
