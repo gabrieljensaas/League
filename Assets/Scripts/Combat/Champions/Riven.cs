@@ -34,10 +34,6 @@ public class Riven : ChampionCombat
         targetCombat.checksA.Add(new CheckIfStunned(targetCombat));
         r1ExecuteCheck = new CheckIfExecutes(this, "R1");
 
-
-
-        checkTakeDamage.Add(new CheckOlafPassive(this));
-        checkTakeDamageAA.Add(new CheckOlafPassive(this));
         myUI.combatPriority.text = string.Join(", ", combatPrio);
         base.UpdatePriorityAndChecks();
     }
