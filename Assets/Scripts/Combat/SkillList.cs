@@ -74,15 +74,13 @@ public class SkillList : ScriptableObject
         switch (skillDamageType)
         {
             case SkillDamageType.Phyiscal:
-                damage = (int)Mathf.Round((unit.flat[level] + (myStats.AD * (unit.percentAD[level] / 100))));
-                damage = (int)Mathf.Round(damage * (100 / (100 + target.armor)));
+                damage = (int)Mathf.Round(unit.flat[level] + (myStats.AD * (unit.percentAD[level] / 100)));
                 break;
             case SkillDamageType.Spell:
-                damage = (int)Mathf.Round((unit.flat[level] + (myStats.AP * (unit.percentAP[level] / 100))));
-                damage = (int)Mathf.Round(damage * (100 / (100 + target.spellBlock)));
+                damage = (int)Mathf.Round(unit.flat[level] + (myStats.AP * (unit.percentAP[level] / 100)));
                 break;
             case SkillDamageType.True:
-                damage = (int)Mathf.Round((unit.flat[level] + ((target.maxHealth - target.currentHealth) * (unit.percentTargetMissingHP[level] / 100))) + (unit.percentOwnMissingHP[level] * (unit.flat[level] * ((float)(100 - ((int)(100 * myStats.currentHealth/myStats.maxHealth))) / 100f))));
+                damage = (int)Mathf.Round(unit.flat[level] + ((target.maxHealth - target.currentHealth) * (unit.percentTargetMissingHP[level] / 100)) + (unit.percentOwnMissingHP[level] * (unit.flat[level] * ((float)(100 - ((int)(100 * myStats.currentHealth/myStats.maxHealth))) / 100f))));
                 break;
             default:
                 break;
