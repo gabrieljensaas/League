@@ -7,6 +7,9 @@ public class BerserkBuff : Buff
         base.duration = duration * (100 - manager.stats.tenacity) / 100;
         base.source = source;
 
+        if (manager.buffs.TryGetValue("Channeling", out Buff value))
+            value.Kill();
+
         manager.simulationManager.ShowText($"{manager.stats.name} is Berserked by {source} for {base.duration:F3} seconds!");
     }
 

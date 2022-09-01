@@ -7,6 +7,9 @@ public class StasisBuff : Buff
         base.duration = duration;
         base.source = source;
 
+        if (manager.buffs.TryGetValue("Channeling", out Buff value))
+            value.Kill();
+
         manager.simulationManager.ShowText($"{manager.stats.name} is Statis'd by {source} for {base.duration:F3} seconds!");
     }
 
