@@ -423,8 +423,7 @@ public class SimManager : MonoBehaviour
 
     public void LoadStats(ChampionsRe response, int index)
     {
-        var champName = championsDropdowns[index].options[championsDropdowns[index].value].text;
-        var exp = Int32.Parse(championsExperienceInput[index].text);
+        var champName = response.champData.data.Champion.name;
         var statsToLoad = response;
         ChampionStats newChampStats;
 
@@ -459,7 +458,7 @@ public class SimManager : MonoBehaviour
         FindSkills(champName, newChampStats);
 
         newChampStats.name = champName;
-        newChampStats.level = GetLevel(exp);
+        newChampStats.level = 18;                      //change from the lss response later
 
         newChampStats.baseHealth = (float)statsToLoad.champData.data.Champion.stats.hp;
         newChampStats.baseAD = (float)statsToLoad.champData.data.Champion.stats.attackdamage;

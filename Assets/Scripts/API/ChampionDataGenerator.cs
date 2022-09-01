@@ -1,6 +1,8 @@
 using Newtonsoft.Json;
 using System.Collections;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -699,12 +701,14 @@ public class ChampionDataGenerator : MonoBehaviour
     private void CreateAsset(int num, string champName, string skillId, SkillList asset, PassiveList passive)
     {
         string abilityKey = folderName[num];
+#if UNITY_EDITOR
         if (asset != null)
             AssetDatabase.CreateAsset(asset, $"Assets/Resources/Skills/{version}/{abilityKey}/{champName} {abilityKey}[{skillId}].asset");
         else
             AssetDatabase.CreateAsset(passive, $"Assets/Resources/Skills/{version}/P/{champName} P[{skillId}].asset");
 
         AssetDatabase.SaveAssets();
+#endif
     }
 
     private IEnumerator LoadChampions()
@@ -763,9 +767,10 @@ public class ChampionDataGenerator : MonoBehaviour
             asset.urfDamageDealt = api.stats.urfDamageDealt;
             asset.urfHealing = api.stats.urfHealing;
             asset.urfShielding = api.stats.urfShielding;
-
+#if UNITY_EDITOR
             AssetDatabase.CreateAsset(asset, $"Assets/Resources/Stats/{version}/{champName}.asset");
             AssetDatabase.SaveAssets();
+#endif
         }
     }
 

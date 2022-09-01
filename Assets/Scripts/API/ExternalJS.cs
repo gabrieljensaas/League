@@ -7,9 +7,9 @@ public class ExternalJS : MonoBehaviour
     private static extern void HelloString(string[] str);
     [DllImport("__Internal")]
     private static extern void HelloString2(string[] str2);
-    public void SendData(string[] s)
+    public void SendData(string[] str)
     { 
-        HelloString(s);
+        HelloString(str);
     }
     public void SendLogs(string[] s)
     {

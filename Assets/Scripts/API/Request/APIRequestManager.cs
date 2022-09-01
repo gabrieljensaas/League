@@ -1,9 +1,6 @@
-using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace Simulator.API
 {
@@ -12,8 +9,8 @@ namespace Simulator.API
         private RiotAPIResponse _riotAPIResponse;
         public RiotAPIResponse RiotAPIResponse => _riotAPIResponse;
 
-        SimManager simManager;
-        ExternalJS extarnaljs;
+        private SimManager simManager;
+        private ExternalJS extarnaljs;
         #region Singleton
         private static APIRequestManager _instance;
         public static APIRequestManager Instance { get { return _instance; } }
@@ -293,7 +290,7 @@ namespace Simulator.API
             simManager.StartBattle();
         }
 
-        public void SendOutput(string[] str)
+        public void SendOutputToJS(string[] str)
         {
             extarnaljs.SendData(str);
         }
