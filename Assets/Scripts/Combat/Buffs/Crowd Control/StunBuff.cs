@@ -6,11 +6,8 @@ public class StunBuff : Buff
     {
         base.duration = duration * (100 - manager.stats.tenacity) / 100;
         base.source = source;
-        if (manager.buffs.TryGetValue("Channeling", out Buff value))
-        {
-            value.Kill();
-        }
-        manager.simulationManager.ShowText($"{manager.stats.name} Got Stunned By {source} For {base.duration:F3} Seconds!");
+
+        manager.simulationManager.ShowText($"{manager.stats.name} is Stunned by {source} for {base.duration:F3} seconds!");
     }
 
     public override void Update()

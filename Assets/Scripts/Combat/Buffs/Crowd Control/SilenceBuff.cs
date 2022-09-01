@@ -6,11 +6,8 @@ public class SilenceBuff : Buff
     {
         base.duration = duration * (100 - manager.stats.tenacity) / 100;
         base.source = source;
-        if(manager.buffs.TryGetValue("Channeling", out Buff value))
-        {
-            value.Kill();
-        }
-        manager.simulationManager.ShowText($"{manager.stats.name} Got Silenced By {source} For {base.duration:F3} Seconds!");
+
+        manager.simulationManager.ShowText($"{manager.stats.name} is Silenced by {source} for {base.duration:F3} seconds!");
     }
 
     public override void Update()
@@ -21,7 +18,7 @@ public class SilenceBuff : Buff
 
     public override void Kill()
     {
-        manager.simulationManager.ShowText($"{manager.stats.name} is No Longer Silenced By {source}!");
+        manager.simulationManager.ShowText($"{manager.stats.name} is no longer Silenced by {source}!");
         manager.buffs.Remove("Silence");
     }
 }

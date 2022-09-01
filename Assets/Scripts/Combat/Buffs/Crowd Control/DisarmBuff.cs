@@ -6,18 +6,19 @@ public class DisarmBuff : Buff
     {
         base.duration = duration * (100 - manager.stats.tenacity) / 100;
         base.source = source;
-        manager.simulationManager.ShowText($"{manager.stats.name} Got Disarmed By {source} For {base.duration:F3} Seconds!");
+
+        manager.simulationManager.ShowText($"{manager.stats.name} is Disarmed by {source} for {base.duration:F3} seconds!");
     }
 
     public override void Update()
     {
         duration -= Time.deltaTime;
-        if(duration <= 0) Kill();
+        if (duration <= 0) Kill();
     }
 
     public override void Kill()
     {
-        manager.simulationManager.ShowText($"{manager.stats.name} is No Longer Disarmed By {source}!");
+        manager.simulationManager.ShowText($"{manager.stats.name} is no longer Disarmed by {source}!");
         manager.buffs.Remove("Disarm");
     }
 }
