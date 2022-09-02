@@ -35,6 +35,7 @@ public class Vayne : ChampionCombat
     public override IEnumerator ExecuteQ()
     {
         if (!CheckForAbilityControl(checksQ)) yield break;
+        if (myStats.buffManager.HasImmobilize) yield break;
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         if (empoweredTumbleCheck.Control())
         {

@@ -52,6 +52,7 @@ public class Riven : ChampionCombat
         if (qCounter == 0 && myStats.qCD > 0) yield break;
         if (timeSinceLastQ < 0.3125f) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
+        if (myStats.buffManager.HasImmobilize) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4);
@@ -88,6 +89,7 @@ public class Riven : ChampionCombat
     public override IEnumerator ExecuteE()
     {
         if (!CheckForAbilityControl(checksE)) yield break;
+        if (myStats.buffManager.HasImmobilize) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4);

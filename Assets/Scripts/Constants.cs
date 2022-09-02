@@ -13,6 +13,14 @@ public class Constants : MonoBehaviour
     public static float[] VayneRDurationBySkillLevel = { 8, 10, 12 };
     public static float[] VayneRBonusADBySkillLevel = { 25, 40, 55 };
     public static float[] VayneQCDReductionBySkillLevel = { 30, 40, 50 };
+    public static float[] CaitlynTrapRechargeBySkillLevel = { 30, 24, 19, 15, 12 };
+    public static float[] CaitlynMaxTrapBySkillLevel = { 3, 3, 4, 4, 5 };
+    public static float GetCaitlynPassivePercent(int level)
+    {
+        if (level < 7) return 60;
+        if (level < 13) return 90;
+        return 120;
+    }
     public static float GetAnnieStunDurationByLevel(int level)
     {
         if (level < 6) return 1.25f;
