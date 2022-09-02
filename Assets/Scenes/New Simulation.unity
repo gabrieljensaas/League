@@ -2858,10 +2858,22 @@ MonoBehaviour:
   - {fileID: 245803481}
   currentHP: {fileID: 936647569}
   passiveSkill: {fileID: 11400000, guid: 5888de635ad55664f94714cbebc37d41, type: 2}
-  qSkill: {fileID: 11400000, guid: e3a712b2e74adba4294473600b026f64, type: 2}
-  wSkill: {fileID: 11400000, guid: 377ad62a5e28bf0459b42d395bf38060, type: 2}
-  eSkill: {fileID: 11400000, guid: 859ca942a9bd8a949b20a92c43640e2b, type: 2}
-  rSkill: {fileID: 11400000, guid: 817187dd3a82d46479a8053e80162bb1, type: 2}
+  qSkill:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  wSkill:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  eSkill:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  rSkill:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   qCD: 0
   wCD: 0
   eCD: 0
@@ -7309,10 +7321,14 @@ MonoBehaviour:
   - {fileID: 1691049337}
   currentHP: {fileID: 1365512289}
   passiveSkill: {fileID: 0}
-  qSkill: {fileID: 0}
-  wSkill: {fileID: 0}
-  eSkill: {fileID: 0}
-  rSkill: {fileID: 0}
+  qSkill:
+  - {fileID: 0}
+  wSkill:
+  - {fileID: 0}
+  eSkill:
+  - {fileID: 0}
+  rSkill:
+  - {fileID: 0}
   qCD: 0
   wCD: 0
   eCD: 0

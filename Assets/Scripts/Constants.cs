@@ -10,6 +10,9 @@ public class Constants : MonoBehaviour
     public static float[] AatroxPassiveCooldownByLevelTable = { 24, 23.29f, 22.59f, 21.88f, 21.18f, 20.47f, 19.76f, 19.06f, 18.35f, 17.65f, 16.94f, 16.24f, 15.53f, 14.82f, 14.12f, 13.41f, 12.71f, 12f};
     public static float[] TibbersEnragedAttackSpeeds = { 0.625f, 0.739f, 1.043f, 1.307f, 1.536f, 1.736f };
     public static float[] MasterYiWDamageReductionPercents = { 45f, 47.5f, 50f, 52.5f, 55f };
+    public static float[] VayneRDurationBySkillLevel = { 8, 10, 12 };
+    public static float[] VayneRBonusADBySkillLevel = { 25, 40, 55 };
+    public static float[] VayneQCDReductionBySkillLevel = { 30, 40, 50 };
     public static float GetAnnieStunDurationByLevel(int level)
     {
         if (level < 6) return 1.25f;

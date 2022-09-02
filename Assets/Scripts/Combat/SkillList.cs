@@ -77,6 +77,11 @@ public class SkillList : ScriptableObject
             return 0;
         }
 
+        if(basic.name == "SilverBolts")
+        {
+            return unit.flat[level] > target.maxHealth * unit.percentTargetMaxHP[level] * 0.01f ? unit.flat[level] : target.maxHealth * unit.percentTargetMaxHP[level] * 0.01f;
+        }
+
         switch (skillDamageType)
         {
             case SkillDamageType.Phyiscal:
