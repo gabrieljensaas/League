@@ -850,19 +850,19 @@ public class ChampionDataGenerator : MonoBehaviour
                 limit = 3;
             }
 
-            for (int i3 = 0; i3 < limit; i3++)
+            for (int effect = 0; effect < effectInAbilities.Count; effect++)
             {
-                for (int effect = 0; effect < effectInAbilities.Count; effect++)
+                if (effectInAbilities[effect].leveling.Count > 0)
                 {
-                    if (effectInAbilities[effect].leveling.Count > 0)
+                    for (int level = 0; level < effectInAbilities[effect].leveling.Count; level++)
                     {
-                        for (int level = 0; level < effectInAbilities[effect].leveling.Count; level++)
+                        for (int modifier = 0; modifier < effectInAbilities[effect].leveling[level].modifiers.Count; modifier++)
                         {
-                            for (int modifier = 0; modifier < effectInAbilities[effect].leveling[level].modifiers.Count; modifier++)
+                            foreach (var atr in attributesName)
                             {
-                                foreach (var atr in attributesName)
+                                if (effectInAbilities[effect].leveling[level].attribute == atr)
                                 {
-                                    if (effectInAbilities[effect].leveling[level].attribute == atr)
+                                    for (int i3 = 0; i3 < limit; i3++)
                                     {
                                         var unit = effectInAbilities[effect].leveling[level].modifiers[modifier].units[0];
                                         if (i3 >= effectInAbilities[effect].leveling[level].modifiers[modifier].values.Count) continue;
@@ -870,22 +870,22 @@ public class ChampionDataGenerator : MonoBehaviour
 
                                         if (unit == "" || unit == "flat")
                                         {
-                                            skill.unit.flat[i3] = (float)value;
+                                            skill.unit.flat.Add((float)value);
                                         }
                                         if (unit == "% AD")
                                         {
-                                            skill.unit.percentAD[i3] = (float)value;
+                                            skill.unit.percentAD.Add((float)value);
                                         }
                                         if (unit == "%")
                                         {
-                                            skill.unit.percent[i3] = (float)value;
+                                            skill.unit.percent.Add((float)value);
                                         }
                                         if (
                                             unit == "% AP" ||
                                             unit == " (+ 100% AP)"
                                         )
                                         {
-                                            skill.unit.percentAP[i3] = (float)value;
+                                            skill.unit.percentAP.Add((float)value);
                                         }
                                         if (
                                             unit == "% bonus AD" ||
@@ -893,21 +893,21 @@ public class ChampionDataGenerator : MonoBehaviour
                                             unit == "[ 1% per 35 ][ 2.86% per 100 ]bonus AD"
                                         )
                                         {
-                                            skill.unit.percentBonusAD[i3] = (float)value;
+                                            skill.unit.percentBonusAD.Add((float)value);
                                         }
                                         if (
-                                            unit == "  ×" ||
-                                            unit == "  × "
+                                            unit == "  ï¿½" ||
+                                            unit == "  ï¿½ "
                                         )
                                         {
-                                            skill.unit.x[i3] = (float)value;
+                                            skill.unit.x.Add((float)value);
                                         }
                                         if (
                                             unit == "1 + 0.3 per 100% bonus attack speed" ||
                                             unit == "% per 100% bonus attack speed"
                                         )
                                         {
-                                            skill.unit.percentBonusAS[i3] = (float)value;
+                                            skill.unit.percentBonusAS.Add((float)value);
                                         }
                                         if (
                                             unit == "1 + (0.5 + 0.175) per 100% critical strike chance" ||
@@ -915,7 +915,7 @@ public class ChampionDataGenerator : MonoBehaviour
                                             unit == "1 + (100% + 0%) critical strike chance"
                                         )
                                         {
-                                            skill.unit.percentCritStrikeChance[i3] = (float)value;
+                                            skill.unit.percentCritStrikeChance.Add((float)value);
                                         }
                                         if (
                                             unit == "%  of target's maximum health" ||
@@ -941,23 +941,23 @@ public class ChampionDataGenerator : MonoBehaviour
                                             unit == "2% (+ 2 / 3 / 4 / 5 / 6% per 100 AD) of target's maximum health"
                                         )
                                         {
-                                            skill.unit.percentTargetMaxHP[i3] = (float)value;
+                                            skill.unit.percentTargetMaxHP.Add((float)value);
                                         }
                                         if (unit == "% bonus armor")
                                         {
-                                            skill.unit.percentBonusArmor[i3] = (float)value;
+                                            skill.unit.percentBonusArmor.Add((float)value);
                                         }
                                         if (unit == " units")
                                         {
-                                            skill.unit.units[i3] = (float)value;
+                                            skill.unit.units.Add((float)value);
                                         }
                                         if (unit == " chunks of ice")
                                         {
-                                            skill.unit.chunckOfIce[i3] = (float)value;
+                                            skill.unit.chunckOfIce.Add((float)value);
                                         }
                                         if (unit == " soldiers")
                                         {
-                                            skill.unit.soldiers[i3] = (float)value;
+                                            skill.unit.soldiers.Add((float)value);
                                         }
                                         if (
                                             unit == "% of target's missing health" ||
@@ -966,18 +966,18 @@ public class ChampionDataGenerator : MonoBehaviour
                                             unit == "12% (+2.8%) (+ 0.75% (+0.175%) per Mark) of target's missing health"
                                         )
                                         {
-                                            skill.unit.percentTargetMissingHP[i3] = (float)value;
+                                            skill.unit.percentTargetMissingHP.Add((float)value);
                                         }
                                         if (
                                             unit == "% of Braum's maximum health" ||
                                             unit == "% of her maximum health"
                                         )
                                         {
-                                            skill.unit.percentOwnMaxHP[i3] = (float)value;
+                                            skill.unit.percentOwnMaxHP.Add((float)value);
                                         }
                                         if (unit == "% per 100 bonus AD")
                                         {
-                                            skill.unit.percentPer100BonusAD[i3] = (float)value;
+                                            skill.unit.percentPer100BonusAD.Add((float)value);
                                         }
                                         if (
                                             unit == "% of target's current health" ||
@@ -987,22 +987,22 @@ public class ChampionDataGenerator : MonoBehaviour
                                             unit == "% (+ 1.5% per Mark) of target's current health"
                                         )
                                         {
-                                            skill.unit.percentTargetCurrentHP[i3] = (float)value;
+                                            skill.unit.percentTargetCurrentHP.Add((float)value);
                                         }
                                         if (
                                             unit == "% bonus health" ||
                                             unit == " (+ 3% bonus health)"
                                         )
                                         {
-                                            skill.unit.percentBonusHP[i3] = (float)value;
+                                            skill.unit.percentBonusHP.Add((float)value);
                                         }
                                         if (unit == " bonus health")
                                         {
-                                            skill.unit.bonusHP[i3] = (float)value;
+                                            skill.unit.bonusHP.Add((float)value);
                                         }
                                         if (unit == "% of damage taken")
                                         {
-                                            skill.unit.percentDamageTaken[i3] = (float)value;
+                                            skill.unit.percentDamageTaken.Add((float)value);
                                         }
                                         if (
                                             unit == "% missing health" ||
@@ -1010,102 +1010,102 @@ public class ChampionDataGenerator : MonoBehaviour
                                             unit == "%  of missing health"
                                         )
                                         {
-                                            skill.unit.percentMissingHP[i3] = (float)value;
+                                            skill.unit.percentMissingHP.Add((float)value);
                                         }
                                         if (
                                             unit == "% maximum health" ||
                                             unit == "% of maximum health"
                                         )
                                         {
-                                            skill.unit.percentMaxHP[i3] = (float)value;
+                                            skill.unit.percentMaxHP.Add((float)value);
                                         }
                                         if (unit == "3% per 1% of health lost in the past 4 seconds")
                                         {
-                                            skill.unit.percentHPLost[i3] = (float)value;
+                                            skill.unit.percentHPLost.Add((float)value);
                                         }
                                         if (unit == "% per 100 AP")
                                         {
-                                            skill.unit.percentPer100AP[i3] = (float)value;
+                                            skill.unit.percentPer100AP.Add((float)value);
                                         }
                                         if (unit == "% per 100 bonus magic resistance")
                                         {
-                                            skill.unit.percentBonusMR[i3] = (float)value;
+                                            skill.unit.percentBonusMR.Add((float)value);
                                         }
                                         if (unit == "% per 100 AD")
                                         {
-                                            skill.unit.percentPer100AD[i3] = (float)value;
+                                            skill.unit.percentPer100AD.Add((float)value);
                                         }
                                         if (unit == "% of target's armor")
                                         {
-                                            skill.unit.percentTargetArmor[i3] = (float)value;
+                                            skill.unit.percentTargetArmor.Add((float)value);
                                         }
                                         if (unit == "% of missing mana")
                                         {
-                                            skill.unit.percentMissingMana[i3] = (float)value;
+                                            skill.unit.percentMissingMana.Add((float)value);
                                         }
                                         if (unit == "% maximum mana")
                                         {
-                                            skill.unit.percentMaxMana[i3] = (float)value;
+                                            skill.unit.percentMaxMana.Add((float)value);
                                         }
                                         if (unit == "% of primary target's bonus health")
                                         {
-                                            skill.unit.percentPrimaryTargetBonusHP[i3] = (float)value;
+                                            skill.unit.percentPrimaryTargetBonusHP.Add((float)value);
                                         }
                                         if (unit == "% armor")
                                         {
-                                            skill.unit.percentArmor[i3] = (float)value;
+                                            skill.unit.percentArmor.Add((float)value);
                                         }
                                         if (unit == "Siphoning Strike stacks")
                                         {
-                                            skill.unit.siphoningStrikeStacks[i3] = (float)value;
+                                            skill.unit.siphoningStrikeStacks.Add((float)value);
                                         }
                                         if (unit == "% total armor")
                                         {
-                                            skill.unit.percentTotalArmor[i3] = (float)value;
+                                            skill.unit.percentTotalArmor.Add((float)value);
                                         }
                                         if (unit == "% total magic resistance")
                                         {
-                                            skill.unit.percentTotalMR[i3] = (float)value;
+                                            skill.unit.percentTotalMR.Add((float)value);
                                         }
                                         if (unit == "% bonus mana")
                                         {
-                                            skill.unit.percentBonusMana[i3] = (float)value;
+                                            skill.unit.percentBonusMana.Add((float)value);
                                         }
                                         if (unit == " per 1 Lethality")
                                         {
-                                            skill.unit.lithality[i3] = (float)value;
+                                            skill.unit.lithality.Add((float)value);
                                         }
                                         if (unit == " per Mist collected")
                                         {
-                                            skill.unit.mist[i3] = (float)value;
+                                            skill.unit.mist.Add((float)value);
                                         }
                                         if (unit == "% (+ 20% per 100 bonus AD) of expended Grit")
                                         {
-                                            skill.unit.expendedGrit[i3] = (float)value;
+                                            skill.unit.expendedGrit.Add((float)value);
                                         }
                                         if (unit == "% of his bonus health")
                                         {
-                                            skill.unit.percentOwnBonusHP[i3] = (float)value;
+                                            skill.unit.percentOwnBonusHP.Add((float)value);
                                         }
                                         if (unit == "% of Taric's armor")
                                         {
-                                            skill.unit.percentArmor[i3] = (float)value;
+                                            skill.unit.percentArmor.Add((float)value);
                                         }
                                         if (unit == " per Soul collected")
                                         {
-                                            skill.unit.soul[i3] = (float)value;
+                                            skill.unit.soul.Add((float)value);
                                         }
                                         if (unit == " AD")
                                         {
-                                            skill.unit.AD[i3] = (float)value;
+                                            skill.unit.AD.Add((float)value);
                                         }
                                         if (unit == "% of his missing health")
                                         {
-                                            skill.unit.percentOwnMissingHP[i3] = (float)value;
+                                            skill.unit.percentOwnMissingHP.Add((float)value);
                                         }
                                         if (unit == "% of turret's maximum health")
                                         {
-                                            // skill.unit.percentMaxHP[i3] = (float)value;
+                                            // skill.unit.percentMaxHP.Add((float)value);
                                         }
                                     }
                                 }

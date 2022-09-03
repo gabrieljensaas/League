@@ -53,275 +53,70 @@ MonoBehaviour:
     - 0
   unit:
     flat:
+    - 90
+    - 130
+    - 170
+    - 210
+    - 250
     - 45
     - 65
     - 85
     - 105
     - 125
-    percent:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    AD:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    bonusAD:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentAD:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentBonusAD:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentPer100AD:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentPer100BonusAD:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+    percent: []
+    AD: []
+    bonusAD: []
+    percentAD: []
+    percentBonusAD: []
+    percentPer100AD: []
+    percentPer100BonusAD: []
     percentAP:
+    - 90
+    - 90
+    - 90
+    - 90
+    - 90
     - 45
     - 45
     - 45
     - 45
     - 45
-    percentPer100AP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    bonusHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentBonusHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentMaxHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentMissingHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentHPLost:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentOwnMaxHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentOwnBonusHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentOwnMissingHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentTargetMaxHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentTargetMissingHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentTargetCurrentHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentPrimaryTargetBonusHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentMissingMana:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentMaxMana:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentBonusAS:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    armor:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentArmor:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentBonusArmor:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentTargetArmor:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentTotalArmor:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentBonusMR:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentTotalMR:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentDamageTaken:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentDmgDealt:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    x:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentCritStrikeChance:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    units:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    chunckOfIce:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    soldiers:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    siphoningStrikeStacks:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentBonusMana:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    lithality:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    mist:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    expendedGrit:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    soul:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+    percentPer100AP: []
+    bonusHP: []
+    percentBonusHP: []
+    percentMaxHP: []
+    percentMissingHP: []
+    percentHPLost: []
+    percentOwnMaxHP: []
+    percentOwnBonusHP: []
+    percentOwnMissingHP: []
+    percentTargetMaxHP: []
+    percentTargetMissingHP: []
+    percentTargetCurrentHP: []
+    percentPrimaryTargetBonusHP: []
+    percentMissingMana: []
+    percentMaxMana: []
+    percentBonusAS: []
+    armor: []
+    percentArmor: []
+    percentBonusArmor: []
+    percentTargetArmor: []
+    percentTotalArmor: []
+    percentBonusMR: []
+    percentTotalMR: []
+    percentDamageTaken: []
+    percentDmgDealt: []
+    x: []
+    percentCritStrikeChance: []
+    units: []
+    chunckOfIce: []
+    soldiers: []
+    siphoningStrikeStacks: []
+    percentBonusMana: []
+    lithality: []
+    mist: []
+    expendedGrit: []
+    soul: []
   damage:
     flatAD:
     - 0

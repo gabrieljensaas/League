@@ -1,62 +1,64 @@
+using System.Collections.Generic;
+
 [System.Serializable]
 public class UnitList
 {
     // public 
     // public float[][] test = 
-    public float[] flat = new float[5];
-    public float[] percent = new float[5];
+    public List<float> flat = new();
+    public List<float> percent = new();
 
-    public float[] AD = new float[5];
-    public float[] bonusAD = new float[5];
-    public float[] percentAD = new float[5];
-    public float[] percentBonusAD = new float[5];
-    public float[] percentPer100AD = new float[5];
-    public float[] percentPer100BonusAD = new float[5];
+    public List<float> AD = new();
+    public List<float> bonusAD = new();
+    public List<float> percentAD = new();
+    public List<float> percentBonusAD = new();
+    public List<float> percentPer100AD = new();
+    public List<float> percentPer100BonusAD = new();
 
-    public float[] percentAP = new float[5];
-    public float[] percentPer100AP = new float[5];
+    public List<float> percentAP = new();
+    public List<float> percentPer100AP = new();
 
-    public float[] bonusHP = new float[5];
-    public float[] percentBonusHP = new float[5];
-    public float[] percentMaxHP = new float[5];
-    public float[] percentMissingHP = new float[5];
-    public float[] percentHPLost = new float[5];
+    public List<float> bonusHP = new();
+    public List<float> percentBonusHP = new();
+    public List<float> percentMaxHP = new();
+    public List<float> percentMissingHP = new();
+    public List<float> percentHPLost = new();
 
-    public float[] percentOwnMaxHP = new float[5];
-    public float[] percentOwnBonusHP = new float[5];
-    public float[] percentOwnMissingHP = new float[5];
+    public List<float> percentOwnMaxHP = new();
+    public List<float> percentOwnBonusHP = new();
+    public List<float> percentOwnMissingHP = new();
 
-    public float[] percentTargetMaxHP = new float[5];
-    public float[] percentTargetMissingHP = new float[5];
-    public float[] percentTargetCurrentHP = new float[5];
-    public float[] percentPrimaryTargetBonusHP = new float[5];
+    public List<float> percentTargetMaxHP = new();
+    public List<float> percentTargetMissingHP = new();
+    public List<float> percentTargetCurrentHP = new();
+    public List<float> percentPrimaryTargetBonusHP = new();
 
-    public float[] percentMissingMana = new float[5];
-    public float[] percentMaxMana = new float[5];
+    public List<float> percentMissingMana = new();
+    public List<float> percentMaxMana = new();
 
-    public float[] percentBonusAS = new float[5];
+    public List<float> percentBonusAS = new();
 
-    public float[] armor = new float[5];
-    public float[] percentArmor = new float[5];
-    public float[] percentBonusArmor = new float[5];
-    public float[] percentTargetArmor = new float[5];
-    public float[] percentTotalArmor = new float[5];
+    public List<float> armor = new();
+    public List<float> percentArmor = new();
+    public List<float> percentBonusArmor = new();
+    public List<float> percentTargetArmor = new();
+    public List<float> percentTotalArmor = new();
 
-    public float[] percentBonusMR = new float[5];
-    public float[] percentTotalMR = new float[5];
+    public List<float> percentBonusMR = new();
+    public List<float> percentTotalMR = new();
 
-    public float[] percentDamageTaken = new float[5];
-    public float[] percentDmgDealt = new float[5];
+    public List<float> percentDamageTaken = new();
+    public List<float> percentDmgDealt = new();
 
-    public float[] x = new float[5];
-    public float[] percentCritStrikeChance = new float[5];
-    public float[] units = new float[5];
-    public float[] chunckOfIce = new float[5];
-    public float[] soldiers = new float[5];
-    public float[] siphoningStrikeStacks = new float[5];
-    public float[] percentBonusMana = new float[5];
-    public float[] lithality = new float[5];
-    public float[] mist = new float[5];
-    public float[] expendedGrit = new float[5];
-    public float[] soul = new float[5];
+    public List<float> x = new();
+    public List<float> percentCritStrikeChance = new();
+    public List<float> units = new();
+    public List<float> chunckOfIce = new();
+    public List<float> soldiers = new();
+    public List<float> siphoningStrikeStacks = new();
+    public List<float> percentBonusMana = new();
+    public List<float> lithality = new();
+    public List<float> mist = new();
+    public List<float> expendedGrit = new();
+    public List<float> soul = new();
 }

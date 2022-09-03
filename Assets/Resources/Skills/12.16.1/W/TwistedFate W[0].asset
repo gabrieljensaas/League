@@ -53,6 +53,26 @@ MonoBehaviour:
     - 0
   unit:
     flat:
+    - 40
+    - 60
+    - 80
+    - 100
+    - 120
+    - 50
+    - 75
+    - 100
+    - 125
+    - 150
+    - 30
+    - 45
+    - 60
+    - 75
+    - 90
+    - 15
+    - 22.5
+    - 30
+    - 37.5
+    - 45
     - 1
     - 1.25
     - 1.5
@@ -64,264 +84,79 @@ MonoBehaviour:
     - 40
     - 45
     - 50
-    AD:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    bonusAD:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+    AD: []
+    bonusAD: []
     percentAD:
     - 100
     - 100
     - 100
     - 100
     - 100
-    percentBonusAD:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentPer100AD:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentPer100BonusAD:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+    - 100
+    - 100
+    - 100
+    - 100
+    - 100
+    - 100
+    - 100
+    - 100
+    - 100
+    - 100
+    percentBonusAD: []
+    percentPer100AD: []
+    percentPer100BonusAD: []
     percentAP:
+    - 90
+    - 90
+    - 90
+    - 90
+    - 90
+    - 60
+    - 60
+    - 60
+    - 60
+    - 60
     - 50
     - 50
     - 50
     - 50
     - 50
-    percentPer100AP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    bonusHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentBonusHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentMaxHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentMissingHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentHPLost:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentOwnMaxHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentOwnBonusHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentOwnMissingHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentTargetMaxHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentTargetMissingHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentTargetCurrentHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentPrimaryTargetBonusHP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentMissingMana:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentMaxMana:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentBonusAS:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    armor:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentArmor:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentBonusArmor:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentTargetArmor:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentTotalArmor:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentBonusMR:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentTotalMR:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentDamageTaken:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentDmgDealt:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    x:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentCritStrikeChance:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    units:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    chunckOfIce:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    soldiers:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    siphoningStrikeStacks:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentBonusMana:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    lithality:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    mist:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    expendedGrit:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    soul:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+    percentPer100AP: []
+    bonusHP: []
+    percentBonusHP: []
+    percentMaxHP: []
+    percentMissingHP: []
+    percentHPLost: []
+    percentOwnMaxHP: []
+    percentOwnBonusHP: []
+    percentOwnMissingHP: []
+    percentTargetMaxHP: []
+    percentTargetMissingHP: []
+    percentTargetCurrentHP: []
+    percentPrimaryTargetBonusHP: []
+    percentMissingMana: []
+    percentMaxMana: []
+    percentBonusAS: []
+    armor: []
+    percentArmor: []
+    percentBonusArmor: []
+    percentTargetArmor: []
+    percentTotalArmor: []
+    percentBonusMR: []
+    percentTotalMR: []
+    percentDamageTaken: []
+    percentDmgDealt: []
+    x: []
+    percentCritStrikeChance: []
+    units: []
+    chunckOfIce: []
+    soldiers: []
+    siphoningStrikeStacks: []
+    percentBonusMana: []
+    lithality: []
+    mist: []
+    expendedGrit: []
+    soul: []
   damage:
     flatAD:
     - 0
