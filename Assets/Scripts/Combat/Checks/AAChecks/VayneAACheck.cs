@@ -21,7 +21,7 @@ public class VayneAACheck : Check
             if(val.value == 2)
             {
                 val.Kill();
-                combat.UpdateAbilityTotalDamage(ref combat.wSum, 1, combat.myStats.wSkill[0].UseSkill(4, combat.myStats, combat.targetStats),combat.myStats.wSkill[0].basic.name, SkillList.SkillDamageType.True);
+                combat.UpdateAbilityTotalDamage(ref combat.wSum, 1, combat.myStats.wSkill[0].UseSkill(4, combat.myStats, combat.targetStats),combat.myStats.wSkill[0].basic.name, SkillDamageType.True);
             }
             else
             {

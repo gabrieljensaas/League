@@ -70,7 +70,7 @@ public class Darius : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, Constants.GetDariusNoxianGuillotineByLevel(myStats.level, (int)targetStats.buffManager.buffs["Hemorrhage"]?.value), "Noxian Guillotine", SkillList.SkillDamageType.True);
+        UpdateAbilityTotalDamage(ref rSum, 3, Constants.GetDariusNoxianGuillotineByLevel(myStats.level, (int)targetStats.buffManager.buffs["Hemorrhage"]?.value), "Noxian Guillotine", SkillDamageType.True);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 

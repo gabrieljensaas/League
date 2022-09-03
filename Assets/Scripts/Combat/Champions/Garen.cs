@@ -62,7 +62,7 @@ public class Garen : ChampionCombat
     private IEnumerator GarenE(float seconds, int spinCount)
     {
         yield return new WaitForSeconds(seconds);
-        eSum += targetCombat.TakeDamage(myStats.eSkill[0].UseSkill(4, myStats, targetStats), myStats.eSkill[0].basic.name, SkillList.SkillDamageType.Phyiscal);
+        eSum += targetCombat.TakeDamage(myStats.eSkill[0].UseSkill(4, myStats, targetStats), myStats.eSkill[0].basic.name, SkillDamageType.Phyiscal);
         myUI.abilitySum[2].text = eSum.ToString();
         spinCount++;
         if (spinCount >= 6 && targetStats.buffManager.buffs.ContainsKey("Judgment"))

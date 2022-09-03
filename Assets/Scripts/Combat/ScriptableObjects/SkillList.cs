@@ -2,6 +2,16 @@ using UnityEngine;
 using Simulator.Combat;
 using System;
 
+public enum SkillDamageType
+{
+    Phyiscal,
+    Spell,
+    True,
+    PhysAndSpell,
+    PhysAndTrue,
+    SpellAndTrue
+}
+
 [CreateAssetMenu(fileName = "new Spell", menuName = "ScriptableObjects/SkillList")]
 public class SkillList : ScriptableObject
 {
@@ -19,15 +29,6 @@ public class SkillList : ScriptableObject
     [Header("Buffs/Debuffs")]
     public SkillEnemyEffects enemyEffects;
     public SkillSelfEffects selfEffects;
-    public enum SkillDamageType    
-    { 
-        Phyiscal,
-        Spell,
-        True,
-        PhysAndSpell,
-        PhysAndTrue,
-        SpellAndTrue
-    }
 
     public enum SkillType
     {

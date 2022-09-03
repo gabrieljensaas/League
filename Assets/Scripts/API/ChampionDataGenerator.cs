@@ -825,6 +825,33 @@ public class ChampionDataGenerator : MonoBehaviour
                 skill.basic.castTime = 0;
             }
 
+            try
+            {
+                switch (api.abilities[skillType[skillIndex]][i].damageType)
+                {
+                    case "PHYSICAL_DAMAGE":
+                        skill.skillDamageType = SkillDamageType.Phyiscal;
+                        break;
+                    case "MAGIC_DAMAGE":
+                        skill.skillDamageType = SkillDamageType.Spell;
+                        break;
+                    case "TRUE_DAMAGE":
+                        skill.skillDamageType = SkillDamageType.True;
+                        break;
+                    case "MIXED_DAMAGE": //TODO: check for mixed damage physical, spell, and true.
+                        skill.skillDamageType = SkillDamageType.PhysAndSpell;
+                        break;
+                    default:
+                        skill.skillDamageType = SkillDamageType.Phyiscal;
+                        break;
+                }
+
+            }
+            catch
+            {
+                Debug.LogError($"{api.abilities[skillType[skillIndex]][i].damageType} does not have an equivalent damage type!");
+            }
+
             if (api.abilities[skillType[skillIndex]][i].cooldown != null)
             {
                 for (int i2 = 0; i2 < api.abilities[skillType[skillIndex]][i].cooldown.modifiers[0].values.Count; i2++)

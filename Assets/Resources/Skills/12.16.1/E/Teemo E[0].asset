@@ -17,6 +17,7 @@ MonoBehaviour:
     name: Toxic Shot
     castTime: 0
     inactive: 1
+    skillDamageType: 0
     coolDown:
     - 0
     - 0
@@ -36,21 +37,7 @@ MonoBehaviour:
     - 0
     - 0
   skillType: 0
-  skillDamageType: 0
-  multihit:
-    multiHit: 0
-    hits: 0000000000000000000000000000000000000000
-    multiHitHasInterval: 0
-    multiHitInterval: 0
-  charge:
-    chargeable: 0
-    charges: 0
-    maxCharges:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+  skillDamageType: 1
   unit:
     flat:
     - 14
@@ -157,101 +144,6 @@ MonoBehaviour:
     mist: []
     expendedGrit: []
     soul: []
-  damage:
-    flatAD:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    bonusAD:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentAD:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    flatAP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    bonusAP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentAP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-  trueDamage:
-    TDType: 0
-    flat:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percent:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-  damageByHP:
-    targetMaxHPDamage:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    targetMissingHPDamage:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-  heal:
-    flat:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percent:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    flatByAP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentByAP:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    percentByMissingHealth:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
   enemyEffects:
     stun: 0
     stunDuration: 0

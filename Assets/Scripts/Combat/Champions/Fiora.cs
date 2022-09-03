@@ -97,7 +97,7 @@ public class Fiora : ChampionCombat
             VitalsBuff vitalsBuff = (VitalsBuff)vitals;
             if (vitalsBuff.isActive)
             {
-                UpdateAbilityTotalDamage(ref pSum, 4, targetStats.maxHealth * 0.03f, "Vitals", SkillList.SkillDamageType.True);
+                UpdateAbilityTotalDamage(ref pSum, 4, targetStats.maxHealth * 0.03f, "Vitals", SkillDamageType.True);
                 vitalsBuff.Kill();
             }
         }
@@ -106,7 +106,7 @@ public class Fiora : ChampionCombat
             VitalsBuff vitalsBuff = (VitalsBuff)vitalsUlt;
             if (vitalsBuff.isActive)
             {
-                UpdateAbilityTotalDamage(ref rSum, 3, targetStats.maxHealth * 0.03f, "Vitals Grand Challenge", SkillList.SkillDamageType.True);
+                UpdateAbilityTotalDamage(ref rSum, 3, targetStats.maxHealth * 0.03f, "Vitals Grand Challenge", SkillDamageType.True);
                 vitalsBuff.value--;
 
                 if (vitalsBuff.value <= 0)
