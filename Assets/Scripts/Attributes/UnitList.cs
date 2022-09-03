@@ -1,8 +1,6 @@
 [System.Serializable]
 public class UnitList
 {
-    // public 
-    // public float[][] test = 
     public float[] flat = new float[5];
     public float[] percent = new float[5];
 

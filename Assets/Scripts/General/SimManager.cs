@@ -53,13 +53,8 @@ public class SimManager : MonoBehaviour
     public GameObject[] champOutput1;
     public TextMeshProUGUI timerTest;
 
-    RiotAPIItemRequest itemRequest;
-    RiotAPIItemResponse itemResponse;    
-    RiotAPIMatchRequest matchRequest;
     APIRequestManager apiRequest;
 
-    int champ1ItemNum;
-    int champ2ItemNum;
     public int[] storedXP = {0,0};
     public string[] storedName = {"",""};
 
@@ -88,8 +83,6 @@ public class SimManager : MonoBehaviour
 
         //matchIDGO.SetActive(false);
         ShowInput();
-        itemRequest = GetComponent<RiotAPIItemRequest>();
-        matchRequest = GetComponent<RiotAPIMatchRequest>();
         apiRequest = GetComponent<APIRequestManager>();
         outputText = output[0];
         timeText = output[1];
@@ -395,8 +388,6 @@ public class SimManager : MonoBehaviour
         isLoaded = false;
         battleStarted = false;
         timer = 0;
-        RiotAPIMatchRequest.selectedChamp[0] = 0;
-        RiotAPIMatchRequest.selectedChamp[1] = 0;
     }
 
     void ShowInput()

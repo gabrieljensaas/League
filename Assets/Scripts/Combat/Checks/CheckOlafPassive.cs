@@ -1,5 +1,4 @@
 using Simulator.Combat;
-using static AttributeTypes;
 
 public class CheckOlafPassive : Check
 {

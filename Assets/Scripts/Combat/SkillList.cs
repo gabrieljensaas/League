@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using Simulator.Combat;
-using static AttributeTypes;
 using System;
 
 [CreateAssetMenu(fileName = "new Spell", menuName = "ScriptableObjects/SkillList")]
@@ -18,14 +14,7 @@ public class SkillList : ScriptableObject
 
     private SimManager simulationManager;
 
-    public SkillMultiHit multihit;
-
-    public SkillChargeType charge;
     public UnitList unit;
-    public SkillBasicDamage damage;
-    public SkillTrueDamage trueDamage;
-    public SkillDamageByHP damageByHP;
-    public SkillHeal heal;
 
     [Header("Buffs/Debuffs")]
     public SkillEnemyEffects enemyEffects;

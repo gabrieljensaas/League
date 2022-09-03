@@ -1,10 +1,5 @@
 using UnityEngine;
 using TMPro;
-using static UnityEngine.GraphicsBuffer;
-using static AttributeTypes;
-using System.Collections.Generic;
-using System.Linq;
-using static Unity.VisualScripting.Member;
 
 namespace Simulator.Combat
 {
