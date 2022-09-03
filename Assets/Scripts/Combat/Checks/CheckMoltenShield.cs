@@ -11,8 +11,8 @@ public class CheckMoltenShield : Check
     {
         if (combat.myStats.buffManager.shields.TryGetValue("Molten Shield", out ShieldBuff value))
         {
-            float reflectedDamage = combat.myStats.eSkill.unit.flat[4] + (combat.myStats.eSkill.unit.percentAP[4] / 100 * combat.myStats.AP) * (100 / (100 + combat.targetStats.spellBlock));
-            combat.targetCombat.TakeDamage(reflectedDamage, "Molten Shied");
+            float reflectedDamage = combat.myStats.eSkill[0].unit.flat[4] + (combat.myStats.eSkill[0].unit.percentAP[4] / 100 * combat.myStats.AP) * (100 / (100 + combat.targetStats.spellBlock));
+            combat.targetCombat.TakeDamage(reflectedDamage, "Molten Shied", SkillList.SkillDamageType.Spell);
             combat.qSum += reflectedDamage;
             combat.myUI.abilitySum[0].text = combat.qSum.ToString();
         }

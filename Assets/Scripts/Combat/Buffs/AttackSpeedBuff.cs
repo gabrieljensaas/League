@@ -11,7 +11,7 @@ public class AttackSpeedBuff : Buff
         base.duration = duration;
         base.source = source;
         this.uniqueKey = uniqueKey;
-        manager.simulationManager.ShowText($"{manager.stats.name} Gained {attackSpeed:F3} Attack Speed from {source} for {duration} Seconds!");
+        manager.simulationManager.ShowText($"{manager.stats.name} Gained {attackSpeed:F3} Attack Speed from {source} for {duration:F3} Seconds!");
     }
 
     public override void Update()

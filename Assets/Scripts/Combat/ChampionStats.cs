@@ -1,10 +1,5 @@
 using UnityEngine;
 using TMPro;
-using static UnityEngine.GraphicsBuffer;
-using static AttributeTypes;
-using System.Collections.Generic;
-using System.Linq;
-using static Unity.VisualScripting.Member;
 
 namespace Simulator.Combat
 {
@@ -18,15 +13,15 @@ namespace Simulator.Combat
 
         [HideInInspector] public BuffManager buffManager;                    //class to manage buffs
         [HideInInspector] public PassiveList passiveSkill;
-        [HideInInspector] public SkillList qSkill;
-        [HideInInspector] public SkillList wSkill;
-        [HideInInspector] public SkillList eSkill;
-        [HideInInspector] public SkillList rSkill;
+        [HideInInspector] public SkillList[] qSkill = new SkillList[5];
+        [HideInInspector] public SkillList[] wSkill = new SkillList[5];
+        [HideInInspector] public SkillList[] eSkill = new SkillList[5];
+        [HideInInspector] public SkillList[] rSkill = new SkillList[5];
         [HideInInspector] public float qCD, wCD, eCD, rCD, pCD;                                          //cooldown of skills
 
 
         [HideInInspector] public int level;                                            //stats of champion
-        [HideInInspector] public float maxHealth, currentHealth, AD, AP, armor, spellBlock, attackSpeed, tenacity = 0f;
+        [HideInInspector] public float maxHealth, currentHealth, AD, AP, armor, spellBlock, attackSpeed, tenacity = 0f, lifesteal = 0f;
         [HideInInspector] public float baseHealth, baseAD, baseAP, baseArmor, baseSpellBlock, baseAttackSpeed;
         private void Start()
         {

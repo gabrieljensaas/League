@@ -4,6 +4,7 @@ using TMPro;
 using System.Collections.Generic;
 using System.Linq;
 using Simulator.API;
+using static SkillList;
 
 namespace Simulator.Combat
 {
@@ -71,7 +72,13 @@ namespace Simulator.Combat
 
         protected void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, float damageModifier = 1)
         {
-            totalDamage += targetCombat.TakeDamage(damageModifier * skill.UseSkill(level, myStats, targetStats), skill.basic.name);
+            totalDamage += targetCombat.TakeDamage(damageModifier * skill.UseSkill(level, myStats, targetStats), skill.basic.name, skill.skillDamageType);
+            myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
+        }
+
+        public void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, float damage, string skillName, SkillDamageType skillDamageType)
+        {
+            totalDamage += targetCombat.TakeDamage(damage, skillName, skillDamageType);
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
@@ -81,40 +88,46 @@ namespace Simulator.Combat
             myUI.healSum.text = totalHeal.ToString();
         }
 
+        protected void UpdateTotalHeal(ref float totalHeal, float heal, string skillName)
+        {
+            totalHeal += HealHealth(heal, skillName);
+            myUI.healSum.text = totalHeal.ToString();
+        }
+
         public virtual IEnumerator ExecuteQ()
         {
             if (!CheckForAbilityControl(checksQ)) yield break;
 
-            yield return StartCoroutine(StartCastingAbility(myStats.qSkill.basic.castTime));
-            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill, 4);
-            myStats.qCD = myStats.qSkill.basic.coolDown[4];
+            yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
+            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4);
+            myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         }
 
         public virtual IEnumerator ExecuteW()
         {
             if (!CheckForAbilityControl(checksW)) yield break;
 
-            yield return StartCoroutine(StartCastingAbility(myStats.wSkill.basic.castTime));
-            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill, 4);
-            myStats.wCD = myStats.wSkill.basic.coolDown[4];
+            yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
+            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4);
+            myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         }
 
         public virtual IEnumerator ExecuteE()
         {
             if (!CheckForAbilityControl(checksE)) yield break;
 
-            yield return StartCoroutine(StartCastingAbility(myStats.eSkill.basic.castTime));
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill, 4);
-            myStats.eCD = myStats.eSkill.basic.coolDown[4];
+            yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
+            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4);
+            myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         }
 
         public virtual IEnumerator ExecuteR()
         {
             if (!CheckForAbilityControl(checksR)) yield break;
 
-            yield return StartCoroutine(StartCastingAbility(myStats.rSkill.basic.castTime));
-            UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill, 2);
-            myStats.rCD = myStats.rSkill.basic.coolDown[2];
+            yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2);
+            myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         }
 
         public virtual IEnumerator ExecuteA()
@@ -151,37 +164,40 @@ namespace Simulator.Combat
 
         protected void AutoAttack()
         {
-            float damage = Mathf.Round(myStats.AD * (100 / (100 + targetStats.armor)));
+            float damage = myStats.AD;
             if (damage < 0)
-            {
                 damage = 0;
-            }
 
             if (autoattackcheck != null) damage = autoattackcheck.Control(damage);
 
-            aSum += targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack", true);
+            aSum += targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack", SkillDamageType.Phyiscal, true);
+            hSum += HealHealth(damage * myStats.lifesteal, "Lifesteal");
             myUI.aaSum.text = aSum.ToString();
+            myUI.healSum.text = hSum.ToString();
 
             attackCooldown = 1f / myStats.attackSpeed;
         }
 
-        public float TakeDamage(float damage, string source, bool isAutoAttack = false)
+        public float TakeDamage(float rawDamage, string source, SkillDamageType damageType, bool isAutoAttack = false)
         {
-            if (damage <= 0) return 0;
-
             if(!isAutoAttack)
-                damage = CheckForDamageControl(checkTakeDamage, damage);
+                rawDamage = CheckForDamageControl(checkTakeDamage, rawDamage);
             else
-                damage = CheckForDamageControl(checkTakeDamageAA, damage);
+                rawDamage = CheckForDamageControl(checkTakeDamageAA, rawDamage);
 
-            if (damage <= 0) return 0;
+            int postMitigationDamage = 0;
+            if (damageType == SkillDamageType.Phyiscal) postMitigationDamage = (int)(rawDamage * 100 / (100 + myStats.armor));
+            else if (damageType == SkillDamageType.Spell) postMitigationDamage = (int)(rawDamage * 100 / (100 + myStats.spellBlock));
+            else if (damageType == SkillDamageType.True) postMitigationDamage = (int)rawDamage;
 
-            myStats.currentHealth -= damage;
-            simulationManager.ShowText($"{myStats.name} Took {damage} Damage From {source}!");
+            if (postMitigationDamage <= 0) return 0;
+
+            myStats.currentHealth -= postMitigationDamage;
+            simulationManager.ShowText($"{myStats.name} Took {postMitigationDamage} Damage From {source}!");
 
             CheckDeath();
 
-            return damage;
+            return postMitigationDamage;
         }
 
         protected virtual void CheckDeath()
@@ -196,9 +212,8 @@ namespace Simulator.Combat
 
             //add checks here
 
-            myStats.currentHealth += health;
-            if (myStats.currentHealth >= myStats.maxHealth)
-                myStats.maxHealth = myStats.currentHealth;
+            myStats.currentHealth += (int)health;
+            if (myStats.currentHealth > myStats.maxHealth) myStats.currentHealth = myStats.maxHealth;
 
             simulationManager.ShowText($"{myStats.name} Took {health} Heal From {source}!");
 
@@ -212,7 +227,7 @@ namespace Simulator.Combat
             simulationManager.ShowText($"{myStats.name} Has Died! {targetStats.name} Won With {targetStats.currentHealth} Health Remaining!");
             StopAllCoroutines();
             targetCombat.StopAllCoroutines();
-            APIRequestManager.Instance.SendOutput(simulationManager.output[0].text.Split("\n"));
+            APIRequestManager.Instance.SendOutputToJS(simulationManager.output[0].text.Split("\n"));
         }
 
         public void UpdateTarget(int index)

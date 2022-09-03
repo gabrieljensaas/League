@@ -12,8 +12,6 @@ public class HemorrhageBuff : Buff
         manager.simulationManager.ShowText($"{manager.stats.name} Got Hemorrhage By {source} For {duration} Seconds!");
     }
 
-
-
     public override void Update()
     {
         float damage = Constants.GetDariusHemorrhageByLevel(manager.combat.targetStats.level, (int)value);
@@ -22,8 +20,7 @@ public class HemorrhageBuff : Buff
         if(_hemorrhageTimer >= 1.25f)
         {
             _hemorrhageTimer = 0f;
-            manager.stats.currentHealth -= damage;
-            manager.simulationManager.ShowText($"{manager.stats.name} took {damage} damage by Hemorrhage!");
+            manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.pSum, 4, damage, $"Hemorrhage {value}", SkillList.SkillDamageType.PhysAndSpell);
         }
 
         duration -= Time.deltaTime;
@@ -32,7 +29,7 @@ public class HemorrhageBuff : Buff
     
     public override void Kill()
     {
-        manager.simulationManager.ShowText($"{manager.stats.name} is No Longer Hemorrhaging By {source}");
+        manager.simulationManager.ShowText($"{manager.stats.name} is no longer Hemorrhaging By {source}");
         manager.buffs.Remove("Hemorrhage");
     }
 }

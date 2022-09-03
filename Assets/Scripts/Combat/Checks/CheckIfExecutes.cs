@@ -19,13 +19,15 @@ public class CheckIfExecutes : Check
         switch (skill)
         {
             case "Q":
-                return combat.myStats.qSkill.UseSkill(4, combat.myStats, combat.targetStats) >= combat.targetStats.currentHealth;
+                return combat.myStats.qSkill[0].UseSkill(4, combat.myStats, combat.targetStats) >= combat.targetStats.currentHealth;
             case "W":
-                return combat.myStats.wSkill.UseSkill(4, combat.myStats, combat.targetStats) >= combat.targetStats.currentHealth;
+                return combat.myStats.wSkill[0].UseSkill(4, combat.myStats, combat.targetStats) >= combat.targetStats.currentHealth;
             case "E":
-                return combat.myStats.eSkill.UseSkill(4, combat.myStats, combat.targetStats) >= combat.targetStats.currentHealth;
+                return combat.myStats.eSkill[0].UseSkill(4, combat.myStats, combat.targetStats) >= combat.targetStats.currentHealth;
             case "R":
-                return combat.myStats.rSkill.UseSkill(2, combat.myStats, combat.targetStats) >= combat.targetStats.currentHealth;
+                return combat.myStats.rSkill[0].UseSkill(2, combat.myStats, combat.targetStats) >= combat.targetStats.currentHealth;
+            case "R1":
+                return combat.myStats.rSkill[1].UseSkill(2, combat.myStats, combat.targetStats) >= combat.targetStats.currentHealth;
             default:
                 return false;
         }
