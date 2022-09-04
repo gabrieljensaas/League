@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Sonic Wave
     castTime: 0.25
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 10
     - 9

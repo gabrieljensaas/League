@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Endless Banquet
     castTime: 1
     inactive: 0
-    skillDamageType: 2
     coolDown:
     - 1
     - 1
@@ -37,7 +36,7 @@ MonoBehaviour:
     - 0
     - 0
   skillType: 0
-  skillDamageType: 0
+  skillDamageType: 2
   unit:
     flat:
     - 6

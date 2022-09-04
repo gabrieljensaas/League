@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Comet of Legend
     castTime: 0
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 80
     - 75

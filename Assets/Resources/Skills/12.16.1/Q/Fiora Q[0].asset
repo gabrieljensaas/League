@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Lunge
     castTime: 0
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 13
     - 11.25

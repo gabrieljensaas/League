@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Twin Fang
     castTime: 0.125
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 0.75
     - 0.75

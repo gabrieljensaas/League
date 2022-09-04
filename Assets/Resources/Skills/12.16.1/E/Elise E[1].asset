@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Rappel
     castTime: 0
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 22
     - 21

@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Parrrley
     castTime: 0.25
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 4.5
     - 4.5

@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Petrifying Gaze
     castTime: 0.5
     inactive: 0
-    skillDamageType: 1
     coolDown:
     - 120
     - 100
@@ -37,7 +36,7 @@ MonoBehaviour:
     - 0
     - 0
   skillType: 0
-  skillDamageType: 0
+  skillDamageType: 1
   unit:
     flat:
     - 150

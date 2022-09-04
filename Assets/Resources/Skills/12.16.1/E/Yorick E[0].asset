@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Mourning Mist
     castTime: 0.33
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 12
     - 11

@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Reaping Slash
     castTime: 0
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 7
     - 6.5

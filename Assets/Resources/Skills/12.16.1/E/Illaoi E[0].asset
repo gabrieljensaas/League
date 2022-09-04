@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Test of Spirit
     castTime: 0.25
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 16
     - 15
@@ -37,7 +36,7 @@ MonoBehaviour:
     - 0
     - 0
   skillType: 0
-  skillDamageType: 0
+  skillDamageType: 3
   unit:
     flat: []
     percent:

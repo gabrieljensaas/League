@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Undertow
     castTime: 0.25
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 9
     - 9

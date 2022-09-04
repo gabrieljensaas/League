@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Hostile Takeover
     castTime: 0.75
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 150
     - 130

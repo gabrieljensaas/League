@@ -80,7 +80,7 @@ public class PassiveList : ScriptableObject
 
     public int UseSkill(int level, Simulator.Combat.ChampionStats myStats, Simulator.Combat.ChampionStats target)
     {
-        if (output = null) output = SimManager.outputText;
+        if (output = null) output = SimManager.Instance.outputText;
         int damage = 0;
 
         switch (championName)

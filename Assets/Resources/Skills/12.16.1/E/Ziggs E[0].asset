@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Hexplosive Minefield
     castTime: 0.25
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 16
     - 16

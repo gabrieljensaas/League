@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Zephyr
     castTime: 0.245
     inactive: 0
-    skillDamageType: 1
     coolDown:
     - 12
     - 12
@@ -37,7 +36,7 @@ MonoBehaviour:
     - 0
     - 0
   skillType: 0
-  skillDamageType: 0
+  skillDamageType: 1
   unit:
     flat:
     - 70

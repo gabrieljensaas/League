@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Burst Fire
     castTime: 0
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 1
     - 1

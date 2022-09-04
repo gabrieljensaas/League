@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Weapon Queue System
     castTime: 0
     inactive: 1
-    skillDamageType: 0
     coolDown:
     - 0
     - 0

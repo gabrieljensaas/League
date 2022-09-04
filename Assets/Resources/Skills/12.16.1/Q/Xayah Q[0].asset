@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Double Daggers
     castTime: 0
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 10
     - 9.5

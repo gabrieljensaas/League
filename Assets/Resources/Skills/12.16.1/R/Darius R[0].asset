@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Noxian Guillotine
     castTime: 0.3667
     inactive: 0
-    skillDamageType: 2
     coolDown:
     - 120
     - 100
@@ -37,7 +36,7 @@ MonoBehaviour:
     - 0
     - 0
   skillType: 0
-  skillDamageType: 0
+  skillDamageType: 2
   unit:
     flat:
     - 125

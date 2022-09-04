@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Winter's Wrath
     castTime: 1
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 9
     - 8

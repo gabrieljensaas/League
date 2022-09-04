@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Captive Audience
     castTime: 0.25
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 2
     - 2

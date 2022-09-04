@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Wither
     castTime: 0.25
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 15
     - 14

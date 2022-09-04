@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Grand Starfall
     castTime: 0.1
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 180
     - 165
@@ -37,7 +36,7 @@ MonoBehaviour:
     - 0
     - 0
   skillType: 0
-  skillDamageType: 0
+  skillDamageType: 3
   unit:
     flat:
     - 300

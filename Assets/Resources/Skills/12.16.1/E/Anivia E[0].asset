@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Frostbite
     castTime: 0.25
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 4
     - 4

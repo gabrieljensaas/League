@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Mega Inferno Bomb
     castTime: 0.375
     inactive: 0
-    skillDamageType: 1
     coolDown:
     - 120
     - 95
@@ -37,7 +36,7 @@ MonoBehaviour:
     - 0
     - 0
   skillType: 0
-  skillDamageType: 0
+  skillDamageType: 1
   unit:
     flat:
     - 200

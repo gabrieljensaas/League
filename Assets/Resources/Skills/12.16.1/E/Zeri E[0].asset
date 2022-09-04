@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Spark Surge
     castTime: 0
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 24
     - 22.5

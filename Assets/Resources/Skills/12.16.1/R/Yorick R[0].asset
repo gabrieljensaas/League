@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Eulogy of the Isles
     castTime: 0.5
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 160
     - 130

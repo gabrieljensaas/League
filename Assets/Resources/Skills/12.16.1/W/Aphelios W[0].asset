@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Phase
     castTime: 0
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 0.8
     - 0.8

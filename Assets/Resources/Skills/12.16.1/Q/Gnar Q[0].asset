@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Boomerang Throw
     castTime: 0.25
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 20
     - 17.5

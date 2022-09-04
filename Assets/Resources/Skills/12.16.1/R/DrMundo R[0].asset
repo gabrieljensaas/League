@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Maximum Dosage
     castTime: 0
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 110
     - 110

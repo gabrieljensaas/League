@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Realm Warp
     castTime: 0
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 210
     - 180

@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Reap
     castTime: 0.4
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 10
     - 9

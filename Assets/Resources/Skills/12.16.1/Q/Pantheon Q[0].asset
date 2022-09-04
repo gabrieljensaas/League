@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Comet Spear
     castTime: 0.25
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 13
     - 11.75

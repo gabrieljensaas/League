@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Wallop
     castTime: 0.6
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 7
     - 7

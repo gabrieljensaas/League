@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Edge of Ixtal
     castTime: 0.25
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 7
     - 7

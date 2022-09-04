@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Highlander
     castTime: 0
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 85
     - 85

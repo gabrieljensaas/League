@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Spell Thief
     castTime: 0
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 0.25
     - 0.25

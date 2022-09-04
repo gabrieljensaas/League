@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Zenith Blade
     castTime: 0.25
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 12
     - 10.5

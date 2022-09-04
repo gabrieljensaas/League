@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Silver Bolts
     castTime: 0
     inactive: 1
-    skillDamageType: 2
     coolDown:
     - 0
     - 0
@@ -37,7 +36,7 @@ MonoBehaviour:
     - 0
     - 0
   skillType: 0
-  skillDamageType: 0
+  skillDamageType: 2
   unit:
     flat:
     - 50

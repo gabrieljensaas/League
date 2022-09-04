@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Searing Charge
     castTime: 0.35
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 16
     - 15

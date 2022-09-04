@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Spider Form / Human Form
     castTime: 0
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 4
     - 4

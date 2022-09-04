@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Double Up
     castTime: 0.25
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 7
     - 6

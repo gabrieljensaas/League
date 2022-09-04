@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Roar of the Slayer
     castTime: 0.25
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 12
     - 11

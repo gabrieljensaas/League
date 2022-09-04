@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Daisy!
     castTime: 0.5
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 140
     - 130

@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Electro Harpoon
     castTime: 0.25
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 0.5
     - 0.5

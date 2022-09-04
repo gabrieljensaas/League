@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Dawning Shadow
     castTime: 1
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 160
     - 140

@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Last Breath
     castTime: 0
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 70
     - 50

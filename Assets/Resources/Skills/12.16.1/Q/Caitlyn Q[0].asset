@@ -17,7 +17,6 @@ MonoBehaviour:
     name: Piltover Peacemaker
     castTime: 0.625
     inactive: 0
-    skillDamageType: 0
     coolDown:
     - 10
     - 9
