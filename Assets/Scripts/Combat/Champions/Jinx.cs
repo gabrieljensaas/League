@@ -27,10 +27,12 @@ public class Jinx : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
+        StopCoroutine(QStackExpired());
         AutoAttack();
         if (qStack != 3) qStack++;
         myStats.buffManager.buffs.Remove(myStats.qSkill[0].basic.name);
-        myStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.qSkill[0].basic.name, (myStats.qSkill[0].selfEffects.ASIncreasePercent[4] + (myStats.qSkill[0].selfEffects.ASIncreasePercent[4] * 0.5f * (qStack - 1))) * myStats.baseAttackSpeed, myStats.qSkill[0].basic.name));
+        myStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.qSkill[0].basic.name, ((myStats.qSkill[0].selfEffects.ASIncreasePercent[4] * 0.01f) + (myStats.qSkill[0].selfEffects.ASIncreasePercent[4] * 0.5f * (qStack - 1) * 0.01f)) * myStats.baseAttackSpeed, myStats.qSkill[0].basic.name));
+        StartCoroutine(QStackExpired());
     }
 
     public override IEnumerator ExecuteE()
@@ -42,5 +44,13 @@ public class Jinx : ChampionCombat
         UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         targetStats.buffManager.buffs.Add("Root", new RootBuff(1.5f, targetStats.buffManager, myStats.eSkill[0].basic.name));
+    }
+
+    private IEnumerator QStackExpired()
+    {
+        yield return new WaitForSeconds(2.5f);
+        qStack--;
+        myStats.buffManager.buffs.Remove(myStats.qSkill[0].basic.name);
+        if(qStack > 0) myStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.qSkill[0].basic.name, ((myStats.qSkill[0].selfEffects.ASIncreasePercent[4] * 0.01f) + (myStats.qSkill[0].selfEffects.ASIncreasePercent[4] * 0.5f * (qStack - 1) * 0.01f)) * myStats.baseAttackSpeed, myStats.qSkill[0].basic.name));
     }
 }
