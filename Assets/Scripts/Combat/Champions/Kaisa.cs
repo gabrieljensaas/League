@@ -70,6 +70,16 @@ public class Kaisa : ChampionCombat
         myStats.buffManager.buffs.Add("Untargetable", new UntargetableBuff(0.5f, myStats.buffManager, myStats.eSkill[0].basic.name));
     }
 
+    public override IEnumerator ExecuteR()
+    {
+        if (!CheckForAbilityControl(checksR)) yield break;
+        if (myStats.buffManager.HasImmobilize) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2);
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+    }
+
     public void DealPassiveDamage(float damage)
     {
         UpdateAbilityTotalDamage(ref pSum, 4, damage, myStats.passiveSkill.skillName, SkillDamageType.Spell);
