@@ -162,9 +162,9 @@ namespace Simulator.Combat
             }
         }
 
-        protected void AutoAttack()
+        protected void AutoAttack(float aaMultiplier = 1)
         {
-            float damage = myStats.AD;
+            float damage = myStats.AD * aaMultiplier;
             if (damage < 0)
                 damage = 0;
 
