@@ -4,7 +4,11 @@ using System.Collections.Generic;
 public class UnitList
 {
     // public 
-    // public float[][] test = 
+    public FloatArray[] test = new FloatArray[]
+    {
+        new FloatArray(new float[]{})
+    };
+
     public List<float> flat = new();
     public List<float> percent = new();
 

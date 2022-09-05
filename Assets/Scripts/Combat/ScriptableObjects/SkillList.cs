@@ -39,35 +39,35 @@ public class SkillList : ScriptableObject
 
     public float UseSkill(int level, ChampionStats myStats, ChampionStats target)
     {
-        if(simulationManager == null) simulationManager = SimManager.Instance;
+        if (simulationManager == null) simulationManager = SimManager.Instance;
         float damage = 0;
-        if(basic.name == "Ranger's Focus")
+        if (basic.name == "Ranger's Focus")
         {
             myStats.buffManager.buffs.Add("Flurry", new FlurryBuff(4, myStats.buffManager, basic.name, 100 + (5 * (level + 1))));
             SelfEffects(level, myStats);
             return 0;
         }
 
-        if(basic.name == "Decisive Strike")
+        if (basic.name == "Decisive Strike")
         {
             myStats.buffManager.buffs.Add("DecisiveStrike", new DecisiveStrikeBuff(4.5f, myStats.buffManager, basic.name, ((level + 1) * 30) + myStats.AD * 0.5f));
             return 0;
         }
 
-        if(basic.name == "Judgment")
+        if (basic.name == "Judgment")
         {
             damage = (int)Mathf.Round((unit.flat[level] + Constants.GarenEDamageByLevelTable[myStats.level - 1] + (myStats.AD * (unit.percentAD[level] / 100))));
             damage = (int)Mathf.Round(damage * (100 / (100 + target.armor)));
             return damage;
         }
 
-        if(basic.name == "Crippling Strike")
+        if (basic.name == "Crippling Strike")
         {
             myStats.buffManager.buffs.Add("Crippling Strike", new CripplingStrikeBuff(4, myStats.buffManager, basic.name, (135 + ((level + 1) * 5)) / 100 * myStats.AD));
             return 0;
         }
 
-        if(basic.name == "SilverBolts")
+        if (basic.name == "SilverBolts")
         {
             return unit.flat[level] > target.maxHealth * unit.percentTargetMaxHP[level] * 0.01f ? unit.flat[level] : target.maxHealth * unit.percentTargetMaxHP[level] * 0.01f;
         }
@@ -83,7 +83,7 @@ public class SkillList : ScriptableObject
                 damage = (int)Mathf.Round(unit.flat[level] + (myStats.AP * (unit.percentAP[level] / 100)));
                 break;
             case SkillDamageType.True:
-                damage = (int)Mathf.Round(unit.flat[level] + ((target.maxHealth - target.currentHealth) * (unit.percentTargetMissingHP[level] / 100)) + (unit.percentOwnMissingHP[level] * (unit.flat[level] * ((float)(100 - ((int)(100 * myStats.currentHealth/myStats.maxHealth))) / 100f))));
+                damage = (int)Mathf.Round(unit.flat[level] + ((target.maxHealth - target.currentHealth) * (unit.percentTargetMissingHP[level] / 100)) + (unit.percentOwnMissingHP[level] * (unit.flat[level] * ((float)(100 - ((int)(100 * myStats.currentHealth / myStats.maxHealth))) / 100f))));
                 break;
             default:
                 break;
@@ -98,7 +98,7 @@ public class SkillList : ScriptableObject
     {
         if (basic.champion == "Ashe")
         {
-            if(!target.buffManager.buffs.TryAdd("Frosted",new FrostedBuff(2, target.buffManager, basic.name)))
+            if (!target.buffManager.buffs.TryAdd("Frosted", new FrostedBuff(2, target.buffManager, basic.name)))
             {
                 target.buffManager.buffs["Frosted"].duration = 2;
                 target.buffManager.buffs["Frosted"].source = basic.name;
@@ -117,24 +117,24 @@ public class SkillList : ScriptableObject
         {
             myStats.buffManager.buffs.Add("Tenacity", new TenacityBuff(selfEffects.TenacityDuration[level], myStats.buffManager, basic.name, selfEffects.TenacityPercent[level], basic.name));
         }
-        
+
         if (selfEffects.ASIncrease)
         {
-            if(!myStats.buffManager.buffs.TryAdd(basic.name, new AttackSpeedBuff(selfEffects.ASIncreaseDuration[level], myStats.buffManager, basic.name, myStats.baseAttackSpeed * 0.01f * selfEffects.ASIncreasePercent[level], basic.name)))
+            if (!myStats.buffManager.buffs.TryAdd(basic.name, new AttackSpeedBuff(selfEffects.ASIncreaseDuration[level], myStats.buffManager, basic.name, myStats.baseAttackSpeed * 0.01f * selfEffects.ASIncreasePercent[level], basic.name)))
             {
                 //myStats.buffManager.buffs["AttackSpeed"].duration = selfEffects.ASIncreaseDuration[level];
             }
-        }        
+        }
 
         if (selfEffects.DamageRed)
         {
-            myStats.buffManager.buffs.TryAdd("DamageReductionPercent" ,new DamageReductionPercentBuff(selfEffects.DamageRedDuration[level], myStats.buffManager, basic.name, selfEffects.DamageRedPercent[level]));
+            myStats.buffManager.buffs.TryAdd("DamageReductionPercent", new DamageReductionPercentBuff(selfEffects.DamageRedDuration[level], myStats.buffManager, basic.name, selfEffects.DamageRedPercent[level]));
         }
 
         if (selfEffects.Shield)
         {
             var missingHealth = myStats.maxHealth - myStats.currentHealth;
-            if(myStats.name == "Olaf" && missingHealth > myStats.maxHealth * 0.7f) missingHealth = myStats.maxHealth * 0.7f;
+            if (myStats.name == "Olaf" && missingHealth > myStats.maxHealth * 0.7f) missingHealth = myStats.maxHealth * 0.7f;
 
             myStats.buffManager.shields.Add(basic.name, new ShieldBuff(selfEffects.ShieldDuration[level], myStats.buffManager, basic.name, selfEffects.ShieldFlat[level] + (selfEffects.ShieldPercentByMissingHP[level] * 0.01f * missingHealth), basic.name));
         }

@@ -902,6 +902,7 @@ public class ChampionDataGenerator : MonoBehaviour
 
                                         if (unit == "" || unit == "flat")
                                         {
+                                            skill.unit.test[0] = new FloatArray(new float[] { (float)value });
                                             skill.unit.flat.Add((float)value);
                                         }
                                         if (unit == "% AD")

@@ -38,6 +38,9 @@ MonoBehaviour:
   skillType: 0
   skillDamageType: 0
   unit:
+    test:
+    - Array:
+      - 216
     flat:
     - 10
     - 30
