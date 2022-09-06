@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using System.Collections;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -902,23 +903,30 @@ public class ChampionDataGenerator : MonoBehaviour
 
                                         if (unit == "" || unit == "flat")
                                         {
-                                            skill.unit.test[0] = new FloatArray(new float[] { (float)value });
-                                            skill.unit.flat.Add((float)value);
+                                            if (!skill.unit.flat.ContainsKey(atr))
+                                                skill.unit.flat.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.flat[atr].Add((float)value);
                                         }
                                         if (unit == "% AD")
                                         {
-                                            skill.unit.percentAD.Add((float)value);
+                                            if (!skill.unit.percentAD.ContainsKey(atr))
+                                                skill.unit.percentAD.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentAD[atr].Add((float)value);
                                         }
                                         if (unit == "%")
                                         {
-                                            skill.unit.percent.Add((float)value);
+                                            if (!skill.unit.percent.ContainsKey(atr))
+                                                skill.unit.percent.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percent[atr].Add((float)value);
                                         }
                                         if (
                                             unit == "% AP" ||
                                             unit == " (+ 100% AP)"
                                         )
                                         {
-                                            skill.unit.percentAP.Add((float)value);
+                                            if (!skill.unit.percentAP.ContainsKey(atr))
+                                                skill.unit.percentAP.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentAP[atr].Add((float)value);
                                         }
                                         if (
                                             unit == "% bonus AD" ||
@@ -926,21 +934,27 @@ public class ChampionDataGenerator : MonoBehaviour
                                             unit == "[ 1% per 35 ][ 2.86% per 100 ]bonus AD"
                                         )
                                         {
-                                            skill.unit.percentBonusAD.Add((float)value);
+                                            if (!skill.unit.percentBonusAD.ContainsKey(atr))
+                                                skill.unit.percentBonusAD.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentBonusAD[atr].Add((float)value);
                                         }
                                         if (
                                             unit == "  �" ||
                                             unit == "  � "
                                         )
                                         {
-                                            skill.unit.x.Add((float)value);
+                                            if (!skill.unit.x.ContainsKey(atr))
+                                                skill.unit.x.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.x[atr].Add((float)value);
                                         }
                                         if (
                                             unit == "1 + 0.3 per 100% bonus attack speed" ||
                                             unit == "% per 100% bonus attack speed"
                                         )
                                         {
-                                            skill.unit.percentBonusAS.Add((float)value);
+                                            if (!skill.unit.percentBonusAS.ContainsKey(atr))
+                                                skill.unit.percentBonusAS.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentBonusAS[atr].Add((float)value);
                                         }
                                         if (
                                             unit == "1 + (0.5 + 0.175) per 100% critical strike chance" ||
@@ -948,7 +962,9 @@ public class ChampionDataGenerator : MonoBehaviour
                                             unit == "1 + (100% + 0%) critical strike chance"
                                         )
                                         {
-                                            skill.unit.percentCritStrikeChance.Add((float)value);
+                                            if (!skill.unit.percentCritStrikeChance.ContainsKey(atr))
+                                                skill.unit.percentCritStrikeChance.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentCritStrikeChance[atr].Add((float)value);
                                         }
                                         if (
                                             unit == "%  of target's maximum health" ||
@@ -974,23 +990,33 @@ public class ChampionDataGenerator : MonoBehaviour
                                             unit == "2% (+ 2 / 3 / 4 / 5 / 6% per 100 AD) of target's maximum health"
                                         )
                                         {
-                                            skill.unit.percentTargetMaxHP.Add((float)value);
+                                            if (!skill.unit.percentTargetMaxHP.ContainsKey(atr))
+                                                skill.unit.percentTargetMaxHP.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentTargetMaxHP[atr].Add((float)value);
                                         }
                                         if (unit == "% bonus armor")
                                         {
-                                            skill.unit.percentBonusArmor.Add((float)value);
+                                            if (!skill.unit.percentBonusArmor.ContainsKey(atr))
+                                                skill.unit.percentBonusArmor.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentBonusArmor[atr].Add((float)value);
                                         }
                                         if (unit == " units")
                                         {
-                                            skill.unit.units.Add((float)value);
+                                            if (!skill.unit.units.ContainsKey(atr))
+                                                skill.unit.units.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.units[atr].Add((float)value);
                                         }
                                         if (unit == " chunks of ice")
                                         {
-                                            skill.unit.chunckOfIce.Add((float)value);
+                                            if (!skill.unit.chunckOfIce.ContainsKey(atr))
+                                                skill.unit.chunckOfIce.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.chunckOfIce[atr].Add((float)value);
                                         }
                                         if (unit == " soldiers")
                                         {
-                                            skill.unit.soldiers.Add((float)value);
+                                            if (!skill.unit.soldiers.ContainsKey(atr))
+                                                skill.unit.soldiers.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.soldiers[atr].Add((float)value);
                                         }
                                         if (
                                             unit == "% of target's missing health" ||
@@ -999,18 +1025,24 @@ public class ChampionDataGenerator : MonoBehaviour
                                             unit == "12% (+2.8%) (+ 0.75% (+0.175%) per Mark) of target's missing health"
                                         )
                                         {
-                                            skill.unit.percentTargetMissingHP.Add((float)value);
+                                            if (!skill.unit.percentTargetMissingHP.ContainsKey(atr))
+                                                skill.unit.percentTargetMissingHP.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentTargetMissingHP[atr].Add((float)value);
                                         }
                                         if (
                                             unit == "% of Braum's maximum health" ||
                                             unit == "% of her maximum health"
                                         )
                                         {
-                                            skill.unit.percentOwnMaxHP.Add((float)value);
+                                            if (!skill.unit.percentOwnMaxHP.ContainsKey(atr))
+                                                skill.unit.percentOwnMaxHP.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentOwnMaxHP[atr].Add((float)value);
                                         }
                                         if (unit == "% per 100 bonus AD")
                                         {
-                                            skill.unit.percentPer100BonusAD.Add((float)value);
+                                            if (!skill.unit.percentPer100BonusAD.ContainsKey(atr))
+                                                skill.unit.percentPer100BonusAD.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentPer100BonusAD[atr].Add((float)value);
                                         }
                                         if (
                                             unit == "% of target's current health" ||
@@ -1020,22 +1052,30 @@ public class ChampionDataGenerator : MonoBehaviour
                                             unit == "% (+ 1.5% per Mark) of target's current health"
                                         )
                                         {
-                                            skill.unit.percentTargetCurrentHP.Add((float)value);
+                                            if (!skill.unit.percentTargetCurrentHP.ContainsKey(atr))
+                                                skill.unit.percentTargetCurrentHP.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentTargetCurrentHP[atr].Add((float)value);
                                         }
                                         if (
                                             unit == "% bonus health" ||
                                             unit == " (+ 3% bonus health)"
                                         )
                                         {
-                                            skill.unit.percentBonusHP.Add((float)value);
+                                            if (!skill.unit.percentBonusHP.ContainsKey(atr))
+                                                skill.unit.percentBonusHP.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentBonusHP[atr].Add((float)value);
                                         }
                                         if (unit == " bonus health")
                                         {
-                                            skill.unit.bonusHP.Add((float)value);
+                                            if (!skill.unit.bonusHP.ContainsKey(atr))
+                                                skill.unit.bonusHP.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.bonusHP[atr].Add((float)value);
                                         }
                                         if (unit == "% of damage taken")
                                         {
-                                            skill.unit.percentDamageTaken.Add((float)value);
+                                            if (!skill.unit.percentDamageTaken.ContainsKey(atr))
+                                                skill.unit.percentDamageTaken.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentDamageTaken[atr].Add((float)value);
                                         }
                                         if (
                                             unit == "% missing health" ||
@@ -1043,98 +1083,144 @@ public class ChampionDataGenerator : MonoBehaviour
                                             unit == "%  of missing health"
                                         )
                                         {
-                                            skill.unit.percentMissingHP.Add((float)value);
+                                            if (!skill.unit.percentMissingHP.ContainsKey(atr))
+                                                skill.unit.percentMissingHP.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentMissingHP[atr].Add((float)value);
                                         }
                                         if (
                                             unit == "% maximum health" ||
                                             unit == "% of maximum health"
                                         )
                                         {
-                                            skill.unit.percentMaxHP.Add((float)value);
+                                            if (!skill.unit.percentMaxHP.ContainsKey(atr))
+                                                skill.unit.percentMaxHP.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentMaxHP[atr].Add((float)value);
                                         }
                                         if (unit == "3% per 1% of health lost in the past 4 seconds")
                                         {
-                                            skill.unit.percentHPLost.Add((float)value);
+                                            if (!skill.unit.percentHPLost.ContainsKey(atr))
+                                                skill.unit.percentHPLost.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentHPLost[atr].Add((float)value);
                                         }
                                         if (unit == "% per 100 AP")
                                         {
-                                            skill.unit.percentPer100AP.Add((float)value);
+                                            if (!skill.unit.percentPer100AP.ContainsKey(atr))
+                                                skill.unit.percentPer100AP.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentPer100AP[atr].Add((float)value);
                                         }
                                         if (unit == "% per 100 bonus magic resistance")
                                         {
-                                            skill.unit.percentBonusMR.Add((float)value);
+                                            if (!skill.unit.percentAD.ContainsKey(atr))
+                                                skill.unit.percentAD.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentAD[atr].Add((float)value);
                                         }
                                         if (unit == "% per 100 AD")
                                         {
-                                            skill.unit.percentPer100AD.Add((float)value);
+                                            if (!skill.unit.percentPer100AD.ContainsKey(atr))
+                                                skill.unit.percentPer100AD.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentPer100AD[atr].Add((float)value);
                                         }
                                         if (unit == "% of target's armor")
                                         {
-                                            skill.unit.percentTargetArmor.Add((float)value);
+                                            if (!skill.unit.percentTargetArmor.ContainsKey(atr))
+                                                skill.unit.percentTargetArmor.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentTargetArmor[atr].Add((float)value);
                                         }
                                         if (unit == "% of missing mana")
                                         {
-                                            skill.unit.percentMissingMana.Add((float)value);
+                                            if (!skill.unit.percentMissingMana.ContainsKey(atr))
+                                                skill.unit.percentMissingMana.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentMissingMana[atr].Add((float)value);
                                         }
                                         if (unit == "% maximum mana")
                                         {
-                                            skill.unit.percentMaxMana.Add((float)value);
+                                            if (!skill.unit.percentMaxMana.ContainsKey(atr))
+                                                skill.unit.percentMaxMana.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentMaxMana[atr].Add((float)value);
                                         }
                                         if (unit == "% of primary target's bonus health")
                                         {
-                                            skill.unit.percentPrimaryTargetBonusHP.Add((float)value);
+                                            if (!skill.unit.percentPrimaryTargetBonusHP.ContainsKey(atr))
+                                                skill.unit.percentPrimaryTargetBonusHP.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentPrimaryTargetBonusHP[atr].Add((float)value);
                                         }
                                         if (unit == "% armor")
                                         {
-                                            skill.unit.percentArmor.Add((float)value);
+                                            if (!skill.unit.percentArmor.ContainsKey(atr))
+                                                skill.unit.percentArmor.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentArmor[atr].Add((float)value);
                                         }
                                         if (unit == "Siphoning Strike stacks")
                                         {
-                                            skill.unit.siphoningStrikeStacks.Add((float)value);
+                                            if (!skill.unit.siphoningStrikeStacks.ContainsKey(atr))
+                                                skill.unit.siphoningStrikeStacks.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.siphoningStrikeStacks[atr].Add((float)value);
                                         }
                                         if (unit == "% total armor")
                                         {
-                                            skill.unit.percentTotalArmor.Add((float)value);
+                                            if (!skill.unit.percentTotalArmor.ContainsKey(atr))
+                                                skill.unit.percentTotalArmor.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentTotalArmor[atr].Add((float)value);
                                         }
                                         if (unit == "% total magic resistance")
                                         {
-                                            skill.unit.percentTotalMR.Add((float)value);
+                                            if (!skill.unit.percentTotalMR.ContainsKey(atr))
+                                                skill.unit.percentTotalMR.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentTotalMR[atr].Add((float)value);
                                         }
                                         if (unit == "% bonus mana")
                                         {
-                                            skill.unit.percentBonusMana.Add((float)value);
+                                            if (!skill.unit.percentBonusMana.ContainsKey(atr))
+                                                skill.unit.percentBonusMana.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentBonusMana[atr].Add((float)value);
                                         }
                                         if (unit == " per 1 Lethality")
                                         {
-                                            skill.unit.lithality.Add((float)value);
+                                            if (!skill.unit.lithality.ContainsKey(atr))
+                                                skill.unit.lithality.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.lithality[atr].Add((float)value);
                                         }
                                         if (unit == " per Mist collected")
                                         {
-                                            skill.unit.mist.Add((float)value);
+                                            if (!skill.unit.mist.ContainsKey(atr))
+                                                skill.unit.mist.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.mist[atr].Add((float)value);
                                         }
                                         if (unit == "% (+ 20% per 100 bonus AD) of expended Grit")
                                         {
-                                            skill.unit.expendedGrit.Add((float)value);
+                                            if (!skill.unit.expendedGrit.ContainsKey(atr))
+                                                skill.unit.expendedGrit.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.expendedGrit[atr].Add((float)value);
                                         }
                                         if (unit == "% of his bonus health")
                                         {
-                                            skill.unit.percentOwnBonusHP.Add((float)value);
+                                            if (!skill.unit.percentOwnBonusHP.ContainsKey(atr))
+                                                skill.unit.percentOwnBonusHP.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentOwnBonusHP[atr].Add((float)value);
                                         }
                                         if (unit == "% of Taric's armor")
                                         {
-                                            skill.unit.percentArmor.Add((float)value);
+                                            if (!skill.unit.percentArmor.ContainsKey(atr))
+                                                skill.unit.percentArmor.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentArmor[atr].Add((float)value);
                                         }
                                         if (unit == " per Soul collected")
                                         {
-                                            skill.unit.soul.Add((float)value);
+                                            if (!skill.unit.soul.ContainsKey(atr))
+                                                skill.unit.soul.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.soul[atr].Add((float)value);
                                         }
                                         if (unit == " AD")
                                         {
-                                            skill.unit.AD.Add((float)value);
+                                            if (!skill.unit.AD.ContainsKey(atr))
+                                                skill.unit.AD.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.AD[atr].Add((float)value);
                                         }
                                         if (unit == "% of his missing health")
                                         {
-                                            skill.unit.percentOwnMissingHP.Add((float)value);
+                                            if (!skill.unit.percentOwnMissingHP.ContainsKey(atr))
+                                                skill.unit.percentOwnMissingHP.Add(atr, new System.Collections.Generic.List<float>());
+                                            skill.unit.percentOwnMissingHP[atr].Add((float)value);
                                         }
                                         if (unit == "% of turret's maximum health")
                                         {
