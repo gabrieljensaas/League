@@ -67,9 +67,7 @@ public class Fiora : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
 
-        myStats.buffManager.buffs.Add("Riposte", new RiposteBuff(0.6f, myStats.buffManager, myStats.wSkill[0].name));
-
-        yield return new WaitForSeconds(0.15f);
+        myStats.buffManager.buffs.Add("Riposte", new RiposteBuff(0.75f, myStats.buffManager, myStats.wSkill[0].name));
 
         UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
@@ -79,6 +77,14 @@ public class Fiora : ChampionCombat
 
     public override IEnumerator ExecuteE()
     {
+        if (!CheckForAbilityControl(checksE)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
+
+        myStats.buffManager.buffs.Add("Bladework", new BladeworkBuff(4, myStats.buffManager, myStats.eSkill[0].name));
+
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+
         yield return null;
     }
 
