@@ -63,6 +63,17 @@ public class Fiora : ChampionCombat
 
     public override IEnumerator ExecuteW()
     {
+        if (!CheckForAbilityControl(checksW)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
+
+        myStats.buffManager.buffs.Add("Riposte", new RiposteBuff(0.6f, myStats.buffManager, myStats.wSkill[0].name));
+
+        yield return new WaitForSeconds(0.15f);
+
+        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4);
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+
         yield return null;
     }
 

@@ -24,7 +24,7 @@ public class Annie : ChampionCombat
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
         targetCombat.checksA.Add(new CheckIfStunned(targetCombat));
-        checkTakeDamage.Add(new CheckShield(this));
+        checkTakeDamageAbility.Add(new CheckShield(this));
         checkTakeDamageAA.Add(new CheckMoltenShield(this));
         checkTakeDamageAA.Add(new CheckShield(this));
         base.UpdatePriorityAndChecks();

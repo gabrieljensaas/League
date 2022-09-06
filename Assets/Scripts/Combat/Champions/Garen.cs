@@ -23,9 +23,9 @@ public class Garen : ChampionCombat
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
         autoattackcheck = new GarenAACheck(this);
-        checkTakeDamage.Add(new CheckDamageReductionPercent(this));
+        checkTakeDamageAbility.Add(new CheckDamageReductionPercent(this));
         checkTakeDamageAA.Add(new CheckDamageReductionPercent(this));
-        checkTakeDamage.Add(new CheckShield(this));
+        checkTakeDamageAbility.Add(new CheckShield(this));
         checkTakeDamageAA.Add(new CheckShield(this));
         checksR.Add(new CheckIfExecutes(this, "R"));
         base.UpdatePriorityAndChecks();
