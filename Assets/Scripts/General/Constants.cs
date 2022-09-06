@@ -17,6 +17,16 @@ public class Constants : MonoBehaviour
     public static float[] CaitlynMaxTrapBySkillLevel = { 3, 3, 4, 4, 5 };
     public static float[] MissFortuneRWaveIntervalTimeBySkillLevel = { 0.2036f, 0.1781f, 0.1583f};
     public static float[] MissFortuneRWaveCountBySkillLevel = { 14, 16, 18};
+    public static float[] VarusWPassiveFlatBonusBySkillLevel = { 7, 12, 17, 22, 27};
+    public static float GetVarusWActiveTargetsMissingHealthMultiplier(int level)
+    {
+        if (level < 4) return 0.09f;
+        if (level < 7) return 0.12f;
+        if (level < 10) return 0.15f;
+        if (level < 13) return 0.18f;
+        return 0.21f;
+    }
+
     public static float GetMissfortunePassiveADMultiplier(int level)
     {
         if (level < 4) return 0.5f;
