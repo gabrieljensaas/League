@@ -8,7 +8,7 @@ public class BladeworkBuff : Buff
         base.duration = duration;
         base.source = source;
 
-        manager.combat.myStats.attackSpeed *= 1.9f;
+        manager.buffs.Add("BladeworkAS", new AttackSpeedBuff(duration, manager, source, manager.combat.myStats.eSkill[0].selfEffects.ASIncreasePercent[4], "BladeworkAS"));
         manager.simulationManager.ShowText($"{manager.stats.name} has used Bladework for {duration} seconds it will slow and crit!");
     }
 
@@ -19,7 +19,6 @@ public class BladeworkBuff : Buff
     }
     public override void Kill()
     {
-        manager.combat.myStats.attackSpeed /= 1.9f;
         manager.simulationManager.ShowText($"{manager.stats.name}'s Bladework Ended!");
         manager.buffs.Remove("Bladework");
     }
