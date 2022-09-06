@@ -23,7 +23,7 @@ public class Olaf : ChampionCombat
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
         autoattackcheck = new OlafAACheck(this);
-        checkTakeDamage.Add(new CheckOlafPassive(this));
+        checkTakeDamageAbility.Add(new CheckOlafPassive(this));
         checkTakeDamageAA.Add(new CheckOlafPassive(this));
         myUI.combatPriority.text = string.Join(", ", combatPrio);
         base.UpdatePriorityAndChecks();

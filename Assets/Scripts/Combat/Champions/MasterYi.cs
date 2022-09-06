@@ -33,8 +33,8 @@ public class MasterYi : ChampionCombat
         targetCombat.checksE.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksR.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksA.Add(new CheckIfEnemyTargetable(targetCombat));
-        checkTakeDamage.Add(new CheckIfTargetable(this));
-        checkTakeDamage.Add(new CheckDamageReductionPercent(this));
+        checkTakeDamageAbility.Add(new CheckIfTargetable(this));
+        checkTakeDamageAbility.Add(new CheckDamageReductionPercent(this));
         checkTakeDamageAA.Add(new CheckIfTargetable(this));
         checkTakeDamageAA.Add(new CheckDamageReductionPercent(this));
         myUI.combatPriority.text = string.Join(", ", combatPrio);

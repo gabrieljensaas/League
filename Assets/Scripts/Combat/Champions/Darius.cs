@@ -21,12 +21,6 @@ public class Darius : ChampionCombat
         checksR.Add(new CheckIfCasting(this));
         checksA.Add(new CheckIfCasting(this));
 
-        targetCombat.checksQ.Add(new CheckIfStunned(targetCombat));
-        targetCombat.checksW.Add(new CheckIfStunned(targetCombat));
-        targetCombat.checksE.Add(new CheckIfStunned(targetCombat));
-        targetCombat.checksR.Add(new CheckIfStunned(targetCombat));
-        targetCombat.checksA.Add(new CheckIfStunned(targetCombat));
-
         autoattackcheck = new DariusAACheck(this);
         dariusP = new CheckDariusP(this);
         targetStats.armor *= (100 - Constants.GetDariusArmorReductionByLevel(5)) / 100;

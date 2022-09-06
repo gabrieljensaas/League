@@ -17,15 +17,15 @@ namespace Simulator.Combat
         [SerializeField] public SimManager simulationManager;
 
         [HideInInspector] public float attackCooldown;
-        [HideInInspector] public List<Check> checksQ = new List<Check>();
-        [HideInInspector] public List<Check> checksW = new List<Check>();
-        [HideInInspector] public List<Check> checksE = new List<Check>();
-        [HideInInspector] public List<Check> checksR = new List<Check>();
-        [HideInInspector] public List<Check> checksA = new List<Check>();
-        [HideInInspector] public List<Check> checkTakeDamageAA = new List<Check>();
-        [HideInInspector] public List<Check> checkTakeDamage = new List<Check>();
+        [HideInInspector] public List<Check> checksQ = new();
+        [HideInInspector] public List<Check> checksW = new();
+        [HideInInspector] public List<Check> checksE = new();
+        [HideInInspector] public List<Check> checksR = new();
+        [HideInInspector] public List<Check> checksA = new();
+        [HideInInspector] public List<Check> checkTakeDamageAA = new();
+        [HideInInspector] public List<Check> checkTakeDamageAbility = new();
         [HideInInspector] public Check autoattackcheck;
-        protected List<Pet> pets = new List<Pet>();
+        protected List<Pet> pets = new();
 
         public float aSum, hSum, qSum, wSum, eSum, rSum, pSum;
         protected string[] combatPrio;
@@ -84,7 +84,7 @@ namespace Simulator.Combat
 
         protected void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level)
         {
-            totalHeal += HealHealth(skill.UseSkill(level, myStats, targetStats), skill.basic.name);
+            totalHeal += HealHealth(skill.UseSkill(level, myStats, targetStats) * (100 - myStats.grievouswounds) / 100, skill.basic.name);
             myUI.healSum.text = totalHeal.ToString();
         }
 
@@ -181,7 +181,7 @@ namespace Simulator.Combat
         public float TakeDamage(float rawDamage, string source, SkillDamageType damageType, bool isAutoAttack = false)
         {
             if(!isAutoAttack)
-                rawDamage = CheckForDamageControl(checkTakeDamage, rawDamage);
+                rawDamage = CheckForDamageControl(checkTakeDamageAbility, rawDamage);
             else
                 rawDamage = CheckForDamageControl(checkTakeDamageAA, rawDamage);
 
@@ -211,6 +211,7 @@ namespace Simulator.Combat
             if (health <= 0) return 0;
 
             //add checks here
+
 
             myStats.currentHealth += (int)health;
             if (myStats.currentHealth > myStats.maxHealth) myStats.currentHealth = myStats.maxHealth;
