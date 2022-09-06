@@ -84,7 +84,7 @@ namespace Simulator.Combat
 
         protected void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level)
         {
-            totalHeal += HealHealth(skill.UseSkill(level, myStats, targetStats), skill.basic.name);
+            totalHeal += HealHealth(skill.UseSkill(level, myStats, targetStats) * (100 - myStats.grievouswounds) / 100, skill.basic.name);
             myUI.healSum.text = totalHeal.ToString();
         }
 
@@ -211,6 +211,7 @@ namespace Simulator.Combat
             if (health <= 0) return 0;
 
             //add checks here
+
 
             myStats.currentHealth += (int)health;
             if (myStats.currentHealth > myStats.maxHealth) myStats.currentHealth = myStats.maxHealth;
