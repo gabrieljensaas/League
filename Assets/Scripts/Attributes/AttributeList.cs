@@ -3,5 +3,5 @@ using System.Collections.Generic;
 [System.Serializable]
 public class AttributeList
 {
-    public List<string> attibuteList = new();
+    public List<string> attibutes = new();
 }

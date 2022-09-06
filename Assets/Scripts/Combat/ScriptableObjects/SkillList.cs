@@ -24,7 +24,7 @@ public class SkillList : ScriptableObject
 
     private SimManager simulationManager;
 
-    public AttributeList attributeList;
+    public AttributeList atrList;
     public UnitList unit;
 
     [Header("Buffs/Debuffs")]

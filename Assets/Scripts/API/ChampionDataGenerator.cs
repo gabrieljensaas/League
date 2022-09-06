@@ -800,6 +800,7 @@ public class ChampionDataGenerator : MonoBehaviour
                 {
                     SkillList asset = ScriptableObject.CreateInstance<SkillList>();
                     asset.unit = new UnitList();
+                    asset.atrList = new AttributeList();
                     asset.basic = new SkillBasic
                     {
                         champion = champName,
@@ -895,6 +896,9 @@ public class ChampionDataGenerator : MonoBehaviour
                             {
                                 if (effectInAbilities[effect].leveling[level].attribute == atr)
                                 {
+                                    if(!skill.atrList.attibutes.Contains(atr))
+                                        skill.atrList.attibutes.Add(atr);
+
                                     for (int i3 = 0; i3 < limit; i3++)
                                     {
                                         var unit = effectInAbilities[effect].leveling[level].modifiers[modifier].units[0];
