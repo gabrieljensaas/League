@@ -4,7 +4,7 @@ public class Aatrox : ChampionCombat
 {
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "R", "Q", "W", "A", ""};
+        combatPrio = new string[] { "R", "Q", "W", "A", "" };
         checksQ.Add(new CheckIfCasting(this));
         checksA.Add(new CheckIfCasting(this));
         autoattackcheck = new AatroxAACheck(this);

@@ -11,7 +11,7 @@ public class RiposteBuff : Buff
         base.duration = duration;
         base.source = source;
 
-        foreach(string key in manager.buffs.Keys)
+        foreach (string key in manager.buffs.Keys)
             buffKeys.Add(key);
 
         manager.simulationManager.ShowText($"{manager.stats.name} is Riposting for {duration} seconds!");
@@ -21,7 +21,7 @@ public class RiposteBuff : Buff
     {
         if (!counterStun)
         {
-            foreach(Buff buff in manager.buffs.Values)
+            foreach (Buff buff in manager.buffs.Values)
                 if (IsImmobilize(buff)) counterStun = true;
         }
 
@@ -40,10 +40,10 @@ public class RiposteBuff : Buff
         }
 
         //removing debuffs that were added during riposte
-        foreach(string buff in manager.buffs.Keys)
+        foreach (string buff in manager.buffs.Keys)
             if (!buffKeys.Contains(buff)) manager.buffs.Remove(buff);
 
-            manager.simulationManager.ShowText($"{manager.stats.name}'s Riposte Ended!");
+        manager.simulationManager.ShowText($"{manager.stats.name}'s Riposte Ended!");
         manager.buffs.Remove("Riposte");
     }
 }

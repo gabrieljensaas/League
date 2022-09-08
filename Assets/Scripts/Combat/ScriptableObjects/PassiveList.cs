@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
-using Simulator.Combat;
+using UnityEngine;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/Passives")]
 public class PassiveList : ScriptableObject
@@ -101,11 +98,11 @@ public class PassiveList : ScriptableObject
                 {
                     myStats.currentHealth = myStats.maxHealth;
                 }
-                output.text += "[PASSIVE] " + myStats.name + " " + myStats.passiveSkill.skillName + " Damage: " + damage.ToString() + " Heal: "+maxHeal+"\n\n";
+                output.text += "[PASSIVE] " + myStats.name + " " + myStats.passiveSkill.skillName + " Damage: " + damage.ToString() + " Heal: " + maxHeal + "\n\n";
                 break;
 
             case "Fiora":
-                damage = (int)Mathf.Round((target.maxHealth * (percentMaxTargetMaxHealth + ((Mathf.Round(((myStats.AD-myStats.baseAD) / 100))) * 55) / 10)) / 100);
+                damage = (int)Mathf.Round((target.maxHealth * (percentMaxTargetMaxHealth + ((Mathf.Round(((myStats.AD - myStats.baseAD) / 100))) * 55) / 10)) / 100);
                 myStats.currentHealth += maxHeal;
                 if (myStats.currentHealth > myStats.maxHealth)
                 {
@@ -133,7 +130,7 @@ public class PassiveList : ScriptableObject
                 {
                     myStats.currentHealth = myStats.maxHealth;
                 }
-                output.text += "[PASSIVE] " + myStats.name + " " + myStats.passiveSkill.skillName + " Damage: " + damage.ToString() + " Heal: "+postdamage+"\n\n";
+                output.text += "[PASSIVE] " + myStats.name + " " + myStats.passiveSkill.skillName + " Damage: " + damage.ToString() + " Heal: " + postdamage + "\n\n";
                 break;
 
             case "Riven":

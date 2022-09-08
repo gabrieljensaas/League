@@ -1,6 +1,5 @@
-using System.Collections;
-using UnityEngine;
 using Simulator.Combat;
+using System.Collections;
 
 public class Vayne : ChampionCombat
 {
@@ -53,8 +52,8 @@ public class Vayne : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4);
-        if(myStats.buffManager.buffs.TryGetValue("Untargetable", out Buff value))
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys);
+        if (myStats.buffManager.buffs.TryGetValue("Untargetable", out Buff value))
         {
             value.Kill();
         }

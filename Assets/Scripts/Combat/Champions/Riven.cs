@@ -55,7 +55,7 @@ public class Riven : ChampionCombat
         if (myStats.buffManager.HasImmobilize) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
         UpdateRivenPassive();
         if (qCounter == 0)
         {
@@ -81,7 +81,7 @@ public class Riven : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4);
+        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys);
         UpdateRivenPassive();
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
@@ -92,7 +92,7 @@ public class Riven : ChampionCombat
         if (myStats.buffManager.HasImmobilize) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys);
         UpdateRivenPassive();
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
@@ -104,7 +104,7 @@ public class Riven : ChampionCombat
         if (hasWindSlash && (r1ExecuteCheck.Control() || timeSinceR > 14))
         {
             yield return StartCoroutine(StartCastingAbility(myStats.rSkill[1].basic.castTime));
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[1], 2);
+            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[1], 2, rKeys);
             UpdateRivenPassive();
             myStats.rCD = myStats.rSkill[0].basic.coolDown[2] - timeSinceR;
             hasWindSlash = false;
@@ -120,9 +120,9 @@ public class Riven : ChampionCombat
 
     private void UpdateRivenPassive()
     {
-        if(myStats.buffManager.buffs.TryGetValue("RunicBlade", out Buff value))
+        if (myStats.buffManager.buffs.TryGetValue("RunicBlade", out Buff value))
         {
-            if(value.value == 3) value.duration = 6;
+            if (value.value == 3) value.duration = 6;
             else
             {
                 value.value++;

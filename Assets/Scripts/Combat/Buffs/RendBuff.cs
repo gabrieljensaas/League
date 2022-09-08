@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class RendBuff : Buff
 {
-    public RendBuff(float duration ,BuffManager manager, string source) : base(manager)
+    public RendBuff(float duration, BuffManager manager, string source) : base(manager)
     {
         value = 1;
         base.source = source;

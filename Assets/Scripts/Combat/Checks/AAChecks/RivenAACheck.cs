@@ -1,5 +1,4 @@
 using Simulator.Combat;
-using System;
 
 public class RivenAACheck : Check
 {
@@ -9,7 +8,7 @@ public class RivenAACheck : Check
 
     public override float Control(float damage)
     {
-        if(combat.myStats.buffManager.buffs.TryGetValue("RunicBlade", out Buff value))
+        if (combat.myStats.buffManager.buffs.TryGetValue("RunicBlade", out Buff value))
         {
             value.value--;
             value.duration = 6;

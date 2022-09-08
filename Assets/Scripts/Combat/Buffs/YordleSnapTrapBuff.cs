@@ -17,7 +17,7 @@ public class YordleSnapTrapBuff : Buff
     }
     public override void Kill()
     {
-        if(value == 0)
+        if (value == 0)
         {
             manager.buffs.Remove("YordleSnapTrap");
         }

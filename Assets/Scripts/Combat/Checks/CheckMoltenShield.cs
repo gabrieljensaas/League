@@ -1,5 +1,4 @@
 using Simulator.Combat;
-using static UnityEngine.GraphicsBuffer;
 
 public class CheckMoltenShield : Check
 {
@@ -11,7 +10,7 @@ public class CheckMoltenShield : Check
     {
         if (combat.myStats.buffManager.shields.TryGetValue("Molten Shield", out ShieldBuff value))
         {
-            float reflectedDamage = combat.myStats.eSkill[0].unit.flat[4] + (combat.myStats.eSkill[0].unit.percentAP[4] / 100 * combat.myStats.AP) * (100 / (100 + combat.targetStats.spellBlock));
+            float reflectedDamage = combat.myStats.eSkill[0].unit.flat[combat.eKeys[0]][4] + (combat.myStats.eSkill[0].unit.percentAP[combat.eKeys[0]][4] / 100 * combat.myStats.AP) * (100 / (100 + combat.targetStats.spellBlock));
             combat.targetCombat.TakeDamage(reflectedDamage, "Molten Shied", SkillDamageType.Spell);
             combat.qSum += reflectedDamage;
             combat.myUI.abilitySum[0].text = combat.qSum.ToString();

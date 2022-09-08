@@ -1,6 +1,6 @@
+using Simulator.Combat;
 using System.Collections;
 using UnityEngine;
-using Simulator.Combat;
 
 public class Caitlyn : ChampionCombat
 {
@@ -10,7 +10,7 @@ public class Caitlyn : ChampionCombat
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "Q", "W", "E", "A" };
-        
+
         checksQ.Add(new CheckIfCasting(this));
         checksW.Add(new CheckIfCasting(this));
         checksE.Add(new CheckIfCasting(this));
@@ -30,7 +30,7 @@ public class Caitlyn : ChampionCombat
         base.CombatUpdate();
 
         wCD += Time.deltaTime;
-        if(wCD > Constants.CaitlynTrapRechargeBySkillLevel[4])
+        if (wCD > Constants.CaitlynTrapRechargeBySkillLevel[4])
         {
             if (wStack != (int)Constants.CaitlynMaxTrapBySkillLevel[4])
             {
@@ -43,11 +43,11 @@ public class Caitlyn : ChampionCombat
     public override IEnumerator ExecuteW()
     {
         if (!CheckForAbilityControl(checksW)) yield break;
-        if(wStack <= 0) yield break;
+        if (wStack <= 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
-        if(targetStats.buffManager.buffs.TryGetValue("YordleSnapTrap", out Buff value))
+        if (targetStats.buffManager.buffs.TryGetValue("YordleSnapTrap", out Buff value))
         {
             value.value += 1;
         }
@@ -63,7 +63,7 @@ public class Caitlyn : ChampionCombat
         if (myStats.buffManager.HasImmobilize) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         myStats.buffManager.buffs.Add("NetHeadshot", new NetHeadshotBuff(1.8f, myStats.buffManager, myStats.eSkill[0].basic.name));
     }
@@ -81,6 +81,6 @@ public class Caitlyn : ChampionCombat
     private IEnumerator AceInTheHole()
     {
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, 1+ 0);              //0 is critical chance fix it when items are added
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys, 1 + 0);              //0 is critical chance fix it when items are added
     }
 }

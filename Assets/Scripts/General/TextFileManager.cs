@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.IO;
+using UnityEngine;
 
 public class TextFileManager : MonoBehaviour
 {
@@ -22,7 +22,7 @@ public class TextFileManager : MonoBehaviour
     public static void DeleteFileExists(string fileName)
     {
         string path = Application.persistentDataPath + "/" + fileName + ".txt";
-        if(File.Exists(path))
+        if (File.Exists(path))
             File.Delete(path);
     }
 

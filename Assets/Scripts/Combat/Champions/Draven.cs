@@ -1,8 +1,6 @@
+using Simulator.Combat;
 using System.Collections;
 using UnityEngine;
-using Simulator.Combat;
-using System.Collections.Generic;
-using TMPro;
 
 public class Draven : ChampionCombat
 {
@@ -36,7 +34,7 @@ public class Draven : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        if(myStats.buffManager.buffs.TryGetValue("SpinningAxe", out Buff value))
+        if (myStats.buffManager.buffs.TryGetValue("SpinningAxe", out Buff value))
         {
             if (value.value != 2) value.value++;
             value.duration = 5.8f;
@@ -53,7 +51,7 @@ public class Draven : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.1f, targetStats.buffManager, myStats.eSkill[0].basic.name));
     }
@@ -63,11 +61,11 @@ public class Draven : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2);
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys);
         if (targetStats.currentHealth <= pStack) targetStats.currentHealth -= pStack;
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2);
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys);
         if (targetStats.currentHealth <= pStack) targetStats.currentHealth -= pStack;
     }
 
@@ -77,7 +75,7 @@ public class Draven : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         AutoAttack();
-        if(myStats.buffManager.buffs.TryGetValue("SpinningAxe", out Buff value))
+        if (myStats.buffManager.buffs.TryGetValue("SpinningAxe", out Buff value))
         {
             value.value--;
             StartCoroutine(SpinnigAxe());
@@ -88,7 +86,7 @@ public class Draven : ChampionCombat
 
     private IEnumerator SpinnigAxe()
     {
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
         yield return new WaitForSeconds(2);
         myStats.wCD = -0.1f;
         if (myStats.buffManager.buffs.TryGetValue("SpinningAxe", out Buff value))

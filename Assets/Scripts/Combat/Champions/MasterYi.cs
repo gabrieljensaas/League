@@ -53,16 +53,16 @@ public class MasterYi : ChampionCombat
         if (myStats.buffManager.buffs.TryGetValue("WujuStyle", out Buff value)) value.paused = true;
         if (myStats.buffManager.buffs.TryGetValue("Highlander", out Buff highlander)) highlander.paused = true;
         yield return new WaitForSeconds(0.231f);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, 0.25f);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys, 0.25f);
 
         yield return new WaitForSeconds(0.231f);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, 0.25f);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys, 0.25f);
 
         yield return new WaitForSeconds(0.231f);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, 0.25f);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys, 0.25f);
 
         yield return new WaitForSeconds(0.165f);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
         if (myStats.buffManager.buffs.TryGetValue("WujuStyle", out Buff wuju)) wuju.paused = false;
         if (myStats.buffManager.buffs.TryGetValue("Highlander", out Buff highland)) highland.paused = false;
     }
@@ -93,14 +93,14 @@ public class MasterYi : ChampionCombat
     private IEnumerator Meditate()
     {
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
-        if(myStats.buffManager.buffs.TryGetValue("DamageReductionPercent", out Buff value))
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4, wKeys);
+        if (myStats.buffManager.buffs.TryGetValue("DamageReductionPercent", out Buff value))
         {
             value.value = Constants.MasterYiWDamageReductionPercents[4];          //when skill level is done change index to variable
         }
         //pause wuju style and highlander durations
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4, wKeys);
         if (myStats.buffManager.buffs.TryGetValue("DoubleStrike", out Buff val))
         {
             if (val.value < 3)
@@ -115,10 +115,10 @@ public class MasterYi : ChampionCombat
             myStats.buffManager.buffs.Add("DoubleStrike", new DoubleStrikeBuff(4, myStats.buffManager, "Double Strike"));
         }
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4, wKeys);
 
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4, wKeys);
         if (myStats.buffManager.buffs.TryGetValue("DoubleStrike", out Buff buff))
         {
             if (buff.value < 3)
@@ -133,11 +133,11 @@ public class MasterYi : ChampionCombat
             myStats.buffManager.buffs.Add("DoubleStrike", new DoubleStrikeBuff(4, myStats.buffManager, "Double Strike"));
         }
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4, wKeys);
 
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
-        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4, wKeys);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4, wKeys);
         if (myStats.buffManager.buffs.TryGetValue("DoubleStrike", out Buff buf))
         {
             if (buf.value < 3)
@@ -152,11 +152,11 @@ public class MasterYi : ChampionCombat
             myStats.buffManager.buffs.Add("DoubleStrike", new DoubleStrikeBuff(4, myStats.buffManager, "Double Strike"));
         }
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4, wKeys);
 
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
-        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4, wKeys);
+        UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4, wKeys);
         if (myStats.buffManager.buffs.TryGetValue("DoubleStrike", out Buff doubleStrike))
         {
             if (doubleStrike.value < 3)

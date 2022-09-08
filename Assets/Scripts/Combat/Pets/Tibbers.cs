@@ -1,6 +1,5 @@
 using Simulator.Combat;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class Tibbers : Pet
 {

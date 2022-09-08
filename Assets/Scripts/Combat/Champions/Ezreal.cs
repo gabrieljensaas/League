@@ -1,7 +1,5 @@
-using System.Collections;
-using UnityEngine;
 using Simulator.Combat;
-using System.Collections.Generic;
+using System.Collections;
 
 public class Ezreal : ChampionCombat
 {
@@ -29,7 +27,7 @@ public class Ezreal : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         myStats.qCD -= 1.5f;
         myStats.wCD -= 1.5f;
@@ -53,7 +51,7 @@ public class Ezreal : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         CheckEssenceFlux();
         RisingSpellForce();
@@ -64,7 +62,7 @@ public class Ezreal : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2);
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         CheckEssenceFlux();
         RisingSpellForce();
@@ -81,10 +79,10 @@ public class Ezreal : ChampionCombat
 
     private void CheckEssenceFlux()
     {
-        if(targetStats.buffManager.buffs.TryGetValue("EssenceFlux", out Buff value))
+        if (targetStats.buffManager.buffs.TryGetValue("EssenceFlux", out Buff value))
         {
             value.Kill();
-            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4);
+            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys);
         }
     }
 
@@ -93,6 +91,6 @@ public class Ezreal : ChampionCombat
         if (!myStats.buffManager.buffs.ContainsKey(myStats.passiveSkill.skillName)) pStack = 0;
         if (pStack != 5) pStack++;
         myStats.buffManager.buffs.Remove(myStats.passiveSkill.skillName);
-        myStats.buffManager.buffs.Add(myStats.passiveSkill.skillName, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.passiveSkill.skillName,pStack * 0.1f * myStats.baseAttackSpeed, myStats.passiveSkill.skillName));
+        myStats.buffManager.buffs.Add(myStats.passiveSkill.skillName, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.passiveSkill.skillName, pStack * 0.1f * myStats.baseAttackSpeed, myStats.passiveSkill.skillName));
     }
 }

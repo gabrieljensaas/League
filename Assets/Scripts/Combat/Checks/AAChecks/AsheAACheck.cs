@@ -23,11 +23,11 @@ public class AsheAACheck : Check
             }
             else
             {
-                combat.myStats.buffManager.buffs.Add("AsheQ" ,new AsheQBuff(4, combat.myStats.buffManager, "Ashe's Auto Attack"));
+                combat.myStats.buffManager.buffs.Add("AsheQ", new AsheQBuff(4, combat.myStats.buffManager, "Ashe's Auto Attack"));
             }
         }
 
-        if(!combat.targetStats.buffManager.buffs.TryAdd("Frosted" ,new FrostedBuff(2, combat.targetStats.buffManager, "Ashe's Auto Attack")))
+        if (!combat.targetStats.buffManager.buffs.TryAdd("Frosted", new FrostedBuff(2, combat.targetStats.buffManager, "Ashe's Auto Attack")))
         {
             combat.targetStats.buffManager.buffs["Frosted"].duration = 2;
             combat.targetStats.buffManager.buffs["Frosted"].source = "Ashe's Auto Attack";

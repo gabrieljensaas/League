@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 
 public class WujuStyleBuff : Buff
@@ -13,7 +12,7 @@ public class WujuStyleBuff : Buff
 
     public override void Update()
     {
-        if(!paused) duration -= Time.deltaTime;
+        if (!paused) duration -= Time.deltaTime;
         if (duration <= 0) Kill();
     }
     public override void Kill()

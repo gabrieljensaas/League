@@ -1,6 +1,6 @@
+using Simulator.Combat;
 using System.Collections;
 using UnityEngine;
-using Simulator.Combat;
 
 public class Annie : ChampionCombat
 {
@@ -54,7 +54,7 @@ public class Annie : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         CheckAnniePassiveStun(myStats.qSkill[0].basic.name);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 
@@ -64,7 +64,7 @@ public class Annie : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         CheckAnniePassiveStun(myStats.wSkill[0].basic.name);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4);
+        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
@@ -83,7 +83,7 @@ public class Annie : ChampionCombat
             myStats.buffManager.buffs.Add("Pyromania", new PyromaniaBuff(myStats.buffManager, myStats.eSkill[0].basic.name));
         }
         //UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill, 4);
-        myStats.eSkill[0].UseSkill(4, myStats, targetStats);
+        myStats.eSkill[0].UseSkill(4, myStats, targetStats, eKeys);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
@@ -93,7 +93,7 @@ public class Annie : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         CheckAnniePassiveStun(myStats.rSkill[0].basic.name);
-        UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill[0], 2);
+        UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill[0], 2, rKeys);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         pets.Add(new Tibbers(this, 3100, 100 + (myStats.AP * 15 / 100), 0.625f, 90, 90)); //all stats are for max level change when level adjusting of skills done
     }

@@ -1,7 +1,6 @@
+using Simulator.Combat;
 using System.Collections;
 using UnityEngine;
-using Simulator.Combat;
-using System.Collections.Generic;
 
 public class Varus : ChampionCombat
 {
@@ -51,7 +50,7 @@ public class Varus : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys);
         CheckBlightStacks();
         targetStats.buffManager.buffs.Add(myStats.eSkill[0].basic.name, new GrievousWoundsBuff(4, targetStats.buffManager, myStats.eSkill[0].basic.name, 25f, myStats.eSkill[0].basic.name));
     }
@@ -61,7 +60,7 @@ public class Varus : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2);
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         targetStats.buffManager.buffs.Add("Root", new RootBuff(2, targetStats.buffManager, myStats.rSkill[0].basic.name));
         CheckBlightStacks();
@@ -79,7 +78,7 @@ public class Varus : ChampionCombat
     private IEnumerator PiercingArrow()
     {
         yield return new WaitForSeconds(1.25f);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
         if (qEmpowered)
         {
             targetCombat.TakeDamage((targetStats.maxHealth - targetStats.currentHealth) * Constants.GetVarusWActiveTargetsMissingHealthMultiplier(myStats.level), myStats.wSkill[0].basic.name, SkillDamageType.Spell);
@@ -95,9 +94,9 @@ public class Varus : ChampionCombat
 
     private void CheckBlightStacks(float multiplier = 1)
     {
-        if(targetStats.buffManager.buffs.TryGetValue("Blight", out Buff value))
+        if (targetStats.buffManager.buffs.TryGetValue("Blight", out Buff value))
         {
-            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, multiplier * value.value);
+            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys, multiplier * value.value);
             myStats.qCD -= value.value * myStats.qSkill[0].basic.coolDown[4] * 0.12f;
             myStats.wCD -= value.value * myStats.qSkill[0].basic.coolDown[4] * 0.12f;
             myStats.eCD -= value.value * myStats.qSkill[0].basic.coolDown[4] * 0.12f;

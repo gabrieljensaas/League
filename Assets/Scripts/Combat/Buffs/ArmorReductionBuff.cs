@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ArmorReductionBuff : Buff
@@ -17,7 +16,7 @@ public class ArmorReductionBuff : Buff
     public override void Update()
     {
         duration -= Time.deltaTime;
-        if(duration <= 0) Kill();
+        if (duration <= 0) Kill();
     }
     public override void Kill()
     {

@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class HeadshotBuff : Buff
 {
     public HeadshotBuff(BuffManager manager, string source) : base(manager)

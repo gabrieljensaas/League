@@ -1,6 +1,6 @@
+using Simulator.Combat;
 using System.Collections;
 using UnityEngine;
-using Simulator.Combat;
 
 public class Jinx : ChampionCombat
 {
@@ -41,7 +41,7 @@ public class Jinx : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         yield return new WaitForSeconds(0.9f); // chompers landing and arming time
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         targetStats.buffManager.buffs.Add("Root", new RootBuff(1.5f, targetStats.buffManager, myStats.eSkill[0].basic.name));
     }
@@ -51,6 +51,6 @@ public class Jinx : ChampionCombat
         yield return new WaitForSeconds(2.5f);
         qStack--;
         myStats.buffManager.buffs.Remove(myStats.qSkill[0].basic.name);
-        if(qStack > 0) myStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.qSkill[0].basic.name, ((myStats.qSkill[0].selfEffects.ASIncreasePercent[4] * 0.01f) + (myStats.qSkill[0].selfEffects.ASIncreasePercent[4] * 0.5f * (qStack - 1) * 0.01f)) * myStats.baseAttackSpeed, myStats.qSkill[0].basic.name));
+        if (qStack > 0) myStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.qSkill[0].basic.name, ((myStats.qSkill[0].selfEffects.ASIncreasePercent[4] * 0.01f) + (myStats.qSkill[0].selfEffects.ASIncreasePercent[4] * 0.5f * (qStack - 1) * 0.01f)) * myStats.baseAttackSpeed, myStats.qSkill[0].basic.name));
     }
 }

@@ -1,11 +1,9 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using System.Collections;
-using UnityEngine.SceneManagement;
-using Simulator.API;
-using System;
 using Simulator.Combat;
+using System.Collections;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SimManager : MonoBehaviour
 {
@@ -104,7 +102,7 @@ public class SimManager : MonoBehaviour
 
         newChampStats.name = champName;
         int level = newChampStats.level = GetLevel(exp);
-        newChampStats.baseHealth = (float)stats.health.flat + ((float) stats.health.perLevel * (level - 1));
+        newChampStats.baseHealth = (float)stats.health.flat + ((float)stats.health.perLevel * (level - 1));
         newChampStats.baseAD = (float)stats.attackDamage.flat + ((float)stats.attackDamage.perLevel * (level - 1));
         newChampStats.baseArmor = (float)stats.armor.flat + ((float)stats.armor.perLevel * (level - 1));
         newChampStats.baseSpellBlock = (float)stats.magicResistance.flat + ((float)stats.magicResistance.perLevel * (level - 1));
@@ -208,12 +206,12 @@ public class SimManager : MonoBehaviour
             champStats.spellBlock *= 1.1f;
         }
 
-        if(champStats.name == "Aatrox")
+        if (champStats.name == "Aatrox")
         {
             champStats.passiveSkill.coolDown = Constants.AatroxPassiveCooldownByLevelTable[champStats.level - 1];
         }
 
-        if(champStats.name == "Olaf")
+        if (champStats.name == "Olaf")
         {
             champStats.armor += 30;
             champStats.spellBlock += 30;
@@ -225,7 +223,7 @@ public class SimManager : MonoBehaviour
         outputText.text += $"[{timer:F2}] {text}\n\n";
         TextFileManager.WriteString("Logs", $"[{timer:F2}] {text}");
     }
-    
+
     public void StartBattle()
     {
         Time.timeScale = _simulatorTimeScale;

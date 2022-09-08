@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class DeathbringerStanceBuff : Buff
 {
     public DeathbringerStanceBuff(float duration, BuffManager manager, string source) : base(manager)

@@ -1,6 +1,5 @@
 using Newtonsoft.Json;
 using System.Collections;
-using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -896,7 +895,7 @@ public class ChampionDataGenerator : MonoBehaviour
                             {
                                 if (effectInAbilities[effect].leveling[level].attribute == atr)
                                 {
-                                    if(!skill.atrList.attibutes.Contains(atr))
+                                    if (!skill.atrList.attibutes.Contains(atr))
                                         skill.atrList.attibutes.Add(atr);
 
                                     for (int i3 = 0; i3 < limit; i3++)

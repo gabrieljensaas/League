@@ -1,7 +1,5 @@
-using System.Collections;
-using UnityEngine;
 using Simulator.Combat;
-using System.Collections.Generic;
+using System.Collections;
 
 public class Kalista : ChampionCombat
 {
@@ -25,7 +23,7 @@ public class Kalista : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         if (targetStats.buffManager.buffs.TryGetValue("Rend", out Buff value))
         {
@@ -44,7 +42,7 @@ public class Kalista : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         targetStats.buffManager.buffs.TryGetValue("Rend", out Buff value);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, ((value.value - 1) * 0.5f) + 1);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys, ((value.value - 1) * 0.5f) + 1);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 

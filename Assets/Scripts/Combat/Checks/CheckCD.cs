@@ -1,5 +1,4 @@
 using Simulator.Combat;
-using System.Collections;
 
 public class CheckCD : Check
 {

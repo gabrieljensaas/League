@@ -12,7 +12,7 @@ public class MasterYiAACheck : Check
         if (combat.myStats.buffManager.buffs.TryGetValue("WujuStyle", out Buff buff)) damage += buff.value;
         if (combat.myStats.buffManager.buffs.TryGetValue("DoubleStrike", out Buff value))
         {
-            if(value.value == 3)
+            if (value.value == 3)
             {
                 combat.simulationManager.ShowText($"{combat.myStats.name} Used His Stacks of Double Strike, His Next Attack Will Deal Extra Damage!");
                 combat.myStats.qCD--;

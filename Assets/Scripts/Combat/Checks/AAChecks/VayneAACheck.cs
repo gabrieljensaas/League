@@ -1,6 +1,4 @@
 using Simulator.Combat;
-using System;
-using Unity.VisualScripting;
 
 public class VayneAACheck : Check
 {
@@ -16,12 +14,12 @@ public class VayneAACheck : Check
             value.Kill();
         }
 
-        if(combat.targetStats.buffManager.buffs.TryGetValue("SilverBolts", out Buff val))
+        if (combat.targetStats.buffManager.buffs.TryGetValue("SilverBolts", out Buff val))
         {
-            if(val.value == 2)
+            if (val.value == 2)
             {
                 val.Kill();
-                combat.UpdateAbilityTotalDamage(ref combat.wSum, 1, combat.myStats.wSkill[0].UseSkill(4, combat.myStats, combat.targetStats),combat.myStats.wSkill[0].basic.name, SkillDamageType.True);
+                combat.UpdateAbilityTotalDamage(ref combat.wSum, 1, combat.myStats.wSkill[0].UseSkill(4, combat.myStats, combat.targetStats, combat.wKeys), combat.myStats.wSkill[0].basic.name, SkillDamageType.True);
             }
             else
             {

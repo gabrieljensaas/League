@@ -12,7 +12,7 @@ public class FrostedBuff : Buff
     public override void Update()
     {
         duration -= Time.deltaTime;
-        if(duration <= 0) Kill();
+        if (duration <= 0) Kill();
     }
     public override void Kill()
     {

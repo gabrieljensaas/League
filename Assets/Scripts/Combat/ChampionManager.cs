@@ -36,7 +36,7 @@ public class ChampionManager : MonoBehaviour
         LoadSkill(Resources.LoadAll($"Skills/{version}/W", typeof(SkillList)), wSkills);
         LoadSkill(Resources.LoadAll($"Skills/{version}/E", typeof(SkillList)), eSkills);
         LoadSkill(Resources.LoadAll($"Skills/{version}/R", typeof(SkillList)), rSkills);
-        
+
 
         static void LoadSkill(Object[] resources, List<SkillList> skills)
         {

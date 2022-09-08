@@ -10,7 +10,7 @@ public class FioraAACheck : Check
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("Bladework", out Buff value))
         {
-            if(value.value == 1)
+            if (value.value == 1)
             {
                 damage *= 2; //level 5 bladework
                 value.Kill();

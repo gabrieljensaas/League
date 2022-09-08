@@ -1,5 +1,4 @@
 using Simulator.Combat;
-using System.Collections.Generic;
 
 public class CheckSpellShield : Check
 {

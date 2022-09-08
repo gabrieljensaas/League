@@ -1,5 +1,4 @@
 using Simulator.Combat;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,8 +10,8 @@ public class BuffManager
     public ChampionStats stats;
     public ChampionCombat combat;
     public SimManager simulationManager;
-    public Dictionary<string,Buff> buffs = new Dictionary<string,Buff>();                                 //buffs and durations
-    public Dictionary<string, ShieldBuff> shields = new Dictionary<string,ShieldBuff>();                                 //buffs and durations
+    public Dictionary<string, Buff> buffs = new Dictionary<string, Buff>();                                 //buffs and durations
+    public Dictionary<string, ShieldBuff> shields = new Dictionary<string, ShieldBuff>();                                 //buffs and durations
 
     public BuffManager(ChampionStats stats, ChampionCombat combat, SimManager simManager)
     {

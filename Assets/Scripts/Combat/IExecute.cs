@@ -2,7 +2,7 @@ using System.Collections;
 
 public interface IExecuteQ
 {
-    IEnumerator ExecuteQ(); 
+    IEnumerator ExecuteQ();
 }
 
 public interface IExecuteW

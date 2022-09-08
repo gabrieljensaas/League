@@ -43,8 +43,8 @@ public class Darius : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4);
-        UpdateTotalHeal(ref hSum, (myStats.maxHealth - myStats.currentHealth) * 0.13f , myStats.qSkill[0].basic.name);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
+        UpdateTotalHeal(ref hSum, (myStats.maxHealth - myStats.currentHealth) * 0.13f, myStats.qSkill[0].basic.name);
         CheckDariusPassiveHemorrhage(myStats.qSkill[0].basic.name);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
@@ -54,7 +54,7 @@ public class Darius : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4);
+        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys);
         CheckDariusPassiveHemorrhage(myStats.wSkill[0].basic.name);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
@@ -70,7 +70,7 @@ public class Darius : ChampionCombat
 
     private void CheckDariusPassiveHemorrhage(string skillName)
     {
-        if(myStats.buffManager.buffs.TryGetValue("Noxian Might", out Buff noxianMight))
+        if (myStats.buffManager.buffs.TryGetValue("Noxian Might", out Buff noxianMight))
         {
             noxianMight.duration = 5;
             targetStats.buffManager.buffs["Hemorrhage"].duration = 5;

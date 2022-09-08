@@ -10,11 +10,11 @@ public class OlafAACheck : Check
     {
         combat.myStats.eCD--;
 
-        if(combat.myStats.buffManager.buffs.TryGetValue(combat.myStats.rSkill[0].basic.name, out Buff value))
+        if (combat.myStats.buffManager.buffs.TryGetValue(combat.myStats.rSkill[0].basic.name, out Buff value))
         {
             value.duration += 2.5f;
         }
-        if(combat.myStats.buffManager.buffs.TryGetValue(combat.myStats.rSkill[0].basic.name + " ", out Buff val))
+        if (combat.myStats.buffManager.buffs.TryGetValue(combat.myStats.rSkill[0].basic.name + " ", out Buff val))
         {
             val.duration += 2.5f;
         }

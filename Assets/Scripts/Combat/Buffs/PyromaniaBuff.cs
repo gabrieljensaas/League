@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class PyromaniaBuff : Buff
 {
     public PyromaniaBuff(BuffManager manager, string source) : base(manager)

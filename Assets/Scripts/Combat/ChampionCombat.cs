@@ -1,10 +1,7 @@
-using System.Collections;
-using UnityEngine;
-using TMPro;
-using System.Collections.Generic;
-using System.Linq;
 using Simulator.API;
-using static SkillList;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Simulator.Combat
 {
@@ -25,6 +22,10 @@ namespace Simulator.Combat
         [HideInInspector] public List<Check> checkTakeDamageAA = new();
         [HideInInspector] public List<Check> checkTakeDamageAbility = new();
         [HideInInspector] public Check autoattackcheck;
+        [HideInInspector] public string[] qKeys;
+        [HideInInspector] public string[] wKeys;
+        [HideInInspector] public string[] eKeys;
+        [HideInInspector] public string[] rKeys;
         protected List<Pet> pets = new();
 
         public float aSum, hSum, qSum, wSum, eSum, rSum, pSum;
@@ -70,9 +71,9 @@ namespace Simulator.Combat
             isCasting = false;
         }
 
-        protected void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, float damageModifier = 1)
+        protected void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string[] skillKeys, float damageModifier = 1)
         {
-            totalDamage += targetCombat.TakeDamage(damageModifier * skill.UseSkill(level, myStats, targetStats), skill.basic.name, skill.skillDamageType);
+            totalDamage += targetCombat.TakeDamage(damageModifier * skill.UseSkill(level, myStats, targetStats, skillKeys), skill.basic.name, skill.skillDamageType);
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
@@ -82,9 +83,9 @@ namespace Simulator.Combat
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
-        protected void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level)
+        protected void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level, string[] skillKeys)
         {
-            totalHeal += HealHealth(skill.UseSkill(level, myStats, targetStats) * (100 - myStats.grievouswounds) / 100, skill.basic.name);
+            totalHeal += HealHealth(skill.UseSkill(level, myStats, targetStats, skillKeys) * (100 - myStats.grievouswounds) / 100, skill.basic.name);
             myUI.healSum.text = totalHeal.ToString();
         }
 
@@ -99,7 +100,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksQ)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4);
+            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
             myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         }
 
@@ -108,7 +109,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksW)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4);
+            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys);
             myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         }
 
@@ -117,7 +118,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksE)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4);
+            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys);
             myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         }
 
@@ -126,7 +127,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksR)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2);
+            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys);
             myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         }
 
@@ -180,7 +181,7 @@ namespace Simulator.Combat
 
         public float TakeDamage(float rawDamage, string source, SkillDamageType damageType, bool isAutoAttack = false)
         {
-            if(!isAutoAttack)
+            if (!isAutoAttack)
                 rawDamage = CheckForDamageControl(checkTakeDamageAbility, rawDamage);
             else
                 rawDamage = CheckForDamageControl(checkTakeDamageAA, rawDamage);

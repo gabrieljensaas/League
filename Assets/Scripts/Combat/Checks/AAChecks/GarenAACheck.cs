@@ -14,7 +14,7 @@ public class GarenAACheck : Check
             combat.qSum += value.value;
             combat.myUI.abilitySum[0].text = combat.qSum.ToString();
             combat.myStats.buffManager.buffs.Remove("DecisiveStrike");
-            combat.targetStats.buffManager.buffs.Add("Silence" ,new SilenceBuff(1.5f, combat.targetStats.buffManager, "Decisive Strike"));
+            combat.targetStats.buffManager.buffs.Add("Silence", new SilenceBuff(1.5f, combat.targetStats.buffManager, "Decisive Strike"));
         }
         return damage;
     }

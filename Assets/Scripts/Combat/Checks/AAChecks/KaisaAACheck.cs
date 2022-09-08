@@ -10,10 +10,10 @@ public class KaisaAACheck : Check
 
     public override float Control(float damage)
     {
-        if(combat.targetStats.buffManager.buffs.TryGetValue("Plasma", out Buff value))
+        if (combat.targetStats.buffManager.buffs.TryGetValue("Plasma", out Buff value))
         {
             damage += Constants.GetKaisaPassiveDamageByLevel(combat.myStats.level, (int)value.value, combat.myStats.AP);
-            if(value.value == 5)
+            if (value.value == 5)
             {
                 kaisa.DealPassiveDamage((combat.targetStats.maxHealth - combat.targetStats.currentHealth) / 100 * (15 + (5 * (combat.myStats.AP % 100))));
                 value.Kill();

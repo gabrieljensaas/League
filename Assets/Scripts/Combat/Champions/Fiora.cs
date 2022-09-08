@@ -69,7 +69,7 @@ public class Fiora : ChampionCombat
 
         myStats.buffManager.buffs.Add("Riposte", new RiposteBuff(0.75f, myStats.buffManager, myStats.wSkill[0].name));
 
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4);
+        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
 
         yield return null;
@@ -137,7 +137,7 @@ public class Fiora : ChampionCombat
 
     private IEnumerator GrandChallengeHealing(int vitalsHit)
     {
-        for(int i = 0; i < vitalsHit; i++)
+        for (int i = 0; i < vitalsHit; i++)
         {
             yield return new WaitForSeconds(1);
             UpdateTotalHeal(ref hSum, 50 + (3 * 25), "Victory Zone"); //hardcoded healing
