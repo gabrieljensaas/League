@@ -95,4 +95,18 @@ public class Constants : MonoBehaviour
         else if (level < 11) return 250 + (stack * .2f * 250);
         else return 375 + (stack * .2f * 375);
     }
+
+    public static float GetTwitchDeadlyVenomByLevel(int level, int stack)
+    {
+        return level switch
+        {
+            < 5 => 1f * stack,
+            < 9 => 2f * stack,
+            < 13 => 3f * stack,
+            < 17 => 4f * stack,
+            _ => 5f * stack
+        };
+    }
+
+    public static float GetTwitchContaminateByLevel(int level, int stack) => 10 + (10 * level) + ((10 + level * 5) * stack);
 }
