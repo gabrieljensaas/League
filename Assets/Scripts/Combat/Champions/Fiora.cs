@@ -44,7 +44,7 @@ public class Fiora : ChampionCombat
 
     public override IEnumerator ExecuteA()
     {
-        StartCoroutine(base.ExecuteA());
+        yield return StartCoroutine(base.ExecuteA());
 
         CheckVitals();
 
@@ -53,7 +53,7 @@ public class Fiora : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
-        StartCoroutine(base.ExecuteQ());
+        yield return StartCoroutine(base.ExecuteQ());
 
         CheckVitals();
 

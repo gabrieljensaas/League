@@ -1,7 +1,5 @@
 using System.Collections;
-using UnityEngine;
 using Simulator.Combat;
-using System.Collections.Generic;
 
 public class Twitch : ChampionCombat
 {
@@ -26,13 +24,17 @@ public class Twitch : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
+        if (!CheckForAbilityControl(checksQ)) yield break;
+
         //TODO: Ambush still allows twitch to get hit by anything since camo can still be targettable
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        targetStats.buffManager.buffs.Add("Ambush", new AmbushBuff(14, targetStats.buffManager, myStats.wSkill[0].basic.name));
+        myStats.buffManager.buffs.Add("Ambush", new AmbushBuff(14, myStats.buffManager, myStats.wSkill[0].basic.name));
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
     public override IEnumerator ExecuteW()
     {
+        if (!CheckForAbilityControl(checksW)) yield break;
+
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
 
         if (myStats.buffManager.buffs.TryGetValue("Ambush", out Buff ambush))
@@ -55,6 +57,8 @@ public class Twitch : ChampionCombat
 
     public override IEnumerator ExecuteR()
     {
+        if (!CheckForAbilityControl(checksR)) yield break;
+
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("SprayAndPray", new AttackDamageBuff(6, myStats.buffManager, myStats.rSkill[0].basic.name, 70, "SprayAndPray"));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
@@ -77,9 +81,8 @@ public class Twitch : ChampionCombat
     {
         if (myStats.buffManager.buffs.TryGetValue("Deadly Venom", out Buff deadlyVenom))
         {
-            if(deadlyVenom.value >= 6)
+            if(deadlyVenom.value == 6)
             {
-                deadlyVenom.value = 6;
                 deadlyVenom.duration = 6;
             }
             else

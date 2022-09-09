@@ -108,5 +108,10 @@ public class Constants : MonoBehaviour
         };
     }
 
-    public static float GetTwitchContaminateByLevel(int level, int stack) => 10 + (10 * level) + ((10 + level * 5) * stack);
+    public static float GetTwitchContaminateByLevel(int level, int stack) => 10 + (10 * level) + ((10 + (level * 5)) * stack);
+
+    public static float GetTristanaExplosiveChargeByLevel(int level, int stack)
+    {
+        return 30 + (25 * level) + ((18 + (level * 3)) * stack);
+    }
 }
