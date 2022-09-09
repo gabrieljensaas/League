@@ -26,6 +26,7 @@ public class Twitch : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
+        //TODO: Ambush still allows twitch to get hit by anything since camo can still be targettable
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add("Ambush", new AmbushBuff(14, targetStats.buffManager, myStats.wSkill[0].basic.name));
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
