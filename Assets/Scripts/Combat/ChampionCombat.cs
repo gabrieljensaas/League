@@ -22,10 +22,10 @@ namespace Simulator.Combat
         [HideInInspector] public List<Check> checkTakeDamageAA = new();
         [HideInInspector] public List<Check> checkTakeDamageAbility = new();
         [HideInInspector] public Check autoattackcheck;
-        [HideInInspector] public string[] qKeys;
-        [HideInInspector] public string[] wKeys;
-        [HideInInspector] public string[] eKeys;
-        [HideInInspector] public string[] rKeys;
+        [HideInInspector] public List<string> qKeys = new();
+        [HideInInspector] public List<string> wKeys = new();
+        [HideInInspector] public List<string> eKeys = new();
+        [HideInInspector] public List<string> rKeys = new();
         protected List<Pet> pets = new();
 
         public float aSum, hSum, qSum, wSum, eSum, rSum, pSum;
@@ -71,9 +71,9 @@ namespace Simulator.Combat
             isCasting = false;
         }
 
-        protected void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string[] skillKeys, float damageModifier = 1)
+        public void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1)
         {
-            totalDamage += targetCombat.TakeDamage(damageModifier * skill.UseSkill(level, myStats, targetStats, skillKeys), skill.basic.name, skill.skillDamageType);
+            totalDamage += targetCombat.TakeDamage(damageModifier * skill.UseSkill(level, skillKey, myStats, targetStats), skill.basic.name, skill.skillDamageType);
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
@@ -83,9 +83,9 @@ namespace Simulator.Combat
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
-        protected void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level, string[] skillKeys)
+        protected void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level, string skillKey)
         {
-            totalHeal += HealHealth(skill.UseSkill(level, myStats, targetStats, skillKeys) * (100 - myStats.grievouswounds) / 100, skill.basic.name);
+            totalHeal += HealHealth(skill.UseSkill(level, skillKey, myStats, targetStats) * (100 - myStats.grievouswounds) / 100, skill.basic.name);
             myUI.healSum.text = totalHeal.ToString();
         }
 
@@ -100,7 +100,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksQ)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
+            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
             myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         }
 
@@ -109,7 +109,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksW)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys);
+            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
             myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         }
 
@@ -118,7 +118,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksE)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys);
+            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
             myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         }
 
@@ -127,7 +127,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksR)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys);
+            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
             myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         }
 

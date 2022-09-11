@@ -19,6 +19,12 @@ public class Twitch : ChampionCombat
         checksR.Add(new CheckIfCasting(this));
         checksA.Add(new CheckIfCasting(this));
 
+        qKeys.Add("Stealth Duration");
+        qKeys.Add("Bonus Attack Speed");
+        eKeys.Add("Base Physical Damage");
+        eKeys.Add("Physical Damage Per Stack");
+        rKeys.Add("Bonus Attack Damage");
+
         base.UpdatePriorityAndChecks();
     }
 
@@ -28,7 +34,7 @@ public class Twitch : ChampionCombat
 
         //TODO: Ambush still allows twitch to get hit by anything since camo can still be targettable
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("Ambush", new AmbushBuff(14, myStats.buffManager, myStats.wSkill[0].basic.name));
+        myStats.buffManager.buffs.Add("Ambush", new AmbushBuff(myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats), myStats.buffManager, myStats.wSkill[0].basic.name));
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
     public override IEnumerator ExecuteW()
@@ -51,7 +57,7 @@ public class Twitch : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
 
         //TODO: Pass 35% Bonus AD to contaminate
-        UpdateAbilityTotalDamage(ref eSum, 2, Constants.GetTwitchContaminateByLevel(myStats.level, (int)targetStats.buffManager.buffs["Deadly Venom"]?.value), myStats.eSkill[0].basic.name, SkillDamageType.Spell);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats) +  ((int)targetStats.buffManager.buffs["Deadly Venom"]?.value * myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats)), myStats.eSkill[0].basic.name, SkillDamageType.Spell);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
@@ -60,7 +66,7 @@ public class Twitch : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("SprayAndPray", new AttackDamageBuff(6, myStats.buffManager, myStats.rSkill[0].basic.name, 70, "SprayAndPray"));
+        myStats.buffManager.buffs.Add("SprayAndPray", new AttackDamageBuff(6, myStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), "SprayAndPray"));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 

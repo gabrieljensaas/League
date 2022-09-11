@@ -12,6 +12,7 @@ public class Riven : ChampionCombat
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "W", "E", "Q", "A" };
+
         checksQ.Add(new CheckIfCasting(this));
         checksW.Add(new CheckIfCasting(this));
         checksE.Add(new CheckIfCasting(this));
@@ -34,6 +35,11 @@ public class Riven : ChampionCombat
         targetCombat.checksA.Add(new CheckIfStunned(targetCombat));
         r1ExecuteCheck = new CheckIfExecutes(this, "R1");
 
+        qKeys.Add("Physical Damage");
+        wKeys.Add("Physical Damage");
+        eKeys.Add("Shield Strength");
+        rKeys.Add("Minimum Physical Damage");
+
         myUI.combatPriority.text = string.Join(", ", combatPrio);
         base.UpdatePriorityAndChecks();
     }
@@ -55,7 +61,7 @@ public class Riven : ChampionCombat
         if (myStats.buffManager.HasImmobilize) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         UpdateRivenPassive();
         if (qCounter == 0)
         {
@@ -81,7 +87,8 @@ public class Riven : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys);
+        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        targetStats.buffManager.buffs.Add("Stun", new StunBuff(0.75f, targetStats.buffManager, myStats.wSkill[0].basic.name));
         UpdateRivenPassive();
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
@@ -92,7 +99,8 @@ public class Riven : ChampionCombat
         if (myStats.buffManager.HasImmobilize) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        myStats.buffManager.shields.Add(myStats.eSkill[0].basic.name, new ShieldBuff(2.5f, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats), myStats.eSkill[0].basic.name));
         UpdateRivenPassive();
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
@@ -104,7 +112,7 @@ public class Riven : ChampionCombat
         if (hasWindSlash && (r1ExecuteCheck.Control() || timeSinceR > 14))
         {
             yield return StartCoroutine(StartCastingAbility(myStats.rSkill[1].basic.castTime));
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[1], 2, rKeys);
+            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[1].UseSkill(2, rKeys[0], myStats, targetStats) * (1 + ((targetStats.maxHealth - targetStats.currentHealth) / targetStats.maxHealth) > 0.75f ? 2 : (targetStats.maxHealth - targetStats.currentHealth) * 2.667f), myStats.rSkill[1].basic.name, SkillDamageType.Phyiscal);
             UpdateRivenPassive();
             myStats.rCD = myStats.rSkill[0].basic.coolDown[2] - timeSinceR;
             hasWindSlash = false;

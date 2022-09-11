@@ -16,7 +16,7 @@ public class ExplosiveChargeBuff : Buff
     }
     public override void Kill()
     {
-        manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.targetCombat.eSum, 2, Constants.GetTristanaExplosiveChargeByLevel(5, (int)value), source, SkillDamageType.Phyiscal);
+        manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.targetCombat.eSum, 2, manager.stats.eSkill[0].UseSkill(4, manager.combat.eKeys[0], manager.stats, manager.combat.targetStats) + (manager.stats.eSkill[0].UseSkill(4, manager.combat.eKeys[1], manager.stats, manager.combat.targetStats) * value), source, SkillDamageType.Phyiscal);
 
         manager.simulationManager.ShowText($"{manager.stats.name} no longer has an explosive charge by {source}");
         manager.buffs.Remove("Explosive Charge");

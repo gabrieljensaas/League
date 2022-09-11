@@ -22,12 +22,17 @@ public class Sivir : ChampionCombat
         autoattackcheck = new SivirAACheck(this);
         checkTakeDamageAbility.Add(new CheckSpellShield(this));
 
+        qKeys.Add("Champion Maximum Damage");
+        wKeys.Add("Bonus Attack Speed");
+        wKeys.Add("Bonus Attack Speed");
+        rKeys.Add("Buff Duration");
+
         base.UpdatePriorityAndChecks();
     }
 
     public override IEnumerator ExecuteW()
     {
-        myStats.buffManager.buffs.Add("Ricochet", new AttackSpeedBuff(4, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].selfEffects.ASIncreasePercent[4], "Ricochet"));
+        myStats.buffManager.buffs.Add("Ricochet", new AttackSpeedBuff(4, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats), "Ricochet"));
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         yield return null;
     }
@@ -41,7 +46,7 @@ public class Sivir : ChampionCombat
 
     public override IEnumerator ExecuteR()
     {
-        myStats.buffManager.buffs.Add("OnTheHunt", new OnTheHuntBuff(12f, myStats.buffManager, myStats.rSkill[0].basic.name));
+        myStats.buffManager.buffs.Add("OnTheHunt", new OnTheHuntBuff(myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), myStats.buffManager, myStats.rSkill[0].basic.name));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         yield return null;
     }

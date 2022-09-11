@@ -10,7 +10,7 @@ public class CheckDamageReductionPercent : Check
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("DamageReduction", out Buff value))
         {
-            damage *= (100 - value.value) / 100;
+            damage *= (100 - value.value) * 0.01f;
         }
         return damage;
     }

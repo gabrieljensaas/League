@@ -1,10 +1,12 @@
 using Simulator.Combat;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Caitlyn : ChampionCombat
 {
-    private int wStack = (int)Constants.CaitlynMaxTrapBySkillLevel[4];
+    private int wStack;
+    private int wStackMax;
     private float wCD = 0;
     public bool enemyTrapped = false;
     public override void UpdatePriorityAndChecks()
@@ -21,7 +23,16 @@ public class Caitlyn : ChampionCombat
         checksE.Add(new CheckCD(this, "E"));
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
+        autoattackcheck = new CaitlynAACheck(this);
 
+        qKeys.Add("Physical Damage");
+        wKeys.Add("Maximum Traps");
+        wKeys.Add("Headshot Damage Increase");
+        eKeys.Add("Magic Damage");
+        rKeys.Add("Physical damage");
+
+        wStackMax = (int)myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats);
+        wStack = wStackMax;
         base.UpdatePriorityAndChecks();
     }
 
@@ -32,7 +43,7 @@ public class Caitlyn : ChampionCombat
         wCD += Time.deltaTime;
         if (wCD > Constants.CaitlynTrapRechargeBySkillLevel[4])
         {
-            if (wStack != (int)Constants.CaitlynMaxTrapBySkillLevel[4])
+            if (wStack != wStackMax)
             {
                 wStack++;
                 wCD = 0f;
@@ -46,7 +57,6 @@ public class Caitlyn : ChampionCombat
         if (wStack <= 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         if (targetStats.buffManager.buffs.TryGetValue("YordleSnapTrap", out Buff value))
         {
             value.value += 1;
@@ -55,6 +65,7 @@ public class Caitlyn : ChampionCombat
         {
             targetStats.buffManager.buffs.Add("YordleSnapTrap", new YordleSnapTrapBuff(1, targetStats.buffManager, myStats.wSkill[0].basic.name));
         }
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteE()
@@ -63,9 +74,9 @@ public class Caitlyn : ChampionCombat
         if (myStats.buffManager.HasImmobilize) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys);
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         myStats.buffManager.buffs.Add("NetHeadshot", new NetHeadshotBuff(1.8f, myStats.buffManager, myStats.eSkill[0].basic.name));
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteR()
@@ -81,6 +92,11 @@ public class Caitlyn : ChampionCombat
     private IEnumerator AceInTheHole()
     {
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys, 1 + 0);              //0 is critical chance fix it when items are added
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], 1 + 0);              //0 is critical chance fix it when items are added
+    }
+
+    public override void StopChanneling(string uniqueKey)
+    {
+        StopCoroutine(uniqueKey);
     }
 }

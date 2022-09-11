@@ -11,7 +11,7 @@ public class KogMawAACheck : Check
         if (combat.myStats.buffManager.buffs.TryGetValue("BioArcaneBarrage", out Buff value))
         {
             damage += value.value;
-            combat.wSum += value.value * damage / 100;
+            combat.wSum += value.value;
             combat.myUI.abilitySum[1].text = combat.wSum.ToString();
         }
         return damage;

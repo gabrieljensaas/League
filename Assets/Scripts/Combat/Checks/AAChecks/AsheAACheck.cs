@@ -1,4 +1,5 @@
 using Simulator.Combat;
+using Unity.VisualScripting;
 
 public class AsheAACheck : Check
 {
@@ -10,9 +11,7 @@ public class AsheAACheck : Check
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("Flurry", out Buff value))
         {
-            damage *= value.value / 100;
-            combat.qSum += value.value * damage / 100;
-            combat.myUI.abilitySum[0].text = combat.qSum.ToString();
+            damage = combat.myStats.qSkill[0].UseSkill(4, combat.qKeys[1], combat.myStats, combat.targetStats);
         }
         else
         {

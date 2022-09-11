@@ -35,6 +35,12 @@ public class Jhin : ChampionCombat
         targetCombat.checksR.Add(new CheckIfRooted(targetCombat));
         targetCombat.checksA.Add(new CheckIfRooted(targetCombat));
 
+        qKeys.Add("Minimum Physical Damage");
+        wKeys.Add("Physical Damage");
+        wKeys.Add("Root Duration");
+        eKeys.Add("Magic Damage");
+        rKeys.Add("Minimum Damage");
+
         base.UpdatePriorityAndChecks();
     }
 
@@ -85,7 +91,7 @@ public class Jhin : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         ApplyDeadlyFlourishMark(myStats.qSkill[0].basic.name);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
@@ -95,7 +101,7 @@ public class Jhin : ChampionCombat
         yield return StartCoroutine(base.ExecuteW());
 
         if (targetStats.buffManager.buffs.TryGetValue("Deadly Flourish Mark", out Buff deadlyFlourishMark))
-            targetStats.buffManager.buffs.Add("Root", new RootBuff(2.25f, targetStats.buffManager, myStats.wSkill[0].basic.name));
+            targetStats.buffManager.buffs.Add("Root", new RootBuff(myStats.wSkill[0].UseSkill(4, wKeys[1], myStats, targetStats), targetStats.buffManager, myStats.wSkill[0].basic.name));
     }
 
     public override IEnumerator ExecuteE()
@@ -142,9 +148,9 @@ public class Jhin : ChampionCombat
         while(shots > 0)
         {
             if(shots == 1)
-                UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 4, rKeys); //TODO: change to crit when Recep pushes new stuff
+                UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 4, rKeys[0]); //TODO: change to crit when Recep pushes new stuff
             else
-                UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 4, rKeys);
+                UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 4, rKeys[0]);
 
             shots--;
             yield return new WaitForSeconds(0.25f);

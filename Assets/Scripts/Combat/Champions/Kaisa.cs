@@ -7,6 +7,7 @@ public class Kaisa : ChampionCombat
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "E", "W", "Q", "A" };
+
         autoattackcheck = new KaisaAACheck(this, this);
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
@@ -24,6 +25,12 @@ public class Kaisa : ChampionCombat
         targetCombat.checksR.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksA.Add(new CheckIfEnemyTargetable(targetCombat));
         checksR.Add(new CheckIfEnemyHasPlasma(this));
+
+        qKeys.Add("Total Evolved Single-Target Damage");
+        wKeys.Add("Magic Damage");
+        eKeys.Add("Bonus Attack Speed");
+        rKeys.Add("Shield Strength");
+
         base.UpdatePriorityAndChecks();
     }
 
@@ -34,14 +41,14 @@ public class Kaisa : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         yield return new WaitForSeconds(0.4f);                                //missle travel time
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
     }
     public override IEnumerator ExecuteW()
     {
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys);
+        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         if (targetStats.buffManager.buffs.TryGetValue("Plasma", out Buff value))
         {
@@ -55,7 +62,9 @@ public class Kaisa : ChampionCombat
         }
         else
         {
-            targetStats.buffManager.buffs.Add("Plasma", new PlasmaBuff(4, targetStats.buffManager, "Kaisa's Auto Attacks"));
+            PlasmaBuff buff = new PlasmaBuff(4, targetStats.buffManager, "Kaisa's Passive");
+            buff.value = 3;
+            targetStats.buffManager.buffs.Add("Plasma", buff);
         }
         myStats.wCD *= 0.33f;
     }
@@ -64,10 +73,12 @@ public class Kaisa : ChampionCombat
     {
         if (!CheckForAbilityControl(checksE)) yield break;
 
+        myStats.eSkill[0].basic.castTime = Constants.GetKaisaECastTime(myStats.bonusAS);
+
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys);
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         myStats.buffManager.buffs.Add("Untargetable", new UntargetableBuff(0.5f, myStats.buffManager, myStats.eSkill[0].basic.name));
+        myStats.buffManager.buffs.Add(myStats.eSkill[0].basic.name, new AttackSpeedBuff(4, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, eKeys[0], myStats, targetStats), myStats.eSkill[0].basic.name));
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteR()
@@ -76,12 +87,12 @@ public class Kaisa : ChampionCombat
         if (myStats.buffManager.HasImmobilize) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys);
+        myStats.buffManager.shields.Add(myStats.rSkill[0].basic.name, new ShieldBuff(2, myStats.buffManager, myStats.rSkill[0].basic.name, myStats.rSkill[0].UseSkill(4, rKeys[0], myStats, targetStats), myStats.rSkill[0].basic.name));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
-    public void DealPassiveDamage(float damage)
+    public void DealPassiveDamage(float rawdamage)
     {
-        UpdateAbilityTotalDamage(ref pSum, 4, damage, myStats.passiveSkill.skillName, SkillDamageType.Spell);
+        UpdateAbilityTotalDamage(ref pSum, 4, rawdamage, myStats.passiveSkill.skillName, SkillDamageType.Spell);
     }
 }

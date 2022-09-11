@@ -25,6 +25,12 @@ public class Tristana : ChampionCombat
         targetCombat.checksR.Add(new CheckIfStunned(targetCombat));
         targetCombat.checksA.Add(new CheckIfStunned(targetCombat));
 
+        qKeys.Add("Bonus Attack Speed");
+        wKeys.Add("Magic Damage");
+        eKeys.Add("Minimum Physical Damage");
+        eKeys.Add("Bonus Damage Per Stack");
+        rKeys.Add("Magic Damage");
+
         base.UpdatePriorityAndChecks();
     }
 
@@ -33,7 +39,7 @@ public class Tristana : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("AmbushAS", new AttackSpeedBuff(5, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].selfEffects.ASIncreasePercent[4], "AmbushAS"));
+        myStats.buffManager.buffs.Add("AmbushAS", new AttackSpeedBuff(5, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats), "AmbushAS"));
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         CheckExplosiveCharge();
     }

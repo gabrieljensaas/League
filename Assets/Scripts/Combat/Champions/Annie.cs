@@ -1,6 +1,5 @@
 using Simulator.Combat;
 using System.Collections;
-using UnityEngine;
 
 public class Annie : ChampionCombat
 {
@@ -8,6 +7,7 @@ public class Annie : ChampionCombat
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "E", "W", "Q", "A" };
+
         annieP = new CheckAnnieP(this);
         checksQ.Add(new CheckIfCasting(this));
         targetCombat.checksQ.Add(new CheckIfStunned(targetCombat));
@@ -27,6 +27,13 @@ public class Annie : ChampionCombat
         checkTakeDamageAbility.Add(new CheckShield(this));
         checkTakeDamageAA.Add(new CheckMoltenShield(this));
         checkTakeDamageAA.Add(new CheckShield(this));
+
+        qKeys.Add("Magic damage");
+        wKeys.Add("Magic damage");
+        eKeys.Add("Shield Strength");
+        eKeys.Add("Magic Damage");
+        rKeys.Add("Initial Magic Damage");
+
         base.UpdatePriorityAndChecks();
     }
 
@@ -40,21 +47,13 @@ public class Annie : ChampionCombat
         }
     }
 
-    private IEnumerator TibbersRevenge()
-    {
-        Tibbers tibbers = (Tibbers)pets[0];
-        tibbers.Enrage(10);
-        yield return new WaitForSeconds(10);
-        EndBattle();
-    }
-
     public override IEnumerator ExecuteQ()
     {
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         CheckAnniePassiveStun(myStats.qSkill[0].basic.name);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 
@@ -64,7 +63,7 @@ public class Annie : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         CheckAnniePassiveStun(myStats.wSkill[0].basic.name);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys);
+        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
@@ -82,8 +81,7 @@ public class Annie : ChampionCombat
         {
             myStats.buffManager.buffs.Add("Pyromania", new PyromaniaBuff(myStats.buffManager, myStats.eSkill[0].basic.name));
         }
-        //UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill, 4);
-        myStats.eSkill[0].UseSkill(4, myStats, targetStats, eKeys);
+        myStats.buffManager.buffs.Add(myStats.eSkill[0].basic.name, new ShieldBuff(3, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats), myStats.eSkill[0].basic.name));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
@@ -93,7 +91,7 @@ public class Annie : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         CheckAnniePassiveStun(myStats.rSkill[0].basic.name);
-        UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill[0], 2, rKeys);
+        UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         pets.Add(new Tibbers(this, 3100, 100 + (myStats.AP * 15 / 100), 0.625f, 90, 90)); //all stats are for max level change when level adjusting of skills done
     }

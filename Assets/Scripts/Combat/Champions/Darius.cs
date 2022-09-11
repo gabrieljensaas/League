@@ -7,7 +7,7 @@ public class Darius : ChampionCombat
 
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "Q", "W", "A", "R", "" };
+        combatPrio = new string[] { "R", "E", "W", "Q", "A" };
 
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
@@ -23,8 +23,13 @@ public class Darius : ChampionCombat
 
         autoattackcheck = new DariusAACheck(this);
         dariusP = new CheckDariusP(this);
-        targetStats.armor *= (100 - Constants.GetDariusArmorReductionByLevel(5)) / 100;
 
+        qKeys.Add("Blade Physical Damage");
+        wKeys.Add("Physical Damage");
+        eKeys.Add("Armor Penetration");
+        rKeys.Add("True Damage");
+
+        targetStats.armor *= (100 - myStats.wSkill[0].UseSkill(4, eKeys[0], myStats, targetStats)) * 0.01f;
         myUI.combatPriority.text = string.Join(", ", combatPrio);
         base.UpdatePriorityAndChecks();
     }
@@ -43,7 +48,7 @@ public class Darius : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         UpdateTotalHeal(ref hSum, (myStats.maxHealth - myStats.currentHealth) * 0.13f, myStats.qSkill[0].basic.name);
         CheckDariusPassiveHemorrhage(myStats.qSkill[0].basic.name);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
@@ -54,17 +59,27 @@ public class Darius : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys);
+        myStats.buffManager.buffs.Add("Crippling Strike", new CripplingStrikeBuff(4, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats)));
         CheckDariusPassiveHemorrhage(myStats.wSkill[0].basic.name);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+    }
+
+    public override IEnumerator ExecuteE()
+    {
+        if (!CheckForAbilityControl(checksE)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
+        targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(1f, targetStats.buffManager, myStats.eSkill[0].basic.name));
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteR()
     {
         if (!CheckForAbilityControl(checksR)) yield break;
+        if (!dariusP.Control()) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, Constants.GetDariusNoxianGuillotineByLevel(myStats.level, (int)targetStats.buffManager.buffs["Hemorrhage"]?.value), "Noxian Guillotine", SkillDamageType.True);
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats) * (1 + (0.2f * (int)targetStats.buffManager.buffs["Hemorrhage"]?.value)), "Noxian Guillotine", SkillDamageType.True);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 

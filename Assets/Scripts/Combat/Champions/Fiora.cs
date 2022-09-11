@@ -25,6 +25,13 @@ public class Fiora : ChampionCombat
         targetCombat.checksE.Add(new CheckIfStunned(targetCombat));
         targetCombat.checksR.Add(new CheckIfStunned(targetCombat));
         targetCombat.checksA.Add(new CheckIfStunned(targetCombat));
+        autoattackcheck = new FioraAACheck(this);
+
+        qKeys.Add("Physical Damage");
+        wKeys.Add("Magic Damage");
+        eKeys.Add("Bonus Attack Speed");
+        eKeys.Add("Critical damage");
+        rKeys.Add("Heal per Tick");
 
         myUI.combatPriority.text = string.Join(", ", combatPrio);
         base.UpdatePriorityAndChecks();
@@ -69,7 +76,7 @@ public class Fiora : ChampionCombat
 
         myStats.buffManager.buffs.Add("Riposte", new RiposteBuff(0.75f, myStats.buffManager, myStats.wSkill[0].name));
 
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys);
+        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
 
         yield return null;
@@ -140,7 +147,7 @@ public class Fiora : ChampionCombat
         for (int i = 0; i < vitalsHit; i++)
         {
             yield return new WaitForSeconds(1);
-            UpdateTotalHeal(ref hSum, 50 + (3 * 25), "Victory Zone"); //hardcoded healing
+            UpdateTotalHeal(ref hSum, myStats.rSkill[0].UseSkill(4, rKeys[0], myStats, targetStats), "Victory Zone"); //hardcoded healing
         }
     }
 }

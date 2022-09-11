@@ -25,6 +25,12 @@ public class MissFortune : ChampionCombat
         checksR.Add(new CheckIfChanneling(this));
         checksA.Add(new CheckIfChanneling(this));
 
+        qKeys.Add("Physical Damage");
+        wKeys.Add("Bonus Attack Speed");
+        eKeys.Add("Magic Damage Per Tick");
+        rKeys.Add("Total Waves");
+        rKeys.Add("Wave Interval Time");
+
         base.UpdatePriorityAndChecks();
     }
 
@@ -33,9 +39,18 @@ public class MissFortune : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         if (!loveTapped) LoveTap();
+    }
+
+    public override IEnumerator ExecuteW()
+    {
+        if (!CheckForAbilityControl(checksW)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
+        myStats.buffManager.buffs.Add(myStats.wSkill[0].basic.name, new AttackSpeedBuff(4, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats), myStats.wSkill[0].basic.name));
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteE()
@@ -53,7 +68,7 @@ public class MissFortune : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(3, myStats.buffManager, myStats.rSkill[0].basic.name, "BulletTime"));
-        StartCoroutine(BulletTime((int)Constants.MissFortuneRWaveCountBySkillLevel[2]));
+        StartCoroutine(BulletTime((int)myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats)));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
@@ -75,27 +90,27 @@ public class MissFortune : ChampionCombat
     private IEnumerator MakeItRain()
     {
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys, 0.125f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0], 0.125f);
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys, 0.125f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0], 0.125f);
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys, 0.125f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0], 0.125f);
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys, 0.125f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0], 0.125f);
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys, 0.125f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0], 0.125f);
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys, 0.125f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0], 0.125f);
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys, 0.125f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0], 0.125f);
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys, 0.125f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0], 0.125f);
     }
 
     private IEnumerator BulletTime(int waveCount)
     {
-        yield return new WaitForSeconds(Constants.MissFortuneRWaveIntervalTimeBySkillLevel[2]);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys);
+        yield return new WaitForSeconds(myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats));
+        UpdateAbilityTotalDamage(ref rSum, 3, (myStats.AD * 0.75f) + (myStats.AP * 0.2f), "Bullet Time", SkillDamageType.Phyiscal);
         StartCoroutine(BulletTime(waveCount--));
     }
 

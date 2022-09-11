@@ -7,15 +7,16 @@ public class Garen : ChampionCombat
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "W", "Q", "A", "E" };
+
         checksQ.Add(new CheckIfCasting(this));
-        targetCombat.checksQ.Add(new CheckIfSilenced(targetCombat));
         checksW.Add(new CheckIfCasting(this));
-        targetCombat.checksW.Add(new CheckIfSilenced(targetCombat));
         checksE.Add(new CheckIfCasting(this));
-        targetCombat.checksE.Add(new CheckIfSilenced(targetCombat));
         checksR.Add(new CheckIfCasting(this));
-        targetCombat.checksR.Add(new CheckIfSilenced(targetCombat));
         checksA.Add(new CheckIfCasting(this));
+        targetCombat.checksQ.Add(new CheckIfSilenced(targetCombat));
+        targetCombat.checksW.Add(new CheckIfSilenced(targetCombat));
+        targetCombat.checksE.Add(new CheckIfSilenced(targetCombat));
+        targetCombat.checksR.Add(new CheckIfSilenced(targetCombat));
         checksA.Add(new CheckIfCantAA(this));
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
@@ -28,7 +29,34 @@ public class Garen : ChampionCombat
         checkTakeDamageAbility.Add(new CheckShield(this));
         checkTakeDamageAA.Add(new CheckShield(this));
         checksR.Add(new CheckIfExecutes(this, "R"));
+
+        qKeys.Add("Bonus Physical Damage");
+        wKeys.Add("Duration");
+        wKeys.Add("Shield Strength");
+        eKeys.Add("Increased Damage Per Spin");
+        rKeys.Add("True Damage");
+
         base.UpdatePriorityAndChecks();
+    }
+
+    public override IEnumerator ExecuteQ()
+    {
+        if (!CheckForAbilityControl(checksQ)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
+        myStats.buffManager.buffs.Add("DecisiveStrike", new DecisiveStrikeBuff(4.5f, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats)));
+        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+    }
+
+    public override IEnumerator ExecuteW()
+    {
+        if (!CheckForAbilityControl(checksW)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
+        myStats.buffManager.buffs.Add("DamageReductionPercent", new DamageReductionPercentBuff(myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats), myStats.buffManager, myStats.wSkill[0].basic.name, 30));
+        myStats.buffManager.shields.Add(myStats.wSkill[0].basic.name, new ShieldBuff(0.75f, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, wKeys[1], myStats, targetStats), myStats.wSkill[0].basic.name));
+        myStats.buffManager.buffs.Add("Tenacity", new TenacityBuff(0.75f, myStats.buffManager, myStats.wSkill[0].basic.name, 60, myStats.wSkill[0].basic.name));
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteE()
@@ -37,10 +65,8 @@ public class Garen : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         simulationManager.ShowText($"Garen Used Judgment!");
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         myStats.buffManager.buffs.Add("CantAA", new CantAABuff(3f, myStats.buffManager, myStats.eSkill[0].basic.name));
         StartCoroutine(GarenE(0, 0));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
@@ -49,7 +75,7 @@ public class Garen : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill[0], 2, rKeys);
+        UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
 
         StopCoroutine("GarenE");          //if 2 GarenE coroutine exists this could leat to some bugs
@@ -62,8 +88,7 @@ public class Garen : ChampionCombat
     private IEnumerator GarenE(float seconds, int spinCount)
     {
         yield return new WaitForSeconds(seconds);
-        eSum += targetCombat.TakeDamage(myStats.eSkill[0].UseSkill(4, myStats, targetStats, eKeys), myStats.eSkill[0].basic.name, SkillDamageType.Phyiscal);
-        myUI.abilitySum[2].text = eSum.ToString();
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         spinCount++;
         if (spinCount >= 6 && targetStats.buffManager.buffs.ContainsKey("Judgment"))
         {

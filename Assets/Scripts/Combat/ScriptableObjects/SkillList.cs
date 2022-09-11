@@ -38,65 +38,17 @@ public class SkillList : ScriptableObject
         passive
     }
 
-    public float UseSkill(int level, ChampionStats myStats, ChampionStats target, string[] keys)
+    public float UseSkill(int level, string key, ChampionStats myStats, ChampionStats targetStats, float cap = 0)
     {
-        if (simulationManager == null) simulationManager = SimManager.Instance;
-        float damage = 0;
-        foreach (string key in keys)
-        {
-            if (basic.name == "Ranger's Focus")
-            {
-                myStats.buffManager.buffs.Add("Flurry", new FlurryBuff(4, myStats.buffManager, basic.name, 100 + (5 * (level + 1))));
-                SelfEffects(level, myStats);
-                return 0;
-            }
-
-            if (basic.name == "Decisive Strike")
-            {
-                myStats.buffManager.buffs.Add("DecisiveStrike", new DecisiveStrikeBuff(4.5f, myStats.buffManager, basic.name, ((level + 1) * 30) + myStats.AD * 0.5f));
-                return 0;
-            }
-
-            if (basic.name == "Judgment")
-            {
-                damage = (int)Mathf.Round((unit.flat[key][level] + Constants.GarenEDamageByLevelTable[myStats.level - 1] + (myStats.AD * (unit.percentAD[key][level] / 100))));
-                damage = (int)Mathf.Round(damage * (100 / (100 + target.armor)));
-                return damage;
-            }
-
-            if (basic.name == "Crippling Strike")
-            {
-                myStats.buffManager.buffs.Add("Crippling Strike", new CripplingStrikeBuff(4, myStats.buffManager, basic.name, (135 + ((level + 1) * 5)) / 100 * myStats.AD));
-                return 0;
-            }
-
-            if (basic.name == "SilverBolts")
-            {
-                return unit.flat[key][level] > target.maxHealth * unit.percentTargetMaxHP[key][level] * 0.01f ? unit.flat[key][level] : target.maxHealth * unit.percentTargetMaxHP[key][level] * 0.01f;
-            }
-
-            switch (skillDamageType)
-            {
-                case SkillDamageType.Phyiscal:
-                    var targetmissingHealth = target.maxHealth - target.currentHealth;
-                    if (myStats.name == "Riven" && targetmissingHealth > target.maxHealth * 0.75f) targetmissingHealth = target.maxHealth * 0.75f;
-                    damage = (int)Mathf.Round(unit.flat[key][level] + (myStats.AD * (unit.percentAD[key][level] / 100)) + unit.percentTargetMissingHP[key][level] * (targetmissingHealth / target.maxHealth) * 100);
-                    break;
-                case SkillDamageType.Spell:
-                    damage = (int)Mathf.Round(unit.flat[key][level] + (myStats.AP * (unit.percentAP[key][level] / 100f)));
-                    break;
-                case SkillDamageType.True:
-                    damage = (int)Mathf.Round(unit.flat[key][level] + ((target.maxHealth - target.currentHealth) * (unit.percentTargetMissingHP[key][level] / 100)) + (unit.percentOwnMissingHP[key][level] * (unit.flat[key][level] * ((float)(100 - ((int)(100 * myStats.currentHealth / myStats.maxHealth))) / 100f))));
-                    break;
-                default:
-                    break;
-            }
-        }
-
-
-        SelfEffects(level, myStats);
-        EnemyEffects(level, target);
-        return damage;
+        return unit.flat[key][level] +
+           (unit.percentAP[key][level] * myStats.AP * 0.01f) +
+           (unit.percentAD[key][level] * myStats.AD * 0.01f) +
+           (unit.percentBonusAD[key][level] * myStats.bonusAD * 0.01f) +
+           (unit.percentBonusHP[key][level] * myStats.bonusHP * 0.01f) +
+           (unit.percentTargetMissingHP[key][level] * (targetStats.maxHealth - targetStats.currentHealth) * 0.01f) +
+           (unit.percent[key][level] * 0.01f) +
+           (((unit.percentTargetMaxHP[key][level] * 0.01f) + (unit.percentPer100AP[key][level] * (myStats.AP % 100) * 0.01f)) * targetStats.maxHealth) +
+           (unit.percentMissingHP[key][level] * 0.01f * ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) > cap ? cap : (myStats.maxHealth - myStats.currentHealth));
     }
 
     private void EnemyEffects(int level, Simulator.Combat.ChampionStats target)

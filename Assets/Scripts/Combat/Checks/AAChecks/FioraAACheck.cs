@@ -12,7 +12,7 @@ public class FioraAACheck : Check
         {
             if (value.value == 1)
             {
-                damage *= 2; //level 5 bladework
+                damage *= combat.myStats.eSkill[0].UseSkill(4, combat.eKeys[1], combat.myStats, combat.targetStats); //level 5 bladework
                 value.Kill();
             }
             else

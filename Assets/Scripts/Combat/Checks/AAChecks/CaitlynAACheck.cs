@@ -17,7 +17,7 @@ public class CaitlynAACheck : Check
 
         if (combat.myStats.buffManager.buffs.TryGetValue("TrapHeadshot", out Buff val))
         {
-            damage += ((Constants.GetCaitlynPassivePercent(combat.myStats.level) + 0) * combat.myStats.AD) + combat.myStats.wSkill[0].UseSkill(4, combat.myStats, combat.targetStats, combat.wKeys);                  //critical chance 0 for now since no item added
+            damage += ((Constants.GetCaitlynPassivePercent(combat.myStats.level) + 0) * combat.myStats.AD) + combat.myStats.wSkill[0].UseSkill(4, combat.wKeys[1] ,combat.myStats, combat.targetStats);                  //critical chance 0 for now since no item added
             val.Kill();
             return damage;
         }

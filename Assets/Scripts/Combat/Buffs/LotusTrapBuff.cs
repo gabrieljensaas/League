@@ -16,7 +16,7 @@ public class LotusTrapBuff : Buff
     }
     public override void Kill()
     {
-        manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.targetCombat.eSum, 2, 160, source, SkillDamageType.Spell);
+        manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.targetCombat.eSum, 2, manager.combat.targetStats.eSkill[0].UseSkill(4, manager.combat.targetCombat.eKeys[0], manager.combat.targetStats, manager.stats), source, SkillDamageType.Spell);
 
         manager.simulationManager.ShowText($"{manager.stats.name} is not lotus trapped anymore!");
         manager.buffs.Remove("Lotus Trap");

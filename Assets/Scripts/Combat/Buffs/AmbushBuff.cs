@@ -19,7 +19,7 @@ public class AmbushBuff : Buff
 
     public override void Kill()
     {
-        manager.buffs.Add("AmbushAS", new AttackSpeedBuff(5, manager, manager.combat.myStats.qSkill[0].basic.name, manager.combat.myStats.qSkill[0].selfEffects.ASIncreasePercent[4], "AmbushAS"));
+        manager.buffs.Add("AmbushAS", new AttackSpeedBuff(5, manager, manager.combat.myStats.qSkill[0].basic.name, manager.combat.myStats.qSkill[0].UseSkill(4, manager.combat.qKeys[1], manager.stats, manager.combat.targetStats), "AmbushAS"));
 
         manager.simulationManager.ShowText($"{manager.stats.name} removed Ambush!");
         manager.buffs.Remove("Ambush");

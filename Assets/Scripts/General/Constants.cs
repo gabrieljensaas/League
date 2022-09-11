@@ -115,6 +115,18 @@ public class Constants : MonoBehaviour
         return 30 + (25 * level) + ((18 + (level * 3)) * stack);
     }
 
+    public static float GetJinxWCastTime(float bonusAS)
+    {
+        if (bonusAS <= 250) return 0.6f - (0.02f * (bonusAS % 25));
+        return 0.4f;
+    }
+
+    public static float GetKaisaECastTime(float bonusAS)
+    {
+        if (bonusAS > 100) return 0.6f;
+        return 1.2f - (0.006f * bonusAS);
+    }
+
     public static float GetJhinInnateBonusADPercent(int level)
     {
         //TODO: account for crit and attack speed from items when implemented

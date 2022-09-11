@@ -25,6 +25,12 @@ public class Draven : ChampionCombat
         targetCombat.checksE.Add(new CheckIfAirborne(targetCombat));
         targetCombat.checksR.Add(new CheckIfAirborne(targetCombat));
         targetCombat.checksA.Add(new CheckIfAirborne(targetCombat));
+        autoattackcheck = new DravenAACheck(this, this);
+
+        qKeys.Add("Bonus Physical Damage");
+        wKeys.Add("Bonus Attack Speed");
+        eKeys.Add("Physical Damage");
+        rKeys.Add("Physical Damage");
 
         base.UpdatePriorityAndChecks();
     }
@@ -46,14 +52,23 @@ public class Draven : ChampionCombat
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 
+    public override IEnumerator ExecuteW()
+    {
+        if (!CheckForAbilityControl(checksW)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
+        myStats.buffManager.buffs.Add(myStats.wSkill[0].basic.name, new AttackSpeedBuff(3, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats), myStats.wSkill[0].basic.name));
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+    }
+
     public override IEnumerator ExecuteE()
     {
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys);
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.1f, targetStats.buffManager, myStats.eSkill[0].basic.name));
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteR()
@@ -61,32 +76,16 @@ public class Draven : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys);
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         if (targetStats.currentHealth <= pStack) targetStats.currentHealth -= pStack;
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys);
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         if (targetStats.currentHealth <= pStack) targetStats.currentHealth -= pStack;
     }
 
-    public override IEnumerator ExecuteA()
+    public IEnumerator SpinnigAxe()
     {
-        if (!CheckForAbilityControl(checksA)) yield break;
-
-        yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
-        if (myStats.buffManager.buffs.TryGetValue("SpinningAxe", out Buff value))
-        {
-            value.value--;
-            StartCoroutine(SpinnigAxe());
-            if (value.value == 0) value.Kill();
-        }
-
-    }
-
-    private IEnumerator SpinnigAxe()
-    {
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
         yield return new WaitForSeconds(2);
         myStats.wCD = -0.1f;
         if (myStats.buffManager.buffs.TryGetValue("SpinningAxe", out Buff value))
@@ -98,6 +97,5 @@ public class Draven : ChampionCombat
         {
             myStats.buffManager.buffs.Add("SpinningAxe", new SpinningAxeBuff(5.8f, myStats.buffManager, myStats.qSkill[0].basic.name));
         }
-
     }
 }

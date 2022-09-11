@@ -8,7 +8,7 @@ public class VarusAACheck : Check
 
     public override float Control(float damage)
     {
-        damage += Constants.VarusWPassiveFlatBonusBySkillLevel[4] + (combat.myStats.AP * 0.3f);
+        damage += combat.myStats.wSkill[0].UseSkill(4, combat.wKeys[0], combat.myStats, combat.targetStats);
         if (combat.targetStats.buffManager.buffs.TryGetValue("Blight", out Buff value))
         {
             if (value.value != 3)

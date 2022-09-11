@@ -22,6 +22,12 @@ public class KogMaw : ChampionCombat
 
         //add q passive bonus here
 
+        qKeys.Add("Magic Damage");
+        qKeys.Add("Resistances Reduction");
+        wKeys.Add("Bonus Magic Damage");
+        eKeys.Add("Magic Damage");
+        rKeys.Add("Magic Damage");
+
         base.UpdatePriorityAndChecks();
     }
 
@@ -30,18 +36,18 @@ public class KogMaw : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        targetStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new ArmorReductionBuff(4, targetStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[1], myStats, targetStats), myStats.qSkill[0].basic.name));
+        targetStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new MagicResistanceReductionBuff(4, targetStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[1], myStats, targetStats), myStats.qSkill[0].basic.name));
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
-        targetStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new ArmorReductionBuff(4, targetStats.buffManager, myStats.qSkill[0].basic.name, Constants.KogMawQReductionBySkillLevel[4], myStats.qSkill[0].basic.name));
-        targetStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new MagicResistanceReductionBuff(4, targetStats.buffManager, myStats.qSkill[0].basic.name, Constants.KogMawQReductionBySkillLevel[4], myStats.qSkill[0].basic.name));
     }
     public override IEnumerator ExecuteW()
     {
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
+        myStats.buffManager.buffs.Add("BioArcaneBarrage", new BioArcaneBarrageBuff(8, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats)));
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
-        myStats.buffManager.buffs.Add("BioArcaneBarrage", new BioArcaneBarrageBuff(8, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, myStats, targetStats, wKeys)));
     }
 
     public override IEnumerator ExecuteR()
@@ -50,7 +56,11 @@ public class KogMaw : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        float multiplier;
+        if ((targetStats.maxHealth - targetStats.currentHealth) / targetStats.maxHealth > 0.6f) multiplier = 1 + ((targetStats.maxHealth - targetStats.currentHealth) / targetStats.maxHealth) * 0.833f;
+        else if ((targetStats.maxHealth - targetStats.currentHealth) / targetStats.maxHealth > 0.4f) multiplier = 1.5f;
+        else multiplier = 2f;
         yield return new WaitForSeconds(0.6f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys);
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], multiplier);
     }
 }

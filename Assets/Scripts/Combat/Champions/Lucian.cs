@@ -28,6 +28,10 @@ public class Lucian : ChampionCombat
         myStats.qSkill[0].basic.castTime = Constants.LucianQCastTimeByLevel[myStats.level]; //variable cast time
         passiveMultiplier = Constants.GetLucianPassiveMultiplier(myStats.level);
 
+        qKeys.Add("Physical Damage");
+        wKeys.Add("Magic Damage");
+        rKeys.Add("Physical Damage Per Shot");
+
         base.UpdatePriorityAndChecks();
     }
 
@@ -36,7 +40,7 @@ public class Lucian : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         AddLightslinger(myStats.qSkill[0].basic.name);
     }
@@ -46,7 +50,7 @@ public class Lucian : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys);
+        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         AddLightslinger(myStats.wSkill[0].basic.name);
     }
@@ -81,6 +85,7 @@ public class Lucian : ChampionCombat
         if(myStats.buffManager.buffs.TryGetValue("Lightslinger", out Buff value))
         {
             AutoAttack(passiveMultiplier);
+            myStats.eCD -= 2f;
             value.Kill();
         }
     }
@@ -88,7 +93,7 @@ public class Lucian : ChampionCombat
     private IEnumerator TheCulling(int waveCount, float interval)
     {
         yield return new WaitForSeconds(interval);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys);
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         StartCoroutine(TheCulling(waveCount--, interval));
         AddLightslinger(myStats.qSkill[0].basic.name);
     }

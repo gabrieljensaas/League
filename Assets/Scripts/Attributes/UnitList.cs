@@ -1,3 +1,4 @@
+using Simulator.Combat;
 using System.Collections.Generic;
 
 [System.Serializable]
@@ -5,7 +6,6 @@ public class UnitList
 {
     public Dictionary<string, List<float>> flat = new();
     public Dictionary<string, List<float>> percent = new();
-
     public Dictionary<string, List<float>> AD = new();
     public Dictionary<string, List<float>> bonusAD = new();
     public Dictionary<string, List<float>> percentAD = new();
