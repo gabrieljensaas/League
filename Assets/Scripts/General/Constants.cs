@@ -114,4 +114,15 @@ public class Constants : MonoBehaviour
     {
         return 30 + (25 * level) + ((18 + (level * 3)) * stack);
     }
+
+    public static float GetJhinInnateBonusADPercent(int level)
+    {
+        //TODO: account for crit and attack speed from items when implemented
+        return level switch
+        {
+            < 9 => 0.03f + 0.01f * level,
+            < 11 => 0.12f + 0.02f * (level - 9),
+            _ => 0.16f + 0.04f * (level - 11)
+        };
+    }
 }
