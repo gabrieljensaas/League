@@ -137,4 +137,14 @@ public class Constants : MonoBehaviour
             _ => 0.16f + 0.04f * (level - 11)
         };
     }
+
+    public static float GetXayahPassiveADPercent(int level)
+    {
+        return level switch
+        {
+            < 7 => 30,
+            < 13 => 40,
+            _ => 50
+        };
+    }
 }
