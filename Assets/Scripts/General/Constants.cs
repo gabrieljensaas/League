@@ -149,4 +149,13 @@ public class Constants : MonoBehaviour
     }
 
     public static float GetLuxIlluminationByLevel(int level, float AP) => 10 + (10 * level) + AP;
+
+    public static float GetKatPassiveDamageByLevel(int level , float AP)
+    {
+        return level switch
+        {
+
+        };
+    }
+    
 }

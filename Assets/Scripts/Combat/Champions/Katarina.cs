@@ -45,7 +45,7 @@ public class Katarina : ChampionCombat
 
     protected void Passive()
     {
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateAbilityTotalDamage(ref pSum,0, myStats.AD * Constants.GetKatPassiveDamageByLevel(myStats.level, myStats.AP), myStats.passiveSkill.skillName,SkillDamageType.Spell);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[0];
     }
 
@@ -75,5 +75,9 @@ public class Katarina : ChampionCombat
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
-
+    public override void StopChanneling(string uniqueKey)
+    {
+        StopCoroutine(uniqueKey);
     }
+
+}
