@@ -62,7 +62,7 @@ public class Veigar : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
 
-        float missingHealthModifier = 1 - (targetStats.currentHealth / targetStats.maxHealth) + 1; //todo: fix calculations
+        float missingHealthModifier = ((1 - targetStats.currentHealth / targetStats.maxHealth) * 1.5f) + 1;
         if (missingHealthModifier > 2) missingHealthModifier = 2;
         float damage = 325 * missingHealthModifier;
         UpdateAbilityTotalDamage(ref rSum, 3, damage, myStats.rSkill[0].name, SkillDamageType.Spell);
