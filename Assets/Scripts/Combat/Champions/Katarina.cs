@@ -13,11 +13,23 @@ public class Katarina : ChampionCombat
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
 
-        checksQ.Add(new CheckIfCasting(this)); //This is for channeling Ability Kat has i.e R
+        checksQ.Add(new CheckIfCasting(this)); 
         checksW.Add(new CheckIfCasting(this));
         checksE.Add(new CheckIfCasting(this));
         checksR.Add(new CheckIfCasting(this));
         checksA.Add(new CheckIfCasting(this));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksQ.Add(new CheckIfChanneling(this));
+        checksW.Add(new CheckIfChanneling(this));
+        checksE.Add(new CheckIfChanneling(this));
+        checksR.Add(new CheckIfChanneling(this));
+        checksA.Add(new CheckIfChanneling(this));
+        checksE.Add(new CheckIfImmobilize(this));
+        checksA.Add(new CheckIfDisarmed(this));
 
         qKeys.Add("Magic Damage");
         wKeys.Add("Bonus Movement speed");
@@ -31,7 +43,7 @@ public class Katarina : ChampionCombat
         base.UpdatePriorityAndChecks();
     }
 
-    protected override void CheckPassive()
+    protected void Passive()
     {
         UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[0];
@@ -39,14 +51,14 @@ public class Katarina : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
-        yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        CheckPassive();
+        yield return base.ExecuteQ();
+        Passive();
     }
 
     public override IEnumerator ExecuteW()
     {
         yield return base.ExecuteW();
-        CheckPassive();
+        Passive();
     }
 
     public override IEnumerator ExecuteE()
@@ -60,6 +72,7 @@ public class Katarina : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(10, myStats.buffManager, myStats.rSkill[0].basic.name, "Death Lotus"));
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
