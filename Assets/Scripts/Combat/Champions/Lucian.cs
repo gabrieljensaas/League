@@ -24,6 +24,13 @@ public class Lucian : ChampionCombat
         checksE.Add(new CheckIfChanneling(this));
         checksR.Add(new CheckIfChanneling(this));
         checksA.Add(new CheckIfChanneling(this));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksE.Add(new CheckIfImmobilize(this));
+        checksA.Add(new CheckIfDisarmed(this));
 
         myStats.qSkill[0].basic.castTime = Constants.LucianQCastTimeByLevel[myStats.level]; //variable cast time
         passiveMultiplier = Constants.GetLucianPassiveMultiplier(myStats.level);

@@ -22,6 +22,14 @@ public class Viktor : ChampionCombat
         checksE.Add(new CheckIfCasting(this));
         checksR.Add(new CheckIfCasting(this));
         checksA.Add(new CheckIfCasting(this));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksA.Add(new CheckIfDisarmed(this));
+        checkTakeDamageAbility.Add(new CheckShield(this));
+        checkTakeDamageAA.Add(new CheckShield(this));
 
         qKeys.Add("Magic Damage");
         qKeys.Add("Discharge Damage");

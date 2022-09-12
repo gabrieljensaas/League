@@ -20,11 +20,13 @@ public class Fiora : ChampionCombat
         checksR.Add(new CheckIfCasting(this));
         checksA.Add(new CheckIfCasting(this));
 
-        targetCombat.checksQ.Add(new CheckIfStunned(targetCombat));
-        targetCombat.checksW.Add(new CheckIfStunned(targetCombat));
-        targetCombat.checksE.Add(new CheckIfStunned(targetCombat));
-        targetCombat.checksR.Add(new CheckIfStunned(targetCombat));
-        targetCombat.checksA.Add(new CheckIfStunned(targetCombat));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksQ.Add(new CheckIfImmobilize(this));
+        checksA.Add(new CheckIfDisarmed(this));
         autoattackcheck = new FioraAACheck(this);
 
         qKeys.Add("Physical Damage");

@@ -20,11 +20,15 @@ public class Lux : ChampionCombat
         checksR.Add(new CheckIfCasting(this));
         checksA.Add(new CheckIfCasting(this));
 
-        targetCombat.checksQ.Add(new CheckIfRooted(this));
-        targetCombat.checksW.Add(new CheckIfRooted(this));
-        targetCombat.checksE.Add(new CheckIfRooted(this));
-        targetCombat.checksR.Add(new CheckIfRooted(this));
-        targetCombat.checksA.Add(new CheckIfRooted(this));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksA.Add(new CheckIfDisarmed(this));
+
+        checkTakeDamageAbility.Add(new CheckShield(this));
+        checkTakeDamageAA.Add(new CheckShield(this));
 
         qKeys.Add("Magic Damage");
         wKeys.Add("Shield Strength");

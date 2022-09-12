@@ -23,17 +23,17 @@ public class Riven : ChampionCombat
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
         autoattackcheck = new RivenAACheck(this);
-        targetCombat.checksQ.Add(new CheckIfAirborne(targetCombat));
-        targetCombat.checksW.Add(new CheckIfAirborne(targetCombat));
-        targetCombat.checksE.Add(new CheckIfAirborne(targetCombat));
-        targetCombat.checksR.Add(new CheckIfAirborne(targetCombat));
-        targetCombat.checksA.Add(new CheckIfAirborne(targetCombat));
-        targetCombat.checksQ.Add(new CheckIfStunned(targetCombat));
-        targetCombat.checksW.Add(new CheckIfStunned(targetCombat));
-        targetCombat.checksE.Add(new CheckIfStunned(targetCombat));
-        targetCombat.checksR.Add(new CheckIfStunned(targetCombat));
-        targetCombat.checksA.Add(new CheckIfStunned(targetCombat));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksQ.Add(new CheckIfImmobilize(this));
+        checksE.Add(new CheckIfImmobilize(this));
         r1ExecuteCheck = new CheckIfExecutes(this, "R1");
+        checksA.Add(new CheckIfDisarmed(this));
+        checkTakeDamageAbility.Add(new CheckShield(this));
+        checkTakeDamageAA.Add(new CheckShield(this));
 
         qKeys.Add("Physical Damage");
         wKeys.Add("Physical Damage");
@@ -58,7 +58,6 @@ public class Riven : ChampionCombat
         if (qCounter == 0 && myStats.qCD > 0) yield break;
         if (timeSinceLastQ < 0.3125f) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
-        if (myStats.buffManager.HasImmobilize) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
@@ -96,7 +95,6 @@ public class Riven : ChampionCombat
     public override IEnumerator ExecuteE()
     {
         if (!CheckForAbilityControl(checksE)) yield break;
-        if (myStats.buffManager.HasImmobilize) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);

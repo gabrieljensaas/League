@@ -8,30 +8,32 @@ public class Ashe : ChampionCombat
         combatPrio = new string[] { "Q", "A", "W", "R", "" };
 
         checksQ.Add(new CheckIfCasting(this));
-        checksQ.Add(new CheckAsheQ(this));
-        targetCombat.checksQ.Add(new CheckIfStunned(targetCombat));
         checksW.Add(new CheckIfCasting(this));
-        targetCombat.checksW.Add(new CheckIfStunned(targetCombat));
         checksE.Add(new CheckIfCasting(this));
-        targetCombat.checksE.Add(new CheckIfStunned(targetCombat));
         checksR.Add(new CheckIfCasting(this));
-        targetCombat.checksR.Add(new CheckIfStunned(targetCombat));
         checksA.Add(new CheckIfCasting(this));
+        checksQ.Add(new CheckAsheQ(this));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksA.Add(new CheckIfDisarmed(this));
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
         checksE.Add(new CheckCD(this, "E"));
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
-        targetCombat.checksA.Add(new CheckIfStunned(targetCombat));
         autoattackcheck = new AsheAACheck(this);
         targetCombat.checkTakeDamageAA.Add(new CheckIfFrosted(targetCombat));
-        myUI.combatPriority.text = string.Join(", ", combatPrio);
+
 
         qKeys.Add("Bonus Attack Speed");
         qKeys.Add("Total Damage Per Flurry");
         wKeys.Add("Physical Damage");
         rKeys.Add("Magic Damage");
 
+        myUI.combatPriority.text = string.Join(", ", combatPrio);
         base.UpdatePriorityAndChecks();
     }
 

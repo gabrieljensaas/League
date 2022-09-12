@@ -8,7 +8,7 @@ public class CheckIfDisarmed : Check
 
     public override bool Control()
     {
-        return !combat.myStats.buffManager.buffs.ContainsKey("Disarm");
+        return !combat.myStats.buffManager.HasDisarm;
     }
     public override float Control(float damage)
     {

@@ -1,14 +1,14 @@
 using Simulator.Combat;
 
-public class CheckIfAirborne : Check
+public class CheckIfDisrupt : Check
 {
-    public CheckIfAirborne(ChampionCombat ccombat) : base(ccombat)
+    public CheckIfDisrupt(ChampionCombat ccombat) : base(ccombat)
     {
     }
 
     public override bool Control()
     {
-        return !combat.myStats.buffManager.buffs.ContainsKey("Airborne");
+        return !combat.myStats.buffManager.HasDisrupt;
     }
     public override float Control(float damage)
     {

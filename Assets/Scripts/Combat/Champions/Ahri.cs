@@ -19,6 +19,13 @@ public class Ahri : ChampionCombat
         checksE.Add(new CheckIfCasting(this));
         checksR.Add(new CheckIfCasting(this));
         checksA.Add(new CheckIfCasting(this));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksR.Add(new CheckIfImmobilize(this));
+        checksA.Add(new CheckIfDisarmed(this));
 
         qKeys.Add("Damage Per Pass");
         wKeys.Add("Magic Damage");

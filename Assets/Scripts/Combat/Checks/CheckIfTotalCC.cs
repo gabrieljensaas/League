@@ -1,14 +1,14 @@
 using Simulator.Combat;
 
-public class CheckIfRooted : Check
+public class CheckIfTotalCC : Check
 {
-    public CheckIfRooted(ChampionCombat ccombat) : base(ccombat)
+    public CheckIfTotalCC(ChampionCombat ccombat) : base(ccombat)
     {
     }
 
     public override bool Control()
     {
-        return !combat.myStats.buffManager.buffs.ContainsKey("Root");
+        return !combat.myStats.buffManager.HasTotalCC;
     }
     public override float Control(float damage)
     {

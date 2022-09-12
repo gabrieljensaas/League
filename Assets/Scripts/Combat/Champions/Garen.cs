@@ -13,10 +13,12 @@ public class Garen : ChampionCombat
         checksE.Add(new CheckIfCasting(this));
         checksR.Add(new CheckIfCasting(this));
         checksA.Add(new CheckIfCasting(this));
-        targetCombat.checksQ.Add(new CheckIfSilenced(targetCombat));
-        targetCombat.checksW.Add(new CheckIfSilenced(targetCombat));
-        targetCombat.checksE.Add(new CheckIfSilenced(targetCombat));
-        targetCombat.checksR.Add(new CheckIfSilenced(targetCombat));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksA.Add(new CheckIfDisarmed(this));
         checksA.Add(new CheckIfCantAA(this));
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
