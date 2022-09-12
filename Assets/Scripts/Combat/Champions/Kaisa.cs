@@ -25,6 +25,13 @@ public class Kaisa : ChampionCombat
         targetCombat.checksR.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksA.Add(new CheckIfEnemyTargetable(targetCombat));
         checksR.Add(new CheckIfEnemyHasPlasma(this));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksR.Add(new CheckIfImmobilize(this));
+        checksA.Add(new CheckIfDisarmed(this));
 
         qKeys.Add("Total Evolved Single-Target Damage");
         wKeys.Add("Magic Damage");
@@ -84,7 +91,6 @@ public class Kaisa : ChampionCombat
     public override IEnumerator ExecuteR()
     {
         if (!CheckForAbilityControl(checksR)) yield break;
-        if (myStats.buffManager.HasImmobilize) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         myStats.buffManager.shields.Add(myStats.rSkill[0].basic.name, new ShieldBuff(2, myStats.buffManager, myStats.rSkill[0].basic.name, myStats.rSkill[0].UseSkill(4, rKeys[0], myStats, targetStats), myStats.rSkill[0].basic.name));

@@ -10,20 +10,21 @@ public class Annie : ChampionCombat
 
         annieP = new CheckAnnieP(this);
         checksQ.Add(new CheckIfCasting(this));
-        targetCombat.checksQ.Add(new CheckIfStunned(targetCombat));
         checksW.Add(new CheckIfCasting(this));
-        targetCombat.checksW.Add(new CheckIfStunned(targetCombat));
         checksE.Add(new CheckIfCasting(this));
-        targetCombat.checksE.Add(new CheckIfStunned(targetCombat));
         checksR.Add(new CheckIfCasting(this));
-        targetCombat.checksR.Add(new CheckIfStunned(targetCombat));
         checksA.Add(new CheckIfCasting(this));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksA.Add(new CheckIfDisarmed(this));
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
         checksE.Add(new CheckCD(this, "E"));
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
-        targetCombat.checksA.Add(new CheckIfStunned(targetCombat));
         checkTakeDamageAbility.Add(new CheckShield(this));
         checkTakeDamageAA.Add(new CheckMoltenShield(this));
         checkTakeDamageAA.Add(new CheckShield(this));

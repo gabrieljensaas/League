@@ -37,6 +37,13 @@ public class MasterYi : ChampionCombat
         checkTakeDamageAbility.Add(new CheckDamageReductionPercent(this));
         checkTakeDamageAA.Add(new CheckIfTargetable(this));
         checkTakeDamageAA.Add(new CheckDamageReductionPercent(this));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksQ.Add(new CheckIfImmobilize(this));
+        checksA.Add(new CheckIfDisarmed(this));
 
         qKeys.Add("Physical Damage");
         qKeys.Add("Reduced Damage per hit");
@@ -52,7 +59,6 @@ public class MasterYi : ChampionCombat
     public override IEnumerator ExecuteQ()
     {
         if (!CheckForAbilityControl(checksQ)) yield break;
-        if (myStats.buffManager.HasImmobilize) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("Untargetable", new UntargetableBuff(0.858f, myStats.buffManager, myStats.qSkill[0].basic.name));

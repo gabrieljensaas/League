@@ -32,6 +32,12 @@ public class Xayah : ChampionCombat
         targetCombat.checksE.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksR.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksA.Add(new CheckIfEnemyTargetable(targetCombat));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksA.Add(new CheckIfDisarmed(this));
 
         qKeys.Add("Maximum Total Damage");
         wKeys.Add("Bonus Attack Speed");

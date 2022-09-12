@@ -20,11 +20,12 @@ public class Draven : ChampionCombat
         checksR.Add(new CheckIfCasting(this));
         checksR.Add(new CheckIfExecutes(this, "R", pStack, 2));
         checksA.Add(new CheckIfCasting(this));
-        targetCombat.checksQ.Add(new CheckIfAirborne(targetCombat));
-        targetCombat.checksW.Add(new CheckIfAirborne(targetCombat));
-        targetCombat.checksE.Add(new CheckIfAirborne(targetCombat));
-        targetCombat.checksR.Add(new CheckIfAirborne(targetCombat));
-        targetCombat.checksA.Add(new CheckIfAirborne(targetCombat));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksA.Add(new CheckIfDisarmed(this));
         autoattackcheck = new DravenAACheck(this, this);
 
         qKeys.Add("Bonus Physical Damage");

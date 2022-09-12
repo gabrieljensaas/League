@@ -24,6 +24,12 @@ public class MissFortune : ChampionCombat
         checksE.Add(new CheckIfChanneling(this));
         checksR.Add(new CheckIfChanneling(this));
         checksA.Add(new CheckIfChanneling(this));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksA.Add(new CheckIfDisarmed(this));
 
         qKeys.Add("Physical Damage");
         wKeys.Add("Bonus Attack Speed");

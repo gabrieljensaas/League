@@ -29,11 +29,12 @@ public class Jhin : ChampionCombat
         checksR.Add(new CheckIfChanneling(this));
         checksA.Add(new CheckIfChanneling(this));
 
-        targetCombat.checksQ.Add(new CheckIfRooted(targetCombat));
-        targetCombat.checksW.Add(new CheckIfRooted(targetCombat));
-        targetCombat.checksE.Add(new CheckIfRooted(targetCombat));
-        targetCombat.checksR.Add(new CheckIfRooted(targetCombat));
-        targetCombat.checksA.Add(new CheckIfRooted(targetCombat));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksA.Add(new CheckIfDisarmed(this));
 
         qKeys.Add("Minimum Physical Damage");
         wKeys.Add("Physical Damage");

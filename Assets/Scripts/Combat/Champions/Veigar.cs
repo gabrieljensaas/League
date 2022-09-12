@@ -19,11 +19,12 @@ public class Veigar : ChampionCombat
         checksR.Add(new CheckIfCasting(this));
         checksA.Add(new CheckIfCasting(this));
 
-        targetCombat.checksQ.Add(new CheckIfStunned(this));
-        targetCombat.checksW.Add(new CheckIfStunned(this));
-        targetCombat.checksE.Add(new CheckIfStunned(this));
-        targetCombat.checksR.Add(new CheckIfStunned(this));
-        targetCombat.checksA.Add(new CheckIfStunned(this));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksA.Add(new CheckIfDisarmed(this));
 
         qKeys.Add("Magic Damage");
         wKeys.Add("Magic Damage");

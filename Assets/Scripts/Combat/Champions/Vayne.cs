@@ -24,11 +24,13 @@ public class Vayne : ChampionCombat
         targetCombat.checksE.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksR.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksA.Add(new CheckIfEnemyTargetable(targetCombat));
-        targetCombat.checksQ.Add(new CheckIfStunned(targetCombat));
-        targetCombat.checksW.Add(new CheckIfStunned(targetCombat));
-        targetCombat.checksE.Add(new CheckIfStunned(targetCombat));
-        targetCombat.checksR.Add(new CheckIfStunned(targetCombat));
-        targetCombat.checksA.Add(new CheckIfStunned(targetCombat));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksQ.Add(new CheckIfImmobilize(this));
+        checksA.Add(new CheckIfDisarmed(this));
 
         qKeys.Add("Bonus Physical Damage");
         wKeys.Add("Bonus True Damage");
@@ -44,7 +46,6 @@ public class Vayne : ChampionCombat
     public override IEnumerator ExecuteQ()
     {
         if (!CheckForAbilityControl(checksQ)) yield break;
-        if (myStats.buffManager.HasImmobilize) yield break;
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("Tumble", new TumbleBuff(7, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats)));
         if (empoweredTumbleCheck.Control())

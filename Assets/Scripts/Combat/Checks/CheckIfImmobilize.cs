@@ -1,14 +1,14 @@
 using Simulator.Combat;
 
-public class CheckIfSilenced : Check
+public class CheckIfImmobilize : Check
 {
-    public CheckIfSilenced(ChampionCombat ccombat) : base(ccombat)
+    public CheckIfImmobilize(ChampionCombat ccombat) : base(ccombat)
     {
     }
 
     public override bool Control()
     {
-        return !combat.myStats.buffManager.buffs.ContainsKey("Silence");
+        return !combat.myStats.buffManager.HasImmobilize;
     }
     public override float Control(float damage)
     {

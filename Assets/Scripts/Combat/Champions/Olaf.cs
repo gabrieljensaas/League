@@ -25,6 +25,12 @@ public class Olaf : ChampionCombat
         autoattackcheck = new OlafAACheck(this);
         checkTakeDamageAbility.Add(new CheckOlafPassive(this));
         checkTakeDamageAA.Add(new CheckOlafPassive(this));
+        checksQ.Add(new CheckIfDisrupt(this));
+        checksW.Add(new CheckIfDisrupt(this));
+        checksE.Add(new CheckIfDisrupt(this));
+        checksR.Add(new CheckIfDisrupt(this));
+        checksA.Add(new CheckIfTotalCC(this));
+        checksA.Add(new CheckIfDisarmed(this));
 
         qKeys.Add("Physical Damage");
         wKeys.Add("Bonus Attack Speed");
