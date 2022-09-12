@@ -1,5 +1,5 @@
-using System.Collections;
 using Simulator.Combat;
+using System.Collections;
 using UnityEngine;
 
 public class Jhin : ChampionCombat
@@ -62,7 +62,7 @@ public class Jhin : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        if(whisperShot == 4)
+        if (whisperShot == 4)
         {
             whisperShot = 0;
 
@@ -106,7 +106,7 @@ public class Jhin : ChampionCombat
 
     public override IEnumerator ExecuteE()
     {
-        if(lotusTrapCharge > 0)
+        if (lotusTrapCharge > 0)
         {
             if (!CheckForAbilityControl(checksE)) yield break;
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
@@ -130,7 +130,7 @@ public class Jhin : ChampionCombat
     {
         if (myStats.wCD > 0) return;
 
-        if(targetStats.buffManager.buffs.TryGetValue("Deadly Flourish Mark", out Buff deadlyFlourishMark))
+        if (targetStats.buffManager.buffs.TryGetValue("Deadly Flourish Mark", out Buff deadlyFlourishMark))
             deadlyFlourishMark.duration = 4;
         else
             targetStats.buffManager.buffs.Add("Deadly Flourish Mark", new DeadlyFlourishBuff(4, targetStats.buffManager, skillName));
@@ -145,9 +145,9 @@ public class Jhin : ChampionCombat
     private IEnumerator CurtainCall()
     {
         int shots = 4;
-        while(shots > 0)
+        while (shots > 0)
         {
-            if(shots == 1)
+            if (shots == 1)
                 UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 4, rKeys[0]); //TODO: change to crit when Recep pushes new stuff
             else
                 UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 4, rKeys[0]);

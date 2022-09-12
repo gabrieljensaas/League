@@ -1,5 +1,5 @@
-using System.Collections;
 using Simulator.Combat;
+using System.Collections;
 
 public class Tristana : ChampionCombat
 {

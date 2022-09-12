@@ -32,7 +32,7 @@ public class CheckIfExecutes : Check
             case "Riven":
                 return combat.myStats.rSkill[1].UseSkill(2, combat.rKeys[0], combat.myStats, combat.targetStats) * (1 + ((combat.targetStats.maxHealth - combat.targetStats.currentHealth) / combat.targetStats.maxHealth) > 0.75f ? 2 : (combat.targetStats.maxHealth - combat.targetStats.currentHealth) * 2.667f) >= combat.targetStats.currentHealth;
             case "Kalista":
-                if(combat.targetStats.buffManager.buffs.TryGetValue("Rend", out Buff value))
+                if (combat.targetStats.buffManager.buffs.TryGetValue("Rend", out Buff value))
                 {
                     return combat.myStats.eSkill[0].UseSkill(4, combat.eKeys[0], combat.myStats, combat.targetStats) + ((value.value - 1) * combat.myStats.eSkill[0].UseSkill(4, combat.eKeys[1], combat.myStats, combat.targetStats)) >= combat.targetStats.currentHealth;
                 }

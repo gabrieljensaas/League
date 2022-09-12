@@ -82,7 +82,7 @@ public class Lucian : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(0.1f));
         AutoAttack();
         yield return new WaitForSeconds(0.25f);
-        if(myStats.buffManager.buffs.TryGetValue("Lightslinger", out Buff value))
+        if (myStats.buffManager.buffs.TryGetValue("Lightslinger", out Buff value))
         {
             AutoAttack(passiveMultiplier);
             myStats.eCD -= 2f;

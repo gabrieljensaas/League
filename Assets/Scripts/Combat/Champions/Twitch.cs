@@ -1,5 +1,5 @@
-using System.Collections;
 using Simulator.Combat;
+using System.Collections;
 
 public class Twitch : ChampionCombat
 {
@@ -57,7 +57,7 @@ public class Twitch : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
 
         //TODO: Pass 35% Bonus AD to contaminate
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats) +  ((int)targetStats.buffManager.buffs["Deadly Venom"]?.value * myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats)), myStats.eSkill[0].basic.name, SkillDamageType.Spell);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats) + ((int)targetStats.buffManager.buffs["Deadly Venom"]?.value * myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats)), myStats.eSkill[0].basic.name, SkillDamageType.Spell);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
@@ -76,7 +76,7 @@ public class Twitch : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
 
-        if(myStats.buffManager.buffs.TryGetValue("Ambush", out Buff ambush))
+        if (myStats.buffManager.buffs.TryGetValue("Ambush", out Buff ambush))
             ambush.Kill();
 
         AutoAttack();
@@ -87,7 +87,7 @@ public class Twitch : ChampionCombat
     {
         if (myStats.buffManager.buffs.TryGetValue("Deadly Venom", out Buff deadlyVenom))
         {
-            if(deadlyVenom.value == 6)
+            if (deadlyVenom.value == 6)
             {
                 deadlyVenom.duration = 6;
             }

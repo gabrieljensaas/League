@@ -46,7 +46,7 @@ public class Vayne : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
         if (myStats.buffManager.HasImmobilize) yield break;
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("Tumble" , new TumbleBuff(7, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats)));
+        myStats.buffManager.buffs.Add("Tumble", new TumbleBuff(7, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats)));
         if (empoweredTumbleCheck.Control())
         {
             myStats.qCD = myStats.qSkill[0].basic.coolDown[4] * myStats.rSkill[0].UseSkill(2, rKeys[2], myStats, targetStats);

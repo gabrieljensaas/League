@@ -1,8 +1,5 @@
 using Simulator.Combat;
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.ConstrainedExecution;
-using static UnityEngine.GraphicsBuffer;
 
 public class Ashe : ChampionCombat
 {

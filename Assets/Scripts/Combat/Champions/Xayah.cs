@@ -1,5 +1,4 @@
 using Simulator.Combat;
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -69,7 +68,7 @@ public class Xayah : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats) * (feathersInGround - (FindMultiplier(feathersInGround - 1) * 0.05f)) , myStats.eSkill[0].basic.name, SkillDamageType.Phyiscal);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats) * (feathersInGround - (FindMultiplier(feathersInGround - 1) * 0.05f)), myStats.eSkill[0].basic.name, SkillDamageType.Phyiscal);
         StartCoroutine(PulledFeathers());
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
@@ -103,11 +102,11 @@ public class Xayah : ChampionCombat
     {
         feathersInGround++;
         yield return new WaitForSeconds(6f);
-        if(!pulledFeathers) feathersInGround--;
+        if (!pulledFeathers) feathersInGround--;
     }
     public IEnumerator FeatherAtHand()
     {
-        feathersAtHand = feathersAtHand > 2 ?  5 : feathersAtHand + 3;
+        feathersAtHand = feathersAtHand > 2 ? 5 : feathersAtHand + 3;
         yield return new WaitForSeconds(8f);
         feathersAtHand = 0;
     }
@@ -115,7 +114,7 @@ public class Xayah : ChampionCombat
     public int FindMultiplier(int featherCount)
     {
         int multiplier = 0;
-        while(featherCount > 0)
+        while (featherCount > 0)
         {
             multiplier += featherCount;
             featherCount--;

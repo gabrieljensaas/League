@@ -15,7 +15,7 @@ public class VenomCaskBuff : Buff
     {
         timer += Time.deltaTime;
 
-        if(timer >= 1)
+        if (timer >= 1)
         {
             if (manager.buffs.TryGetValue("Deadly Venom", out Buff deadlyVenom))
             {

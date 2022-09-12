@@ -1,4 +1,3 @@
-using Simulator.Combat;
 using System.Collections.Generic;
 
 [System.Serializable]
