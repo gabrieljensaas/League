@@ -147,4 +147,6 @@ public class Constants : MonoBehaviour
             _ => 50
         };
     }
+
+    public static float GetLuxIlluminationByLevel(int level, float AP) => 10 + (10 * level) + AP;
 }

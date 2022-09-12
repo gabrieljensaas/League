@@ -122,7 +122,7 @@ public class Jhin : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(10, myStats.buffManager, myStats.rSkill[0].basic.name, "Curtain Call"));
-
+        yield return StartCoroutine(CurtainCall());
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
