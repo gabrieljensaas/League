@@ -27,6 +27,9 @@ public class Lux : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
 
+        checkTakeDamageAbility.Add(new CheckShield(this));
+        checkTakeDamageAA.Add(new CheckShield(this));
+
         qKeys.Add("Magic Damage");
         wKeys.Add("Shield Strength");
         eKeys.Add("Magic Damage");

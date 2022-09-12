@@ -31,6 +31,8 @@ public class Olaf : ChampionCombat
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
+        checkTakeDamageAbility.Add(new CheckShield(this));
+        checkTakeDamageAA.Add(new CheckShield(this));
 
         qKeys.Add("Physical Damage");
         wKeys.Add("Bonus Attack Speed");

@@ -32,6 +32,8 @@ public class Riven : ChampionCombat
         checksE.Add(new CheckIfImmobilize(this));
         r1ExecuteCheck = new CheckIfExecutes(this, "R1");
         checksA.Add(new CheckIfDisarmed(this));
+        checkTakeDamageAbility.Add(new CheckShield(this));
+        checkTakeDamageAA.Add(new CheckShield(this));
 
         qKeys.Add("Physical Damage");
         wKeys.Add("Physical Damage");

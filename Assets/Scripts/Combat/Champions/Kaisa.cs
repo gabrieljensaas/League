@@ -32,6 +32,8 @@ public class Kaisa : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksR.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
+        checkTakeDamageAbility.Add(new CheckShield(this));
+        checkTakeDamageAA.Add(new CheckShield(this));
 
         qKeys.Add("Total Evolved Single-Target Damage");
         wKeys.Add("Magic Damage");
