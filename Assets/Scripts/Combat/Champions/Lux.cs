@@ -20,6 +20,12 @@ public class Lux : ChampionCombat
         checksR.Add(new CheckIfCasting(this));
         checksA.Add(new CheckIfCasting(this));
 
+        targetCombat.checksQ.Add(new CheckIfRooted(this));
+        targetCombat.checksW.Add(new CheckIfRooted(this));
+        targetCombat.checksE.Add(new CheckIfRooted(this));
+        targetCombat.checksR.Add(new CheckIfRooted(this));
+        targetCombat.checksA.Add(new CheckIfRooted(this));
+
         qKeys.Add("Magic Damage");
         wKeys.Add("Shield Strength");
         eKeys.Add("Magic Damage");
@@ -37,7 +43,7 @@ public class Lux : ChampionCombat
     public override IEnumerator ExecuteQ()
     {
         yield return base.ExecuteQ();
-        targetStats.buffManager.buffs.Add("Stun", new StunBuff(2f, targetStats.buffManager, myStats.qSkill[0].basic.name));
+        targetStats.buffManager.buffs.Add("Root", new RootBuff(2, targetStats.buffManager, myStats.qSkill[0].basic.name));
         CheckIllumination();
     }
 
