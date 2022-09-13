@@ -18,7 +18,7 @@ public class Constants : MonoBehaviour
     public static float[] VarusWPassiveFlatBonusBySkillLevel = { 7, 12, 17, 22, 27 };
     public static float[] LucianQCastTimeByLevel = { 0.4f, 0.39f, 0.38f, 0.37f, 0.36f, 0.36f, 0.35f, 0.34f, 0.33f, 0.32f, 0.31f, 0.3f, 0.29f, 0.29f, 0.28f, 0.27f, 0.26f, 0.25f };
     public static float[] KogMawQReductionBySkillLevel = { 23, 25, 27, 29, 31 };
-
+    public static float[] KatarinaPassiveFlatDamageByLevel = { 68, 72, 77, 82, 89, 96, 103, 112, 121, 131, 142, 154, 166, 180, 194, 208, 224, 240 };
     public static float GetLucianPassiveMultiplier(int level)
     {
         if (level < 7) return 0.5f;
@@ -150,11 +150,24 @@ public class Constants : MonoBehaviour
 
     public static float GetLuxIlluminationByLevel(int level, float AP) => 10 + (10 * level) + AP;
 
-    public static float GetKatPassiveDamageByLevel(int level , float AP)
+    public static float GetKatPassiveAPPercentByLevel(int level)
     {
         return level switch
         {
-
+            <  6 => 65,
+            < 11 => 75,
+            < 16 => 85,
+            _ => 95
+        };
+    }
+    public static float GetKatPassiveECooldownReduction(int level)
+    {
+        return level switch
+        {
+            <  6 => 78,
+            < 11 => 84,
+            < 16 => 90,
+            _ => 96
         };
     }
     

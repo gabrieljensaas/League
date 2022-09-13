@@ -43,7 +43,7 @@ public class SkillList : ScriptableObject
         return unit.flat[key][level] +
            (unit.percentAP[key][level] * myStats.AP * 0.01f) +
            (unit.percentAD[key][level] * myStats.AD * 0.01f) +
-           (unit.percentBonusAD[key][level] * myStats.bonusAD * 0.01f) +
+           ((unit.percentBonusAD[key][level] * myStats.bonusAD * 0.01f)) +
            (unit.percentBonusHP[key][level] * myStats.bonusHP * 0.01f) +
            (unit.percentTargetMissingHP[key][level] * (targetStats.maxHealth - targetStats.currentHealth) * 0.01f) +
            (unit.percent[key][level] * 0.01f) +

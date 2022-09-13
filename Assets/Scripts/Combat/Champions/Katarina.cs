@@ -1,5 +1,7 @@
 using System.Collections;
 using Simulator.Combat;
+using Unity.VisualScripting;
+using UnityEngine;
 
 public class Katarina : ChampionCombat
 {
@@ -32,32 +34,33 @@ public class Katarina : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
 
         qKeys.Add("Magic Damage");
-        wKeys.Add("Bonus Movement speed");
         eKeys.Add("Magic Damage");
-        rKeys.Add("Physical Damage Per Dagger");
-        rKeys.Add("Maximum Single-Target Magic Damage");
-        rKeys.Add("Maximum Single-Target Physical Damage");
-        rKeys.Add("Magic Damage Per Dagger");
-        rKeys.Add("On-Attack/On-Hit Effectiveness");
+        rKeys.Add("Physical Damage Per Dagger");  //0
+        rKeys.Add("Magic Damage Per Dagger");     //1
 
         base.UpdatePriorityAndChecks();
     }
 
     protected void Passive()
     {
-        UpdateAbilityTotalDamage(ref pSum,0, myStats.AD * Constants.GetKatPassiveDamageByLevel(myStats.level, myStats.AP), myStats.passiveSkill.skillName,SkillDamageType.Spell);
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[0];
+        UpdateAbilityTotalDamage(ref pSum,0, Constants.KatarinaPassiveFlatDamageByLevel[myStats.level] + (myStats.bonusAD * 0.6f) + (Constants.GetKatPassiveAPPercentByLevel(myStats.level) * 0.01f * myStats.AP), myStats.passiveSkill.skillName,SkillDamageType.Spell);
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[0] - (Constants.GetKatPassiveECooldownReduction(myStats.level) * 0.01f * myStats.eSkill[0].basic.coolDown[0]);
     }
 
     public override IEnumerator ExecuteQ()
     {
         yield return base.ExecuteQ();
+        yield return new WaitForSeconds(1f);
         Passive();
     }
 
     public override IEnumerator ExecuteW()
     {
-        yield return base.ExecuteW();
+        if (!CheckForAbilityControl(checksW)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        yield return new WaitForSeconds(1.25f);
         Passive();
     }
 
@@ -71,10 +74,29 @@ public class Katarina : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(10, myStats.buffManager, myStats.rSkill[0].basic.name, "Death Lotus"));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(2.5f, myStats.buffManager, myStats.rSkill[0].basic.name, "Death Lotus"));
+        StartCoroutine(DeathLotus(0));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
+
+    public IEnumerator DeathLotus(float time)
+    {
+        yield return new WaitForSeconds(0.166f);
+        time += 0.166f;
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+        if(targetStats.buffManager.buffs.TryGetValue(myStats.rSkill[0].basic.name, out Buff value))
+        {
+            value.duration = 3f;
+        }
+        else
+        {
+            targetStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new GrievousWoundsBuff(3, targetStats.buffManager, myStats.rSkill[0].basic.name, 40f, myStats.rSkill[0].basic.name));
+        }
+        if (time < 2.5f) StartCoroutine(DeathLotus(time));
+    }
+
+
     public override void StopChanneling(string uniqueKey)
     {
         StopCoroutine(uniqueKey);
