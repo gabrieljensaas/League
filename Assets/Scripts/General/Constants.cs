@@ -170,5 +170,15 @@ public class Constants : MonoBehaviour
             _ => 96
         };
     }
+
+    public static float GetZedPassivePercentByLevel(int level)
+    {
+        return level switch
+        {
+            < 7 => 6,
+            < 17 => 8,
+            _ => 10
+        };
+    }
     
 }
