@@ -3,6 +3,11 @@ using System.Collections;
 
 public class Tristana : ChampionCombat
 {
+    public static float GetTristanaExplosiveChargeByLevel(int level, int stack)
+    {
+        return 30 + (25 * level) + ((18 + (level * 3)) * stack);
+    }
+
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "W", "E", "Q", "A", "R" };

@@ -208,7 +208,7 @@ public class SimManager : MonoBehaviour
 
         if (champStats.name == "Aatrox")
         {
-            champStats.passiveSkill.coolDown = Constants.AatroxPassiveCooldownByLevelTable[champStats.level - 1];
+            champStats.passiveSkill.coolDown = Aatrox.AatroxPassiveCooldownByLevelTable[champStats.level - 1];
         }
 
         if (champStats.name == "Olaf")

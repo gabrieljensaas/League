@@ -12,7 +12,7 @@ public class RivenAACheck : Check
         {
             value.value--;
             value.duration = 6;
-            damage += Constants.GetRivenPassiveDamagePercentByLevel(combat.myStats.level) * combat.myStats.AD;
+            damage += Riven.GetRivenPassiveDamagePercentByLevel(combat.myStats.level) * combat.myStats.AD;
             if (value.value == 0) value.Kill();
         }
         return damage;

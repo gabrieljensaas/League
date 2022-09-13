@@ -14,7 +14,7 @@ public class HemorrhageBuff : Buff
 
     public override void Update()
     {
-        float damage = Constants.GetDariusHemorrhageByLevel(manager.combat.targetStats.level, (int)value);
+        float damage = Darius.GetDariusHemorrhageByLevel(manager.combat.targetStats.level, (int)value);
 
         _hemorrhageTimer += Time.deltaTime;
         if (_hemorrhageTimer >= 1.25f)

@@ -12,7 +12,7 @@ public class ZedAACheck : Check
     {
         if(!zed.usedPassive && combat.targetStats.currentHealth <= combat.targetStats.maxHealth * 0.5f)
         {
-            damage += Constants.GetZedPassivePercentByLevel(combat.myStats.level) * combat.targetStats.maxHealth * 0.01f;
+            damage += Zed.GetZedPassivePercentByLevel(combat.myStats.level) * combat.targetStats.maxHealth * 0.01f;
             zed.StartCoroutine(zed.ContempForTheWeak());
         }
         if (zed.markedForDeath) zed.markedRawDamage += damage;

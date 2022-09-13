@@ -5,6 +5,29 @@ using UnityEngine;
 
 public class Katarina : ChampionCombat
 {
+    public static float[] KatarinaPassiveFlatDamageByLevel = { 68, 72, 77, 82, 89, 96, 103, 112, 121, 131, 142, 154, 166, 180, 194, 208, 224, 240 };
+
+    public static float GetKatPassiveAPPercentByLevel(int level)
+    {
+        return level switch
+        {
+            < 6 => 65,
+            < 11 => 75,
+            < 16 => 85,
+            _ => 95
+        };
+    }
+    public static float GetKatPassiveECooldownReduction(int level)
+    {
+        return level switch
+        {
+            < 6 => 78,
+            < 11 => 84,
+            < 16 => 90,
+            _ => 96
+        };
+    }
+
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "Q", "W", "R", "A" };
@@ -44,8 +67,8 @@ public class Katarina : ChampionCombat
     public IEnumerator Voracity( float landingTime)
     {
         yield return new WaitForSeconds(landingTime);
-        UpdateAbilityTotalDamage(ref pSum,0, Constants.KatarinaPassiveFlatDamageByLevel[myStats.level] + (myStats.bonusAD * 0.6f) + (Constants.GetKatPassiveAPPercentByLevel(myStats.level) * 0.01f * myStats.AP), myStats.passiveSkill.skillName,SkillDamageType.Spell);
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[0] - (Constants.GetKatPassiveECooldownReduction(myStats.level) * 0.01f * myStats.eSkill[0].basic.coolDown[0]);
+        UpdateAbilityTotalDamage(ref pSum,0, KatarinaPassiveFlatDamageByLevel[myStats.level] + (myStats.bonusAD * 0.6f) + (GetKatPassiveAPPercentByLevel(myStats.level) * 0.01f * myStats.AP), myStats.passiveSkill.skillName,SkillDamageType.Spell);
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[0] - (GetKatPassiveECooldownReduction(myStats.level) * 0.01f * myStats.eSkill[0].basic.coolDown[0]);
     }
 
     public override IEnumerator ExecuteQ()

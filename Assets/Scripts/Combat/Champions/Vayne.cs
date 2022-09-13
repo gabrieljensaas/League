@@ -3,6 +3,10 @@ using System.Collections;
 
 public class Vayne : ChampionCombat
 {
+    public static float[] VayneRDurationBySkillLevel = { 8, 10, 12 };
+    public static float[] VayneRBonusADBySkillLevel = { 25, 40, 55 };
+    public static float[] VayneQCDReductionBySkillLevel = { 30, 40, 50 };
+
     CheckIfEmpoweredTumble empoweredTumbleCheck;
     public override void UpdatePriorityAndChecks()
     {

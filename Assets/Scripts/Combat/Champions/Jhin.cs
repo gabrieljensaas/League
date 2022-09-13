@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class Jhin : ChampionCombat
 {
+    public static float GetJhinInnateBonusADPercent(int level)
+    {
+        //TODO: account for crit and attack speed from items when implemented
+        return level switch
+        {
+            < 9 => 0.03f + 0.01f * level,
+            < 11 => 0.12f + 0.02f * (level - 9),
+            _ => 0.16f + 0.04f * (level - 11)
+        };
+    }
+
     private int lotusTrapCharge = 2;
     private int whisperShot = 0;
 
@@ -48,7 +59,7 @@ public class Jhin : ChampionCombat
     protected override void Start()
     {
         base.Start();
-        myStats.AD += myStats.baseAD * Constants.GetJhinInnateBonusADPercent(myStats.level);
+        myStats.AD += myStats.baseAD * GetJhinInnateBonusADPercent(myStats.level);
     }
 
     public override void CombatUpdate()

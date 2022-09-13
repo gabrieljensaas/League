@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Tibbers : Pet
 {
+    public static float[] TibbersEnragedAttackSpeeds = { 0.625f, 0.739f, 1.043f, 1.307f, 1.536f, 1.736f };
+
     private float spellblock;
     private float armor;
     private float attackSpeed;
@@ -33,7 +35,7 @@ public class Tibbers : Pet
         if (enrageTimer <= 0)
         {
             enrageAACounter = 0;
-            attackSpeed = Constants.TibbersEnragedAttackSpeeds[0]; //default value
+            attackSpeed = TibbersEnragedAttackSpeeds[0]; //default value
         }
     }
 
@@ -58,7 +60,7 @@ public class Tibbers : Pet
         owner.targetCombat.TakeDamage(damage, "Tibber's Auto Attack", SkillDamageType.Phyiscal, true);
         enrageAACounter--;
         if (enrageAACounter < 0) enrageAACounter = 0;
-        attackSpeed = Constants.TibbersEnragedAttackSpeeds[enrageAACounter];
+        attackSpeed = TibbersEnragedAttackSpeeds[enrageAACounter];
         aaTimer = 1f / attackSpeed;
     }
 }

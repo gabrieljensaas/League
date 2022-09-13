@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Lux : ChampionCombat
 {
+    public static float GetLuxIlluminationByLevel(int level, float AP) => 10 + (10 * level) + AP;
+
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "W", "Q", "R", "A" };
@@ -81,7 +83,7 @@ public class Lux : ChampionCombat
         if (targetCombat.myStats.buffManager.buffs.TryGetValue("Illumination", out Buff illumination))
         {
             illumination.Kill();
-            UpdateAbilityTotalDamage(ref pSum, 4, myStats.AD * Constants.GetLuxIlluminationByLevel(myStats.level, myStats.AP), myStats.passiveSkill.skillName, SkillDamageType.Spell);
+            UpdateAbilityTotalDamage(ref pSum, 4, myStats.AD * GetLuxIlluminationByLevel(myStats.level, myStats.AP), myStats.passiveSkill.skillName, SkillDamageType.Spell);
         }
     }
 }

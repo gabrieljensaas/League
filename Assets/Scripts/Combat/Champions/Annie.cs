@@ -3,6 +3,13 @@ using System.Collections;
 
 public class Annie : ChampionCombat
 {
+    public static float GetAnnieStunDurationByLevel(int level)
+    {
+        if (level < 6) return 1.25f;
+        if (level < 11) return 1.5f;
+        return 1.75f;
+    }
+
     private CheckAnnieP annieP;
     public override void UpdatePriorityAndChecks()
     {
@@ -101,7 +108,7 @@ public class Annie : ChampionCombat
     {
         if (annieP.Control())
         {
-            targetStats.buffManager.buffs.Add("Stun", new StunBuff(Constants.GetAnnieStunDurationByLevel(myStats.level), targetStats.buffManager, myStats.passiveSkill.skillName));
+            targetStats.buffManager.buffs.Add("Stun", new StunBuff(GetAnnieStunDurationByLevel(myStats.level), targetStats.buffManager, myStats.passiveSkill.skillName));
             myStats.buffManager.buffs.Remove("Pyromania");
         }
         else if (myStats.buffManager.buffs.TryGetValue("Pyromania", out Buff pyromania))

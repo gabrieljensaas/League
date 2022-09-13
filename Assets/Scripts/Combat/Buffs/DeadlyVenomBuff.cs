@@ -14,7 +14,7 @@ public class DeadlyVenomBuff : Buff
 
     public override void Update()
     {
-        float damage = Constants.GetTwitchDeadlyVenomByLevel(manager.combat.targetStats.level, (int)value); //TODO: add %ap damage
+        float damage = Twitch.GetTwitchDeadlyVenomByLevel(manager.combat.targetStats.level, (int)value); //TODO: add %ap damage
 
         _poisonTimer += Time.deltaTime;
         if (_poisonTimer >= 1.25f)

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Garen : ChampionCombat
 {
+    public static float[] GarenEDamageByLevelTable = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 8.25f, 8.5f, 8.75f, 9, 9.25f, 9.5f, 9.75f, 10f, 10.25f };
+
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "W", "Q", "A", "E" };

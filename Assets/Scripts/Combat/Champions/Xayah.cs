@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class Xayah : ChampionCombat
 {
+    public static float GetXayahPassiveADPercent(int level)
+    {
+        return level switch
+        {
+            < 7 => 30,
+            < 13 => 40,
+            _ => 50
+        };
+    }
+
     private int feathersInGround = 0;
     public int feathersAtHand = 0;
     private bool pulledFeathers = false;

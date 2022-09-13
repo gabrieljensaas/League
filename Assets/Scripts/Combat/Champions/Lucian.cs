@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class Lucian : ChampionCombat
 {
+    public static float[] LucianQCastTimeByLevel = { 0.4f, 0.39f, 0.38f, 0.37f, 0.36f, 0.36f, 0.35f, 0.34f, 0.33f, 0.32f, 0.31f, 0.3f, 0.29f, 0.29f, 0.28f, 0.27f, 0.26f, 0.25f };
+
+    public static float GetLucianPassiveMultiplier(int level)
+    {
+        if (level < 7) return 0.5f;
+        if (level < 13) return 0.55f;
+        return 0.6f;
+    }
+
     private float passiveMultiplier;
     public override void UpdatePriorityAndChecks()
     {
@@ -32,8 +41,8 @@ public class Lucian : ChampionCombat
         checksE.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
 
-        myStats.qSkill[0].basic.castTime = Constants.LucianQCastTimeByLevel[myStats.level]; //variable cast time
-        passiveMultiplier = Constants.GetLucianPassiveMultiplier(myStats.level);
+        myStats.qSkill[0].basic.castTime = LucianQCastTimeByLevel[myStats.level]; //variable cast time
+        passiveMultiplier = GetLucianPassiveMultiplier(myStats.level);
 
         qKeys.Add("Physical Damage");
         wKeys.Add("Magic Damage");

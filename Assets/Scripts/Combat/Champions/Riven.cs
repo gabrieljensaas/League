@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class Riven : ChampionCombat
 {
+    public static float GetRivenPassiveDamagePercentByLevel(int level)
+    {
+        if (level == 1) return 30f;
+        if (level < 7) return 36f;
+        if (level < 10) return 42f;
+        if (level < 13) return 48f;
+        if (level < 16) return 54f;
+        return 60f;
+    }
+
     private int qCounter = 0;
     private float timeSinceLastQ = 0f;
     private float timeSinceR = 0f;

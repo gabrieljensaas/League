@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class Caitlyn : ChampionCombat
 {
+    public static float[] CaitlynTrapRechargeBySkillLevel = { 30, 24, 19, 15, 12 };
+    public static float[] CaitlynMaxTrapBySkillLevel = { 3, 3, 4, 4, 5 };
+
+    public static float GetCaitlynPassivePercent(int level)
+    {
+        if (level < 7) return 60;
+        if (level < 13) return 90;
+        return 120;
+    }
+
     private int wStack;
     private int wStackMax;
     private float wCD = 0;
@@ -47,7 +57,7 @@ public class Caitlyn : ChampionCombat
         base.CombatUpdate();
 
         wCD += Time.deltaTime;
-        if (wCD > Constants.CaitlynTrapRechargeBySkillLevel[4])
+        if (wCD > CaitlynTrapRechargeBySkillLevel[4])
         {
             if (wStack != wStackMax)
             {

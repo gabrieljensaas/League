@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class KogMaw : ChampionCombat
 {
+    public static float[] KogMawQReductionBySkillLevel = { 23, 25, 27, 29, 31 };
+
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "W", "E", "Q", "A" };

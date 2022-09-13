@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MasterYi : ChampionCombat
 {
+    public static float[] MasterYiWDamageReductionPercents = { 45f, 47.5f, 50f, 52.5f, 55f };
+
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "E", "Q", "W", "A" };

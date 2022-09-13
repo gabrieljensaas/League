@@ -4,6 +4,20 @@ using UnityEngine;
 
 public class Varus : ChampionCombat
 {
+    public static float[] VarusWPassiveFlatBonusBySkillLevel = { 7, 12, 17, 22, 27 };
+
+    public static float GetVarusWActiveTargetsMissingHealthMultiplier(int level)
+    {
+        return level switch
+        {
+            < 4 => 0.09f,
+            < 7 => 0.12f,
+            < 10 => 0.15f,
+            < 13 => 0.18f,
+            _ => 0.21f
+        };
+    }
+
     private bool qEmpowered;
     public override void UpdatePriorityAndChecks()
     {
@@ -93,7 +107,7 @@ public class Varus : ChampionCombat
         UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         if (qEmpowered)
         {
-            targetCombat.TakeDamage((targetStats.maxHealth - targetStats.currentHealth) * Constants.GetVarusWActiveTargetsMissingHealthMultiplier(myStats.level), myStats.wSkill[0].basic.name, SkillDamageType.Spell);
+            targetCombat.TakeDamage((targetStats.maxHealth - targetStats.currentHealth) * GetVarusWActiveTargetsMissingHealthMultiplier(myStats.level), myStats.wSkill[0].basic.name, SkillDamageType.Spell);
             qEmpowered = false;
         }
         CheckBlightStacks(1.5f);

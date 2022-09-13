@@ -4,6 +4,19 @@ using UnityEngine;
 
 public class MissFortune : ChampionCombat
 {
+    public static float[] MissFortuneRWaveIntervalTimeBySkillLevel = { 0.2036f, 0.1781f, 0.1583f };
+    public static float[] MissFortuneRWaveCountBySkillLevel = { 14, 16, 18 };
+
+    public static float GetMissfortunePassiveADMultiplier(int level)
+    {
+        if (level < 4) return 0.5f;
+        if (level < 7) return 0.6f;
+        if (level < 9) return 0.7f;
+        if (level < 11) return 0.8f;
+        if (level < 13) return 0.9f;
+        return 1;
+    }
+
     private bool loveTapped = false;
     public override void UpdatePriorityAndChecks()
     {
@@ -88,7 +101,7 @@ public class MissFortune : ChampionCombat
     }
     private void LoveTap()
     {
-        UpdateAbilityTotalDamage(ref pSum, 4, myStats.AD * Constants.GetMissfortunePassiveADMultiplier(myStats.level), myStats.passiveSkill.skillName, SkillDamageType.Phyiscal);
+        UpdateAbilityTotalDamage(ref pSum, 4, myStats.AD * GetMissfortunePassiveADMultiplier(myStats.level), myStats.passiveSkill.skillName, SkillDamageType.Phyiscal);
         myStats.wCD -= 2;
         loveTapped = true;
     }

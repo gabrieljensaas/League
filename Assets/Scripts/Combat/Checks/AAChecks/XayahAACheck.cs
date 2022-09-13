@@ -13,7 +13,7 @@ public class XayahAACheck : Check
         if (combat.myStats.buffManager.buffs.ContainsKey(combat.myStats.wSkill[0].basic.name)) damage *= 1.2f;
         if (xayah.feathersAtHand > 0)
         {
-            damage += Constants.GetXayahPassiveADPercent(combat.myStats.level) * 0.01f * combat.myStats.AD;
+            damage += Xayah.GetXayahPassiveADPercent(combat.myStats.level) * 0.01f * combat.myStats.AD;
             xayah.StartCoroutine(xayah.FeatherInGround());
         }
         return damage;

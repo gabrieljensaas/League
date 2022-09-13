@@ -5,6 +5,16 @@ using UnityEngine;
 
 public class Zed : ChampionCombat
 {
+    public static float GetZedPassivePercentByLevel(int level)
+    {
+        return level switch
+        {
+            < 7 => 6,
+            < 17 => 8,
+            _ => 10
+        };
+    }
+
     public bool usedPassive = false;
     public int shadowCount = 0;
     public bool markedForDeath = false;

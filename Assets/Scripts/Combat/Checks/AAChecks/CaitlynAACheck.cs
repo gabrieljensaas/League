@@ -10,14 +10,14 @@ public class CaitlynAACheck : Check
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("NetHeadshot", out Buff v))
         {
-            damage += (Constants.GetCaitlynPassivePercent(combat.myStats.level) + 0) * combat.myStats.AD;                  //critical chance 0 for now since no item added
+            damage += (Caitlyn.GetCaitlynPassivePercent(combat.myStats.level) + 0) * combat.myStats.AD;                  //critical chance 0 for now since no item added
             v.Kill();
             return damage;
         }
 
         if (combat.myStats.buffManager.buffs.TryGetValue("TrapHeadshot", out Buff val))
         {
-            damage += ((Constants.GetCaitlynPassivePercent(combat.myStats.level) + 0) * combat.myStats.AD) + combat.myStats.wSkill[0].UseSkill(4, combat.wKeys[1], combat.myStats, combat.targetStats);                  //critical chance 0 for now since no item added
+            damage += ((Caitlyn.GetCaitlynPassivePercent(combat.myStats.level) + 0) * combat.myStats.AD) + combat.myStats.wSkill[0].UseSkill(4, combat.wKeys[1], combat.myStats, combat.targetStats);                  //critical chance 0 for now since no item added
             val.Kill();
             return damage;
         }
@@ -26,7 +26,7 @@ public class CaitlynAACheck : Check
         {
             if (value.value == 6)
             {
-                damage += (Constants.GetCaitlynPassivePercent(combat.myStats.level) + 0) * combat.myStats.AD;                   //critical chance 0 for now since no item added
+                damage += (Caitlyn.GetCaitlynPassivePercent(combat.myStats.level) + 0) * combat.myStats.AD;                   //critical chance 0 for now since no item added
                 value.Kill();
             }
             else

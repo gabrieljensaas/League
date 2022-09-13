@@ -4,6 +4,27 @@ using UnityEngine;
 
 public class Kaisa : ChampionCombat
 {
+    public static float GetKaisaECastTime(float bonusAS)
+    {
+        if (bonusAS > 100) return 0.6f;
+        return 1.2f - (0.006f * bonusAS);
+    }
+
+    public static float GetKaisaPassiveDamageByLevel(int level, int plasmaStacks, float AP)
+    {
+        if (level < 3) return 5 + (1 * plasmaStacks) + (AP * (15 + (2.5f * plasmaStacks) / 100));
+        if (level < 4) return 8 + (1 * plasmaStacks) + (AP * (15 + (2.5f * plasmaStacks) / 100));
+        if (level < 6) return 8 + (3.75f * plasmaStacks) + (AP * (15 + (2.5f * plasmaStacks) / 100));
+        if (level < 8) return 11 + (3.75f * plasmaStacks) + (AP * (15 + (2.5f * plasmaStacks) / 100));
+        if (level < 9) return 11 + (6.5f * plasmaStacks) + (AP * (15 + (2.5f * plasmaStacks) / 100));
+        if (level < 11) return 14 + (6.5f * plasmaStacks) + (AP * (15 + (2.5f * plasmaStacks) / 100));
+        if (level < 12) return 17 + (6.5f * plasmaStacks) + (AP * (15 + (2.5f * plasmaStacks) / 100));
+        if (level < 14) return 17 + (9.25f * plasmaStacks) + (AP * (15 + (2.5f * plasmaStacks) / 100));
+        if (level < 16) return 20 + (9.25f * plasmaStacks) + (AP * (15 + (2.5f * plasmaStacks) / 100));
+        if (level < 17) return 20 + (9.25f * plasmaStacks) + (AP * (15 + (2.5f * plasmaStacks) / 100));
+        return 23 + (12f * plasmaStacks) + (AP * (15 + (2.5f * plasmaStacks) / 100));
+    }
+
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "E", "W", "Q", "A" };
@@ -82,7 +103,7 @@ public class Kaisa : ChampionCombat
     {
         if (!CheckForAbilityControl(checksE)) yield break;
 
-        myStats.eSkill[0].basic.castTime = Constants.GetKaisaECastTime(myStats.bonusAS);
+        myStats.eSkill[0].basic.castTime = GetKaisaECastTime(myStats.bonusAS);
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("Untargetable", new UntargetableBuff(0.5f, myStats.buffManager, myStats.eSkill[0].basic.name));

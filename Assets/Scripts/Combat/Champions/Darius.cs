@@ -3,6 +3,22 @@ using System.Collections;
 
 public class Darius : ChampionCombat
 {
+    public static int GetDariusNoxianMightByLevel(int level)
+    {
+        if (level < 10) return 30 + (5 * (level - 1));
+        else if (level < 13) return 75 + (10 * (level - 10));
+        else return 105 + (25 * (level - 13));
+    }
+
+    public static float GetDariusHemorrhageByLevel(int level, int stack) => (3f * stack) + (0.25f * stack * level);
+    public static float GetDariusArmorReductionByLevel(int level) => 10 + (level * 5);
+    public static float GetDariusNoxianGuillotineByLevel(int level, int stack)
+    {
+        if (level < 6) return 125 + (stack * .2f * 125);
+        else if (level < 11) return 250 + (stack * .2f * 250);
+        else return 375 + (stack * .2f * 375);
+    }
+
     private CheckDariusP dariusP;
 
     public override void UpdatePriorityAndChecks()
@@ -99,7 +115,7 @@ public class Darius : ChampionCombat
         }
         else if (dariusP.Control())
         {
-            myStats.buffManager.buffs.Add("Noxian Might", new AttackDamageBuff(5, myStats.buffManager, "Noxian Might", Constants.GetDariusNoxianMightByLevel(myStats.level), "Noxian Might"));
+            myStats.buffManager.buffs.Add("Noxian Might", new AttackDamageBuff(5, myStats.buffManager, "Noxian Might", GetDariusNoxianMightByLevel(myStats.level), "Noxian Might"));
             targetStats.buffManager.buffs["Hemorrhage"].duration = 5;
         }
         else if (targetStats.buffManager.buffs.TryGetValue("Hemorrhage", out Buff hemorrhage))

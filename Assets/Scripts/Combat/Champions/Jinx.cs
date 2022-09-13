@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Jinx : ChampionCombat
 {
+    public static float GetJinxWCastTime(float bonusAS)
+    {
+        if (bonusAS <= 250) return 0.6f - (0.02f * (bonusAS % 25));
+        return 0.4f;
+    }
+
     private int qStack = 0;
     public override void UpdatePriorityAndChecks()
     {
@@ -50,7 +56,7 @@ public class Jinx : ChampionCombat
     {
         if (!CheckForAbilityControl(checksW)) yield break;
 
-        myStats.wSkill[0].basic.castTime = Constants.GetJinxWCastTime(myStats.bonusAS);
+        myStats.wSkill[0].basic.castTime = GetJinxWCastTime(myStats.bonusAS);
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
