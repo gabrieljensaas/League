@@ -21,6 +21,8 @@ namespace Simulator.Combat
         [HideInInspector] public List<Check> checksA = new();
         [HideInInspector] public List<Check> checkTakeDamageAA = new();
         [HideInInspector] public List<Check> checkTakeDamageAbility = new();
+        [HideInInspector] public List<Check> checkTakeDamageAAPostMitigation = new();
+        [HideInInspector] public List<Check> checkTakeDamageAbilityPostMitigation = new();
         [HideInInspector] public Check autoattackcheck;
         [HideInInspector] public List<string> qKeys = new();
         [HideInInspector] public List<string> wKeys = new();
@@ -191,6 +193,11 @@ namespace Simulator.Combat
             else if (damageType == SkillDamageType.Spell) postMitigationDamage = (int)(rawDamage * 100 / (100 + myStats.spellBlock));
             else if (damageType == SkillDamageType.True) postMitigationDamage = (int)rawDamage;
 
+            if (!isAutoAttack)
+                postMitigationDamage = (int)CheckForDamageControlPostMitigation(checkTakeDamageAbilityPostMitigation, rawDamage);
+            else
+                postMitigationDamage = (int)CheckForDamageControlPostMitigation(checkTakeDamageAAPostMitigation, rawDamage);
+
             if (postMitigationDamage <= 0) return 0;
 
             myStats.currentHealth -= postMitigationDamage;
@@ -252,6 +259,14 @@ namespace Simulator.Combat
         }
 
         protected float CheckForDamageControl(List<Check> checks, float damage)
+        {
+            foreach (Check item in checks)
+                damage = item.Control(damage);
+
+            return damage;
+        }
+
+        protected float CheckForDamageControlPostMitigation(List<Check> checks, float damage)
         {
             foreach (Check item in checks)
                 damage = item.Control(damage);
