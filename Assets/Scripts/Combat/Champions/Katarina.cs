@@ -41,8 +41,9 @@ public class Katarina : ChampionCombat
         base.UpdatePriorityAndChecks();
     }
 
-    protected void Passive()
+    public IEnumerator Voracity( float landingTime)
     {
+        yield return new WaitForSeconds(landingTime);
         UpdateAbilityTotalDamage(ref pSum,0, Constants.KatarinaPassiveFlatDamageByLevel[myStats.level] + (myStats.bonusAD * 0.6f) + (Constants.GetKatPassiveAPPercentByLevel(myStats.level) * 0.01f * myStats.AP), myStats.passiveSkill.skillName,SkillDamageType.Spell);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[0] - (Constants.GetKatPassiveECooldownReduction(myStats.level) * 0.01f * myStats.eSkill[0].basic.coolDown[0]);
     }
@@ -50,9 +51,8 @@ public class Katarina : ChampionCombat
     public override IEnumerator ExecuteQ()
     {
         yield return base.ExecuteQ();
-        yield return new WaitForSeconds(1f);
-        Passive();
-    }
+		StartCoroutine(Voracity(1f));
+	}
 
     public override IEnumerator ExecuteW()
     {
@@ -60,9 +60,8 @@ public class Katarina : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
-        yield return new WaitForSeconds(1.25f);
-        Passive();
-    }
+		StartCoroutine(Voracity(1.25f));
+	}
 
     public override IEnumerator ExecuteE()
     {
