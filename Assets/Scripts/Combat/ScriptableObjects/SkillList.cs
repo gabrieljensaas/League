@@ -48,7 +48,8 @@ public class SkillList : ScriptableObject
            (unit.percentTargetMissingHP[key][level] * (targetStats.maxHealth - targetStats.currentHealth) * 0.01f) +
            (unit.percent[key][level] * 0.01f) +
            (((unit.percentTargetMaxHP[key][level] * 0.01f) + (unit.percentPer100AP[key][level] * (myStats.AP % 100) * 0.01f)) * targetStats.maxHealth) +
-           (unit.percentMissingHP[key][level] * 0.01f * ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) > cap ? cap : (myStats.maxHealth - myStats.currentHealth));
+           (unit.percentMissingHP[key][level] * 0.01f * ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) > cap ? cap : (myStats.maxHealth - myStats.currentHealth)) +
+           (unit.percentDmgDealt[key][level] * 0.01f);
     }
 
     private void EnemyEffects(int level, Simulator.Combat.ChampionStats target)
