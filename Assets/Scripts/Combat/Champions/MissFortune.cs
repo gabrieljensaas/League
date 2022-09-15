@@ -91,6 +91,14 @@ public class MissFortune : ChampionCombat
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        targetStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(3, targetStats.buffManager, myStats.rSkill[0].basic.name, "HBulletTime"));
+        StartCoroutine(HBulletTime((int)myStats.rSkill[0].SylasUseSkill(skillLevel, rKeys[0], targetStats, myStats), skillLevel));
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
+    }
+
     public override IEnumerator ExecuteA()
     {
         if (!CheckForAbilityControl(checksA)) yield break;
@@ -128,9 +136,18 @@ public class MissFortune : ChampionCombat
 
     private IEnumerator BulletTime(int waveCount)
     {
+        if (waveCount == 0) yield break;
         yield return new WaitForSeconds(myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats));
         UpdateAbilityTotalDamage(ref rSum, 3, (myStats.AD * 0.75f) + (myStats.AP * 0.2f), "Bullet Time", SkillDamageType.Phyiscal);
         StartCoroutine(BulletTime(waveCount--));
+    }
+
+    private IEnumerator HBulletTime(int waveCount, int skillLevel)
+    {
+        if (waveCount == 0) yield break;
+        yield return new WaitForSeconds(myStats.rSkill[0].SylasUseSkill(skillLevel, rKeys[1], targetStats, myStats));
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, (myStats.AP * 0.45f) + (myStats.AP * 0.2f), "Bullet Time", SkillDamageType.Phyiscal);
+        StartCoroutine(HBulletTime(waveCount--, skillLevel));
     }
 
     public override void StopChanneling(string uniqueKey)

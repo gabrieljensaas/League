@@ -116,8 +116,16 @@ public class Kaisa : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        myStats.buffManager.shields.Add(myStats.rSkill[0].basic.name, new ShieldBuff(2, myStats.buffManager, myStats.rSkill[0].basic.name, myStats.rSkill[0].UseSkill(4, rKeys[0], myStats, targetStats), myStats.rSkill[0].basic.name));
+        myStats.buffManager.shields.Add(myStats.rSkill[0].basic.name, new ShieldBuff(2, myStats.buffManager, myStats.rSkill[0].basic.name, myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), myStats.rSkill[0].basic.name));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+    }
+
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        if (!myStats.buffManager.buffs.ContainsKey("Plasma")) yield break;
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        targetStats.buffManager.shields.Add(myStats.rSkill[0].basic.name, new ShieldBuff(2, targetStats.buffManager, myStats.rSkill[0].basic.name, myStats.rSkill[0].SylasUseSkill(skillLevel, rKeys[0], targetStats, myStats), myStats.rSkill[0].basic.name));
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
     }
 
     public void DealPassiveDamage(float rawdamage)

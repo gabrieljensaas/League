@@ -5,9 +5,7 @@ using UnityEngine;
 public class Viktor : ChampionCombat
 {
     private bool qAugmented = true;
-    private bool wAugmented = true;
     private bool eAugmented = true;
-    private bool rAugmented = true;
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "W", "Q", "E", "A" };
@@ -70,8 +68,11 @@ public class Viktor : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
-        yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+        if (eAugmented)
+        {
+            yield return new WaitForSeconds(1f);
+            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+        }
     }
 
     public override IEnumerator ExecuteR()
@@ -82,6 +83,16 @@ public class Viktor : ChampionCombat
         targetStats.buffManager.buffs.Add("Disrupt", new DisruptBuff(0, targetStats.buffManager, myStats.rSkill[0].basic.name));
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        StartCoroutine(ChaosStorm());
+    }
+
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        myStats.buffManager.buffs.Add("Disrupt", new DisruptBuff(0, myStats.buffManager, myStats.rSkill[0].basic.name));
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
+        StartCoroutine(HChaosStorm(skillLevel));
     }
 
     public override IEnumerator ExecuteA()
@@ -114,5 +125,21 @@ public class Viktor : ChampionCombat
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
         yield return new WaitForSeconds(1f);
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+    }
+
+    public IEnumerator HChaosStorm(int skillLevel)
+    {
+        yield return new WaitForSeconds(1f);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[1]);
+        yield return new WaitForSeconds(1f);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[1]);
+        yield return new WaitForSeconds(1f);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[1]);
+        yield return new WaitForSeconds(1f);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[1]);
+        yield return new WaitForSeconds(1f);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[1]);
+        yield return new WaitForSeconds(1f);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[1]);
     }
 }

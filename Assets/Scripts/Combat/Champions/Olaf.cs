@@ -91,4 +91,12 @@ public class Olaf : ChampionCombat
         myStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new AttackDamageBuff(3, myStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), myStats.rSkill[0].basic.name));
         myStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name + " ", new ImmuneToCCBuff(3, myStats.buffManager, myStats.rSkill[0].basic.name, myStats.rSkill[0].basic.name + " "));
     }
+
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
+        targetStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new AttackDamageBuff(3, targetStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].SylasUseSkill(skillLevel, rKeys[0], targetStats, myStats), myStats.rSkill[0].basic.name));
+        targetStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name + " ", new ImmuneToCCBuff(3, targetStats.buffManager, myStats.rSkill[0].basic.name, myStats.rSkill[0].basic.name + " "));
+    }
 }

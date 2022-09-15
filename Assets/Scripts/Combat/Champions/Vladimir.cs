@@ -122,6 +122,14 @@ public class Vladimir : ChampionCombat
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        myStats.buffManager.buffs.Add("Hemoplague", new HemoplagueBuff(4, myStats.buffManager, myStats.rSkill[0].basic.name));
+        StartCoroutine(HHemoplague(skillLevel));
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
+    }
+
     public IEnumerator AddBloodthirstStack(float cd)
     {
         yield return new WaitForSeconds(cd);
@@ -162,6 +170,14 @@ public class Vladimir : ChampionCombat
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         yield return new WaitForSeconds(0.4f);
         UpdateTotalHeal(ref hSum, myStats.rSkill[0], 2, rKeys[1]);
+    }
+
+    public IEnumerator HHemoplague(int skillLevel)
+    {
+        yield return new WaitForSeconds(4f);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
+        yield return new WaitForSeconds(0.4f);
+        UpdateTotalHealSylas(ref targetCombat.hSum, myStats.rSkill[0], skillLevel, rKeys[1]);
     }
     public override void StopChanneling(string uniqueKey)
     {

@@ -91,6 +91,14 @@ public class Lucian : ChampionCombat
         AddLightslinger(myStats.rSkill[0].basic.name);
     }
 
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        targetStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(3, targetStats.buffManager, myStats.rSkill[0].basic.name, "HTheCulling"));
+        StartCoroutine(HTheCulling(22 + 0, (22 + 0) / 3f, skillLevel));                // +0 needs to be added later as critical chance
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
+    }
+
     public override IEnumerator ExecuteA()
     {
         if (!CheckForAbilityControl(checksA)) yield break;
@@ -108,10 +116,19 @@ public class Lucian : ChampionCombat
 
     private IEnumerator TheCulling(int waveCount, float interval)
     {
+        if (waveCount == 0) yield break;
         yield return new WaitForSeconds(interval);
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         StartCoroutine(TheCulling(waveCount--, interval));
         AddLightslinger(myStats.qSkill[0].basic.name);
+    }
+
+    private IEnumerator HTheCulling(int waveCount, float interval, int skillLevel)
+    {
+        if (waveCount == 0) yield break;
+        yield return new WaitForSeconds(interval);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
+        StartCoroutine(HTheCulling(waveCount--, interval, skillLevel));
     }
 
     public override void StopChanneling(string uniqueKey)

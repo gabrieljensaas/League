@@ -87,4 +87,13 @@ public class Vayne : ChampionCombat
         myStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new AttackDamageBuff(duration, myStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats), myStats.rSkill[0].basic.name));
         myStats.buffManager.buffs.Add("EmpoweredTumble", new EmpoweredTumbleBuff(duration, myStats.buffManager, myStats.rSkill[0].basic.name));
     }
+
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
+        float duration = myStats.rSkill[0].UseSkill(skillLevel, rKeys[0], targetStats, myStats);
+        targetStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new AttackDamageBuff(duration, targetStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].SylasUseSkill(skillLevel, rKeys[1], targetStats, myStats), myStats.rSkill[0].basic.name));
+        targetStats.buffManager.buffs.Add("EmpoweredTumble", new EmpoweredTumbleBuff(duration, targetStats.buffManager, myStats.rSkill[0].basic.name));
+    }
 }

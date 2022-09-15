@@ -178,6 +178,18 @@ public class Yone : ChampionCombat                  //add passive ap damage when
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats), myStats.rSkill[0].basic.name, SkillDamageType.Spell);
     }
 
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        if (targetStats.buffManager.HasImmobilize) yield break;
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        myStats.buffManager.buffs.Add("Airborne", new AirborneBuff(1.05f, myStats.buffManager, myStats.rSkill[0].basic.name));
+        targetStats.buffManager.buffs.Add("UnableToAct", new UnableToActBuff(0.3f, targetStats.buffManager, myStats.rSkill[0].basic.name));
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
+        yield return new WaitForSeconds(0.3f);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0].UseSkill(skillLevel, rKeys[0], targetStats, myStats), myStats.rSkill[0].basic.name, SkillDamageType.Phyiscal);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0].UseSkill(skillLevel, rKeys[1], targetStats, myStats), myStats.rSkill[0].basic.name, SkillDamageType.Spell);
+    }
+
     public IEnumerator QStack()
     {
         qStack++;

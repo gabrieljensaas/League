@@ -57,6 +57,11 @@ public class Kalista : ChampionCombat
         value.Kill();
     }
 
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield break;
+    }
+
     public override IEnumerator ExecuteA()
     {
         if (!CheckForAbilityControl(checksA)) yield break;

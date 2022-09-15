@@ -71,4 +71,16 @@ public class KogMaw : ChampionCombat
         yield return new WaitForSeconds(0.6f);
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], multiplier);
     }
+
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
+        float multiplier;
+        if ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth > 0.6f) multiplier = 1 + ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) * 0.833f;
+        else if ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth > 0.4f) multiplier = 1.5f;
+        else multiplier = 2f;
+        yield return new WaitForSeconds(0.6f);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0], multiplier);
+    }
 }

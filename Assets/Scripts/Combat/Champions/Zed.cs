@@ -18,7 +18,9 @@ public class Zed : ChampionCombat
     public bool usedPassive = false;
     public int shadowCount = 0;
     public bool markedForDeath = false;
+    public bool hMarkedForDeath = false;
     public float markedRawDamage = 0;
+    public float hMarkedRawDamage = 0;
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "W", "Q", "E", "A" };
@@ -47,6 +49,8 @@ public class Zed : ChampionCombat
         targetCombat.checksE.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksR.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksA.Add(new CheckIfEnemyTargetable(targetCombat));
+        checkTakeDamageAA.Add(new CheckForHijackedZedR(this, this));
+        checkTakeDamageAbility.Add(new CheckForHijackedZedR(this, this));
 
         qKeys.Add("Physical Damage");
         eKeys.Add("Physical Damage");
@@ -104,6 +108,15 @@ public class Zed : ChampionCombat
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        if (targetStats.buffManager.HasImmobilize) yield break;
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        targetStats.buffManager.buffs.Add("Untargetable", new UntargetableBuff(0.95f, targetStats.buffManager, myStats.rSkill[0].basic.name));
+        StartCoroutine(HMarkedForDeath(skillLevel));
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
+    }
+
     public IEnumerator ContempForTheWeak()
     {
         usedPassive = true;
@@ -125,5 +138,14 @@ public class Zed : ChampionCombat
         markedForDeath = false;
         //exploding damage      0.55f needs to change by skill level
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats) + (markedRawDamage * 0.55f), myStats.rSkill[0].basic.name, SkillDamageType.Phyiscal);
+    }
+
+    public IEnumerator HMarkedForDeath(int skillLevel)
+    {
+        hMarkedForDeath = true;
+        yield return new WaitForSeconds(3f);
+        hMarkedForDeath = false;
+        //exploding damage      0.55f needs to change by skill level
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0].UseSkill(skillLevel, rKeys[0], myStats, targetStats) + (hMarkedRawDamage * 0.55f), myStats.rSkill[0].basic.name, SkillDamageType.Phyiscal);
     }
 }

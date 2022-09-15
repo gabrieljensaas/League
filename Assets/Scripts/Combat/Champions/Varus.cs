@@ -97,7 +97,24 @@ public class Varus : ChampionCombat
         }
         else
         {
-            targetStats.buffManager.buffs.Add("Blight", new BlightBuff(6, targetStats.buffManager, "Varus's Auto Attack", 3));
+            targetStats.buffManager.buffs.Add("Blight", new BlightBuff(6, targetStats.buffManager, "Chain of Corruption", 3));
+        }
+    }
+
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
+        myStats.buffManager.buffs.Add("Root", new RootBuff(2, myStats.buffManager, myStats.rSkill[0].basic.name));
+        if (myStats.buffManager.buffs.TryGetValue("Blight", out Buff value))
+        {
+            value.value = 3;
+            value.duration = 6;
+        }
+        else
+        {
+            myStats.buffManager.buffs.Add("Blight", new BlightBuff(6, myStats.buffManager, "Chain of Corruption", 3));
         }
     }
 
@@ -124,8 +141,8 @@ public class Varus : ChampionCombat
         {
             UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[1], multiplier * value.value);
             myStats.qCD -= value.value * myStats.qSkill[0].basic.coolDown[4] * 0.12f;
-            myStats.wCD -= value.value * myStats.qSkill[0].basic.coolDown[4] * 0.12f;
-            myStats.eCD -= value.value * myStats.qSkill[0].basic.coolDown[4] * 0.12f;
+            myStats.wCD -= value.value * myStats.wSkill[0].basic.coolDown[4] * 0.12f;
+            myStats.eCD -= value.value * myStats.eSkill[0].basic.coolDown[4] * 0.12f;
             value.Kill();
         }
     }

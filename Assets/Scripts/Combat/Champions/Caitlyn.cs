@@ -40,6 +40,11 @@ public class Caitlyn : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksE.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
+        checksQ.Add(new CheckIfChanneling(this));
+        checksW.Add(new CheckIfChanneling(this));
+        checksE.Add(new CheckIfChanneling(this));
+        checksR.Add(new CheckIfChanneling(this));
+        checksA.Add(new CheckIfChanneling(this));
 
         qKeys.Add("Physical Damage");
         wKeys.Add("Maximum Traps");
@@ -104,10 +109,24 @@ public class Caitlyn : ChampionCombat
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        targetStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(1, targetStats.buffManager, myStats.rSkill[0].basic.name, "HAceInTheHole"));
+        StartCoroutine(HAceInTheHole(skillLevel));
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
+    }
+
     private IEnumerator AceInTheHole()
     {
         yield return new WaitForSeconds(1f);
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], 1 + 0);              //0 is critical chance fix it when items are added
+    }
+
+    private IEnumerator HAceInTheHole(int skillLevel)
+    {
+        yield return new WaitForSeconds(1f);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0], 1 + 0);              //0 is critical chance fix it when items are added
     }
 
     public override void StopChanneling(string uniqueKey)

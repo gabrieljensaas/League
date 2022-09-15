@@ -57,4 +57,11 @@ public class Sivir : ChampionCombat
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         yield return null;
     }
+
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        targetStats.buffManager.buffs.Add("OnTheHunt", new OnTheHuntBuff(myStats.rSkill[0].SylasUseSkill(skillLevel, rKeys[0], targetStats, myStats), targetStats.buffManager, myStats.rSkill[0].basic.name));
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
+        yield return null;
+    }
 }

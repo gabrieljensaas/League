@@ -67,6 +67,12 @@ public class Tristana : ChampionCombat
         CheckExplosiveCharge();
     }
 
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(base.HijackedR(skillLevel));
+        myStats.buffManager.buffs.Add("Stun", new StunBuff(0.75f, myStats.buffManager, myStats.rSkill[0].basic.name));
+    }
+
     public override IEnumerator ExecuteA()
     {
         if (!CheckForAbilityControl(checksA)) yield break;

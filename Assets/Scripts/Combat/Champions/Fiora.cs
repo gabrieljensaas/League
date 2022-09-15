@@ -116,6 +116,20 @@ public class Fiora : ChampionCombat
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+
+        VitalsBuff vitalsBuff = new(8, myStats.buffManager, "Grand Challenge")
+        {
+            value = 4,
+            activationTime = 7.5f
+        };
+        myStats.buffManager.buffs.Add("VitalsGrandChallenge", vitalsBuff);
+
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel];
+    }
+
     private void CheckVitals()
     {
         if (targetStats.buffManager.buffs.TryGetValue("Vitals", out Buff vitals))

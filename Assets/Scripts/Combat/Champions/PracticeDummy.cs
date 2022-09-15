@@ -1,4 +1,5 @@
 using Simulator.Combat;
+using System.Collections;
 
 public class PracticeDummy : ChampionCombat
 {
@@ -43,4 +44,9 @@ public class PracticeDummy : ChampionCombat
     //    if (myStats.currentHealth <= 0)
     //        myStats.currentHealth = 1000;
     //}
+
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield break;
+    }
 }

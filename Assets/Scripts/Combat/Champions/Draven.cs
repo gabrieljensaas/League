@@ -85,6 +85,15 @@ public class Draven : ChampionCombat
         if (targetStats.currentHealth <= pStack) targetStats.currentHealth -= pStack;
     }
 
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
+        yield return new WaitForSeconds(0.5f);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
+    }
+
     public IEnumerator SpinnigAxe()
     {
         yield return new WaitForSeconds(2);

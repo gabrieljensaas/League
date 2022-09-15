@@ -5,6 +5,7 @@ using UnityEngine;
 public class Ahri : ChampionCombat
 {
     private int rStacks = 0;
+    private int hRStacks = 0;
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "W", "Q", "R", "A" };
@@ -79,5 +80,15 @@ public class Ahri : ChampionCombat
         if (rStacks == 0) rStacks = 2;
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         myStats.rCD = rStacks > 0 ? 1 : myStats.rSkill[0].basic.coolDown[2];
+    }
+
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        if (targetStats.buffManager.HasImmobilize) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        if (hRStacks == 0) hRStacks = 2;
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[skillLevel], 2, rKeys[0]);
+        targetStats.rCD = hRStacks > 0 ? 1 : myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
     }
 }

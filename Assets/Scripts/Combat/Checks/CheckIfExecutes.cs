@@ -31,6 +31,8 @@ public class CheckIfExecutes : Check
                 return (combat.myStats.rSkill[0].UseSkill(2, combat.rKeys[0], combat.myStats, combat.targetStats) * multiplier) + stack >= combat.targetStats.currentHealth;
             case "Riven":
                 return combat.myStats.rSkill[1].UseSkill(2, combat.rKeys[0], combat.myStats, combat.targetStats) * (1 + ((combat.targetStats.maxHealth - combat.targetStats.currentHealth) / combat.targetStats.maxHealth) > 0.75f ? 2 : (combat.targetStats.maxHealth - combat.targetStats.currentHealth) * 2.667f) >= combat.targetStats.currentHealth;
+            case "SylasRiven":
+                return combat.myStats.rSkill[1].UseSkill(2, combat.rKeys[0], combat.targetStats, combat.myStats) * (1 + ((combat.myStats.maxHealth - combat.myStats.currentHealth) / combat.myStats.maxHealth) > 0.75f ? 2 : (combat.myStats.maxHealth - combat.myStats.currentHealth) * 2.667f) >= combat.myStats.currentHealth;
             case "Kalista":
                 if (combat.targetStats.buffManager.buffs.TryGetValue("Rend", out Buff value))
                 {

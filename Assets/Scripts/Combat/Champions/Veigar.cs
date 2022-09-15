@@ -71,5 +71,16 @@ public class Veigar : ChampionCombat
         PhenomenalEvilPowerStack();
     }
 
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+
+        float missingHealthModifier = ((1 - myStats.currentHealth / myStats.maxHealth) * 1.5f) + 1;
+        if (missingHealthModifier > 2) missingHealthModifier = 2;
+        float damage = 325 * missingHealthModifier;
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, damage, myStats.rSkill[0].name, SkillDamageType.Spell);
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
+    }
+
     private void PhenomenalEvilPowerStack() => myStats.AP++;
 }

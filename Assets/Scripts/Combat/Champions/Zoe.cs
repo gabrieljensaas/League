@@ -62,6 +62,11 @@ public class Zoe : ChampionCombat
         targetStats.buffManager.buffs.Add("Sleep", new SleepBuff(2.25f, targetStats.buffManager, myStats.eSkill[0].basic.name));
     }
 
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield break;
+    }
+
     public IEnumerator ZoePassive()
     {
         HasPassive = true;

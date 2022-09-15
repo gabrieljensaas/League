@@ -52,50 +52,18 @@ public class SkillList : ScriptableObject
            (unit.percentDmgDealt[key][level] * 0.01f);
     }
 
-    private void EnemyEffects(int level, Simulator.Combat.ChampionStats target)
+    public float SylasUseSkill(int level, string key, ChampionStats myStats, ChampionStats targetStats, float cap = 0)
     {
-        if (basic.champion == "Ashe")
-        {
-            if (!target.buffManager.buffs.TryAdd("Frosted", new FrostedBuff(2, target.buffManager, basic.name)))
-            {
-                target.buffManager.buffs["Frosted"].duration = 2;
-                target.buffManager.buffs["Frosted"].source = basic.name;
-            }
-        }
-
-        if (enemyEffects.stun)
-        {
-            target.buffManager.buffs.Add("Stun", new StunBuff(enemyEffects.stunDuration, target.buffManager, basic.name));
-        }
-    }
-
-    private void SelfEffects(int level, Simulator.Combat.ChampionStats myStats)
-    {
-        if (selfEffects.Tenacity)
-        {
-            myStats.buffManager.buffs.Add("Tenacity", new TenacityBuff(selfEffects.TenacityDuration[level], myStats.buffManager, basic.name, selfEffects.TenacityPercent[level], basic.name));
-        }
-
-        if (selfEffects.ASIncrease)
-        {
-            if (!myStats.buffManager.buffs.TryAdd(basic.name, new AttackSpeedBuff(selfEffects.ASIncreaseDuration[level], myStats.buffManager, basic.name, myStats.baseAttackSpeed * 0.01f * selfEffects.ASIncreasePercent[level], basic.name)))
-            {
-                //myStats.buffManager.buffs["AttackSpeed"].duration = selfEffects.ASIncreaseDuration[level];
-            }
-        }
-
-        if (selfEffects.DamageRed)
-        {
-            myStats.buffManager.buffs.TryAdd("DamageReductionPercent", new DamageReductionPercentBuff(selfEffects.DamageRedDuration[level], myStats.buffManager, basic.name, selfEffects.DamageRedPercent[level]));
-        }
-
-        if (selfEffects.Shield)
-        {
-            var missingHealth = myStats.maxHealth - myStats.currentHealth;
-            if (myStats.name == "Olaf" && missingHealth > myStats.maxHealth * 0.7f) missingHealth = myStats.maxHealth * 0.7f;
-
-            myStats.buffManager.shields.Add(basic.name, new ShieldBuff(selfEffects.ShieldDuration[level], myStats.buffManager, basic.name, selfEffects.ShieldFlat[level] + (selfEffects.ShieldPercentByMissingHP[level] * 0.01f * missingHealth), basic.name));
-        }
+        return unit.flat[key][level] +
+           (unit.percentAP[key][level] * myStats.AP * 0.01f) +
+           (unit.percentAD[key][level] * myStats.AP * 0.006f) +
+           ((unit.percentBonusAD[key][level] * myStats.AP * 0.004f) + (unit.percentBonusAS[key][level] * (int)(myStats.bonusAS / myStats.baseAttackSpeed) * 0.01f)) +
+           (unit.percentBonusHP[key][level] * myStats.bonusHP * 0.01f) +
+           (unit.percentTargetMissingHP[key][level] * (targetStats.maxHealth - targetStats.currentHealth) * 0.01f) +
+           (unit.percent[key][level] * 0.01f) +
+           (((unit.percentTargetMaxHP[key][level] * 0.01f) + (unit.percentPer100AP[key][level] * (myStats.AP % 100) * 0.01f)) * targetStats.maxHealth) +
+           (unit.percentMissingHP[key][level] * 0.01f * ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) > cap ? cap : (myStats.maxHealth - myStats.currentHealth)) +
+           (unit.percentDmgDealt[key][level] * 0.01f);
     }
 }
 

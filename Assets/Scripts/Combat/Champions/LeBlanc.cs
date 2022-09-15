@@ -128,6 +128,34 @@ public class LeBlanc : ChampionCombat
         }
     }
 
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        switch (lastUsedSkill)
+        {
+            case "Q":
+                yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+                UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
+                targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
+                break;
+            case "W":
+                if (targetStats.buffManager.HasImmobilize) yield break;
+                yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
+                UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[2]);
+                targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
+                break;
+            case "E":
+                yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
+                UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[3]);
+                targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
+                yield return new WaitForSeconds(1.5f);
+                UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[3]);
+                myStats.buffManager.buffs.Add("Root", new RootBuff(1.5f, myStats.buffManager, myStats.rSkill[0].basic.name));
+                break;
+            default:
+                break;
+        }
+    }
+
     public IEnumerator MirrorImage()
     {
         UsedMirrorImage = true;

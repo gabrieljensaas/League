@@ -28,7 +28,7 @@ namespace Simulator.Combat
         [HideInInspector] public List<string> wKeys = new();
         [HideInInspector] public List<string> eKeys = new();
         [HideInInspector] public List<string> rKeys = new();
-        protected List<Pet> pets = new();
+        public List<Pet> pets = new();
 
         public float aSum, hSum, qSum, wSum, eSum, rSum, pSum;
         protected string[] combatPrio;
@@ -79,10 +79,22 @@ namespace Simulator.Combat
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
+        public void UpdateAbilityTotalDamageSylas(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1)
+        {
+            totalDamage += TakeDamage(damageModifier * skill.SylasUseSkill(level, skillKey, targetStats, myStats), skill.basic.name, skill.skillDamageType);
+            targetCombat.myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
+        }
+
         public void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, float damage, string skillName, SkillDamageType skillDamageType)
         {
             totalDamage += targetCombat.TakeDamage(damage, skillName, skillDamageType);
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
+        }
+
+        public void UpdateAbilityTotalDamageSylas(ref float totalDamage, int totalDamageTextIndex, float damage, string skillName, SkillDamageType skillDamageType)
+        {
+            totalDamage += TakeDamage(damage, skillName, skillDamageType);
+            targetCombat.myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
         protected void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level, string skillKey)
@@ -90,11 +102,22 @@ namespace Simulator.Combat
             totalHeal += HealHealth(skill.UseSkill(level, skillKey, myStats, targetStats) * (100 - myStats.grievouswounds) / 100, skill.basic.name);
             myUI.healSum.text = totalHeal.ToString();
         }
+        protected void UpdateTotalHealSylas(ref float totalHeal, SkillList skill, int level, string skillKey)
+        {
+            totalHeal += targetCombat.HealHealth(skill.UseSkill(level, skillKey, targetStats, myStats) * (100 - targetStats.grievouswounds) / 100, skill.basic.name);
+            targetCombat.myUI.healSum.text = totalHeal.ToString();
+        }
 
         protected void UpdateTotalHeal(ref float totalHeal, float heal, string skillName)
         {
-            totalHeal += HealHealth(heal, skillName);
+            totalHeal += HealHealth(heal * (100 - targetStats.grievouswounds) / 100, skillName);
             myUI.healSum.text = totalHeal.ToString();
+        }
+
+        protected void UpdateTotalHealSylas(ref float totalHeal, float heal, string skillName)
+        {
+            totalHeal += targetCombat.HealHealth(heal * (100 - targetStats.grievouswounds) / 100, skillName);
+            targetCombat.myUI.healSum.text = totalHeal.ToString();
         }
 
         public virtual IEnumerator ExecuteQ()
@@ -131,6 +154,13 @@ namespace Simulator.Combat
             yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
             UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
             myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        }
+
+        public virtual IEnumerator HijackedR(int skillLevel)
+        {
+            yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+            UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
+            targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
         }
 
         public virtual IEnumerator ExecuteA()

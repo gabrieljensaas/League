@@ -91,6 +91,13 @@ public class Twitch : ChampionCombat
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        targetStats.buffManager.buffs.Add("SprayAndPray", new AttackDamageBuff(6, targetStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].SylasUseSkill(skillLevel, rKeys[0], targetStats, myStats), "SprayAndPray"));
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
+    }
+
     public override IEnumerator ExecuteA()
     {
         if (!CheckForAbilityControl(checksA)) yield break;

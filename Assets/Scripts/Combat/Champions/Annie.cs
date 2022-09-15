@@ -1,5 +1,6 @@
 using Simulator.Combat;
 using System.Collections;
+using System.Runtime.InteropServices;
 
 public class Annie : ChampionCombat
 {
@@ -99,9 +100,17 @@ public class Annie : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         CheckAnniePassiveStun(myStats.rSkill[0].basic.name);
-        UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         pets.Add(new Tibbers(this, 3100, 100 + (myStats.AP * 15 / 100), 0.625f, 90, 90)); //all stats are for max level change when level adjusting of skills done
+    }
+
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
+        targetCombat.pets.Add(new Tibbers(this, 3100, 100 + (myStats.AP * 15 / 100), 0.625f, 90, 90)); //all stats are for max level change when level adjusting of skills done
     }
 
     private void CheckAnniePassiveStun(string skillName)

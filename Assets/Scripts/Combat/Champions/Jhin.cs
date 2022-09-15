@@ -133,9 +133,17 @@ public class Jhin : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(10, myStats.buffManager, myStats.rSkill[0].basic.name, "Curtain Call"));
+        myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(10, myStats.buffManager, myStats.rSkill[0].basic.name, "CurtainCall"));
         yield return StartCoroutine(CurtainCall());
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+    }
+
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        targetStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(10, targetStats.buffManager, myStats.rSkill[0].basic.name, "CurtainCall"));
+        yield return StartCoroutine(HCurtainCall(skillLevel));
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
     }
 
     private void ApplyDeadlyFlourishMark(string skillName)
@@ -160,14 +168,36 @@ public class Jhin : ChampionCombat
         while (shots > 0)
         {
             if (shots == 1)
-                UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 4, rKeys[0]); //TODO: change to crit when Recep pushes new stuff
+                UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]); //TODO: change to crit when Recep pushes new stuff
             else
-                UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 4, rKeys[0]);
+                UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
 
             shots--;
             yield return new WaitForSeconds(0.25f);
         }
 
         myStats.buffManager.buffs.Remove("Channeling");
+    }
+
+    private IEnumerator HCurtainCall(int skillLevel)
+    {
+        int shots = 4;
+        while (shots > 0)
+        {
+            if (shots == 1)
+                UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]); //TODO: change to crit when Recep pushes new stuff
+            else
+                UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
+
+            shots--;
+            yield return new WaitForSeconds(0.25f);
+        }
+
+        myStats.buffManager.buffs.Remove("Channeling");
+    }
+
+    public override void StopChanneling(string uniqueKey)
+    {
+        StopCoroutine(uniqueKey);
     }
 }

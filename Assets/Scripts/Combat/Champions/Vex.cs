@@ -78,6 +78,15 @@ public class Vex : ChampionCombat
         myStats.rCD = myStats.rSkill[0].basic.coolDown[4];
     }
 
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
+        yield return new WaitForSeconds(0.5f);
+        UpdateAbilityTotalDamage(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[1]);
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[4] * 2;
+    }
+
     private void Doom()
     {
         //CHECK FOR DASHES WITH RECEP

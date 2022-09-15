@@ -17,8 +17,11 @@ public class Riven : ChampionCombat
     private int qCounter = 0;
     private float timeSinceLastQ = 0f;
     private float timeSinceR = 0f;
+    private float hTimeSinceR = 0f;
     private bool hasWindSlash = false;
+    private bool hHasWindSlash = false;
     private CheckIfExecutes r1ExecuteCheck;
+    private CheckIfExecutes hR1ExecuteCheck;
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "W", "E", "Q", "A" };
@@ -40,7 +43,8 @@ public class Riven : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksQ.Add(new CheckIfImmobilize(this));
         checksE.Add(new CheckIfImmobilize(this));
-        r1ExecuteCheck = new CheckIfExecutes(this, "R1");
+        r1ExecuteCheck = new CheckIfExecutes(this, "Riven");
+        hR1ExecuteCheck = new CheckIfExecutes(this, "SylasRiven");
         checksA.Add(new CheckIfDisarmed(this));
         checkTakeDamageAbility.Add(new CheckShield(this));
         checkTakeDamageAA.Add(new CheckShield(this));
@@ -61,6 +65,8 @@ public class Riven : ChampionCombat
         timeSinceLastQ += Time.deltaTime;
         timeSinceR += Time.deltaTime;
         if (timeSinceR > 15) hasWindSlash = false;
+        hTimeSinceR += Time.deltaTime;
+        if (hTimeSinceR > 15) hHasWindSlash = false;
     }
 
     public override IEnumerator ExecuteQ()
@@ -132,6 +138,23 @@ public class Riven : ChampionCombat
         myStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new AttackDamageBuff(15, myStats.buffManager, myStats.rSkill[0].basic.name, (int)(myStats.AD * 0.2f), myStats.rSkill[0].basic.name));
         hasWindSlash = true;
         timeSinceR = 0f;
+    }
+
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        if (hHasWindSlash && (hR1ExecuteCheck.Control() || hTimeSinceR > 14))
+        {
+            yield return StartCoroutine(StartCastingAbility(myStats.rSkill[1].basic.castTime));
+            UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[1].UseSkill(skillLevel, rKeys[0], targetStats, myStats) * (1 + ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) > 0.75f ? 2 : (myStats.maxHealth - myStats.currentHealth) * 2.667f), myStats.rSkill[1].basic.name, SkillDamageType.Phyiscal);
+            targetStats.rCD = (myStats.rSkill[0].basic.coolDown[2] * 2) - timeSinceR;
+            hasWindSlash = false;
+        }
+
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(0.5f - myStats.rSkill[0].basic.castTime));
+        targetStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new AttackDamageBuff(15, targetStats.buffManager, myStats.rSkill[0].basic.name, (int)(targetStats.AP * 0.12f), myStats.rSkill[0].basic.name));
+        hHasWindSlash = true;
+        hTimeSinceR = 0f;
     }
 
     private void UpdateRivenPassive()

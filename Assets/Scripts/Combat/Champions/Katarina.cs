@@ -96,9 +96,17 @@ public class Katarina : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(2.5f, myStats.buffManager, myStats.rSkill[0].basic.name, "Death Lotus"));
+        myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(2.5f, myStats.buffManager, myStats.rSkill[0].basic.name, "DeathLotus"));
         StartCoroutine(DeathLotus(0));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+    }
+
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        targetStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(2.5f, targetStats.buffManager, myStats.rSkill[0].basic.name, "DeathLotus"));
+        StartCoroutine(HDeathLotus(0, skillLevel));
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
     }
 
     public IEnumerator DeathLotus(float time)
@@ -118,10 +126,26 @@ public class Katarina : ChampionCombat
         if (time < 2.5f) StartCoroutine(DeathLotus(time));
     }
 
+    public IEnumerator HDeathLotus(float time, int skillLevel)
+    {
+        yield return new WaitForSeconds(0.166f);
+        time += 0.166f;
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
+        if (myStats.buffManager.buffs.TryGetValue(myStats.rSkill[0].basic.name, out Buff value))
+        {
+            value.duration = 3f;
+        }
+        else
+        {
+            myStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new GrievousWoundsBuff(3, myStats.buffManager, myStats.rSkill[0].basic.name, 40f, myStats.rSkill[0].basic.name));
+        }
+        if (time < 2.5f) StartCoroutine(HDeathLotus(time, skillLevel));
+    }
+
 
     public override void StopChanneling(string uniqueKey)
     {
         StopCoroutine(uniqueKey);
     }
-
 }
