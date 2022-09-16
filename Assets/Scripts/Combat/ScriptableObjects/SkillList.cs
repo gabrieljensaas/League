@@ -38,7 +38,7 @@ public class SkillList : ScriptableObject
         passive
     }
 
-    public float UseSkill(int level, string key, ChampionStats myStats, ChampionStats targetStats, float cap = 0)
+    public float UseSkill(int level, string key, ChampionStats myStats, ChampionStats targetStats, float cap = 0, float expendedGrit = 0)
     {
         return unit.flat[key][level] +
            (unit.percentAP[key][level] * myStats.AP * 0.01f) +
@@ -47,9 +47,11 @@ public class SkillList : ScriptableObject
            (unit.percentBonusHP[key][level] * myStats.bonusHP * 0.01f) +
            (unit.percentTargetMissingHP[key][level] * (targetStats.maxHealth - targetStats.currentHealth) * 0.01f) +
            (unit.percent[key][level] * 0.01f) +
-           (((unit.percentTargetMaxHP[key][level] * 0.01f) + (unit.percentPer100AP[key][level] * (myStats.AP % 100) * 0.01f)) * targetStats.maxHealth) +
+           ((unit.percentTargetMaxHP[key][level] * 0.01f) + (unit.percentPer100AP[key][level] * (myStats.AP % 100) * 0.01f * targetStats.maxHealth) + (unit.percentPer100AD[key][level] * (myStats.AD % 100) * 0.01f * targetStats.maxHealth)) +
            (unit.percentMissingHP[key][level] * 0.01f * ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) > cap ? cap : (myStats.maxHealth - myStats.currentHealth)) +
-           (unit.percentDmgDealt[key][level] * 0.01f);
+           (unit.percentDmgDealt[key][level] * 0.01f) +
+           (((unit.expendedGrit[key][level] * 0.01f) + (myStats.bonusAD * 0.0025f)) * expendedGrit) +
+           (unit.percentPrimaryTargetBonusHP[key][level] * 0.01f * targetStats.bonusHP);
     }
 
     public float SylasUseSkill(int level, string key, ChampionStats myStats, ChampionStats targetStats, float cap = 0)
