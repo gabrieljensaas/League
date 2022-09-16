@@ -31,16 +31,12 @@ public class Akali : ChampionCombat
     public override IEnumerator ExecuteQ()
     {
         yield return base.ExecuteQ();
+        AssassinsMark();
     }
 
     public override IEnumerator ExecuteE()
     {
-        if (!CheckForAbilityControl(checksE)) yield break;
-
-        yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 3, myStats.eSkill[0], 2, eKeys[0]);
-        UpdateAbilityTotalDamage(ref eSum, 3, myStats.eSkill[1], 2, eKeys[1]);
-
+        yield return base.ExecuteE();
     }
 
     public override IEnumerator ExecuteR()
@@ -52,11 +48,12 @@ public class Akali : ChampionCombat
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
-    public override IEnumerator ExecuteA()
-    {
-        if (!CheckForAbilityControl(checksA)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
+    public void AssassinsMark()
+	{
+        if (!targetStats.buffManager.buffs.TryAdd("AkaliPassiveBuff", new AkaliPassiveBuff(4, targetStats.buffManager, myStats.passiveSkill.skillName)))
+        {
+            targetStats.buffManager.buffs["AkaliPassiveBuff"].duration = 4;
+        }
     }
 }
