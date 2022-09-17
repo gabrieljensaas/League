@@ -17,7 +17,7 @@ public class DeadlyVenomBuff : Buff
         float damage = Twitch.GetTwitchDeadlyVenomByLevel(manager.combat.targetStats.level, (int)value); //TODO: add %ap damage
 
         _poisonTimer += Time.deltaTime;
-        if (_poisonTimer >= 1.25f)
+        if (_poisonTimer >= 1f)
         {
             _poisonTimer = 0f;
             manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.targetCombat.pSum, 4, damage, $"Deadly Venom {value}", SkillDamageType.True);
