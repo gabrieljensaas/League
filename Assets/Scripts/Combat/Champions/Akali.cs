@@ -7,17 +7,20 @@ public class Akali : ChampionCombat
     public static float[] AkaliPassiveDamageByLevel = { 35, 38, 41, 44, 47, 50, 53, 62, 71, 8, 89, 98, 107, 122, 137, 152, 167, 182 };
     public static float GetAkaliR2Damage(float targetMissingHealth)
 	{
-        if (targetMissingHealth < 7) return 0f;
-        if (targetMissingHealth < 14) return 0.2f;
-        if (targetMissingHealth < 21) return 0.4f;
-        if (targetMissingHealth < 28) return 0.6f;
-        if (targetMissingHealth < 35) return 0.8f;
-        if (targetMissingHealth < 42) return 1f;
-        if (targetMissingHealth < 49) return 1.2f;
-        if (targetMissingHealth < 56) return 1.4f;
-        if (targetMissingHealth < 63) return 1.6f;
-        if (targetMissingHealth < 70) return 1.8f;
-        return 2f;
+        return targetMissingHealth switch
+        {
+            < 7 => 0f,
+            < 14 => 0.2f,
+            < 21 => 0.4f,
+            < 28 => 0.6f,
+            < 35 => 0.8f,
+            < 42 => 1f,
+            < 49 => 1.2f,
+            < 56 => 1.4f,
+            < 63 => 1.6f,
+            < 70 => 1.8f,
+            _ => 2f
+        };
     }
 
     public bool eCast = false;

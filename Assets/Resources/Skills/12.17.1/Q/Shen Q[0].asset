@@ -38,13 +38,1946 @@ MonoBehaviour:
   skillType: 0
   skillDamageType: 1
   atrList:
-    attibutes:
-    - Slow
-    - Bonus Magic Damage
-    - Total Magic Damage
-    - Increased Bonus Damage
-    - Total Increased Damage
-    - Maximum Monster Damage
+    attibutes: []
+  effects:
+  - attribute: Slow
+    flat:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percent:
+    - 15
+    - 20
+    - 25
+    - 30
+    - 35
+    AD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    bonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100AD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100BonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentAP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100AP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    bonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMaxHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentHPLost:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnMaxHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetMaxHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetCurrentHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPrimaryTargetBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMissingMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMaxMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusAS:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    armor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTotalArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusMR:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTotalMR:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentDamageTaken:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentDmgDealt:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    x:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentCritStrikeChance:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    units:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    chunckOfIce:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    soldiers:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    siphoningStrikeStacks:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    lethality:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    mist:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    expendedGrit:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    soul:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+  - attribute: Bonus Magic Damage
+    flat:
+    - 10
+    - 11.764706
+    - 13.529411
+    - 15.294118
+    - 17.058823
+    - 18.82353
+    - 20.588236
+    - 22.352942
+    - 24.117647
+    - 25.882353
+    - 27.647058
+    - 29.411764
+    - 31.17647
+    - 32.941177
+    - 34.705883
+    - 36.47059
+    - 38.235294
+    - 40
+    percent:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    AD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    bonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100AD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100BonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentAP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100AP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    bonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMaxHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentHPLost:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnMaxHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetMaxHP:
+    - 2
+    - 2.5
+    - 3
+    - 3.5
+    - 4
+    percentTargetMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetCurrentHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPrimaryTargetBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMissingMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMaxMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusAS:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    armor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTotalArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusMR:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTotalMR:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentDamageTaken:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentDmgDealt:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    x:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentCritStrikeChance:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    units:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    chunckOfIce:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    soldiers:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    siphoningStrikeStacks:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    lethality:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    mist:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    expendedGrit:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    soul:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+  - attribute: Total Magic Damage
+    flat:
+    - 30
+    - 35.294117
+    - 40.588234
+    - 45.882355
+    - 51.17647
+    - 56.47059
+    - 61.764706
+    - 67.05882
+    - 72.35294
+    - 77.64706
+    - 82.94118
+    - 88.23529
+    - 93.52941
+    - 98.82353
+    - 104.117645
+    - 109.411766
+    - 114.70588
+    - 120
+    percent:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    AD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    bonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100AD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100BonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentAP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100AP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    bonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMaxHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentHPLost:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnMaxHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetMaxHP:
+    - 6
+    - 7.5
+    - 9
+    - 10.5
+    - 12
+    percentTargetMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetCurrentHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPrimaryTargetBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMissingMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMaxMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusAS:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    armor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTotalArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusMR:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTotalMR:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentDamageTaken:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentDmgDealt:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    x:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentCritStrikeChance:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    units:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    chunckOfIce:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    soldiers:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    siphoningStrikeStacks:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    lethality:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    mist:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    expendedGrit:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    soul:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+  - attribute: Increased Bonus Damage
+    flat:
+    - 10
+    - 11.764706
+    - 13.529411
+    - 15.294118
+    - 17.058823
+    - 18.82353
+    - 20.588236
+    - 22.352942
+    - 24.117647
+    - 25.882353
+    - 27.647058
+    - 29.411764
+    - 31.17647
+    - 32.941177
+    - 34.705883
+    - 36.47059
+    - 38.235294
+    - 40
+    percent:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    AD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    bonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100AD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100BonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentAP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100AP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    bonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMaxHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentHPLost:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnMaxHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetMaxHP:
+    - 4
+    - 4.5
+    - 5
+    - 5.5
+    - 6
+    percentTargetMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetCurrentHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPrimaryTargetBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMissingMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMaxMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusAS:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    armor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTotalArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusMR:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTotalMR:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentDamageTaken:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentDmgDealt:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    x:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentCritStrikeChance:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    units:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    chunckOfIce:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    soldiers:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    siphoningStrikeStacks:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    lethality:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    mist:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    expendedGrit:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    soul:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+  - attribute: Total Increased Damage
+    flat:
+    - 30
+    - 35.294117
+    - 40.588234
+    - 45.882355
+    - 51.17647
+    - 56.47059
+    - 61.764706
+    - 67.05882
+    - 72.35294
+    - 77.64706
+    - 82.94118
+    - 88.23529
+    - 93.52941
+    - 98.82353
+    - 104.117645
+    - 109.411766
+    - 114.70588
+    - 120
+    percent:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    AD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    bonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100AD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100BonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentAP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100AP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    bonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMaxHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentHPLost:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnMaxHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetMaxHP:
+    - 12
+    - 13.5
+    - 15
+    - 16.5
+    - 18
+    percentTargetMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetCurrentHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPrimaryTargetBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMissingMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMaxMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusAS:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    armor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTotalArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusMR:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTotalMR:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentDamageTaken:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentDmgDealt:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    x:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentCritStrikeChance:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    units:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    chunckOfIce:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    soldiers:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    siphoningStrikeStacks:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    lethality:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    mist:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    expendedGrit:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    soul:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+  - attribute: Maximum Monster Damage
+    flat:
+    - 120
+    - 140
+    - 160
+    - 180
+    - 200
+    percent:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    AD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    bonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100AD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100BonusAD:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentAP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPer100AP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    bonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMaxHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentHPLost:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnMaxHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentOwnMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetMaxHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetMissingHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetCurrentHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentPrimaryTargetBonusHP:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMissingMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentMaxMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusAS:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    armor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTargetArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTotalArmor:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusMR:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentTotalMR:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentDamageTaken:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentDmgDealt:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    x:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentCritStrikeChance:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    units:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    chunckOfIce:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    soldiers:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    siphoningStrikeStacks:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    percentBonusMana:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    lethality:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    mist:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    expendedGrit:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    soul:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
   enemyEffects:
     stun: 0
     stunDuration: 0

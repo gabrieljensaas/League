@@ -1,5 +1,6 @@
 using Simulator.Combat;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum SkillDamageType
@@ -22,10 +23,9 @@ public class SkillList : ScriptableObject
     public SkillType skillType;
     public SkillDamageType skillDamageType;
 
-    private SimManager simulationManager;
-
     public AttributeList atrList;
-    public UnitList unit;
+    //public UnitList unit;
+    public List<AbilityEffect> effects = new();
 
     [Header("Buffs/Debuffs")]
     public SkillEnemyEffects enemyEffects;
@@ -40,32 +40,36 @@ public class SkillList : ScriptableObject
 
     public float UseSkill(int level, string key, ChampionStats myStats, ChampionStats targetStats, float cap = 0, float expendedGrit = 0)
     {
-        return unit.flat[key][level] +
-           (unit.percentAP[key][level] * myStats.AP * 0.01f) +
-           (unit.percentAD[key][level] * myStats.AD * 0.01f) +
-           ((unit.percentBonusAD[key][level] * myStats.bonusAD * 0.01f) + (unit.percentBonusAS[key][level] * (int)(myStats.bonusAS / myStats.baseAttackSpeed) * 0.01f)) +
-           (unit.percentBonusHP[key][level] * myStats.bonusHP * 0.01f) +
-           (unit.percentTargetMissingHP[key][level] * (targetStats.maxHealth - targetStats.currentHealth) * 0.01f) +
-           (unit.percent[key][level] * 0.01f) +
-           ((unit.percentTargetMaxHP[key][level] * 0.01f) + (unit.percentPer100AP[key][level] * (myStats.AP % 100) * 0.01f * targetStats.maxHealth) + (unit.percentPer100AD[key][level] * (myStats.AD % 100) * 0.01f * targetStats.maxHealth)) +
-           (unit.percentMissingHP[key][level] * 0.01f * ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) > cap ? cap : (myStats.maxHealth - myStats.currentHealth)) +
-           (unit.percentDmgDealt[key][level] * 0.01f) +
-           (((unit.expendedGrit[key][level] * 0.01f) + (myStats.bonusAD * 0.0025f)) * expendedGrit) +
-           (unit.percentPrimaryTargetBonusHP[key][level] * 0.01f * targetStats.bonusHP);
+        AbilityEffect effect = effects.Find(x => x.attribute == key);
+
+        return (float)(effect.flat[level] +
+           (effect.percentAP[level] * myStats.AP * 0.01f) +
+           (effect.percentAD[level] * myStats.AD * 0.01f) +
+           (effect.percentBonusAD[level] * myStats.bonusAD * 0.01f) + (effect.percentBonusAS[level] * (int)(myStats.bonusAS / myStats.baseAttackSpeed) * 0.01f) +
+           (effect.percentBonusHP[level] * myStats.bonusHP * 0.01f) +
+           (effect.percentTargetMissingHP[level] * (targetStats.maxHealth - targetStats.currentHealth) * 0.01f) +
+           (effect.percent[level] * 0.01f) +
+           (effect.percentTargetMaxHP[level] * 0.01f) + (effect.percentPer100AP[level] * (myStats.AP % 100) * 0.01f * targetStats.maxHealth) + (effect.percentPer100AD[level] * (myStats.AD % 100) * 0.01f * targetStats.maxHealth) +
+           (effect.percentMissingHP[level] * 0.01f * ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) > cap ? cap : myStats.maxHealth - myStats.currentHealth) +
+           (effect.percentDmgDealt[level] * 0.01f) +
+           (((effect.expendedGrit[level] * 0.01f) + (myStats.bonusAD * 0.0025f)) * expendedGrit) +
+           (effect.percentPrimaryTargetBonusHP[level] * 0.01f * targetStats.bonusHP));
     }
 
     public float SylasUseSkill(int level, string key, ChampionStats myStats, ChampionStats targetStats, float cap = 0)
     {
-        return unit.flat[key][level] +
-           (unit.percentAP[key][level] * myStats.AP * 0.01f) +
-           (unit.percentAD[key][level] * myStats.AP * 0.006f) +
-           ((unit.percentBonusAD[key][level] * myStats.AP * 0.004f) + (unit.percentBonusAS[key][level] * (int)(myStats.bonusAS / myStats.baseAttackSpeed) * 0.01f)) +
-           (unit.percentBonusHP[key][level] * myStats.bonusHP * 0.01f) +
-           (unit.percentTargetMissingHP[key][level] * (targetStats.maxHealth - targetStats.currentHealth) * 0.01f) +
-           (unit.percent[key][level] * 0.01f) +
-           (((unit.percentTargetMaxHP[key][level] * 0.01f) + (unit.percentPer100AP[key][level] * (myStats.AP % 100) * 0.01f)) * targetStats.maxHealth) +
-           (unit.percentMissingHP[key][level] * 0.01f * ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) > cap ? cap : (myStats.maxHealth - myStats.currentHealth)) +
-           (unit.percentDmgDealt[key][level] * 0.01f);
+        AbilityEffect effect = effects.Find(x => x.attribute == key);
+
+        return (float)(effect.flat[level] +
+           (effect.percentAP[level] * myStats.AP * 0.01f) +
+           (effect.percentAD[level] * myStats.AP * 0.006f) +
+           ((effect.percentBonusAD[level] * myStats.AP * 0.004f) + (effect.percentBonusAS[level] * (int)(myStats.bonusAS / myStats.baseAttackSpeed) * 0.01f)) +
+           (effect.percentBonusHP[level] * myStats.bonusHP * 0.01f) +
+           (effect.percentTargetMissingHP[level] * (targetStats.maxHealth - targetStats.currentHealth) * 0.01f) +
+           (effect.percent[level] * 0.01f) +
+           (((effect.percentTargetMaxHP[level] * 0.01f) + (effect.percentPer100AP[level] * (myStats.AP % 100) * 0.01f)) * targetStats.maxHealth) +
+           (effect.percentMissingHP[level] * 0.01f * ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) > cap ? cap : (myStats.maxHealth - myStats.currentHealth)) +
+           (effect.percentDmgDealt[level] * 0.01f));
     }
 }
 

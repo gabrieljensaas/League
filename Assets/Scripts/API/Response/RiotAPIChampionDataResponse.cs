@@ -55,7 +55,7 @@ public class Leveling
 
 public class Modifier
 {
-    public List<double> values { get; set; }
+    public List<float> values { get; set; }
     public List<string> units { get; set; }
 }
 

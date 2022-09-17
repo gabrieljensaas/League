@@ -39,6 +39,7 @@ MonoBehaviour:
   skillDamageType: 0
   atrList:
     attibutes: []
+  effects: []
   enemyEffects:
     stun: 0
     stunDuration: 0

@@ -2084,6 +2084,10 @@ MonoBehaviour:
   myUI: {fileID: 0}
   simulationManager: {fileID: 0}
   attackCooldown: 0
+  qKeys: []
+  wKeys: []
+  eKeys: []
+  rKeys: []
   aSum: 0
   hSum: 0
   qSum: 0
@@ -2151,12 +2155,16 @@ MonoBehaviour:
   attackSpeed: 0
   tenacity: 0
   lifesteal: 0
+  grievouswounds: 0
   baseHealth: 0
   baseAD: 0
   baseAP: 0
   baseArmor: 0
   baseSpellBlock: 0
   baseAttackSpeed: 0
+  bonusAD: 0
+  bonusHP: 0
+  bonusAS: 0
 --- !u!114 &155855321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5939,6 +5947,10 @@ MonoBehaviour:
   myUI: {fileID: 0}
   simulationManager: {fileID: 0}
   attackCooldown: 0
+  qKeys: []
+  wKeys: []
+  eKeys: []
+  rKeys: []
   aSum: 0
   hSum: 0
   qSum: 0
@@ -5998,12 +6010,16 @@ MonoBehaviour:
   attackSpeed: 0
   tenacity: 0
   lifesteal: 0
+  grievouswounds: 0
   baseHealth: 0
   baseAD: 0
   baseAP: 0
   baseArmor: 0
   baseSpellBlock: 0
   baseAttackSpeed: 0
+  bonusAD: 0
+  bonusHP: 0
+  bonusAS: 0
 --- !u!114 &488366047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6133,7 +6149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7659dade3692e734e92e6342472cefce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 12.16.1
+  version: 12.17.1
   stats: []
   passives: []
   qSkills: []
