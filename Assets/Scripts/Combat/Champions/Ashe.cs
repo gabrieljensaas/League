@@ -76,7 +76,7 @@ public class Ashe : ChampionCombat
     }
     public override IEnumerator HijackedR(int skillLevel)
     {
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("Stun", new StunBuff(1, myStats.buffManager, myStats.rSkill[0].basic.name));
         if (!myStats.buffManager.buffs.TryAdd("Frosted", new FrostedBuff(2, myStats.buffManager, myStats.rSkill[0].basic.name)))
         {

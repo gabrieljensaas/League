@@ -118,7 +118,7 @@ public class Fiora : ChampionCombat
 
     public override IEnumerator HijackedR(int skillLevel)
     {
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
 
         VitalsBuff vitalsBuff = new(8, myStats.buffManager, "Grand Challenge")
         {

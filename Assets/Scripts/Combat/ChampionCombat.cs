@@ -66,7 +66,7 @@ namespace Simulator.Combat
             }
         }
 
-        protected IEnumerator StartCastingAbility(float castTime)
+        public IEnumerator StartCastingAbility(float castTime)
         {
             isCasting = true;
             yield return new WaitForSeconds(castTime);
@@ -158,7 +158,7 @@ namespace Simulator.Combat
 
         public virtual IEnumerator HijackedR(int skillLevel)
         {
-            yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+            yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
             UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
             targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
         }

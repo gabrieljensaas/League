@@ -80,7 +80,7 @@ public class Vex : ChampionCombat
 
     public override IEnumerator HijackedR(int skillLevel)
     {
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
         yield return new WaitForSeconds(0.5f);
         UpdateAbilityTotalDamage(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[1]);

@@ -91,6 +91,16 @@ public class Sett : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(0.27f));
     }
 
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        if (targetStats.buffManager.HasImmobilize) yield break;
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
+        myStats.buffManager.buffs.Add("Suppression", new SuppressionBuff(1.5f, myStats.buffManager, myStats.rSkill[0].basic.name));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(1.23f));
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(0.27f));
+    }
+
     public override IEnumerator ExecuteA()
     {
         if (!CheckForAbilityControl(checksA)) yield break;

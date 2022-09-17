@@ -74,7 +74,7 @@ public class KogMaw : ChampionCombat
 
     public override IEnumerator HijackedR(int skillLevel)
     {
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
         float multiplier;
         if ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth > 0.6f) multiplier = 1 + ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) * 0.833f;

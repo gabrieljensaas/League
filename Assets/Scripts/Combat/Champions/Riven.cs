@@ -144,14 +144,14 @@ public class Riven : ChampionCombat
     {
         if (hHasWindSlash && (hR1ExecuteCheck.Control() || hTimeSinceR > 14))
         {
-            yield return StartCoroutine(StartCastingAbility(myStats.rSkill[1].basic.castTime));
+            yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
             UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[1].UseSkill(skillLevel, rKeys[0], targetStats, myStats) * (1 + ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) > 0.75f ? 2 : (myStats.maxHealth - myStats.currentHealth) * 2.667f), myStats.rSkill[1].basic.name, SkillDamageType.Phyiscal);
             targetStats.rCD = (myStats.rSkill[0].basic.coolDown[2] * 2) - timeSinceR;
             hasWindSlash = false;
         }
 
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        yield return StartCoroutine(StartCastingAbility(0.5f - myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(0.5f - myStats.rSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new AttackDamageBuff(15, targetStats.buffManager, myStats.rSkill[0].basic.name, (int)(targetStats.AP * 0.12f), myStats.rSkill[0].basic.name));
         hHasWindSlash = true;
         hTimeSinceR = 0f;

@@ -124,7 +124,7 @@ public class Vladimir : ChampionCombat
 
     public override IEnumerator HijackedR(int skillLevel)
     {
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("Hemoplague", new HemoplagueBuff(4, myStats.buffManager, myStats.rSkill[0].basic.name));
         StartCoroutine(HHemoplague(skillLevel));
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;

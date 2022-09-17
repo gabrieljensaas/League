@@ -103,7 +103,7 @@ public class Varus : ChampionCombat
 
     public override IEnumerator HijackedR(int skillLevel)
     {
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
         myStats.buffManager.buffs.Add("Root", new RootBuff(2, myStats.buffManager, myStats.rSkill[0].basic.name));

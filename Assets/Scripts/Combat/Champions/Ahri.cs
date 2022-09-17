@@ -86,7 +86,7 @@ public class Ahri : ChampionCombat
     {
         if (targetStats.buffManager.HasImmobilize) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         if (hRStacks == 0) hRStacks = 2;
         UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[skillLevel], 2, rKeys[0]);
         targetStats.rCD = hRStacks > 0 ? 1 : myStats.rSkill[0].basic.coolDown[skillLevel] * 2;

@@ -117,7 +117,7 @@ public class MasterYi : ChampionCombat
 
     public override IEnumerator HijackedR(int skillLevel)
     {
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new AttackSpeedBuff(7, targetStats.buffManager, myStats.rSkill[0].basic.name, myStats.rSkill[0].SylasUseSkill(skillLevel, rKeys[0], targetStats, myStats), myStats.rSkill[0].basic.name));
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
     }

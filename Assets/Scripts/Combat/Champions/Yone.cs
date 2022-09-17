@@ -181,7 +181,7 @@ public class Yone : ChampionCombat                  //add passive ap damage when
     public override IEnumerator HijackedR(int skillLevel)
     {
         if (targetStats.buffManager.HasImmobilize) yield break;
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("Airborne", new AirborneBuff(1.05f, myStats.buffManager, myStats.rSkill[0].basic.name));
         targetStats.buffManager.buffs.Add("UnableToAct", new UnableToActBuff(0.3f, targetStats.buffManager, myStats.rSkill[0].basic.name));
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;

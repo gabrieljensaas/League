@@ -108,7 +108,7 @@ public class Xayah : ChampionCombat
 
     public override IEnumerator HijackedR(int skillLevel)
     {
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
         targetStats.buffManager.buffs.Add("Untargetable", new UntargetableBuff(1.5f, targetStats.buffManager, myStats.rSkill[0].basic.name));
         targetStats.buffManager.buffs.Add("UnableToActBuff", new UnableToActBuff(1.5f, targetStats.buffManager, myStats.rSkill[0].basic.name));

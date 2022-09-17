@@ -140,7 +140,7 @@ public class Jhin : ChampionCombat
 
     public override IEnumerator HijackedR(int skillLevel)
     {
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(10, targetStats.buffManager, myStats.rSkill[0].basic.name, "CurtainCall"));
         yield return StartCoroutine(HCurtainCall(skillLevel));
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;

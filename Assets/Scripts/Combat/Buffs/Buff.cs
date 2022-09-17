@@ -19,7 +19,6 @@ public abstract class Buff
                     or BerserkBuff
                     or CharmBuff
                     or FleeBuff
-                    or TauntBuff
                     or SleepBuff
                     or StasisBuff
                     or StunBuff

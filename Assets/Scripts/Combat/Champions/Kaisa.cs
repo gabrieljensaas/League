@@ -123,7 +123,7 @@ public class Kaisa : ChampionCombat
     public override IEnumerator HijackedR(int skillLevel)
     {
         if (!myStats.buffManager.buffs.ContainsKey("Plasma")) yield break;
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         targetStats.buffManager.shields.Add(myStats.rSkill[0].basic.name, new ShieldBuff(2, targetStats.buffManager, myStats.rSkill[0].basic.name, myStats.rSkill[0].SylasUseSkill(skillLevel, rKeys[0], targetStats, myStats), myStats.rSkill[0].basic.name));
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
     }

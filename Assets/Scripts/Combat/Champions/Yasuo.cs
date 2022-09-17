@@ -149,7 +149,7 @@ public class Yasuo : ChampionCombat
     public override IEnumerator HijackedR(int skillLevel)
     {
         if (!myStats.buffManager.buffs.ContainsKey("Airborne")) yield break;
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add("UnableToAct", new UnableToActBuff(1f, targetStats.buffManager, myStats.rSkill[0].basic.name));
         targetStats.buffManager.buffs["Airborne"].duration = 1;
         UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);

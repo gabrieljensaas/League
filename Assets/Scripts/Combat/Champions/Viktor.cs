@@ -88,7 +88,7 @@ public class Viktor : ChampionCombat
 
     public override IEnumerator HijackedR(int skillLevel)
     {
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("Disrupt", new DisruptBuff(0, myStats.buffManager, myStats.rSkill[0].basic.name));
         UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;

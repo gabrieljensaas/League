@@ -90,7 +90,7 @@ public class Vayne : ChampionCombat
 
     public override IEnumerator HijackedR(int skillLevel)
     {
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
         float duration = myStats.rSkill[0].UseSkill(skillLevel, rKeys[0], targetStats, myStats);
         targetStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new AttackDamageBuff(duration, targetStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].SylasUseSkill(skillLevel, rKeys[1], targetStats, myStats), myStats.rSkill[0].basic.name));

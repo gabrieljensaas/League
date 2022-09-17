@@ -93,7 +93,7 @@ public class Lucian : ChampionCombat
 
     public override IEnumerator HijackedR(int skillLevel)
     {
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(3, targetStats.buffManager, myStats.rSkill[0].basic.name, "HTheCulling"));
         StartCoroutine(HTheCulling(22 + 0, (22 + 0) / 3f, skillLevel));                // +0 needs to be added later as critical chance
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;

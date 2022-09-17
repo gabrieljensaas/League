@@ -111,7 +111,7 @@ public class Zed : ChampionCombat
     public override IEnumerator HijackedR(int skillLevel)
     {
         if (targetStats.buffManager.HasImmobilize) yield break;
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add("Untargetable", new UntargetableBuff(0.95f, targetStats.buffManager, myStats.rSkill[0].basic.name));
         StartCoroutine(HMarkedForDeath(skillLevel));
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;

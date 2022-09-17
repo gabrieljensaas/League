@@ -103,7 +103,7 @@ public class Katarina : ChampionCombat
 
     public override IEnumerator HijackedR(int skillLevel)
     {
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(2.5f, targetStats.buffManager, myStats.rSkill[0].basic.name, "DeathLotus"));
         StartCoroutine(HDeathLotus(0, skillLevel));
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;

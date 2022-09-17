@@ -73,7 +73,7 @@ public class Veigar : ChampionCombat
 
     public override IEnumerator HijackedR(int skillLevel)
     {
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
 
         float missingHealthModifier = ((1 - myStats.currentHealth / myStats.maxHealth) * 1.5f) + 1;
         if (missingHealthModifier > 2) missingHealthModifier = 2;
