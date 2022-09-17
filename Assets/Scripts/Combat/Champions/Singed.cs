@@ -48,15 +48,10 @@ public class Singed : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("SprayAndPray", new AttackDamageBuff(6, myStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), "SprayAndPray"));
+        myStats.buffManager.buffs.Add("BonusAP", new AbilityPowerBuff(25, myStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), "BonusAP"));
+        myStats.buffManager.buffs.Add("BonusArmor", new ArmorBuff(25, myStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), "BonusArmor"));
+        myStats.buffManager.buffs.Add("BonusMR", new MagicResistanceBuff (25, myStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), "BonusMR"));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
-/*    public virtual IEnumerator ExecuteA()
-    {
-        if (!CheckForAbilityControl(checksA)) yield break;
-
-        yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
-    }*/
 }
