@@ -242,4 +242,62 @@ public class SimManager : MonoBehaviour
     }
 
     public void Reset() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+    public void LoadStats(ChampionsRe response, int index)
+    {
+        var champName = response.champData.data.Champion.name;
+        var statsToLoad = response;
+        ChampionStats newChampStats;
+
+        newChampStats = champStats[index];
+        switch (champName)
+        {
+            case "Ashe":
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Ashe>();
+                break;
+            case "Garen":
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Garen>();
+                break;
+            case "Annie":
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Annie>();
+                break;
+            case "Master Yi":
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<MasterYi>();
+                break;
+            case "Darius":
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Darius>();
+                break;
+            default:
+                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<PracticeDummy>();
+                champStats[index] = newChampStats;
+                champCombat[index] = newChampStats.MyCombat;
+                return;
+        }
+
+        champStats[index] = newChampStats;
+        champCombat[index] = newChampStats.MyCombat;
+
+        FindSkills(champName, newChampStats);
+
+        newChampStats.name = champName;
+        newChampStats.level = 18;                      //change from the lss response later
+
+        newChampStats.baseHealth = (float)statsToLoad.champData.data.Champion.stats.hp;
+        newChampStats.baseAD = (float)statsToLoad.champData.data.Champion.stats.attackdamage;
+        newChampStats.baseArmor = (float)statsToLoad.champData.data.Champion.stats.armor;
+        newChampStats.baseSpellBlock = (float)(statsToLoad.champData.data.Champion.stats.spellblock);
+        newChampStats.baseAttackSpeed = (float)statsToLoad.champData.data.Champion.stats.attackspeed;
+
+        newChampStats.maxHealth = newChampStats.baseHealth;
+        newChampStats.AD = newChampStats.baseAD;
+        newChampStats.armor = newChampStats.baseArmor;
+        newChampStats.spellBlock = newChampStats.baseSpellBlock;
+        newChampStats.attackSpeed = newChampStats.baseAttackSpeed;
+
+        GetStatsByLevel(newChampStats, statsToLoad);
+        newChampStats.currentHealth = newChampStats.maxHealth;
+
+        ExtraStats(newChampStats);
+        newChampStats.StaticUIUpdate();
+    }
 }
