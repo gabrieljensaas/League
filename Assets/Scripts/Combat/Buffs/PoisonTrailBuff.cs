@@ -17,7 +17,7 @@ public class PoisonTrailBuff : Buff
         if (_poisonTimer >= 0.25f)
         {
             _poisonTimer = 0f;
-            manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.targetCombat.qSum, 1, manager.combat.myStats.qSkill[0], 4, manager.combat.qKeys[0]);
+            manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.targetCombat.qSum, 0, manager.combat.targetStats.qSkill[0], 4, manager.combat.targetCombat.qKeys[0]);
         }
 
         duration -= Time.deltaTime;
