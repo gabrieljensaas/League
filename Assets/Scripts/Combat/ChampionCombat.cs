@@ -97,24 +97,24 @@ namespace Simulator.Combat
             targetCombat.myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
-        protected void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level, string skillKey)
+        public void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level, string skillKey)
         {
             totalHeal += HealHealth(skill.UseSkill(level, skillKey, myStats, targetStats) * (100 - myStats.grievouswounds) / 100, skill.basic.name);
             myUI.healSum.text = totalHeal.ToString();
         }
-        protected void UpdateTotalHealSylas(ref float totalHeal, SkillList skill, int level, string skillKey)
+        public void UpdateTotalHealSylas(ref float totalHeal, SkillList skill, int level, string skillKey)
         {
             totalHeal += targetCombat.HealHealth(skill.UseSkill(level, skillKey, targetStats, myStats) * (100 - targetStats.grievouswounds) / 100, skill.basic.name);
             targetCombat.myUI.healSum.text = totalHeal.ToString();
         }
 
-        protected void UpdateTotalHeal(ref float totalHeal, float heal, string skillName)
+        public void UpdateTotalHeal(ref float totalHeal, float heal, string skillName)
         {
             totalHeal += HealHealth(heal * (100 - targetStats.grievouswounds) / 100, skillName);
             myUI.healSum.text = totalHeal.ToString();
         }
 
-        protected void UpdateTotalHealSylas(ref float totalHeal, float heal, string skillName)
+        public void UpdateTotalHealSylas(ref float totalHeal, float heal, string skillName)
         {
             totalHeal += targetCombat.HealHealth(heal * (100 - targetStats.grievouswounds) / 100, skillName);
             targetCombat.myUI.healSum.text = totalHeal.ToString();
