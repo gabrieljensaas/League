@@ -1,7 +1,6 @@
 using Simulator.Combat;
 using System.Collections;
 using UnityEngine;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class Aatrox : ChampionCombat
 {
