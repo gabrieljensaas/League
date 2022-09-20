@@ -6,6 +6,7 @@ public class Kennen : ChampionCombat
 {
     private CheckKennenP kennenP;
     private float passiveStunTimer;
+    private int ePassive = 0;
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "W", "Q", "R", "A" };
@@ -72,8 +73,6 @@ public class Kennen : ChampionCombat
         myStats.buffManager.buffs.Add("CantAA", new CantAABuff(2f, myStats.buffManager, myStats.eSkill[0].basic.name));
         CheckKennenPassiveStun(myStats.eSkill[0].basic.name);
         myStats.buffManager.buffs.Add("AttackSpeedBuff", new AttackSpeedBuff(4f, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats), "AttackSpeedBuff"));
-        yield return new WaitForSeconds(4f);
-        myStats.buffManager.buffs.Remove("AttackSpeedBuff");
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
@@ -112,6 +111,7 @@ public class Kennen : ChampionCombat
             if (passiveStunTimer<6)
             {
                 targetStats.buffManager.buffs.Add("Stun", new StunBuff(0.5f, targetStats.buffManager, myStats.passiveSkill.skillName));
+                passiveStunTimer = 0;
             }
 			else
 			{
@@ -128,6 +128,20 @@ public class Kennen : ChampionCombat
         else
         {
             myStats.buffManager.buffs.Add("MarkOfTheStorm", new MarkOfTheStormBuff(6,myStats.buffManager, skillName));
+        }
+    }
+
+    public override IEnumerator ExecuteA()
+    {
+        if (!CheckForAbilityControl(checksA)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(0.1f));
+        AutoAttack();
+        ePassive++;
+		if (ePassive == 4)
+		{
+            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+            ePassive = 0;
         }
     }
 }
