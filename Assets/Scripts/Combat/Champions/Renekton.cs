@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class Renekton : ChampionCombat
 {
-    private int furyPassive;
-    private bool AngerMode = false;
-	private bool eCast;
+    private float furyPassive;
+    private bool AngerMode => furyPassive >= 50 ? true : false;
+    private bool eCast;
     private float timeSinceE;
+    public int wStun = 0;
 
-	public override void UpdatePriorityAndChecks()
+    public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "E", "W", "Q", "R", "A" };
+        combatPrio = new string[] { "R", "E", "W", "Q", "A" };
 
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
@@ -30,6 +31,7 @@ public class Renekton : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksE.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
+        autoattackcheck = new RenektonAACheck(this, this);
 
         qKeys.Add("Physical Damage");
         qKeys.Add("Enhanced Damage");
@@ -42,7 +44,7 @@ public class Renekton : ChampionCombat
         eKeys.Add("Bonus Physical Damage");
         eKeys.Add("Armor Reduction");
         rKeys.Add("Bonus Health");          // 0
-        rKeys.Add("Total Magic Damage");    // 1
+        rKeys.Add("Magic Damage Per Tick");    // 1
 
         base.UpdatePriorityAndChecks();
     }
@@ -58,17 +60,18 @@ public class Renekton : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        if(AngerMode)
-		{
+        if (AngerMode)
+        {
             UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
-            UpdateTotalHeal(ref hSum,myStats.qSkill[0].UseSkill(4, qKeys[4], myStats, targetStats), myStats.qSkill[0].basic.name);
+            UpdateTotalHeal(ref hSum, myStats.qSkill[0].UseSkill(4, qKeys[4], myStats, targetStats), myStats.qSkill[0].basic.name);
         }
-		else
-		{
+        else
+        {
             UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
             UpdateTotalHeal(ref hSum, myStats.qSkill[0].UseSkill(4, qKeys[3], myStats, targetStats), myStats.qSkill[0].basic.name);
+            furyPassive += myStats.currentHealth < myStats.maxHealth * 0.5f ? 15 : 10;
+            furyPassive = furyPassive > 100 ? 100 : furyPassive;
         }
-        furyPassive += 10;
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 
@@ -80,16 +83,14 @@ public class Renekton : ChampionCombat
 
         if (AngerMode)
         {
-            UpdateAbilityTotalDamage(ref wSum, 0, myStats.wSkill[0], 4, wKeys[1]);
-            myStats.buffManager.buffs.Add("EmpStunBuff", new StunBuff(1.5f, myStats.buffManager, myStats.wSkill[0].basic.name));
-            //need help to implement shield break
+            wStun = 2;
         }
         else
         {
-            UpdateAbilityTotalDamage(ref wSum, 0, myStats.wSkill[0], 4, wKeys[0]);
-            myStats.buffManager.buffs.Add("EmpStunBuff", new StunBuff(0.75f, myStats.buffManager, myStats.wSkill[0].basic.name));
+            wStun = 1;
+            furyPassive += myStats.currentHealth < myStats.maxHealth * 0.5f ? 15 : 10;
+            furyPassive = furyPassive > 100 ? 100 : furyPassive;
         }
-        furyPassive += 10;
         attackCooldown = 0f;
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
@@ -108,29 +109,29 @@ public class Renekton : ChampionCombat
         else
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            if(AngerMode)
-			{
+            if (AngerMode)
+            {
                 UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
                 UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[2]);
                 myStats.buffManager.buffs.Add("ArmorReduction", new ArmorReductionBuff(4f, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(4, qKeys[3], myStats, targetStats), "ArmorReduction"));
             }
-			else
-			{
+            else
+            {
                 UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+                furyPassive += myStats.currentHealth < myStats.maxHealth * 0.5f ? 15 : 10;
+                furyPassive = furyPassive > 100 ? 100 : furyPassive;
             }
 
             StopCoroutine(SliceDice());
             myStats.eCD = myStats.eSkill[0].basic.coolDown[4] - timeSinceE;
         }
-        furyPassive += 10;
     }
 
     public override IEnumerator ExecuteR()
     {
         if (!CheckForAbilityControl(checksR)) yield break;
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        StartCoroutine(Dominus());
-        UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 4, rKeys[1]);
+        StartCoroutine(Dominus(0));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
@@ -140,13 +141,8 @@ public class Renekton : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         AutoAttack();
-        furyPassive += 5;
-        if(furyPassive >= 50)
-		{
-            AutoAttack();
-            furyPassive -= 50;
-            AngerMode = true;
-		}
+        furyPassive += myStats.currentHealth < myStats.maxHealth * 0.5f ? 7.5f : 5;
+        furyPassive = furyPassive > 100 ? 100 : furyPassive;
     }
     public IEnumerator SliceDice()
     {
@@ -156,10 +152,37 @@ public class Renekton : ChampionCombat
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4] - timeSinceE;
     }
 
-    public IEnumerator Dominus()
-	{
-        myStats.maxHealth = myStats.currentHealth + myStats.rSkill[0].UseSkill(2, rKeys[0], myStats ,targetStats);
-        yield return new WaitForSeconds(15f);
-        myStats.maxHealth = myStats.currentHealth - myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
+    public IEnumerator Dominus(float time)
+    {
+        if(time == 0)
+        {
+            furyPassive += myStats.currentHealth < myStats.maxHealth * 0.5f ? 30 : 20;
+            furyPassive = furyPassive > 100 ? 100 : furyPassive;
+            myStats.maxHealth += myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
+            myStats.currentHealth += myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
+            myStats.bonusHP += myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
+            yield return new WaitForSeconds(0.5f);
+        }
+        else if(time % 1 == 0)
+        {
+            furyPassive += myStats.currentHealth < myStats.maxHealth * 0.5f ? 7.5f : 5;
+            furyPassive = furyPassive > 100 ? 100 : furyPassive;
+        }
+        else
+        {
+            UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 4, rKeys[1]);
+        }
+
+        if ( time != 15f)
+        {
+            yield return new WaitForSeconds(0.5f);
+            StartCoroutine(Dominus(time + 0.5f));
+        }
+        else
+        {
+            myStats.maxHealth -= myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
+            myStats.currentHealth -= myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
+            myStats.bonusHP -= myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
+        }
     }
 }

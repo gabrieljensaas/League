@@ -9,7 +9,7 @@ public class Kennen : ChampionCombat
     private int ePassive = 0;
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "E", "W", "Q", "R", "A" };
+        combatPrio = new string[] { "R", "E", "W", "Q", "A" };
 
         kennenP = new CheckKennenP(this);
         checksQ.Add(new CheckCD(this, "Q"));
@@ -27,7 +27,6 @@ public class Kennen : ChampionCombat
         checksE.Add(new CheckIfDisrupt(this));
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
-        checksE.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
 
         qKeys.Add("Magic Damage");
@@ -58,7 +57,7 @@ public class Kennen : ChampionCombat
     public override IEnumerator ExecuteW()
     {
         if (!CheckForAbilityControl(checksW)) yield break;
-
+        if (!targetStats.buffManager.buffs.ContainsKey("MarkOfTheStorm")) yield break;
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         CheckKennenPassiveStun(myStats.wSkill[0].basic.name);
         UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[1]);
@@ -70,10 +69,11 @@ public class Kennen : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("CantAA", new CantAABuff(2f, myStats.buffManager, myStats.eSkill[0].basic.name));
+        myStats.buffManager.buffs.Add("CantAA", new CantAABuff(0.5f, myStats.buffManager, myStats.eSkill[0].basic.name));
         CheckKennenPassiveStun(myStats.eSkill[0].basic.name);
-        myStats.buffManager.buffs.Add("AttackSpeedBuff", new AttackSpeedBuff(4f, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats), "AttackSpeedBuff"));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        yield return new WaitForSeconds(0.5f);
+        myStats.buffManager.buffs.Add("AttackSpeedBuff", new AttackSpeedBuff(4f, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats), "AttackSpeedBuff"));
     }
 
     public override IEnumerator ExecuteR()
@@ -91,17 +91,17 @@ public class Kennen : ChampionCombat
     public IEnumerator MaelStorm()
     {
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0]);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0], 1.1f);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0], 1.2f);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0], 1.3f);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0], 1.4f);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0], 1.5f);
     }
 
     private void CheckKennenPassiveStun(string skillName)
