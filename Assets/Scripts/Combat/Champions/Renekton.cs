@@ -41,7 +41,8 @@ public class Renekton : ChampionCombat
         eKeys.Add("Total Physical Damage");
         eKeys.Add("Bonus Physical Damage");
         eKeys.Add("Armor Reduction");
-        rKeys.Add("");
+        rKeys.Add("Bonus Health");          // 0
+        rKeys.Add("Total Magic Damage");    // 1
 
         base.UpdatePriorityAndChecks();
     }
@@ -127,9 +128,9 @@ public class Renekton : ChampionCombat
     public override IEnumerator ExecuteR()
     {
         if (!CheckForAbilityControl(checksR)) yield break;
-
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        StartCoroutine(Dominus());
+        UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 4, rKeys[1]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
@@ -153,5 +154,12 @@ public class Renekton : ChampionCombat
         yield return new WaitForSeconds(4f);
         eCast = false;
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4] - timeSinceE;
+    }
+
+    public IEnumerator Dominus()
+	{
+        myStats.maxHealth = myStats.currentHealth + myStats.rSkill[0].UseSkill(2, rKeys[0], myStats ,targetStats);
+        yield return new WaitForSeconds(15f);
+        myStats.maxHealth = myStats.currentHealth - myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
     }
 }
