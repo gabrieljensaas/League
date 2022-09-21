@@ -19,7 +19,7 @@ public class Irelia : ChampionCombat
 
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "E", "W", "", "R", "A" };
+        combatPrio = new string[] { "R", "Q", "E", "W", "A" };
 
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
