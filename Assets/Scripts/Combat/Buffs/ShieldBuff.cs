@@ -23,6 +23,9 @@ public class ShieldBuff : Buff
     }
     public override void Kill()
     {
+        if (manager.buffs.TryGetValue("ThunderclapArmor", out Buff thunderclapTripledArmor)) //malphite
+            thunderclapTripledArmor.Kill();
+
         manager.simulationManager.ShowText($"{manager.stats.name} Has No Longer Shield From {source}!");
         manager.buffs.Remove(uniqueKey);
     }

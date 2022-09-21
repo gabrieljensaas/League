@@ -3,7 +3,7 @@ using UnityEngine;
 public class ArmorBuff : Buff
 {
     public string uniqueKey;
-    public ArmorBuff(float duration, BuffManager manager, string source, int armor, string uniqueKey) : base(manager)
+    public ArmorBuff(float duration, BuffManager manager, string source, float armor, string uniqueKey) : base(manager)
     {
         manager.stats.armor += armor;
         value = armor;
