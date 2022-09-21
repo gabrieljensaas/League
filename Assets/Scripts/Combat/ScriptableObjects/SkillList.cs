@@ -53,7 +53,9 @@ public class SkillList : ScriptableObject
            (effect.percentMissingHP[level] * 0.01f * ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) > cap ? cap : myStats.maxHealth - myStats.currentHealth) +
            (effect.percentDmgDealt[level] * 0.01f) +
            (((effect.expendedGrit[level] * 0.01f) + (myStats.bonusAD * 0.0025f)) * expendedGrit) +
-           (effect.percentPrimaryTargetBonusHP[level] * 0.01f * targetStats.bonusHP));
+           (effect.percentPrimaryTargetBonusHP[level] * 0.01f * targetStats.bonusHP)) +
+           (effect.percentBonusArmor[level] * 0.01f * (myStats.armor - myStats.baseArmor)) +
+           (effect.percentBonusMR[level] * 0.01f * (myStats.spellBlock - myStats.baseSpellBlock));
     }
 
     public float SylasUseSkill(int level, string key, ChampionStats myStats, ChampionStats targetStats, float cap = 0)
