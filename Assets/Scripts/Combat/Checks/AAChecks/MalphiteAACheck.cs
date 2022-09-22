@@ -2,7 +2,7 @@ using Simulator.Combat;
 
 public class MalphiteAACheck : Check
 {
-    public MalphiteAACheck(ChampionCombat ccombat, Malphite malphite) : base(ccombat)
+    public MalphiteAACheck(ChampionCombat ccombat) : base(ccombat)
     {
     }
 
