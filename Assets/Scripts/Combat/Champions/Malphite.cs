@@ -28,7 +28,9 @@ public class Malphite : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
 
-        autoattackcheck = new IreliaAACheck(this);
+        autoattackcheck = new MalphiteAACheck(this);
+        checkTakeDamageAbility.Add(new CheckShield(this));
+        checkTakeDamageAA.Add(new CheckShield(this));
 
         qKeys.Add("Magic Damage");
         qKeys.Add("Slow");
@@ -60,7 +62,7 @@ public class Malphite : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[2], 4, wKeys[0]);
+        myStats.buffManager.buffs.Add("ThunderclapBuff", new ThunderclapBuff(5, myStats.buffManager, myStats.wSkill[0].name));
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         myStats.MyCombat.attackCooldown = 0;
     }
