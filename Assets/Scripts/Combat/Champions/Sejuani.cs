@@ -4,16 +4,14 @@ using UnityEngine;
 
 public class Sejuani : ChampionCombat
 {
-    private CheckPermaFrostP permaFrostP;
     private float timeSinceEPassive = 0f;
-    private bool isFrozen = false;
-    private int ePassive;
+    private int frost = 0;
+    public bool HasFrostArmor = true;
 
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "Q", "W", "E", "A" };
 
-        permaFrostP = new CheckPermaFrostP(this);
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
         checksE.Add(new CheckCD(this, "E"));
@@ -29,15 +27,20 @@ public class Sejuani : ChampionCombat
         checksE.Add(new CheckIfDisrupt(this));
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
-        checksE.Add(new CheckIfImmobilize(this));
+        checksQ.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
+        checkTakeDamageAAPostMitigation.Add(new CheckFrostArmor(this, this)); 
+        checkTakeDamageAbilityPostMitigation.Add(new CheckFrostArmor(this, this)); 
 
         qKeys.Add("Magic Damage");
         wKeys.Add("Physical Damage");
-        wKeys.Add("Total Physical Damage");
+        wKeys.Add("Physical Damage");
         eKeys.Add("Magic Damage");
         rKeys.Add("Magic Damage");
         rKeys.Add("Magic Damage");
+
+        myStats.armor += ((myStats.armor - myStats.baseArmor) * 0.5f) + 10;
+        myStats.spellBlock += ((myStats.spellBlock - myStats.baseSpellBlock) * 0.5f) + 10;
 
         base.UpdatePriorityAndChecks();
     }
@@ -54,12 +57,8 @@ public class Sejuani : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
-        myStats.buffManager.buffs.Add("KnockOffBuff", new AirborneBuff(0.5f, myStats.buffManager, "KnockOffBuff"));
-        CheckiFFrozen();
-        if (timeSinceEPassive >= 10)
-        {
-            ePassive++;
-        }
+        CheckIfFrozen();
+        targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.5f, targetStats.buffManager, myStats.qSkill[0].basic.name));
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 
@@ -67,27 +66,30 @@ public class Sejuani : ChampionCombat
     {
         if (!CheckForAbilityControl(checksW)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(0.25f));
         UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        CheckIfFrozen();
+        if (timeSinceEPassive > 10 && !targetStats.buffManager.buffs.ContainsKey("Frozen")) frost++;
+        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime - 0.25f));
         UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[1]);
-        myStats.buffManager.buffs.Add("SlowBuff", new SlowBuff(0.25f, myStats.buffManager, "SlowBuff"));
-        CheckiFFrozen();
+        CheckIfFrozen();
+        if (timeSinceEPassive > 10 && !targetStats.buffManager.buffs.ContainsKey("Frozen")) frost++;
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteE()
     {
         if (!CheckForAbilityControl(checksE)) yield break;
-
-        if (ePassive == 4)
-        {
-            yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
-            CheckEPassive();
-            CheckiFFrozen();
-            myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
-        }
-
+        if (frost < 4) yield break;
+        yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        CheckIfFrozen();
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        targetStats.buffManager.buffs.Add("Stun", new StunBuff(1, targetStats.buffManager, myStats.eSkill[0].basic.name));
+        targetStats.buffManager.buffs.Add("Frozen", new FrozenBuff(1f, targetStats.buffManager, myStats.rSkill[0].basic.name));
+        frost = 0;
+        timeSinceEPassive = 0f;
+        attackCooldown = 0f;
     }
 
     public override IEnumerator ExecuteR()
@@ -96,11 +98,10 @@ public class Sejuani : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
-        myStats.buffManager.buffs.Add("Stun", new StunBuff(1f, myStats.buffManager, "Stun"));
-        isFrozen = true;
-        CheckiFFrozen();
+        CheckIfFrozen();
+        targetStats.buffManager.buffs.Add("Stun", new StunBuff(1f, targetStats.buffManager, myStats.rSkill[0].basic.name));
+        if (timeSinceEPassive > 10) targetStats.buffManager.buffs.Add("Frozen", new FrozenBuff(1f, targetStats.buffManager, myStats.rSkill[0].basic.name));
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
-        myStats.buffManager.buffs.Add("SlowBuff", new SlowBuff(1f, myStats.buffManager, "SlowBuff"));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
@@ -110,37 +111,26 @@ public class Sejuani : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         AutoAttack();
-        if (timeSinceEPassive >= 10)
-        {
-            ePassive++;
-        }
+        CheckIfFrozen();
+        if (timeSinceEPassive >= 10 && !targetStats.buffManager.buffs.ContainsKey("Frozen")) frost++;
     }
-
-    private void CheckEPassive()
-    {
-        if (permaFrostP.Control())
-        {
-            if (timeSinceEPassive >= 10)
-            {
-                targetStats.buffManager.buffs.Add("PermaFrost", new FrostedBuff(5f, targetStats.buffManager, "PermaFrost"));
-                isFrozen = true;
-                myStats.buffManager.buffs.Remove("PermaFrostPassive");
-                timeSinceEPassive = 0;
-            }
-        }
-        else
-        {
-            myStats.buffManager.buffs.Add("PermaFrost", new PermaFrostBuff(6, myStats.buffManager, "AutoAttack"));
-        }
-    }
-    private void CheckiFFrozen()
+    private void CheckIfFrozen()
     {
         if (targetStats.buffManager.buffs.TryGetValue("Frozen", out Buff frozen))
         {
-            if (isFrozen)
-            {
-                UpdateAbilityTotalDamage(ref pSum, 4, targetStats.maxHealth * 0.01f, "Frozen", SkillDamageType.Spell);
-            }
+            UpdateAbilityTotalDamage(ref pSum, 4, targetStats.maxHealth * 0.1f, "Frozen", SkillDamageType.Spell);
+            frozen.Kill();
+        }
+    }
+
+    public IEnumerator FrostArmor()
+    {
+        yield return new WaitForSeconds(3f);
+        if (HasFrostArmor)
+        {
+            HasFrostArmor = false;
+            myStats.armor -= ((myStats.armor - myStats.baseArmor) * 0.5f) + 10;
+            myStats.spellBlock -= ((myStats.spellBlock - myStats.baseSpellBlock) * 0.5f) + 10;
         }
     }
 }
