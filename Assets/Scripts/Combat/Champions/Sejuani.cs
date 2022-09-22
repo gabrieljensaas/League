@@ -5,13 +5,15 @@ using UnityEngine;
 public class Sejuani : ChampionCombat
 {
     private CheckPermaFrostP permaFrostP;
-    private int ePassive = 0;
     private float timeSinceEPassive = 0f;
-    private int permaFrostStack = 0;
+    private bool isFrozen = false;
+    private int ePassive;
+
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "E", "W", "Q", "R", "A" };
+        combatPrio = new string[] { "R", "Q", "W", "E", "A" };
 
+        permaFrostP = new CheckPermaFrostP(this);
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
         checksE.Add(new CheckCD(this, "E"));
@@ -53,6 +55,11 @@ public class Sejuani : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.buffManager.buffs.Add("KnockOffBuff", new AirborneBuff(0.5f, myStats.buffManager, "KnockOffBuff"));
+        CheckiFFrozen();
+        if (timeSinceEPassive >= 10)
+        {
+            ePassive++;
+        }
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 
@@ -64,6 +71,7 @@ public class Sejuani : ChampionCombat
         UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[1]);
         myStats.buffManager.buffs.Add("SlowBuff", new SlowBuff(0.25f, myStats.buffManager, "SlowBuff"));
+        CheckiFFrozen();
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
@@ -71,11 +79,12 @@ public class Sejuani : ChampionCombat
     {
         if (!CheckForAbilityControl(checksE)) yield break;
 
-        if (permaFrostStack == 4)
+        if (ePassive == 4)
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
             UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
             CheckEPassive();
+            CheckiFFrozen();
             myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         }
 
@@ -88,6 +97,8 @@ public class Sejuani : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         myStats.buffManager.buffs.Add("Stun", new StunBuff(1f, myStats.buffManager, "Stun"));
+        isFrozen = true;
+        CheckiFFrozen();
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
         myStats.buffManager.buffs.Add("SlowBuff", new SlowBuff(1f, myStats.buffManager, "SlowBuff"));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
@@ -99,8 +110,8 @@ public class Sejuani : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         AutoAttack();
-        if(timeSinceEPassive>=10)
-		{
+        if (timeSinceEPassive >= 10)
+        {
             ePassive++;
         }
     }
@@ -112,10 +123,24 @@ public class Sejuani : ChampionCombat
             if (timeSinceEPassive >= 10)
             {
                 targetStats.buffManager.buffs.Add("PermaFrost", new FrostedBuff(5f, targetStats.buffManager, "PermaFrost"));
+                isFrozen = true;
                 myStats.buffManager.buffs.Remove("PermaFrostPassive");
                 timeSinceEPassive = 0;
             }
-
+        }
+        else
+        {
+            myStats.buffManager.buffs.Add("PermaFrost", new PermaFrostBuff(6, myStats.buffManager, "AutoAttack"));
+        }
+    }
+    private void CheckiFFrozen()
+    {
+        if (targetStats.buffManager.buffs.TryGetValue("Frozen", out Buff frozen))
+        {
+            if (isFrozen)
+            {
+                UpdateAbilityTotalDamage(ref pSum, 4, targetStats.maxHealth * 0.01f, "Frozen", SkillDamageType.Spell);
+            }
         }
     }
 }
