@@ -4,10 +4,21 @@ using UnityEngine;
 
 public class Camille : ChampionCombat
 {
+    public static float GetCamillePassiveCooldown(int level)
+    {
+        return level switch
+        {
+            < 7 => 20f,
+            < 13 => 15f,
+            _ => 10f
+        };
+    }
+
+    private float pCD = 0;
     private bool qCast;
+    private bool eCast;
     private float timeSinceQ;
     private float timeSinceE;
-    private bool eCast;
     private float timeInsideR;
 
     public override void UpdatePriorityAndChecks()
@@ -54,6 +65,7 @@ public class Camille : ChampionCombat
         timeSinceE += Time.deltaTime;
         timeSinceQ += Time.deltaTime;
         timeInsideR -= Time.deltaTime;
+        pCD -= Time.deltaTime;
     }
 
     public override IEnumerator ExecuteQ()
@@ -128,6 +140,7 @@ public class Camille : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         AutoAttack();
+        GetPassiveShield();
         if (timeInsideR <= 0)
         {
             float damage = myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats);
@@ -149,5 +162,14 @@ public class Camille : ChampionCombat
         yield return new WaitForSeconds(0.75f);
         eCast = false;
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4] - timeSinceE;
+    }
+
+    public void GetPassiveShield()
+	{
+        if(pCD <= 0)
+		{
+            myStats.buffManager.buffs.Add("ShieldBuff", new ShieldBuff(2f, myStats.buffManager, "Skill", myStats.maxHealth * 0.2f, "ShieldBuff")); //Yet to check if target is physical or AP and give shield accordingly
+            pCD = GetCamillePassiveCooldown(myStats.level);
+        }
     }
 }
