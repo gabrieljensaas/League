@@ -19,6 +19,7 @@ public class CheckFrostArmor : Check
         {
             sejuani.StartCoroutine(sejuani.FrostArmor());
         }
+        sejuani.passiveTimer = 0;
         return damage;
     }
 }
