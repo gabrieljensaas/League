@@ -113,7 +113,7 @@ public class Renekton : ChampionCombat
             {
                 UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
                 UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[2]);
-                myStats.buffManager.buffs.Add("ArmorReduction", new ArmorReductionBuff(4f, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(4, qKeys[3], myStats, targetStats), "ArmorReduction"));
+                myStats.buffManager.buffs.Add("ArmorReduction", new ArmorReductionBuff(4f, targetStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(4, qKeys[3], myStats, targetStats), "ArmorReduction"));
             }
             else
             {
