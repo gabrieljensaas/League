@@ -70,6 +70,8 @@ public class Yasuo : ChampionCombat
         checksE.Add(new CheckIfUnableToAct(this));
         checksR.Add(new CheckIfUnableToAct(this));
         checksA.Add(new CheckIfUnableToAct(this));
+        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
+        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
 
         myStats.qSkill[0].basic.castTime = GetYasuoQCastTime(myStats.bonusAS);
         myStats.qSkill[0].basic.coolDown[0] = GetYasuoQCooldown(myStats.bonusAS);

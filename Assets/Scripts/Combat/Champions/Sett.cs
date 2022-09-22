@@ -33,6 +33,8 @@ public class Sett : ChampionCombat
         checksR.Add(new CheckIfImmobilize(this));
         checkTakeDamageAAPostMitigation.Add(new CheckForGrit(this, this));
         checkTakeDamageAbilityPostMitigation.Add(new CheckForGrit(this, this));
+        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
+        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Bonus Physical Damage");
         wKeys.Add("Damage");

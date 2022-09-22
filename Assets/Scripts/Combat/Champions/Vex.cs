@@ -36,6 +36,9 @@ public class Vex : ChampionCombat
 
         checksR.Add(new CheckIfImmobilize(this));
 
+        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
+        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+
         qKeys.Add("Magic Damage");
         wKeys.Add("Shield Strength");
         wKeys.Add("Magic Damage");

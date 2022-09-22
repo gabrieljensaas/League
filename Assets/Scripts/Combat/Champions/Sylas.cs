@@ -54,6 +54,8 @@ public class Sylas : ChampionCombat
         checksE.Add(new CheckIfUnableToAct(this));
         checksR.Add(new CheckIfUnableToAct(this));
         checksA.Add(new CheckIfUnableToAct(this));
+        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
+        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Magic Damage");
         qKeys.Add("Magic Damage");

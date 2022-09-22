@@ -30,7 +30,8 @@ public class Azir : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
         checksE.Add(new CheckIfImmobilize(this));
-
+        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
+        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Magic Damage");
         wKeys.Add("Bonus Attack Speed");

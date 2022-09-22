@@ -30,8 +30,8 @@ public class Garen : ChampionCombat
         autoattackcheck = new GarenAACheck(this);
         checkTakeDamageAbility.Add(new CheckDamageReductionPercent(this));
         checkTakeDamageAA.Add(new CheckDamageReductionPercent(this));
-        checkTakeDamageAbility.Add(new CheckShield(this));
-        checkTakeDamageAA.Add(new CheckShield(this));
+        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
+        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
         checksR.Add(new CheckIfExecutes(this, "R"));
 
         qKeys.Add("Bonus Physical Damage");

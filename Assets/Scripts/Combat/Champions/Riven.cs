@@ -46,8 +46,8 @@ public class Riven : ChampionCombat
         r1ExecuteCheck = new CheckIfExecutes(this, "Riven");
         hR1ExecuteCheck = new CheckIfExecutes(this, "SylasRiven");
         checksA.Add(new CheckIfDisarmed(this));
-        checkTakeDamageAbility.Add(new CheckShield(this));
-        checkTakeDamageAA.Add(new CheckShield(this));
+        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
+        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Physical Damage");
         wKeys.Add("Physical Damage");
