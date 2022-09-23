@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Nasus : ChampionCombat
 {
+    public int qStack = 0;        // nasus q has unlimited stack size, we will adjust this value by rounding it with game time
     public static float NasusPassiveLifeSteal(int level)
     {
         return level switch
@@ -54,8 +55,9 @@ public class Nasus : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("SiphoningStrike", new SiphoningStrikeBuff(10f, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats)));
+        myStats.buffManager.buffs.Add("SiphoningStrike", new SiphoningStrikeBuff(10f, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) + qStack));
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+        attackCooldown = 0;
     }
 
     public override IEnumerator ExecuteE()
@@ -64,7 +66,7 @@ public class Nasus : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
-        myStats.buffManager.buffs.Add("ArmorReduction", new ArmorReductionBuff(6f, targetStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(4, eKeys[2], myStats, targetStats), "ArmorReduction"));
+        targetStats.buffManager.buffs.Add("ArmorReduction", new ArmorReductionBuff(6f, targetStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(4, eKeys[2], myStats, targetStats), "ArmorReduction"));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         StartCoroutine(SpiritFire());
     }
@@ -103,6 +105,7 @@ public class Nasus : ChampionCombat
             myStats.maxHealth += myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
             myStats.currentHealth += myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
             myStats.bonusHP += myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
+            myStats.qSkill[0].basic.coolDown[2] *= 0.5f;
             yield return new WaitForSeconds(0.5f);
         }
         else
@@ -120,6 +123,7 @@ public class Nasus : ChampionCombat
             myStats.maxHealth -= myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
             myStats.currentHealth -= myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
             myStats.bonusHP -= myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
+            myStats.qSkill[0].basic.coolDown[2] *= 2f;
         }
     }
 }
