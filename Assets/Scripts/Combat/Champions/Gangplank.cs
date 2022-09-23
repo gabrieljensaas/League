@@ -44,9 +44,6 @@ public class Gangplank : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
 
-        autoattackcheck = new JaxAACheck(this);
-        checkTakeDamageAA.Add(new CheckCounterStrike(this));
-
         qKeys.Add("Physical Damage");
         wKeys.Add("Heal");
         eKeys.Add("Maximum charges");
@@ -64,7 +61,7 @@ public class Gangplank : ChampionCombat
         base.CombatUpdate();
         powderKegTimer += Time.deltaTime;
 
-        if (powderKegTimer > powderKegRechargeRate && powderKegCharges < (int)myStats.eSkill[0].UseSkill(2, eKeys[0], myStats, targetStats))
+        if (powderKegTimer > powderKegRechargeRate && powderKegCharges < (int)myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats))
         {
             powderKegTimer = 0;
             powderKegCharges++;
@@ -110,14 +107,10 @@ public class Gangplank : ChampionCombat
 
     public override IEnumerator ExecuteE()
     {
-        if (!CheckForAbilityControl(checksE)) yield break;
-
+        if (!CheckForAbilityControl(checksE) || myStats.buffManager.buffs.ContainsKey("PowderKeg") || powderKegCharges <= 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-
-        if (!myStats.buffManager.buffs.ContainsKey("PowderKeg") && powderKegCharges > 0)
-            myStats.buffManager.buffs.Add("PowderKeg", new PowderKegBuff(25, myStats.buffManager, myStats.eSkill[0].name, PowderKegActivationTime(myStats.level)));
-
+        myStats.buffManager.buffs.Add("PowderKeg", new PowderKegBuff(25, myStats.buffManager, myStats.eSkill[0].name, PowderKegActivationTime(myStats.level)));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 

@@ -14,10 +14,10 @@ public class VitalsBuff : Buff
 
     public override void Update()
     {
-        if (!isActive && duration <= activationTime) isActive = true;
-
         duration -= Time.deltaTime;
         if (duration <= 0) Kill();
+
+        if (!isActive && duration <= activationTime) isActive = true;
     }
 
     public override void Kill()
