@@ -12,6 +12,6 @@ public class CheckKayleR : Check
     }
     public override float Control(float damage)
     {
-        return combat.myStats.buffManager.buffs.ContainsKey("Invulnerable") ? 0 : damage;
+        return combat.myStats.buffManager.buffs.ContainsKey("Untargetable") ? 0 : damage;
     }
 }

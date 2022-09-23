@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Kayle : ChampionCombat
 {
-
+    private int pState = 0;
     private int pStack = 0;
     private bool isExalted;
+    private bool eActive = false;
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "Q", "W", "E", "R", "A" };
@@ -26,18 +27,17 @@ public class Kayle : ChampionCombat
         checksE.Add(new CheckIfDisrupt(this));
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
-        checksE.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
-        autoattackcheck = new KayleAACheck(this);
         checkTakeDamageAA.Add(new CheckKayleR(this));
         checkTakeDamageAbility.Add(new CheckKayleR(this));
 
         qKeys.Add("Magic Damage");
         wKeys.Add("Heal");
-        eKeys.Add("Passive Damage");
         eKeys.Add("Bonus Magic Damage");
         rKeys.Add("Invulnerability Duration");
         rKeys.Add("Magic Damage");
+
+        pState = myStats.level < 6 ? 0 : myStats.level < 11 ? 1 : myStats.level < 16 ? 2 : 3; 
 
         base.UpdatePriorityAndChecks();
     }
@@ -48,8 +48,8 @@ public class Kayle : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
-        myStats.buffManager.buffs.Add("ArmorReduction", new ArmorReductionBuff(4, targetStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats), "ArmorReduction"));
-        myStats.buffManager.buffs.Add("MRReduction", new MagicResistanceReductionBuff(4, targetStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats), "MRReduction"));
+        targetStats.buffManager.buffs.Add("ArmorReduction", new ArmorReductionBuff(4, targetStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats), "ArmorReduction"));
+        targetStats.buffManager.buffs.Add("MRReduction", new MagicResistanceReductionBuff(4, targetStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats), "MRReduction"));
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 
@@ -58,7 +58,7 @@ public class Kayle : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateTotalHeal(ref wSum, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats), "Heal");
+        UpdateTotalHeal(ref wSum, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats), myStats.wSkill[0].basic.name);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
@@ -67,7 +67,7 @@ public class Kayle : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+        StartCoroutine(StarfireSpellblade());
         attackCooldown = 0;
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
@@ -76,8 +76,8 @@ public class Kayle : ChampionCombat
     {
         if (!CheckForAbilityControl(checksR)) yield break;
 
+        myStats.buffManager.buffs.TryAdd("Untargetable", new UntargetableBuff(myStats.rSkill[0].UseSkill(2, myStats.rSkill[0].basic.name, myStats, targetStats), myStats.buffManager, myStats.rSkill[0].basic.name));
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        myStats.buffManager.buffs.TryAdd("Invulnerable", new UntargetableBuff(myStats.rSkill[0].UseSkill(2, myStats.rSkill[0].basic.name, myStats, targetStats), myStats.buffManager, "Invulnerable"));
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
@@ -89,10 +89,28 @@ public class Kayle : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(0.1f));
         StopCoroutine(PStackExpired());
         AutoAttack();
+        if (eActive)
+        {
+            StopCoroutine(StarfireSpellblade());
+            eActive = false;
+            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+        }
+        if (pState == 2 && isExalted)
+        {
+            UpdateAbilityTotalDamage(ref pSum, 5, 35 + (myStats.bonusAD * 0.1f) + (myStats.AP * 0.25f), "Divine Ascent", SkillDamageType.Spell);         //35 is calculated with e's level implement it later
+        }
+        if(pState == 3)
+        {
+            UpdateAbilityTotalDamage(ref pSum, 5, 35 + (myStats.bonusAD * 0.1f) + (myStats.AP * 0.25f), "Divine Ascent", SkillDamageType.Spell);        //35 is calculated with e's level implement it later
+            pStack = 5;
+            myStats.buffManager.buffs.Remove("DivineAscent");
+            myStats.buffManager.buffs.Add("DivineAscent", new AttackSpeedBuff(5f, myStats.buffManager, "DivineAscent", pStack * myStats.baseAttackSpeed * 0.0006f * myStats.AP, "DivineAscent"));
+            yield break;
+        }
         if (pStack < 5) pStack++;
         if (pStack == 5) isExalted = true;
         myStats.buffManager.buffs.Remove("DivineAscent");
-        myStats.buffManager.buffs.Add("DivineAscent", new AttackSpeedBuff(5f, myStats.buffManager, "DivineAscent", pStack * 0.06f, "DivineAscent"));
+        myStats.buffManager.buffs.Add("DivineAscent", new AttackSpeedBuff(5f, myStats.buffManager, "DivineAscent", pStack * myStats.baseAttackSpeed * 0.0006f * myStats.AP, "DivineAscent"));
         StartCoroutine(PStackExpired());
     }
 
@@ -102,11 +120,11 @@ public class Kayle : ChampionCombat
         pStack = 0;
         myStats.buffManager.buffs.Remove("DivineAscent");
     }
-    public void DivineAscentPassive()
-	{
-        if(isExalted && myStats.level > 11)
-		{
 
-		}
-	}
+    public IEnumerator StarfireSpellblade()
+    {
+        eActive = true;
+        yield return new WaitForSeconds(6f);
+        eActive = false;
+    }
 }
