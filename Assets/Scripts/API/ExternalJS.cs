@@ -4,16 +4,21 @@ using UnityEngine;
 public class ExternalJS : MonoBehaviour
 {
     [DllImport("__Internal")]
-    private static extern void HelloString(string[] str);
-    [DllImport("__Internal")]
-    private static extern void HelloString2(string[] str2);
+    private static extern void HelloString(string str);
+    //[DllImport("__Internal")]
 
-    public void SendData(string[] str)
+    public void SendData(WebData data)
     {
-        HelloString(str);
+        HelloString(JsonUtility.ToJson(data));
+        //Debug.Log(JsonUtility.ToJson(data));      // for test comment out the line in the up and use this
     }
-    public void SendLogs(string[] s)
+}
+
+public class WebData
+{
+    public string[] logs;
+    public WebData(string[] logs)
     {
-        //HelloString2(s);
+        this.logs = logs;
     }
 }

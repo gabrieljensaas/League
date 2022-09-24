@@ -34,9 +34,9 @@ namespace Simulator.API
             externalJS = GetComponent<ExternalJS>();
         }
 
-        public void SendOutputToJS(string[] str)
+        public void SendOutputToJS(WebData data)
         {
-            externalJS.SendData(str);
+            externalJS.SendData(data);
         }
 
         public void LoadChampionData(string response)

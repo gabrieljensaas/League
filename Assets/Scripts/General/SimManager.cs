@@ -220,7 +220,7 @@ public class SimManager : MonoBehaviour
 
     public void ShowText(string text)
     {
-        outputText.text += $"[{timer:F2}] {text}\n\n";
+        outputText.text += $"[{timer:F2}] {text} \n";
         TextFileManager.WriteString("Logs", $"[{timer:F2}] {text}");
     }
 
@@ -228,7 +228,7 @@ public class SimManager : MonoBehaviour
     {
         Time.timeScale = _simulatorTimeScale;
         TextFileManager.DeleteFileExists("Logs");
-        ShowText($"TargetFrameRate = {_simulatorTargetedFPS}; TimeScale = {Time.timeScale}; TimeStep = {Time.fixedDeltaTime}");
+        ShowText($"TargetFrameRate = {_simulatorTargetedFPS}, TimeScale = {Time.timeScale}, TimeStep = {Time.fixedDeltaTime}");
 
         champStats[0].MyCombat.UpdateTarget(1);
         champStats[1].MyCombat.UpdateTarget(0);
