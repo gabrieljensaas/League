@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct AutoAttackReturn
+{
+    public float damage;
+    public bool isCrit;
+}
+
 namespace Simulator.Combat
 {
     public class ChampionCombat : MonoBehaviour, IExecuteQ, IExecuteW, IExecuteE, IExecuteR, IExecuteA
@@ -199,10 +205,20 @@ namespace Simulator.Combat
             }
         }
 
-        protected float AutoAttack(float aaMultiplier = 1)
+        protected AutoAttackReturn AutoAttack(float aaMultiplier = 1)
         {
-            
+            AutoAttackReturn autoAttackReturn = new()
+            {
+                isCrit = false
+            };
+
             float damage = myStats.AD * aaMultiplier;
+            if(Random.Range(0, 1f) <= myStats.critStrikeChance)
+            {
+                damage *= myStats.critStrikeDamage;
+                autoAttackReturn.isCrit = true;
+            }
+
             if (damage < 0)
                 damage = 0;
 
@@ -211,12 +227,14 @@ namespace Simulator.Combat
             float damageGiven = targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack", SkillDamageType.Phyiscal, true);
             aSum += damageGiven;
             hSum += HealHealth(damage * myStats.lifesteal, "Lifesteal");
+            autoAttackReturn.damage = damageGiven;
+
             myUI.aaSum.text = aSum.ToString();
             myUI.healSum.text = hSum.ToString();
 
             attackCooldown = 1f / myStats.attackSpeed;
 
-            return damageGiven;
+            return autoAttackReturn;
         }
 
         public float TakeDamage(float rawDamage, string source, SkillDamageType damageType, bool isAutoAttack = false)

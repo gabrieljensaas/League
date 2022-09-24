@@ -51,7 +51,7 @@ public class Mordekaiser : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        Indestructible(AutoAttack());
+        Indestructible(AutoAttack().damage);
         Indestructible(UpdateAbilityTotalDamage(ref pSum, 4, 0.4f * myStats.AP, myStats.passiveSkill.skillName, SkillDamageType.Spell));
         DarknessRiseStacks(myStats.passiveSkill.skillName);
     }

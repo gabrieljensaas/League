@@ -971,7 +971,8 @@ public class ChampionDataGenerator : MonoBehaviour
                             abilityEffect.percentDamageTaken = value;
                         else if (unit == "% missing health" ||
                             unit == "% of missing health" ||
-                            unit == "%  of missing health")
+                            unit == "%  of missing health" ||
+                            unit == " per 1% missing health")
                             abilityEffect.percentMissingHP = value;
                         else if (unit == "% maximum health" || unit == "% of maximum health" || unit == "% of turret's maximum health")
                             abilityEffect.percentMaxHP = value;

@@ -24,6 +24,11 @@ namespace Simulator.Combat
         [HideInInspector] public float maxHealth, currentHealth, AD, AP, armor, spellBlock, attackSpeed, tenacity = 0f, lifesteal = 0f, grievouswounds = 0f;
         [HideInInspector] public float baseHealth, baseAD, baseAP, baseArmor, baseSpellBlock, baseAttackSpeed;
         [HideInInspector] public float bonusAD, bonusHP, bonusAS;
+        [HideInInspector] public float critStrikeChance, critStrikeDamage;
+
+        public float PercentCurrentHealth => currentHealth / maxHealth;
+        public float PercentMissingHealth => (maxHealth - currentHealth) / maxHealth;
+
         private void Start()
         {
             simulationManager = SimManager.Instance;
