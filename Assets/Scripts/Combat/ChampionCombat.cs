@@ -73,10 +73,12 @@ namespace Simulator.Combat
             isCasting = false;
         }
 
-        public void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1)
+        public float UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1)
         {
-            totalDamage += targetCombat.TakeDamage(damageModifier * skill.UseSkill(level, skillKey, myStats, targetStats), skill.basic.name, skill.skillDamageType);
+            float damageGiven = targetCombat.TakeDamage(damageModifier * skill.UseSkill(level, skillKey, myStats, targetStats), skill.basic.name, skill.skillDamageType);
+            totalDamage += damageGiven;
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
+            return damageGiven;
         }
 
         public void UpdateAbilityTotalDamageSylas(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1)
@@ -85,10 +87,12 @@ namespace Simulator.Combat
             targetCombat.myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
-        public void UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, float damage, string skillName, SkillDamageType skillDamageType)
+        public float UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, float damage, string skillName, SkillDamageType skillDamageType)
         {
-            totalDamage += targetCombat.TakeDamage(damage, skillName, skillDamageType);
+            float damageGiven = targetCombat.TakeDamage(damage, skillName, skillDamageType);
+            totalDamage += damageGiven;
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
+            return damageGiven;
         }
 
         public void UpdateAbilityTotalDamageSylas(ref float totalDamage, int totalDamageTextIndex, float damage, string skillName, SkillDamageType skillDamageType)
@@ -195,20 +199,24 @@ namespace Simulator.Combat
             }
         }
 
-        protected void AutoAttack(float aaMultiplier = 1)
+        protected float AutoAttack(float aaMultiplier = 1)
         {
+            
             float damage = myStats.AD * aaMultiplier;
             if (damage < 0)
                 damage = 0;
 
             if (autoattackcheck != null) damage = autoattackcheck.Control(damage);
 
-            aSum += targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack", SkillDamageType.Phyiscal, true);
+            float damageGiven = targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack", SkillDamageType.Phyiscal, true);
+            aSum += damageGiven;
             hSum += HealHealth(damage * myStats.lifesteal, "Lifesteal");
             myUI.aaSum.text = aSum.ToString();
             myUI.healSum.text = hSum.ToString();
 
             attackCooldown = 1f / myStats.attackSpeed;
+
+            return damageGiven;
         }
 
         public float TakeDamage(float rawDamage, string source, SkillDamageType damageType, bool isAutoAttack = false)
@@ -224,9 +232,9 @@ namespace Simulator.Combat
             else if (damageType == SkillDamageType.True) postMitigationDamage = (int)rawDamage;
 
             if (!isAutoAttack)
-                postMitigationDamage = (int)CheckForDamageControlPostMitigation(checkTakeDamageAbilityPostMitigation, rawDamage);
+                postMitigationDamage = (int)CheckForDamageControl(checkTakeDamageAbilityPostMitigation, rawDamage); 
             else
-                postMitigationDamage = (int)CheckForDamageControlPostMitigation(checkTakeDamageAAPostMitigation, rawDamage);
+                postMitigationDamage = (int)CheckForDamageControl(checkTakeDamageAAPostMitigation, rawDamage);
 
             if (postMitigationDamage <= 0) return 0;
 
@@ -289,14 +297,6 @@ namespace Simulator.Combat
         }
 
         protected float CheckForDamageControl(List<Check> checks, float damage)
-        {
-            foreach (Check item in checks)
-                damage = item.Control(damage);
-
-            return damage;
-        }
-
-        protected float CheckForDamageControlPostMitigation(List<Check> checks, float damage)
         {
             foreach (Check item in checks)
                 damage = item.Control(damage);

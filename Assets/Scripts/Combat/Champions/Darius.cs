@@ -52,7 +52,7 @@ public class Darius : ChampionCombat
         eKeys.Add("Armor Penetration");
         rKeys.Add("True Damage");
 
-        targetStats.armor *= (100 - myStats.wSkill[0].UseSkill(4, eKeys[0], myStats, targetStats)) * 0.01f;
+        targetStats.armor *= (100 - myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats)) * 0.01f;
         myUI.combatPriority.text = string.Join(", ", combatPrio);
         base.UpdatePriorityAndChecks();
     }
@@ -92,7 +92,7 @@ public class Darius : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(1f, targetStats.buffManager, myStats.eSkill[0].basic.name));
+        targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.1f, targetStats.buffManager, myStats.eSkill[0].basic.name));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
