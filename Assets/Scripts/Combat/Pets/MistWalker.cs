@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class MistWalker : Pet
 {
-    public static float[] TibbersEnragedAttackSpeeds = { 0.625f, 0.739f, 1.043f, 1.307f, 1.536f, 1.736f };
-
     private float spellblock;
     private float armor;
     private float attackSpeed;
@@ -36,7 +34,7 @@ public class MistWalker : Pet
             damage += aaDamage * 0.4f;
         }
 
-        owner.targetCombat.TakeDamage(damage, "Mist Walker Auto Attack", SkillDamageType.PhysAndSpell, true);
+        owner.targetCombat.TakeDamage(damage, "Mist Walker Auto Attack", SkillDamageType.Phyiscal, true);
         aaTimer = 1f / attackSpeed;
     }
 }

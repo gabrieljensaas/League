@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class MaidenOfTheMist : Pet
 {
-    public static float[] TibbersEnragedAttackSpeeds = { 0.625f, 0.739f, 1.043f, 1.307f, 1.536f, 1.736f };
-
     private float spellblock;
     private float armor;
     private float attackSpeed;
