@@ -24,7 +24,7 @@ public class Nocturne : ChampionCombat
         checksE.Add(new CheckIfDisrupt(this));
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
-        checksE.Add(new CheckIfImmobilize(this));
+        checksR.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
 
         checkTakeDamageAbility.Add(new CheckSpellShield(this));
@@ -32,11 +32,11 @@ public class Nocturne : ChampionCombat
         qKeys.Add("Physical damage");
         qKeys.Add("Bonus Attack Damage");
         wKeys.Add("Bonus Attack Speed");
-        eKeys.Add("Total Magic Damage");
+        eKeys.Add("Magic Damage per Tick");
         eKeys.Add("Disable Duration");
         rKeys.Add("Physical Damage");
 
-        myStats.attackSpeed += myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats) * (float) 0.01; //probably incorrect calculation to give attackSpeed
+        myStats.attackSpeed += myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats) * myStats.baseAttackSpeed; //probably incorrect calculation to give attackSpeed
 
         base.UpdatePriorityAndChecks();
     }
@@ -63,7 +63,7 @@ public class Nocturne : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("SpellShield", new SpellShieldBuff(1.5f, myStats.buffManager, "SpellShield"));
-        myStats.buffManager.buffs.Add("AttackSpeed", new AttackSpeedBuff(5, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats), "AttackSpeed"));
+        myStats.buffManager.buffs.Add("AttackSpeed", new AttackSpeedBuff(5, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats), "AttackSpeed"));     //this should be given after first buff expires
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
@@ -72,16 +72,23 @@ public class Nocturne : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        yield return new WaitForSeconds(0.5f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        yield return new WaitForSeconds(0.5f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        yield return new WaitForSeconds(0.5f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        yield return new WaitForSeconds(0.5f);
         UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         myStats.buffManager.buffs.Add("FearBuff", new FleeBuff(myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats), targetStats.buffManager, "FearBuff"));
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteR()
     {
         if (!CheckForAbilityControl(checksR)) yield break;
         myStats.buffManager.buffs.Add("NearSight", new NearsightBuff(6, targetStats.buffManager, "NearSight"));
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime + 0.25f));
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
@@ -94,11 +101,12 @@ public class Nocturne : ChampionCombat
         if(passiveNocturneReady < 13)
 		{
             AutoAttack();
+            passiveNocturneReady += 3;
         }
 		else
 		{
 			AutoAttack(1.2f); //yet to implement crit
-            UpdateTotalHeal(ref pSum, 12 + myStats.level, "Heal");
+            UpdateTotalHeal(ref hSum, 12 + myStats.level + (myStats.AP * 0.3f), "Heal");
 		}
 	}
 }
