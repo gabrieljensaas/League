@@ -27,6 +27,8 @@ public class Nocturne : ChampionCombat
         checksE.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
 
+        checkTakeDamageAbility.Add(new CheckSpellShield(this));
+
         qKeys.Add("Physical damage");
         qKeys.Add("Bonus Attack Damage");
         wKeys.Add("Bonus Attack Speed");
