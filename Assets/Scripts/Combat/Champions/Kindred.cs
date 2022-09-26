@@ -7,6 +7,7 @@ public class Kindred : ChampionCombat
     private CheckMoundingDread moundingDreadCheck;
     private bool wolfFrenzy;
     private int wolfFrenzyStack;
+    public int currentMark = 0;
 
 	public override void UpdatePriorityAndChecks()
     {
@@ -28,7 +29,7 @@ public class Kindred : ChampionCombat
         checksE.Add(new CheckIfDisrupt(this));
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
-        checksE.Add(new CheckIfImmobilize(this));
+        checksQ.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
         checkTakeDamageAA.Add(new CheckKindredR(this));
         checkTakeDamageAbility.Add(new CheckKindredR(this));
@@ -38,6 +39,8 @@ public class Kindred : ChampionCombat
         wKeys.Add("Magic Damage");
         eKeys.Add("Additional Physical Damage");
         rKeys.Add("Heal");
+
+        currentMark = 0;                      // we can change this later
 
         base.UpdatePriorityAndChecks();
     }
@@ -49,15 +52,8 @@ public class Kindred : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         WolfFrenzy();
-        myStats.buffManager.buffs.Add("AttackSpeedBuff", new AttackSpeedBuff(4, myStats.buffManager, myStats.qSkill[0].basic.name, 0.25f, "AttackSpeedBuff"));
-        if (wolfFrenzy)
-        {
-            myStats.qCD = myStats.qSkill[0].UseSkill(4, qKeys[1], myStats, targetStats);
-        }
-        else
-        {
-            myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
-        }
+        myStats.buffManager.buffs.Add("AttackSpeedBuff", new AttackSpeedBuff(4, myStats.buffManager, myStats.qSkill[0].basic.name, 0.25f + (0.5f * currentMark), "AttackSpeedBuff"));
+        myStats.qCD = wolfFrenzy ? myStats.qSkill[0].UseSkill(4, qKeys[1], myStats, targetStats) : myStats.qSkill[0].basic.coolDown[4];   //shorter if block
         attackCooldown = 0;
     }
 
@@ -66,7 +62,7 @@ public class Kindred : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        wolfFrenzy = true;
+        StartCoroutine(WolfsFrenzy());
         UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
@@ -76,7 +72,7 @@ public class Kindred : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        CheckMoundingDreadDamage();
+        targetStats.buffManager.buffs.Add("MoundingDread", new MoundingDreadBuff(4, targetStats.buffManager));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
@@ -96,18 +92,30 @@ public class Kindred : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         float missingHealth = myStats.maxHealth - myStats.currentHealth;
-        if(wolfFrenzyStack == 100 && missingHealth == 0)
+        if(wolfFrenzyStack >= 100 && missingHealth != 0)
         {
-            UpdateTotalHeal(ref wSum, 45 + 2 * myStats.level, "Wolf Frenzy Passive"); // Logic not sure here about how much health to add
-        }            
+            UpdateTotalHeal(ref wSum, (45 + (2 * myStats.level)) * (1 + (missingHealth / myStats.maxHealth) > 0.8f ? 1f : (missingHealth / myStats.maxHealth) * 1.25f), "Wolf Frenzy Passive"); // Logic not sure here about how much health to add
+            wolfFrenzyStack = 0;
+        }
+        else
+        {
+            WolfFrenzy();
+        }
         AutoAttack();
         CheckMoundingDreadDamage();
     }
 
     public void WolfFrenzy()
 	{
-        wolfFrenzyStack += UnityEngine.Random.Range(2, 3); ;
+        wolfFrenzyStack += UnityEngine.Random.Range(2, 3);
 	}
+
+    public IEnumerator WolfsFrenzy()
+    {
+        wolfFrenzy = true;
+        yield return new WaitForSeconds(8.5f);
+        wolfFrenzy = false;
+    }
 
     private void CheckMoundingDreadDamage()
     {
@@ -115,16 +123,12 @@ public class Kindred : ChampionCombat
         {
             //Apply's Crit as well so not sure about damage calculated
             UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats), myStats.eSkill[0].basic.name, SkillDamageType.Phyiscal);
-            myStats.buffManager.buffs.Remove("MoundingDread");
+            targetStats.buffManager.buffs["MoundingDread"].Kill();
         }
         else if (myStats.buffManager.buffs.TryGetValue("MoundingDread", out Buff moundingDread))
         {
             moundingDread.value++;
             simulationManager.ShowText($"{myStats.name} Gained A Stack of Mounding Dread");
-        }
-        else
-        {
-            myStats.buffManager.buffs.Add("MoundingDread", new MoundingDreadBuff(4, myStats.buffManager));
         }
     }
 }
