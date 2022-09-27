@@ -40,6 +40,13 @@ namespace Simulator.Combat
         protected string[] combatPrio;
         public bool isCasting = false;
 
+        public SkillList QSkill(int index = 0) => myStats.qSkill[index];
+        public SkillList WSkill(int index = 0) => myStats.wSkill[index];
+        public SkillList ESkill(int index = 0) => myStats.eSkill[index];
+        public SkillList RSkill(int index = 0) => myStats.rSkill[index];
+        public BuffManager MyBuffManager => myStats.buffManager;
+        public BuffManager TargetBuffManager => targetStats.buffManager;
+
         protected virtual void Start()
         {
             simulationManager = SimManager.Instance;
