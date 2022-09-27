@@ -14,7 +14,7 @@ public class LeeSin : ChampionCombat
 
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "E", "W", "Q", "R", "A" };
+        combatPrio = new string[] { "R", "Q", "W", "E", "A" };
 
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
@@ -31,7 +31,6 @@ public class LeeSin : ChampionCombat
         checksE.Add(new CheckIfDisrupt(this));
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
-        checksE.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
 
         qKeys.Add("Physical Damage");
@@ -67,7 +66,8 @@ public class LeeSin : ChampionCombat
         else
         {
             yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-            float extraDamage = myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) + myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) * myStats.PercentMissingHealth;
+            if (myStats.buffManager.HasImmobilize) yield break;
+            float extraDamage = myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) * (1 + ((targetStats.maxHealth - targetStats.currentHealth)/ targetStats.maxHealth));
             UpdateAbilityTotalDamage(ref qSum, 4, extraDamage, myStats.qSkill[0].basic.name, SkillDamageType.Phyiscal);
             StopCoroutine(SonicWave());
             Flurry();
@@ -83,7 +83,8 @@ public class LeeSin : ChampionCombat
         if (!wCast)
         {
             yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-            myStats.buffManager.buffs.Add("ShieldBuff", new ShieldBuff(2f, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats), "ShieldBuff"));
+            if (myStats.buffManager.HasImmobilize) yield break;
+            myStats.buffManager.shields.Add("ShieldBuff", new ShieldBuff(2f, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats), "ShieldBuff"));
             StartCoroutine(SafeGuard());
             myStats.wCD = 0.4f;
             timeSinceW = 0;
@@ -133,6 +134,21 @@ public class LeeSin : ChampionCombat
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
+    public override IEnumerator ExecuteA()
+    {
+        if (!CheckForAbilityControl(checksA)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(0.1f));
+        AutoAttack();
+        if (flurryStack == 1) myStats.buffManager.buffs["Flurry"].Kill();
+        else if (flurryStack > 0)
+        {
+            flurryStack--;
+            myStats.buffManager.buffs["Flurry"].value = flurryStack;
+            myStats.buffManager.buffs["Flurry"].duration = 3;
+        }
+    }
+
     public IEnumerator SonicWave()
     {
         qCast = true;
@@ -158,20 +174,10 @@ public class LeeSin : ChampionCombat
 
     public void Flurry()
 	{
-		myStats.buffManager.buffs.TryAdd("Flurry", new AttackSpeedBuff(float.MaxValue, myStats.buffManager, myStats.passiveSkill.skillName, 0.4f, "Flurry"));
-        if(flurryStack == 0)
-		{
-            myStats.buffManager.buffs["Flurry"].Kill();
+		if(!myStats.buffManager.buffs.TryAdd("Flurry", new AttackSpeedBuff(3, myStats.buffManager, myStats.passiveSkill.skillName, 0.4f * myStats.baseAttackSpeed, "Flurry")))
+        {
+            myStats.buffManager.buffs["Flurry"].value = 2;
+            myStats.buffManager.buffs["Flurry"].duration = 3;
         }
-
 	}
-
-	public override IEnumerator ExecuteA()
-    {
-        if (!CheckForAbilityControl(checksA)) yield break;
-
-        yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
-        flurryStack++;
-    }
 }
