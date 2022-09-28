@@ -13,6 +13,16 @@ public enum SkillDamageType
     SpellAndTrue
 }
 
+[Flags]
+public enum SkillComponentTypes
+{
+    None = 0,
+    Blink = 1,
+    Dash = 2,
+    Projectile = 4,
+    OnHit = 8
+}
+
 [CreateAssetMenu(fileName = "new Spell", menuName = "ScriptableObjects/SkillList")]
 public class SkillList : ScriptableObject
 {
@@ -38,7 +48,7 @@ public class SkillList : ScriptableObject
         passive
     }
 
-    public float UseSkill(int level, string key, ChampionStats myStats, ChampionStats targetStats, float cap = 0, float expendedGrit = 0)
+    public float UseSkill(int level, string key, ChampionStats myStats, ChampionStats targetStats, float cap = 0, float expendedGrit = 0, SkillComponentTypes skillComponentType = SkillComponentTypes.None)
     {
         AbilityEffect effect = effects.Find(x => x.attribute == key);
 
