@@ -20,6 +20,14 @@ public class BuffManager
         simulationManager = simManager;
     }
 
+    public void Add(string key, Buff value)
+    {
+        if(buffs.TryGetValue(key, out Buff buff) && buff.duration < value.duration)
+            buff.duration = value.duration;
+        else
+            buffs.Add(key, value);
+    }
+
     public void Update()                                      //check if any expired
     {
         foreach (var item in buffs.Values.ToList())
