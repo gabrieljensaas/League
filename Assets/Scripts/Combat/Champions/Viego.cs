@@ -1,11 +1,15 @@
 using Simulator.Combat;
 using System.Collections;
+using UnityEngine;
 
 public class Viego : ChampionCombat
 {
+    private bool wCast;
+    private float timeSinceW;
+    private float timeChanneled;
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "R", "E", "W", "Q", "A" };
+        combatPrio = new string[] { "E", "W", "Q", "R", "A" };
 
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
@@ -28,12 +32,19 @@ public class Viego : ChampionCombat
         checksR.Add(new CheckIfExecutes(this, "R"));
         autoattackcheck = new ViegoAACheck(this);
 
-        qKeys.Add("");
-        wKeys.Add("");
-        eKeys.Add("");
-        rKeys.Add("");
+        qKeys.Add("Bonus Physical Damage");
+        qKeys.Add("Physical Damage");
+        wKeys.Add("Magic Damage");
+        eKeys.Add("Bonus Attack Speed");
+        rKeys.Add("Bonus Physical Damage");
 
         base.UpdatePriorityAndChecks();
+    }
+    public override void CombatUpdate()
+    {
+        base.CombatUpdate();
+        timeSinceW += Time.deltaTime;
+        timeChanneled += Time.deltaTime;
     }
 
     public override IEnumerator ExecuteQ()
@@ -41,42 +52,78 @@ public class Viego : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), 4, qKeys[1]);
+        BladeMark(QSkill().basic.name);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 
-    public virtual IEnumerator ExecuteW()
-    {
-        if (!CheckForAbilityControl(checksW)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+    public override IEnumerator ExecuteW()
+    {
+        if (!CheckForAbilityControl(checksE)) yield break;
+
+        if (!wCast)
+        {
+            yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
+            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+            BladeMark(WSkill().basic.name);
+            timeSinceW = 0;
+            timeChanneled = 0;
+
+        }
+        else
+        {
+            yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
+            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+            MyBuffManager.Add("StunBuff", new StunBuff(0.25f + (timeChanneled > 1 ? 1 : timeChanneled), TargetBuffManager, "StunBuff")); //what happens when channeling gets cancelled
+            BladeMark(WSkill().basic.name);
+            myStats.wCD = myStats.wSkill[0].basic.coolDown[4] - timeSinceW;
+        }
     }
 
-    public virtual IEnumerator ExecuteE()
+    public override IEnumerator ExecuteE()
     {
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        MyBuffManager.Add("AttackSpeed", new AttackSpeedBuff(8, MyBuffManager, ESkill().basic.name, ESkill().UseSkill(4, eKeys[0], myStats, targetStats), "AttackSpeed"));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
-    public virtual IEnumerator ExecuteR()
+    public override IEnumerator ExecuteR()
     {
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        float multiplier = RSkill().UseSkill(2, rKeys[0], myStats, targetStats) * 0.01f * myStats.PercentMissingHealth;
+        UpdateAbilityTotalDamage(ref rSum, 3, multiplier*0.01f, RSkill().basic.name, SkillDamageType.Phyiscal);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
-    public virtual IEnumerator ExecuteA()
+    public override IEnumerator ExecuteA()
     {
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
+        float multiplier = QSkill().UseSkill(4, qKeys[0], myStats, targetStats) * 0.01f;
+        float damage = 0.2f * myStats.AD;
+        if (targetStats.buffManager.buffs.TryGetValue("BladeOFRuinedKing", out Buff buff))
+        {
+            UpdateAbilityTotalDamage(ref qSum, 0, damage, QSkill().basic.name, SkillDamageType.Phyiscal);
+            AutoAttack(1 + multiplier);
+            UpdateTotalHeal(ref qSum, damage * 1.35f, QSkill().basic.name);
+        }
+		else
+		{
+            AutoAttack(1 + multiplier);
+        }
+    }
+
+    private void BladeMark(string source)
+    {
+        if (targetStats.buffManager.buffs.TryGetValue("BladeOfRuinedKing", out Buff buff))
+            buff.duration = 4;
+        else
+            targetStats.buffManager.buffs.Add("BladeOfRuinedKing", new BladeOfRuinedKingBuff(4, TargetBuffManager, source));
     }
 }
