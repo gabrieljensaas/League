@@ -9,19 +9,6 @@ public class Tryndamere : ChampionCombat
     private float fury = 0;
     private float baseAD;
 
-    public static float MistWalkerHP(int level) => 104 + (6 * level);
-    public static float MistWalkerAA(int level)
-    {
-        return level switch
-        {
-            < 7 => 1 + 1 * level,
-            < 13 => 8 + 5 * (level - 7),
-            _ => 38 + 10 * (level - 13)
-        };
-    }
-
-    public static float MistWalkerAS(int level) => 0.46f + (0.04f * level);
-
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "E", "Q", "W", "A" };

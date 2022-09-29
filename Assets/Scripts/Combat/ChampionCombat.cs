@@ -47,6 +47,9 @@ namespace Simulator.Combat
         public BuffManager MyBuffManager => myStats.buffManager;
         public BuffManager TargetBuffManager => targetStats.buffManager;
 
+        public delegate void CombatEvent();
+        public event CombatEvent OnAutoAttack;
+
         protected virtual void Start()
         {
             simulationManager = SimManager.Instance;
@@ -141,36 +144,36 @@ namespace Simulator.Combat
         {
             if (!CheckForAbilityControl(checksQ)) yield break;
 
-            yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
-            myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+            yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
+            UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), 4, qKeys[0]);
+            myStats.qCD = QSkill().basic.coolDown[4];
         }
 
         public virtual IEnumerator ExecuteW()
         {
             if (!CheckForAbilityControl(checksW)) yield break;
 
-            yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
-            myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+            yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+            UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[0]);
+            myStats.wCD = WSkill().basic.coolDown[4];
         }
 
         public virtual IEnumerator ExecuteE()
         {
             if (!CheckForAbilityControl(checksE)) yield break;
 
-            yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
-            myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+            yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
+            UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), 4, eKeys[0]);
+            myStats.eCD = ESkill().basic.coolDown[4];
         }
 
         public virtual IEnumerator ExecuteR()
         {
             if (!CheckForAbilityControl(checksR)) yield break;
 
-            yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
-            myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+            yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
+            UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[0]);
+            myStats.rCD = RSkill().basic.coolDown[2];
         }
 
         public virtual IEnumerator HijackedR(int skillLevel)
@@ -214,6 +217,8 @@ namespace Simulator.Combat
 
         protected AutoAttackReturn AutoAttack(float aaMultiplier = 1)
         {
+            OnAutoAttack?.Invoke();
+
             AutoAttackReturn autoAttackReturn = new()
             {
                 isCrit = false
