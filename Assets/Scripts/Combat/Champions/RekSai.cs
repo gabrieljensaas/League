@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class RekSai : ChampionCombat
 {
-    private int furyPassive;
+    private int furyPassive = 0;
     public int autoattackQ;
     public float timeSinceQ;
     public bool isBorrowed;
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "E", "W", "Q", "R", "A" };
+        combatPrio = new string[] { "Q", "W", "E", "R", "A" };
 
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
@@ -29,6 +29,7 @@ public class RekSai : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksE.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
+        autoattackcheck = new RekSaiAACheck(this, this);
 
         qKeys.Add("Bonus Physical Damage");
         qKeys.Add("Physical Damage");
@@ -60,11 +61,13 @@ public class RekSai : ChampionCombat
                 autoattackQ = 0;
             }
             myStats.qCD = 4;
+
         }
 		else
 		{
             UpdateAbilityTotalDamage(ref qSum, 1, QSkill(), 4, qKeys[1]);
             myStats.qCD = QSkill().basic.coolDown[4];
+            furyPassive += 25;
         }
     }
 
@@ -84,6 +87,7 @@ public class RekSai : ChampionCombat
             UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[0]);
             MyBuffManager.Add("KnockOff", new AirborneBuff(0.1f, TargetBuffManager, "KnockOff"));
             myStats.wCD = 1;
+            furyPassive += 25;
         }
 
     }
@@ -103,7 +107,7 @@ public class RekSai : ChampionCombat
 			{
                 UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), 4, eKeys[0]);
             }
-
+            furyPassive += 25;
             myStats.eCD = ESkill().basic.coolDown[4];
         }
 
@@ -117,6 +121,7 @@ public class RekSai : ChampionCombat
         MyBuffManager.Add("Untargetable", new UntargetableBuff(1.5f, MyBuffManager, "Untargetable"));
         yield return new WaitForSeconds(1.5f);
         UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[0]);
+        furyPassive += 25;
         myStats.rCD = RSkill().basic.coolDown[2];
     }
 
@@ -128,12 +133,4 @@ public class RekSai : ChampionCombat
         AutoAttack();
         furyPassive += 25;
     }
-
-    public void FuryHeal()
-	{
-        if(isBorrowed && furyPassive ==100)
-		{
-            UpdateTotalHeal(ref pSum, 10 + 10 * myStats.level, myStats.passiveSkill.name); //incomplete
-		}
-	}
 }
