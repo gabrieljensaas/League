@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class ChoGath : ChampionCombat
 {
+    public int rStack = 0;
     private int eStack = 0;
     private float timeSinceE;
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "E", "W", "Q", "R", "A" };
+        combatPrio = new string[] { "R", "E", "Q", "W", "A" };
 
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
@@ -25,14 +26,16 @@ public class ChoGath : ChampionCombat
         checksE.Add(new CheckIfDisrupt(this));
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
-        checksE.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
+        checksR.Add(new CheckIfExecutes(this, "R"));
 
         qKeys.Add("Magic damage");
         wKeys.Add("Magic damage");
         wKeys.Add("Silence Duration");
         eKeys.Add("Magic Damage");
         rKeys.Add("Champion True Damage");
+
+        rStack = 0;                               //change this to approximation later
 
         base.UpdatePriorityAndChecks();
     }
@@ -47,10 +50,10 @@ public class ChoGath : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
+        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         yield return new WaitForSeconds(0.628f);
         UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.buffManager.buffs.Add("Airborne", new AirborneBuff(1, targetStats.buffManager, myStats.qSkill[0].basic.name));
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteW()
@@ -65,12 +68,13 @@ public class ChoGath : ChampionCombat
 
     public override IEnumerator ExecuteE()
     {
-            if (!CheckForAbilityControl(checksE)) yield break;
-            yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            eStack = 3;
-            myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        if (!CheckForAbilityControl(checksE)) yield break;
+        yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
+        StartCoroutine(VorpalSpikes());
+        myStats.eCD = 6;
+        attackCooldown = 0;
     }
-    
+
     public override IEnumerator ExecuteR()
     {
         if (!CheckForAbilityControl(checksR)) yield break;
@@ -88,7 +92,14 @@ public class ChoGath : ChampionCombat
         if (eStack > 0)
         {
             UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+            eStack--;
             AutoAttack();
+            if(eStack == 0)
+            {
+                StopCoroutine(VorpalSpikes());
+                eStack = 0;
+                myStats.eCD = myStats.eSkill[0].basic.coolDown[4] - timeSinceE;
+            }
         }
         else
         {
@@ -97,7 +108,8 @@ public class ChoGath : ChampionCombat
     }
 
     public IEnumerator VorpalSpikes()
-	{
+    {
+        eStack = 3;
         yield return new WaitForSeconds(6f);
         eStack = 0;
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4] - timeSinceE;
