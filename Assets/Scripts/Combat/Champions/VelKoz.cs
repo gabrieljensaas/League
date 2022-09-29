@@ -28,7 +28,6 @@ public class VelKoz : ChampionCombat
         checksE.Add(new CheckIfDisrupt(this));
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
-        checksE.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
         checksQ.Add(new CheckIfChanneling(this));
         checksW.Add(new CheckIfChanneling(this));
@@ -42,6 +41,13 @@ public class VelKoz : ChampionCombat
         rKeys.Add("Damage Per Tick");
 
         base.UpdatePriorityAndChecks();
+    }
+
+    public override void CombatUpdate()
+    {
+        base.CombatUpdate();
+
+        timeSinceAuto += Time.deltaTime;
     }
 
     public override IEnumerator ExecuteQ()
@@ -76,6 +82,7 @@ public class VelKoz : ChampionCombat
             {
                 UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[0]);
             }
+            voidRiftCharge--;
             myStats.wCD = WSkill().basic.coolDown[4];
         }
     }
@@ -84,7 +91,7 @@ public class VelKoz : ChampionCombat
     {
         if (!CheckForAbilityControl(checksE)) yield break;
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-
+        myStats.eCD = ESkill().basic.coolDown[4];
         yield return new WaitForSeconds(0.75f);
         if (isResearched)
         {
@@ -96,7 +103,6 @@ public class VelKoz : ChampionCombat
         }
         MyBuffManager.Add("KnockOff", new AirborneBuff(0.1f, TargetBuffManager, "KnockOff"));
         MyBuffManager.Add("StunBuff", new StunBuff(0.75f, TargetBuffManager, "StunBuff"));
-        myStats.eCD = ESkill().basic.coolDown[4];
     }
 
     public override IEnumerator ExecuteR()
@@ -105,6 +111,7 @@ public class VelKoz : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         myStats.rCD = RSkill().basic.coolDown[2];
+        MyBuffManager.Add("Channeling", new ChannelingBuff(2.6f, MyBuffManager, RSkill().name, "DisintegrationRay"));
         StartCoroutine(DisintegrationRay());
     }
 
