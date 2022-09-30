@@ -73,7 +73,7 @@ public class Cassiopeia : ChampionCombat
             UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
             UpdateTotalHeal(ref eSum, ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), ESkill().basic.name);
         }
-        UpdateAbilityTotalDamage(ref eSum, 2, (48 + 4 * myStats.level), ESkill().basic.name, SkillDamageType.Spell);
+        UpdateAbilityTotalDamage(ref eSum, 2, 48 + 4 * myStats.level, ESkill().basic.name, SkillDamageType.Spell);
         myStats.eCD = ESkill().basic.coolDown[4];
     }
 
