@@ -127,7 +127,7 @@ public class Kennen : ChampionCombat
         }
         else
         {
-            myStats.buffManager.buffs.Add("MarkOfTheStorm", new MarkOfTheStormBuff(6,myStats.buffManager, skillName));
+            myStats.buffManager.buffs.Add("MarkOfTheStorm", new MarkOfTheStormBuff(6, TargetBuffManager, skillName));
         }
     }
 
