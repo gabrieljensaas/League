@@ -13,6 +13,7 @@ public class Ziggs : ChampionCombat
         };
 
     }
+
     public static float ShortFuseCooldownReduceByLevel(int level)
 	{
         return level switch
@@ -69,7 +70,7 @@ public class Ziggs : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        MyBuffManager.Add("KnockOffBuff", new AirborneBuff(0.1f, TargetBuffManager, "KnockOffBuff"));
+        MyBuffManager.Add("KnockOffBuff", new AirborneBuff(0.1f, TargetBuffManager, "SatchelCharge"));
         UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[0]);
         myStats.wCD = WSkill().basic.coolDown[4];
         myStats.pCD = myStats.passiveSkill.coolDown - ShortFuseCooldownReduceByLevel(myStats.level);
@@ -92,7 +93,6 @@ public class Ziggs : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[0]);
         myStats.rCD = RSkill().basic.coolDown[2];
-        myStats.pCD = myStats.passiveSkill.coolDown-ShortFuseCooldownReduceByLevel(myStats.level);
+        myStats.pCD = myStats.passiveSkill.coolDown - ShortFuseCooldownReduceByLevel(myStats.level);
     }
-
 }
