@@ -18,6 +18,7 @@ namespace Simulator.Combat
         [HideInInspector] public SkillList[] eSkill = new SkillList[5];
         [HideInInspector] public SkillList[] rSkill = new SkillList[5];
         [HideInInspector] public float qCD, wCD, eCD, rCD, pCD;                                          //cooldown of skills
+        [HideInInspector] public int qLevel, wLevel, eLevel, rLevel;                                          //levels of skills
 
 
         [HideInInspector] public int level;                                            //stats of champion

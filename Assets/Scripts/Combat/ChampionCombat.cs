@@ -145,7 +145,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksQ)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-            UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), 4, qKeys[0]);
+            UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
             myStats.qCD = QSkill().basic.coolDown[4];
         }
 
@@ -154,7 +154,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksW)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-            UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[0]);
+            UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
             myStats.wCD = WSkill().basic.coolDown[4];
         }
 
@@ -163,7 +163,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksE)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-            UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), 4, eKeys[0]);
+            UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
             myStats.eCD = ESkill().basic.coolDown[4];
         }
 
@@ -172,7 +172,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksR)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-            UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[0]);
+            UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
             myStats.rCD = RSkill().basic.coolDown[2];
         }
 
