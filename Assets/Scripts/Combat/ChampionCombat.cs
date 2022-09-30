@@ -335,5 +335,12 @@ namespace Simulator.Combat
         }
 
         public virtual void StopChanneling(string uniqueKey) { }
+
+        public virtual IEnumerator StartHPRegeneration()
+        {
+            yield return new WaitForSeconds(0.5f);
+            UpdateTotalHeal(ref hSum, myStats.hpRegen * 0.1f, "Health Regeneration");
+            StartCoroutine(StartHPRegeneration());
+        }
     }
 }

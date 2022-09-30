@@ -22,10 +22,16 @@ namespace Simulator.Combat
 
 
         [HideInInspector] public int level;                                            //stats of champion
-        [HideInInspector] public float maxHealth, currentHealth, AD, AP, armor, spellBlock, attackSpeed, tenacity = 0f, lifesteal = 0f, grievouswounds = 0f;
-        [HideInInspector] public float baseHealth, baseAD, baseAP, baseArmor, baseSpellBlock, baseAttackSpeed;
-        [HideInInspector] public float bonusAD, bonusHP, bonusAS;
-        [HideInInspector] public float critStrikeChance, critStrikeDamage;
+        [HideInInspector] public float maxHealth, currentHealth, AD, AP, armor, spellBlock, attackSpeed, tenacity = 0, lifesteal = 0, grievouswounds = 0;
+        [HideInInspector] public float baseHealth, baseAD, baseArmor, baseSpellBlock, baseAttackSpeed;
+        [HideInInspector] public float bonusAD, bonusHP, bonusAS, bonusArmor, bonusSpellBlock;
+        [HideInInspector] public float critStrikeChance = 0, critStrikeDamage = 1.75f;
+        [HideInInspector] public float armorPenetrationFlat = 0, armorPenetrationPercent = 0;
+        [HideInInspector] public float magicPenetrationFlat = 0, magicPenetrationPercent = 0;
+        [HideInInspector] public float omniVamp = 0, physicalVamp = 0, spellVamp = 0;
+        [HideInInspector] public float healShieldPower = 0;
+        [HideInInspector] public float abilityHaste = 0, basicAbilityHaste = 0, ultimateHaste = 0, itemHaste = 0, sumSpellHaste = 0;
+        [HideInInspector] public float hpRegen;
 
         public float PercentCurrentHealth => currentHealth / maxHealth;
         public float PercentMissingHealth => (maxHealth - currentHealth) / maxHealth;

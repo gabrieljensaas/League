@@ -117,7 +117,6 @@ public class SimManager : MonoBehaviour
         //GetStatsByLevel(newChampStats, statsToLoad);
         newChampStats.currentHealth = newChampStats.maxHealth;
 
-        ExtraStats(newChampStats);
         newChampStats.StaticUIUpdate();
     }
 
@@ -183,39 +182,17 @@ public class SimManager : MonoBehaviour
         return level;
     }
 
-    private void GetStatsByLevel(ChampionStats champ, ChampionsRe stats)
+    private void GetStatsByLevel(ChampionStats champ, StatsList stats)
     {
-        int level = champ.level;
-
-        if (level == 1) return;
         double[] mFactor = { 0, 0.72, 1.4750575, 2.2650575, 3.09, 3.95, 4.8450575, 5.7750575, 6.74, 7.74, 8.7750575, 9.8450575, 10.95, 12.09, 13.2650575, 14.4750575, 15.72, 17 };
-        champ.maxHealth += (float)(stats.champData.data.Champion.stats.hpperlevel * mFactor[level - 1]);
-        champ.attackSpeed = (float)(champ.baseAttackSpeed * (1 + (stats.champData.data.Champion.stats.attackspeedperlevel * (level - 1)) / 100));
-        champ.armor += (float)stats.champData.data.Champion.stats.armorperlevel * (float)mFactor[level - 1];
-        champ.AD += (float)stats.champData.data.Champion.stats.attackdamageperlevel * (float)mFactor[level - 1];
-        champ.spellBlock += (float)stats.champData.data.Champion.stats.spellblockperlevel * (float)mFactor[level - 1];
-    }
-
-    private void ExtraStats(ChampionStats champStats)
-    {
-        if (champStats.name == "Garen")
-        {
-            champStats.armor += 30;
-            champStats.spellBlock += 30;
-            champStats.armor *= 1.1f;
-            champStats.spellBlock *= 1.1f;
-        }
-
-        if (champStats.name == "Aatrox")
-        {
-            champStats.passiveSkill.coolDown = Aatrox.AatroxPassiveCooldownByLevelTable[champStats.level - 1];
-        }
-
-        if (champStats.name == "Olaf")
-        {
-            champStats.armor += 30;
-            champStats.spellBlock += 30;
-        }
+        champ.baseHealth = (float)stats.health.flat + ((float)(stats.health.perLevel * mFactor[champ.level - 1]));
+        champ.baseAttackSpeed = (float)stats.attackSpeed.flat;
+        champ.bonusAS = (champ.level - 1) * (float)stats.attackSpeed.perLevel * 0.01f * champ.baseAttackSpeed;
+        champ.attackSpeed = champ.bonusAS + champ.baseAttackSpeed;
+        champ.baseArmor = (float)stats.armor.flat + ((float)(stats.armor.perLevel * mFactor[champ.level - 1]));
+        champ.baseAD = (float)stats.attackDamage.flat + ((float)(stats.attackDamage.perLevel * mFactor[champ.level - 1]));
+        champ.baseSpellBlock = (float)stats.magicResistance.flat + ((float)(stats.magicResistance.perLevel * mFactor[champ.level - 1]));
+        champ.hpRegen = (float)stats.healthRegen.flat + ((float)(stats.healthRegen.perLevel * mFactor[champ.level - 1]));
     }
 
     public void ShowText(string text)
@@ -238,66 +215,74 @@ public class SimManager : MonoBehaviour
         OutputField.SetActive(true);
         resetButton.interactable = true;
         isSimulating = true;
+        champStats[0].MyCombat.StartCoroutine(champStats[0].MyCombat.StartHPRegeneration());
+        champStats[1].MyCombat.StartCoroutine(champStats[1].MyCombat.StartHPRegeneration());
         timer = 0f;
     }
 
     public void Reset() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
-    public void LoadStats(ChampionsRe response, int index)
+    public void LoadStats(LSSAPIResponse response)
     {
-        var champName = response.champData.data.Champion.name;
-        var statsToLoad = response;
-        ChampionStats newChampStats;
+        var champName1 = response.APIMatchInfo.championInfo[0].champName;
+        var champName2 = response.APIMatchInfo.championInfo[1].champName;
+        var stats1 = champStats[0];
+        var stats2 = champStats[1];
+        var so1 = Resources.Load<StatsList>($"Stats/{response.APIMatchInfo.version}/{champName1}");
+        var so2 = Resources.Load<StatsList>($"Stats/{response.APIMatchInfo.version}/{champName2}");
 
-        newChampStats = champStats[index];
-        switch (champName)
+        LoadCharacterScript(champName1, stats1);
+        LoadCharacterScript(champName2, stats2);
+
+        champStats[0] = stats1;
+        champCombat[0] = stats1.MyCombat;
+        champStats[1] = stats2;
+        champCombat[1] = stats2.MyCombat;
+
+        FindSkills(champName1, stats1);
+        FindSkills(champName2, stats2);
+
+        stats1.name = champName1;
+        stats1.level = response.APIMatchInfo.championInfo[0].champLevel;
+        stats2.name = champName2;
+        stats2.level = response.APIMatchInfo.championInfo[1].champLevel;
+
+        GetStatsByLevel(stats1, so1);
+        stats1.currentHealth = stats1.maxHealth;
+        GetStatsByLevel(stats2, so2);
+        stats2.currentHealth = stats2.maxHealth;
+
+        stats1.StaticUIUpdate();
+        stats2.StaticUIUpdate();
+    }
+
+    private void LoadCharacterScript(string charName, ChampionStats stats)
+    {
+        switch (charName)
         {
             case "Ashe":
-                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Ashe>();
+                stats.MyCombat = stats.gameObject.AddComponent<Ashe>();
+                break;
+            case "Aatrox":
+                stats.MyCombat = stats.gameObject.AddComponent<Aatrox>();
                 break;
             case "Garen":
-                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Garen>();
+                stats.MyCombat = stats.gameObject.AddComponent<Garen>();
                 break;
             case "Annie":
-                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Annie>();
+                stats.MyCombat = stats.gameObject.AddComponent<Annie>();
                 break;
             case "Master Yi":
-                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<MasterYi>();
+                stats.MyCombat = stats.gameObject.AddComponent<MasterYi>();
                 break;
             case "Darius":
-                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<Darius>();
+                stats.MyCombat = stats.gameObject.AddComponent<Darius>();
                 break;
             default:
-                newChampStats.MyCombat = newChampStats.gameObject.AddComponent<PracticeDummy>();
-                champStats[index] = newChampStats;
-                champCombat[index] = newChampStats.MyCombat;
+                stats.MyCombat = stats.gameObject.AddComponent<PracticeDummy>();
+                champStats[0] = stats;
+                champCombat[0] = stats.MyCombat;
                 return;
         }
-
-        champStats[index] = newChampStats;
-        champCombat[index] = newChampStats.MyCombat;
-
-        FindSkills(champName, newChampStats);
-
-        newChampStats.name = champName;
-        newChampStats.level = 18;                      //change from the lss response later
-
-        newChampStats.baseHealth = (float)statsToLoad.champData.data.Champion.stats.hp;
-        newChampStats.baseAD = (float)statsToLoad.champData.data.Champion.stats.attackdamage;
-        newChampStats.baseArmor = (float)statsToLoad.champData.data.Champion.stats.armor;
-        newChampStats.baseSpellBlock = (float)(statsToLoad.champData.data.Champion.stats.spellblock);
-        newChampStats.baseAttackSpeed = (float)statsToLoad.champData.data.Champion.stats.attackspeed;
-
-        newChampStats.maxHealth = newChampStats.baseHealth;
-        newChampStats.AD = newChampStats.baseAD;
-        newChampStats.armor = newChampStats.baseArmor;
-        newChampStats.spellBlock = newChampStats.baseSpellBlock;
-        newChampStats.attackSpeed = newChampStats.baseAttackSpeed;
-
-        GetStatsByLevel(newChampStats, statsToLoad);
-        newChampStats.currentHealth = newChampStats.maxHealth;
-
-        ExtraStats(newChampStats);
-        newChampStats.StaticUIUpdate();
     }
 }

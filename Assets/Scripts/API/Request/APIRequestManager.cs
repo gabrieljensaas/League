@@ -41,9 +41,7 @@ namespace Simulator.API
 
         public void LoadChampionData(string response)
         {
-            var obj = JsonUtility.FromJson<LSSAPIResponse>(response);
-            simManager.LoadStats(GetMockChampionData(obj.APIMatchInfo.championInfo[0].champName).ChampionsRes[0], 0);
-            simManager.LoadStats(GetMockChampionData(obj.APIMatchInfo.championInfo[1].champName).ChampionsRes[0], 1);
+            simManager.LoadStats(JsonUtility.FromJson<LSSAPIResponse>(response));
             StartCoroutine(StartBattle());
         }
 
