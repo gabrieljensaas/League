@@ -16,7 +16,6 @@ public class Anivia : ChampionCombat
         };
 	}
     public bool isChilled = false;
-    private bool eggPassive = false;
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "W", "Q", "R", "A" };
@@ -122,12 +121,10 @@ public class Anivia : ChampionCombat
 	{
         if(currenthp < 0)
 		{
-            eggPassive = true;
             myStats.currentHealth = myStats.maxHealth;
 			MyBuffManager.Add("EggPassive", new UnableToActBuff(6, MyBuffManager, "EggPassive"));
             MyBuffManager.Add("BonusArmor", new ArmorBuff(6, MyBuffManager, myStats.passiveSkill.skillName, CheckBonusResistanceByLevel(myStats.level), "BonusArmor"));
             MyBuffManager.Add("BonusMagicResistance", new MagicResistanceBuff(6, MyBuffManager, myStats.passiveSkill.skillName, (int) CheckBonusResistanceByLevel(myStats.level), "BonusMagicResistance"));
         }
-        eggPassive = false;
 	}
 }
