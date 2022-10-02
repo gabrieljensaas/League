@@ -24,6 +24,12 @@ public class Xerath : ChampionCombat
         checksR.Add(new CheckIfCasting(this));
         checksA.Add(new CheckIfCasting(this));
 
+        checksQ.Add(new CheckIfChanneling(this));
+        checksW.Add(new CheckIfChanneling(this));
+        checksE.Add(new CheckIfChanneling(this));
+        checksR.Add(new CheckIfChanneling(this));
+        checksA.Add(new CheckIfChanneling(this));
+
         checksQ.Add(new CheckIfDisrupt(this));
         checksW.Add(new CheckIfDisrupt(this));
         checksE.Add(new CheckIfDisrupt(this));
@@ -109,5 +115,9 @@ public class Xerath : ChampionCombat
 		}
 
         myStats.buffManager.buffs.Remove("Channeling");
+    }
+    public override void StopChanneling(string uniqueKey)
+    {
+        StopCoroutine(uniqueKey);
     }
 }
