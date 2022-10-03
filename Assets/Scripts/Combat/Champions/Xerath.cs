@@ -6,8 +6,7 @@ public class Xerath : ChampionCombat
 {
     private bool qCast;
     private float timeSinceQ;
-    private bool rCast;
-    private int rCastLeft;
+
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "W", "Q", "R", "A" };
@@ -84,7 +83,7 @@ public class Xerath : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
-        MyBuffManager.Add("StunBuff", new StunBuff(0.75f, TargetBuffManager, "StunBuff"));
+        TargetBuffManager.Add("StunBuff", new StunBuff(0.75f, TargetBuffManager, "StunBuff"));
         myStats.eCD = ESkill().basic.coolDown[4];
     }
 
