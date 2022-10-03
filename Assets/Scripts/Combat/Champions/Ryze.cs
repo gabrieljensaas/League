@@ -70,7 +70,7 @@ public class Ryze : ChampionCombat
         UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
         if (hasFlux)
         {
-            MyBuffManager.Add("RootBuff", new RootBuff(1.5f, TargetBuffManager, "RootBuff"));
+            TargetBuffManager.Add("RootBuff", new RootBuff(1.5f, TargetBuffManager, "RootBuff"));
         }
         myStats.qCD = 0;
         myStats.wCD = WSkill().basic.coolDown[4];
@@ -82,7 +82,7 @@ public class Ryze : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
-        MyBuffManager.Add("FluxBuff", new FluxBuff(3, TargetBuffManager));
+        TargetBuffManager.Add("FluxBuff", new FluxBuff(3, TargetBuffManager));
         myStats.qCD = 0;
         myStats.eCD = ESkill().basic.coolDown[4];
     }
