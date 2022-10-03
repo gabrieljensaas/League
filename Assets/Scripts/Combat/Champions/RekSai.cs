@@ -65,7 +65,7 @@ public class RekSai : ChampionCombat
         }
 		else
 		{
-            UpdateAbilityTotalDamage(ref qSum, 1, QSkill(), 4, qKeys[1]);
+            UpdateAbilityTotalDamage(ref qSum, 1, QSkill(), myStats.qLevel, qKeys[1]);
             myStats.qCD = QSkill().basic.coolDown[4];
             furyPassive += 25;
         }
@@ -84,8 +84,8 @@ public class RekSai : ChampionCombat
 		else
 		{
             isBorrowed = false;
-            UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[0]);
-            MyBuffManager.Add("KnockOff", new AirborneBuff(0.1f, TargetBuffManager, "KnockOff"));
+            UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+            TargetBuffManager.Add("KnockOff", new AirborneBuff(0.1f, TargetBuffManager, "KnockOff"));
             myStats.wCD = 1;
             furyPassive += 25;
         }
@@ -101,11 +101,11 @@ public class RekSai : ChampionCombat
 		{
             if(furyPassive == 100)
 			{
-                UpdateAbilityTotalDamage(ref eSum, 2, ESkill().UseSkill(4,eKeys[1], myStats, targetStats), ESkill().basic.name, SkillDamageType.True);
+                UpdateAbilityTotalDamage(ref eSum, 2, ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), ESkill().basic.name, SkillDamageType.True);
             }
 			else
 			{
-                UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), 4, eKeys[0]);
+                UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
             }
             furyPassive += 25;
             myStats.eCD = ESkill().basic.coolDown[4];
@@ -120,7 +120,7 @@ public class RekSai : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         MyBuffManager.Add("Untargetable", new UntargetableBuff(1.5f, MyBuffManager, "Untargetable"));
         yield return new WaitForSeconds(1.5f);
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[0]);
+        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         furyPassive += 25;
         myStats.rCD = RSkill().basic.coolDown[2];
     }
