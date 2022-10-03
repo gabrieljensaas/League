@@ -11,6 +11,8 @@ public class CheckShield : Check
     {
         foreach (var item in combat.myStats.buffManager.shields.Values.ToList())
         {
+            if (item.shieldType == ShieldBuff.ShieldType.Magic && damageType != SkillDamageType.Spell) continue;
+            if (item.shieldType == ShieldBuff.ShieldType.Physical && damageType != SkillDamageType.Phyiscal) continue;
             if (item.value >= damage)
             {
                 item.value -= damage;

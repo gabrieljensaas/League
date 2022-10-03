@@ -4,7 +4,16 @@ public class ShieldBuff : Buff
 {
     public string uniqueKey;
     public bool decaying = false;
-    public ShieldBuff(float duration, BuffManager manager, string source, float shield, string uniqueKey, bool decaying = false) : base(manager)
+    public ShieldType shieldType;
+
+    public enum ShieldType
+    {
+        Normal,
+        Magic,
+        Physical
+    }
+
+    public ShieldBuff(float duration, BuffManager manager, string source, float shield, string uniqueKey, bool decaying = false, ShieldType shieldType = ShieldType.Normal) : base(manager)
     {
         this.decaying = decaying;
         value = shield;
@@ -13,6 +22,7 @@ public class ShieldBuff : Buff
         manager.simulationManager.ShowText($"{manager.stats.name} Gained {shield} Shield from {source} for {duration} Seconds!");
         this.uniqueKey = uniqueKey;
         this.decaying = decaying;
+        this.shieldType = shieldType;
     }
 
     public override void Update()

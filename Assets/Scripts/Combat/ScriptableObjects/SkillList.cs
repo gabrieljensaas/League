@@ -20,7 +20,8 @@ public enum SkillComponentTypes
     Blink = 1,
     Dash = 2,
     Projectile = 4,
-    OnHit = 8
+    OnHit = 8,
+    ProcDamage = 16,
 }
 
 [CreateAssetMenu(fileName = "new Spell", menuName = "ScriptableObjects/SkillList")]

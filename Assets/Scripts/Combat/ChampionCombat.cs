@@ -89,7 +89,7 @@ namespace Simulator.Combat
             isCasting = false;
         }
 
-        public float UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1)
+        public float UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1, SkillComponentTypes skillComponent = SkillComponentTypes.None)
         {
             float damageGiven = targetCombat.TakeDamage(damageModifier * skill.UseSkill(level, skillKey, myStats, targetStats), skill.basic.name, skill.skillDamageType);
             totalDamage += damageGiven;
@@ -97,13 +97,13 @@ namespace Simulator.Combat
             return damageGiven;
         }
 
-        public void UpdateAbilityTotalDamageSylas(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1)
+        public void UpdateAbilityTotalDamageSylas(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1, SkillComponentTypes skillComponent = SkillComponentTypes.None)
         {
             totalDamage += TakeDamage(damageModifier * skill.SylasUseSkill(level, skillKey, targetStats, myStats), skill.basic.name, skill.skillDamageType);
             targetCombat.myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
-        public float UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, float damage, string skillName, SkillDamageType skillDamageType)
+        public float UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, float damage, string skillName, SkillDamageType skillDamageType, SkillComponentTypes skillComponent = SkillComponentTypes.None)
         {
             float damageGiven = targetCombat.TakeDamage(damage, skillName, skillDamageType);
             totalDamage += damageGiven;
@@ -111,30 +111,30 @@ namespace Simulator.Combat
             return damageGiven;
         }
 
-        public void UpdateAbilityTotalDamageSylas(ref float totalDamage, int totalDamageTextIndex, float damage, string skillName, SkillDamageType skillDamageType)
+        public void UpdateAbilityTotalDamageSylas(ref float totalDamage, int totalDamageTextIndex, float damage, string skillName, SkillDamageType skillDamageType, SkillComponentTypes skillComponent = SkillComponentTypes.None)
         {
             totalDamage += TakeDamage(damage, skillName, skillDamageType);
             targetCombat.myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
-        public void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level, string skillKey)
+        public void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level, string skillKey, SkillComponentTypes skillComponent = SkillComponentTypes.None)
         {
             totalHeal += HealHealth(skill.UseSkill(level, skillKey, myStats, targetStats) * (100 - myStats.grievouswounds) / 100, skill.basic.name);
             myUI.healSum.text = totalHeal.ToString();
         }
-        public void UpdateTotalHealSylas(ref float totalHeal, SkillList skill, int level, string skillKey)
+        public void UpdateTotalHealSylas(ref float totalHeal, SkillList skill, int level, string skillKey, SkillComponentTypes skillComponent = SkillComponentTypes.None)
         {
             totalHeal += targetCombat.HealHealth(skill.UseSkill(level, skillKey, targetStats, myStats) * (100 - targetStats.grievouswounds) / 100, skill.basic.name);
             targetCombat.myUI.healSum.text = totalHeal.ToString();
         }
 
-        public void UpdateTotalHeal(ref float totalHeal, float heal, string skillName)
+        public void UpdateTotalHeal(ref float totalHeal, float heal, string skillName, SkillComponentTypes skillComponent = SkillComponentTypes.None)
         {
             totalHeal += HealHealth(heal * (100 - targetStats.grievouswounds) / 100, skillName);
             myUI.healSum.text = totalHeal.ToString();
         }
 
-        public void UpdateTotalHealSylas(ref float totalHeal, float heal, string skillName)
+        public void UpdateTotalHealSylas(ref float totalHeal, float heal, string skillName, SkillComponentTypes skillComponent = SkillComponentTypes.None)
         {
             totalHeal += targetCombat.HealHealth(heal * (100 - targetStats.grievouswounds) / 100, skillName);
             targetCombat.myUI.healSum.text = totalHeal.ToString();
