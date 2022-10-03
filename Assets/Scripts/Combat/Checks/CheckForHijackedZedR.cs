@@ -8,7 +8,7 @@ public class CheckForHijackedZedR : Check
         this.zed = zed;
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if (zed.hMarkedForDeath) zed.hMarkedRawDamage += damage;
         return damage;

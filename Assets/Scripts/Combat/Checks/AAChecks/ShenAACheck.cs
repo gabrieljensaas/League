@@ -6,7 +6,7 @@ public class ShenAACheck : Check
     {
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if(combat.myStats.buffManager.buffs.TryGetValue("TwilightAssault", out Buff value))
         {

@@ -38,7 +38,7 @@ public class CheckIfRagnorok : Check
         }
         return true;
     }
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         throw new System.NotImplementedException();
     }

@@ -10,7 +10,7 @@ public class CheckKayleR : Check
     {
         throw new System.NotImplementedException();
     }
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         return combat.myStats.buffManager.buffs.ContainsKey("Untargetable") ? 0 : damage;
     }

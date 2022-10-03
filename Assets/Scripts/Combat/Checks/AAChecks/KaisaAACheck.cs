@@ -8,7 +8,7 @@ public class KaisaAACheck : Check
         this.kaisa = kaisa;
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if (combat.targetStats.buffManager.buffs.TryGetValue("Plasma", out Buff value))
         {

@@ -8,7 +8,7 @@ public class ZedAACheck : Check
         this.zed = zed;
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if(!zed.usedPassive && combat.targetStats.currentHealth <= combat.targetStats.maxHealth * 0.5f)
         {

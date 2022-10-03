@@ -8,7 +8,7 @@ public class CheckTantrumPassive : Check
         this.amumu = amumu;
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         amumu.DamagedByAutoAttack(damage);
         return damage;

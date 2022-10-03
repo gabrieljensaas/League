@@ -12,7 +12,7 @@ public class CheckRengarBattleRoar : Check
     {
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         damageInstance.Add(new DamageInstance { damage = damage });
         return damage;

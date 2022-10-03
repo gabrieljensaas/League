@@ -12,7 +12,7 @@ public class CheckForAatroxEHeal : Check
     {
         throw new System.NotImplementedException();
     }
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if (combat.targetStats.buffManager.buffs.ContainsKey(aatrox.myStats.rSkill[0].basic.name))
         {

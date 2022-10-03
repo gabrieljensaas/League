@@ -12,7 +12,7 @@ public class CheckForGnarRage : Check
     {
         throw new System.NotImplementedException();
     }
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         gnar.StopCoroutine(gnar.GenerateRage());
         gnar.StartCoroutine(gnar.GenerateRage());

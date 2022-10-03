@@ -6,7 +6,7 @@ public class VarusAACheck : Check
     {
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         damage += combat.myStats.wSkill[0].UseSkill(4, combat.wKeys[0], combat.myStats, combat.targetStats);
         if (combat.targetStats.buffManager.buffs.TryGetValue("Blight", out Buff value))

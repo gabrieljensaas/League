@@ -7,7 +7,7 @@ public class CheckCounterStrike : Check
     {
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if(combat.myStats.buffManager.buffs.TryGetValue("CounterStrikeBuff", out Buff buff))
             if (buff.value > 5) buff.value++;

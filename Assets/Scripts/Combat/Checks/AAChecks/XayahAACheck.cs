@@ -8,7 +8,7 @@ public class XayahAACheck : Check
         this.xayah = xayah;
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if (combat.myStats.buffManager.buffs.ContainsKey(combat.myStats.wSkill[0].basic.name)) damage *= 1.2f;
         if (xayah.feathersAtHand > 0)

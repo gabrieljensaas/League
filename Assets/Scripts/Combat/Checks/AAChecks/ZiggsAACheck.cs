@@ -7,7 +7,7 @@ public class ZiggsAACheck : Check
 
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if(combat.myStats.pCD == 0)
 		{

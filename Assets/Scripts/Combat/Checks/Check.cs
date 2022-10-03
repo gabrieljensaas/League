@@ -9,5 +9,5 @@ public abstract class Check
     }
 
     public abstract bool Control();
-    public abstract float Control(float damage);
+    public abstract float Control(float damage,SkillDamageType damageType, SkillComponentTypes skillComponenetType = SkillComponentTypes.None);
 }

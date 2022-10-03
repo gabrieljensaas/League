@@ -10,7 +10,7 @@ public class CheckKindredR : Check
     {
         throw new System.NotImplementedException();
     }
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         double maxHealthLimit = combat.myStats.maxHealth * 0.01 ;
         if (combat.myStats.currentHealth == maxHealthLimit)

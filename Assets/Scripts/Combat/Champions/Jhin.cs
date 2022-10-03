@@ -82,7 +82,7 @@ public class Jhin : ChampionCombat
             if (damage < 0)
                 damage = 0;
 
-            if (autoattackcheck != null) damage = autoattackcheck.Control(damage);
+            if (autoattackcheck != null) damage = autoattackcheck.Control(damage, SkillDamageType.Phyiscal);
 
             aSum += targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack", SkillDamageType.Phyiscal, true);
             hSum += HealHealth(damage * myStats.lifesteal, "Lifesteal");

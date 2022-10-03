@@ -10,7 +10,7 @@ public class CheckIfFrosted : Check
     {
         throw new System.NotImplementedException();
     }
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         return combat.myStats.buffManager.buffs.ContainsKey("Frosted") ? damage * 1.1f : damage;
     }

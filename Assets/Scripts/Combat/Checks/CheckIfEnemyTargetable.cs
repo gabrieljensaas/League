@@ -10,7 +10,7 @@ public class CheckIfEnemyTargetable : Check
     {
         return !combat.targetStats.buffManager.buffs.ContainsKey("Untargetable");
     }
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         throw new System.NotImplementedException();
     }

@@ -215,7 +215,7 @@ namespace Simulator.Combat
             }
         }
 
-        protected AutoAttackReturn AutoAttack(float aaMultiplier = 1)
+        protected AutoAttackReturn AutoAttack(float aaMultiplier = 1, SkillDamageType damageType = SkillDamageType.Phyiscal, SkillComponentTypes componentTypes = SkillComponentTypes.None)
         {
             OnAutoAttack?.Invoke();
 
@@ -225,7 +225,7 @@ namespace Simulator.Combat
             };
 
             float damage = myStats.AD * aaMultiplier;
-            if(Random.Range(0, 1f) <= myStats.critStrikeChance)
+            if (Random.Range(0, 1f) <= myStats.critStrikeChance)
             {
                 damage *= myStats.critStrikeDamage;
                 autoAttackReturn.isCrit = true;
@@ -234,7 +234,7 @@ namespace Simulator.Combat
             if (damage < 0)
                 damage = 0;
 
-            if (autoattackcheck != null) damage = autoattackcheck.Control(damage);
+            if (autoattackcheck != null) damage = autoattackcheck.Control(damage, damageType, componentTypes);
 
             float damageGiven = targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack", SkillDamageType.Phyiscal, true);
             aSum += damageGiven;
@@ -249,12 +249,12 @@ namespace Simulator.Combat
             return autoAttackReturn;
         }
 
-        public float TakeDamage(float rawDamage, string source, SkillDamageType damageType, bool isAutoAttack = false)
+        public float TakeDamage(float rawDamage, string source, SkillDamageType damageType, bool isAutoAttack = false, SkillComponentTypes skillComponentType = SkillComponentTypes.None)
         {
             if (!isAutoAttack)
-                rawDamage = CheckForDamageControl(checkTakeDamageAbility, rawDamage);
+                rawDamage = CheckForDamageControl(checkTakeDamageAbility, rawDamage, damageType, skillComponentType);
             else
-                rawDamage = CheckForDamageControl(checkTakeDamageAA, rawDamage);
+                rawDamage = CheckForDamageControl(checkTakeDamageAA, rawDamage, damageType, skillComponentType);
 
             int postMitigationDamage = 0;
             if (damageType == SkillDamageType.Phyiscal) postMitigationDamage = (int)(rawDamage * 100 / (100 + myStats.armor));
@@ -262,9 +262,9 @@ namespace Simulator.Combat
             else if (damageType == SkillDamageType.True) postMitigationDamage = (int)rawDamage;
 
             if (!isAutoAttack)
-                postMitigationDamage = (int)CheckForDamageControl(checkTakeDamageAbilityPostMitigation, rawDamage); 
+                postMitigationDamage = (int)CheckForDamageControl(checkTakeDamageAbilityPostMitigation, rawDamage, damageType);
             else
-                postMitigationDamage = (int)CheckForDamageControl(checkTakeDamageAAPostMitigation, rawDamage);
+                postMitigationDamage = (int)CheckForDamageControl(checkTakeDamageAAPostMitigation, rawDamage, damageType);
 
             if (postMitigationDamage <= 0) return 0;
 
@@ -326,10 +326,10 @@ namespace Simulator.Combat
             return true;
         }
 
-        protected float CheckForDamageControl(List<Check> checks, float damage)
+        protected float CheckForDamageControl(List<Check> checks, float damage,SkillDamageType damageType, SkillComponentTypes skillComponentType = SkillComponentTypes.None)
         {
             foreach (Check item in checks)
-                damage = item.Control(damage);
+                damage = item.Control(damage,damageType, skillComponentType);
 
             return damage;
         }

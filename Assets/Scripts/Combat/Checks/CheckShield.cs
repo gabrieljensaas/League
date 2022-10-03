@@ -7,7 +7,7 @@ public class CheckShield : Check
     {
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         foreach (var item in combat.myStats.buffManager.shields.Values.ToList())
         {

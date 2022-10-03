@@ -8,7 +8,7 @@ public class CheckForGrit : Check
         this.sett = sett;
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if (damage < (sett.myStats.maxHealth * 0.5f) - sett.grit)
         {

@@ -10,7 +10,7 @@ public class CheckOlafPassive : Check
     {
         throw new System.NotImplementedException();
     }
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         float missingHpPercent = (combat.myStats.maxHealth - combat.myStats.currentHealth) / combat.myStats.maxHealth;
         var multiplier = missingHpPercent >= 0.7f ? 1 : missingHpPercent / 0.7f;

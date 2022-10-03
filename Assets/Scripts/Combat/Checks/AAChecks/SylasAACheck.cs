@@ -8,7 +8,7 @@ public class SylasAACheck : Check
         this.sylas = sylas;
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if (sylas.UnshackledStack > 0)
         {

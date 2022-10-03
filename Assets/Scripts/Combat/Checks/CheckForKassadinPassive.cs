@@ -1,8 +1,8 @@
 using Simulator.Combat;
 
-public class CheckIfHemoplague : Check
+public class CheckForKassadinPassive : Check
 {
-    public CheckIfHemoplague(ChampionCombat ccombat) : base(ccombat)
+    public CheckForKassadinPassive(ChampionCombat ccombat) : base(ccombat)
     {
     }
 
@@ -12,6 +12,7 @@ public class CheckIfHemoplague : Check
     }
     public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
-        return combat.myStats.buffManager.buffs.ContainsKey("Hemoplague") ? damage * 1.1f : damage;
+        if (damageType == SkillDamageType.Spell) damage *= 0.9f;
+        return damage;
     }
 }

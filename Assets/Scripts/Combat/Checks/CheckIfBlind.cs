@@ -6,7 +6,7 @@ public class CheckIfBlind : Check
     {
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         return combat.myStats.buffManager.buffs.ContainsKey("Blind") ? 0 : damage;
     }

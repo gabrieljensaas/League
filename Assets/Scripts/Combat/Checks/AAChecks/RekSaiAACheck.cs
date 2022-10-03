@@ -9,7 +9,7 @@ public class RekSaiAACheck : Check
         this.reksai = reksai;
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if (reksai.autoattackQ > 1)
         {

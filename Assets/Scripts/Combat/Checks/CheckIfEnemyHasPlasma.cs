@@ -10,7 +10,7 @@ public class CheckIfEnemyHasPlasma : Check
     {
         return combat.targetStats.buffManager.buffs.ContainsKey("Plasma");
     }
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         throw new System.NotImplementedException();
     }

@@ -8,7 +8,7 @@ public class CheckLeBlancPassive : Check
         this.lb = lb;
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if (combat.myStats.currentHealth - damage <= combat.myStats.maxHealth * 0.4f && !lb.UsedMirrorImage) lb.MirrorImage();
         return damage;

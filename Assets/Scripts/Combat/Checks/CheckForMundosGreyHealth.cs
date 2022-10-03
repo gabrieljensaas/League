@@ -12,7 +12,7 @@ public class CheckForMundosGreyHealth : Check
     {
         throw new System.NotImplementedException();
     }
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if (drMundo.WActive) drMundo.GreyHealth += damage * combat.myStats.wSkill[0].UseSkill(4, combat.wKeys[1], combat.myStats, combat.targetStats);
         return damage;

@@ -8,7 +8,7 @@ public class ZoeAACheck : Check
         this.zoe = zoe;
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if (zoe.HasPassive)
         {

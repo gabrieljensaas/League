@@ -9,7 +9,7 @@ public class RenektonAACheck : Check
         this.renekton = renekton;
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if(renekton.wStun == 2)
         {

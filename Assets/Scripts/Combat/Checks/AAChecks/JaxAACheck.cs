@@ -6,7 +6,7 @@ public class JaxAACheck : Check
     {
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if (combat.targetStats.buffManager.buffs.TryGetValue("EmpowerBuff", out Buff buff))
         {

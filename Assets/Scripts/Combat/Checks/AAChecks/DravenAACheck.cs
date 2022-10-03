@@ -8,7 +8,7 @@ public class DravenAACheck : Check
         this.draven = draven;
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("SpinningAxe", out Buff value))
         {

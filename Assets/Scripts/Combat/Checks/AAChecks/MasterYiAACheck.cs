@@ -6,7 +6,7 @@ public class MasterYiAACheck : Check
     {
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         combat.myStats.qCD--;
         if (combat.myStats.buffManager.buffs.TryGetValue("WujuStyle", out Buff buff)) damage += buff.value;

@@ -8,7 +8,7 @@ public class DrMundoAACheck : Check
         this.drMundo = drMundo;
     }
 
-    public override float Control(float damage)
+    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
     {
         if (drMundo.EActive)
         {
