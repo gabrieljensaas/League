@@ -57,11 +57,11 @@ public class Anivia : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
-        MyBuffManager.Add("StunBuff", new StunBuff(QSkill().UseSkill(myStats.qLevel, qKeys[1], myStats, targetStats), TargetBuffManager, "StunBuff"));
-        if (targetStats.buffManager.buffs.TryGetValue("ChilledBuff", out Buff buff))
+        TargetBuffManager.Add("StunBuff", new StunBuff(QSkill().UseSkill(myStats.qLevel, qKeys[1], myStats, targetStats), TargetBuffManager, "StunBuff"));
+        if (TargetBuffManager.buffs.TryGetValue("ChilledBuff", out Buff buff))
             buff.duration = 3;
         else
-            targetStats.buffManager.buffs.Add("ChilledBuff", new ChilledBuff(3, TargetBuffManager, "ChilledBuff"));
+            TargetBuffManager.Add("ChilledBuff", new ChilledBuff(3, TargetBuffManager, "ChilledBuff"));
         myStats.qCD = QSkill().basic.coolDown[4];
     }
 
@@ -70,7 +70,7 @@ public class Anivia : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        MyBuffManager.Add(WSkill().basic.name, new AirborneBuff(0.1f, TargetBuffManager, WSkill().basic.name));
+        TargetBuffManager.Add(WSkill().basic.name, new AirborneBuff(0.1f, TargetBuffManager, WSkill().basic.name));
         myStats.wCD = WSkill().basic.coolDown[4];
     }
 
@@ -93,10 +93,10 @@ public class Anivia : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
-        if (targetStats.buffManager.buffs.TryGetValue("ChilledBuff", out Buff buff))
+        if (TargetBuffManager.buffs.TryGetValue("ChilledBuff", out Buff buff))
             buff.duration = 3;
         else
-            targetStats.buffManager.buffs.Add("ChilledBuff", new ChilledBuff(3, TargetBuffManager, "ChilledBuff"));
+            TargetBuffManager.Add("ChilledBuff", new ChilledBuff(3, TargetBuffManager, "ChilledBuff"));
         myStats.rCD = RSkill().basic.coolDown[2];
         StartCoroutine(GlacialStorm());
     }
