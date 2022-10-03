@@ -70,7 +70,7 @@ public class Ziggs : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        MyBuffManager.Add("KnockOffBuff", new AirborneBuff(0.1f, TargetBuffManager, "SatchelCharge"));
+        TargetBuffManager.Add("KnockOffBuff", new AirborneBuff(0.1f, TargetBuffManager, "SatchelCharge"));
         UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[0]);
         myStats.wCD = WSkill().basic.coolDown[4];
         myStats.pCD = myStats.passiveSkill.coolDown - ShortFuseCooldownReduceByLevel(myStats.level);
