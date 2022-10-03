@@ -48,7 +48,7 @@ public class Azir : ChampionCombat
     {
         base.CombatUpdate();
 
-        if(SoldierStack < 2)
+        if (SoldierStack < 2)
         {
             SoldierRecharge += Time.deltaTime;
             if (SoldierRecharge >= SandSoldierRechargeBySkillLevel[4])
@@ -112,11 +112,11 @@ public class Azir : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        if(SoldierCount == 0) AutoAttack();
+        if (SoldierCount == 0) AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         else
         {
             float damage = SandSoldierFlatDamageByLevel[myStats.level] + (myStats.AP * 0.55f);
-            UpdateAbilityTotalDamage(ref wSum, 1,  damage + ((SoldierCount - 1) * damage * 0.25f), "Arise!", SkillDamageType.Spell);
+            UpdateAbilityTotalDamage(ref wSum, 1, new Damage(damage + ((SoldierCount - 1) * damage * 0.25f), SkillDamageType.Spell), "Arise!");
         }
     }
 

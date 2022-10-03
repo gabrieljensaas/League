@@ -6,11 +6,11 @@ public class DariusAACheck : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("Crippling Strike", out Buff value))
         {
-            damage += value.value;
+            damage.value += value.value;
             combat.wSum += value.value;
             combat.myUI.abilitySum[0].text = combat.wSum.ToString();
             combat.myStats.buffManager.buffs.Remove("Crippling Strike");

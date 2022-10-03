@@ -13,7 +13,7 @@ public class CheckFrostArmor : Check
         throw new System.NotImplementedException();
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (sejuani.HasFrostArmor)
         {

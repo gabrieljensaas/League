@@ -1,5 +1,5 @@
-using System.Collections;
 using Simulator.Combat;
+using System.Collections;
 using UnityEngine;
 
 public class Vex : ChampionCombat
@@ -97,7 +97,7 @@ public class Vex : ChampionCombat
 
     private void Gloom(string skillName)
     {
-        if(gloomTimer >= 0)
+        if (gloomTimer >= 0)
         {
             targetStats.buffManager.buffs.Add("Flee", new FleeBuff(GetVexDoomFear(myStats.level), targetStats.buffManager, skillName));
             gloomTimer = GetVexDoomCooldown(myStats.level);

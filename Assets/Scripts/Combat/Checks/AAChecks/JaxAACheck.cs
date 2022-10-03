@@ -6,11 +6,11 @@ public class JaxAACheck : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.targetStats.buffManager.buffs.TryGetValue("EmpowerBuff", out Buff buff))
         {
-            damage = combat.myStats.wSkill[0].UseSkill(5, combat.wKeys[0], combat.myStats, combat.targetStats);
+            damage.value = combat.myStats.wSkill[0].UseSkill(5, combat.wKeys[0], combat.myStats, combat.targetStats);
             buff.Kill();
         }
 

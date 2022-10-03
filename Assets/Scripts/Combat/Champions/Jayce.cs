@@ -178,10 +178,10 @@ public class Jayce : ChampionCombat
             targetStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new MagicResistanceReductionBuff(5, targetStats.buffManager, myStats.rSkill[0].basic.name, GetJayceRHammerPenetrationByLevel(myStats.level), myStats.rSkill[0].basic.name));
             gotHammerBuff = false;
         }
-        AutoAttack(hyperCharge > 0 ? myStats.wSkill[1].UseSkill(4, wKeys[1], myStats, targetStats) / myStats.AD : 1);
-        if(gotCannonBuff)
+        AutoAttack(new Damage(hyperCharge > 0 ? myStats.wSkill[1].UseSkill(4, wKeys[1], myStats, targetStats) : myStats.AD, SkillDamageType.Phyiscal));
+        if (gotCannonBuff)
         {
-            UpdateAbilityTotalDamage(ref rSum, 3, GetJayceRCannonDamageByLevel(myStats.level) + (myStats.bonusAD * 0.25f), myStats.rSkill[1].basic.name, SkillDamageType.Spell);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(GetJayceRCannonDamageByLevel(myStats.level) + (myStats.bonusAD * 0.25f), SkillDamageType.Spell), myStats.rSkill[1].basic.name);
             gotCannonBuff = false;
         }
 

@@ -100,14 +100,14 @@ public class Viktor : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        if(myStats.buffManager.buffs.TryGetValue("Discharge", out Buff value))
+        if (myStats.buffManager.buffs.TryGetValue("Discharge", out Buff value))
         {
             UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
             value.Kill();
         }
         else
         {
-            AutoAttack();
+            AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         }
     }
 

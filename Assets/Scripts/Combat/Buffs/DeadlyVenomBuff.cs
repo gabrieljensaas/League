@@ -20,7 +20,7 @@ public class DeadlyVenomBuff : Buff
         if (_poisonTimer >= 1f)
         {
             _poisonTimer = 0f;
-            manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.targetCombat.pSum, 4, damage, $"Deadly Venom {value}", SkillDamageType.True);
+            manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.targetCombat.pSum, 4, new Damage(damage, SkillDamageType.True), $"Deadly Venom {value}");
         }
 
         duration -= Time.deltaTime;

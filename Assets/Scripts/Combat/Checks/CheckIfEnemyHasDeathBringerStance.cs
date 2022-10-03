@@ -12,11 +12,11 @@ public class CheckIfEnemyHasDeathBringerStance : Check
     {
         throw new System.NotImplementedException();
     }
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.targetStats.buffManager.buffs.TryGetValue("DeathbringerStance", out Buff value))
         {
-            aatrox.UpdateTotalHeal(ref aatrox.hSum, damage, "Deathbringer Stance");
+            aatrox.UpdateTotalHeal(ref aatrox.hSum, damage.value, "Deathbringer Stance");
             value.Kill();
             aatrox.pCD = Aatrox.AatroxPassiveCooldownByLevelTable[aatrox.myStats.level];
         }

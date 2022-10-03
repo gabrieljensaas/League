@@ -10,9 +10,9 @@ public class CheckForKassadinPassive : Check
     {
         throw new System.NotImplementedException();
     }
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
-        if (damageType == SkillDamageType.Spell) damage *= 0.9f;
+        if (damage.damageType == SkillDamageType.Spell) damage.value *= 0.9f;
         return damage;
     }
 }

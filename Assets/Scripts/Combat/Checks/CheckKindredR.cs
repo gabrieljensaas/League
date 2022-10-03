@@ -10,12 +10,13 @@ public class CheckKindredR : Check
     {
         throw new System.NotImplementedException();
     }
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
-        double maxHealthLimit = combat.myStats.maxHealth * 0.01 ;
+        double maxHealthLimit = combat.myStats.maxHealth * 0.01;
         if (combat.myStats.currentHealth == maxHealthLimit)
         {
-            return combat.myStats.buffManager.buffs.ContainsKey("Untargetable") ? 0 : damage;
+            damage.value = combat.myStats.buffManager.buffs.ContainsKey("Untargetable") ? 0 : damage.value;
+            return damage;
         }
         else
         {

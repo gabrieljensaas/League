@@ -7,9 +7,10 @@ public class AkaliAACheck : Check
 
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
-        return damage + (combat.myStats.baseAD + Akali.AkaliPassiveDamageByLevel[combat.myStats.level] + (combat.myStats.bonusAD * 0.6f) + (0.55f * combat.myStats.AP));
+        damage.value += (combat.myStats.baseAD + Akali.AkaliPassiveDamageByLevel[combat.myStats.level] + (combat.myStats.bonusAD * 0.6f) + (0.55f * combat.myStats.AP));
+        return damage;
     }
 
     public override bool Control()

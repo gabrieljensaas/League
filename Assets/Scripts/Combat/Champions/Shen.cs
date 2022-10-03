@@ -112,7 +112,7 @@ public class Shen : ChampionCombat
 
     public void GetPassiveShield()
     {
-        if(pCD <= 0)
+        if (pCD <= 0)
         {
             myStats.buffManager.shields.Add("Ki Barrier", new ShieldBuff(2.5f, myStats.buffManager, "Ki Barrier", 47 + (3 * myStats.level) + (myStats.bonusHP * 0.12f), "Ki Barrier"));
             pCD = GetShenPassiveCooldownByLevel(myStats.level);

@@ -1,6 +1,5 @@
 using Simulator.Combat;
 using System.Collections;
-using UnityEngine;
 
 public class JarvanIV : ChampionCombat
 {
@@ -57,8 +56,8 @@ public class JarvanIV : ChampionCombat
     public override IEnumerator ExecuteA()
     {
         yield return base.ExecuteA();
-        if(targetStats.buffManager.buffs.TryAdd("MartialCadence", new MartialCadenceBuff(MartialCadenceTargetImmunity(myStats.level), targetStats.buffManager, myStats.qSkill[0].name)))
-            UpdateAbilityTotalDamage(ref pSum, 4, targetStats.maxHealth * 0.08f, myStats.passiveSkill.skillName, SkillDamageType.Phyiscal);
+        if (targetStats.buffManager.buffs.TryAdd("MartialCadence", new MartialCadenceBuff(MartialCadenceTargetImmunity(myStats.level), targetStats.buffManager, myStats.qSkill[0].name)))
+            UpdateAbilityTotalDamage(ref pSum, 4, new Damage(targetStats.maxHealth * 0.08f, SkillDamageType.Phyiscal), myStats.passiveSkill.skillName);
     }
 
     public override IEnumerator ExecuteQ()

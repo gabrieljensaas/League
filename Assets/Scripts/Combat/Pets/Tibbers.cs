@@ -42,7 +42,7 @@ public class Tibbers : Pet
     public void ExecuteFlameAuraDamage()
     {
         float damage = (10 + (3 / 100 * owner.myStats.AP)) * (100 / (100 + owner.targetStats.spellBlock));
-        owner.targetCombat.TakeDamage(damage, "Tibber's Flame Aura", SkillDamageType.Spell);
+        owner.targetCombat.TakeDamage(new Damage(damage, SkillDamageType.Spell), "Tibber's Flame Aura");
         flameAuraTimer = flameAuraCooldown;
     }
 
@@ -57,7 +57,7 @@ public class Tibbers : Pet
     public void AutoAttack()
     {
         float damage = aaDamage * (100 / (100 + owner.targetStats.spellBlock));
-        owner.targetCombat.TakeDamage(damage, "Tibber's Auto Attack", SkillDamageType.Phyiscal, true);
+        owner.targetCombat.TakeDamage(new Damage(damage, SkillDamageType.Phyiscal), "Tibber's Auto Attack", true);
         enrageAACounter--;
         if (enrageAACounter < 0) enrageAACounter = 0;
         attackSpeed = TibbersEnragedAttackSpeeds[enrageAACounter];

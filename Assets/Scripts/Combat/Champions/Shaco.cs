@@ -1,8 +1,5 @@
 using Simulator.Combat;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
 
 public class Shaco : ChampionCombat
 {
@@ -77,7 +74,7 @@ public class Shaco : ChampionCombat
     public override IEnumerator ExecuteA()
     {
         yield return base.ExecuteA();
-        if(myStats.buffManager.buffs.TryGetValue("Untargetable", out Buff buff))
+        if (myStats.buffManager.buffs.TryGetValue("Untargetable", out Buff buff))
         {
             UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
             buff.Kill();
@@ -111,7 +108,7 @@ public class Shaco : ChampionCombat
         if (myStats.buffManager.buffs.TryGetValue("Untargetable", out Buff buff))
             buff.Kill();
 
-        if(targetStats.PercentCurrentHealth > 0.3f)
+        if (targetStats.PercentCurrentHealth > 0.3f)
             UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
         else
             UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[2]);

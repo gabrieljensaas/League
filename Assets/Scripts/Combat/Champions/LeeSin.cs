@@ -10,7 +10,7 @@ public class LeeSin : ChampionCombat
     private float timeSinceW = 0f;
     public bool eCast = false;
     private float timeSinceE = 0f;
-    private int flurryStack = 0; 
+    private int flurryStack = 0;
 
     public override void UpdatePriorityAndChecks()
     {
@@ -67,8 +67,8 @@ public class LeeSin : ChampionCombat
         {
             yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
             if (myStats.buffManager.HasImmobilize) yield break;
-            float extraDamage = myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) * (1 + ((targetStats.maxHealth - targetStats.currentHealth)/ targetStats.maxHealth));
-            UpdateAbilityTotalDamage(ref qSum, 4, extraDamage, myStats.qSkill[0].basic.name, SkillDamageType.Phyiscal);
+            float extraDamage = myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) * (1 + ((targetStats.maxHealth - targetStats.currentHealth) / targetStats.maxHealth));
+            UpdateAbilityTotalDamage(ref qSum, 4, new Damage(extraDamage, SkillDamageType.Spell), myStats.qSkill[0].basic.name);
             StopCoroutine(SonicWave());
             Flurry();
             myStats.qCD = myStats.qSkill[0].basic.coolDown[4] - timeSinceQ;
@@ -139,7 +139,7 @@ public class LeeSin : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         if (flurryStack == 1) myStats.buffManager.buffs["Flurry"].Kill();
         else if (flurryStack > 0)
         {
@@ -155,7 +155,7 @@ public class LeeSin : ChampionCombat
         yield return new WaitForSeconds(3f);
         qCast = false;
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4] - timeSinceQ;
-    } 
+    }
 
     public IEnumerator SafeGuard()
     {
@@ -173,11 +173,11 @@ public class LeeSin : ChampionCombat
     }
 
     public void Flurry()
-	{
-		if(!myStats.buffManager.buffs.TryAdd("Flurry", new AttackSpeedBuff(3, myStats.buffManager, myStats.passiveSkill.skillName, 0.4f * myStats.baseAttackSpeed, "Flurry")))
+    {
+        if (!myStats.buffManager.buffs.TryAdd("Flurry", new AttackSpeedBuff(3, myStats.buffManager, myStats.passiveSkill.skillName, 0.4f * myStats.baseAttackSpeed, "Flurry")))
         {
             myStats.buffManager.buffs["Flurry"].value = 2;
             myStats.buffManager.buffs["Flurry"].duration = 3;
         }
-	}
+    }
 }

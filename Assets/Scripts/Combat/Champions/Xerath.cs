@@ -100,18 +100,18 @@ public class Xerath : ChampionCombat
 
     private IEnumerator RiteOfArcane()
     {
-        int reCast = (int) RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats);
+        int reCast = (int)RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats);
         while (reCast > 0)
         {
-                UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]); ;
+            UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]); ;
 
             reCast--;
             yield return new WaitForSeconds(0.25f);
         }
-        if(reCast == (int)RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats))
-		{
+        if (reCast == (int)RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats))
+        {
             myStats.rCD = myStats.rCD / 2;
-		}
+        }
 
         myStats.buffManager.buffs.Remove("Channeling");
     }

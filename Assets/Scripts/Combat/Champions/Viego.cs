@@ -96,7 +96,7 @@ public class Viego : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         float multiplier = RSkill().UseSkill(2, rKeys[0], myStats, targetStats) * 0.01f * myStats.PercentMissingHealth;
-        UpdateAbilityTotalDamage(ref rSum, 3, multiplier*0.01f, RSkill().basic.name, SkillDamageType.Phyiscal);
+        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(multiplier * 0.01f, SkillDamageType.Phyiscal), RSkill().basic.name);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
@@ -109,13 +109,14 @@ public class Viego : ChampionCombat
         float damage = 0.2f * myStats.AD;
         if (targetStats.buffManager.buffs.TryGetValue("BladeOFRuinedKing", out Buff buff))
         {
-            UpdateAbilityTotalDamage(ref qSum, 0, damage, QSkill().basic.name, SkillDamageType.Phyiscal);
-            AutoAttack(1 + multiplier);
+            UpdateAbilityTotalDamage(ref qSum, 0, new Damage(damage, SkillDamageType.Phyiscal), QSkill().basic.name);
+            AutoAttack(new Damage(myStats.AD * (1 + multiplier), SkillDamageType.Phyiscal));
+
             UpdateTotalHeal(ref qSum, damage * 1.35f, QSkill().basic.name);
         }
-		else
-		{
-            AutoAttack(1 + multiplier);
+        else
+        {
+            AutoAttack(new Damage(myStats.AD * (1 + multiplier), SkillDamageType.Phyiscal));
         }
     }
 

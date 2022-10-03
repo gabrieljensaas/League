@@ -10,7 +10,7 @@ public class CheckIfStunned : Check
     {
         return !combat.myStats.buffManager.buffs.ContainsKey("Stun");
     }
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         throw new System.NotImplementedException();
     }

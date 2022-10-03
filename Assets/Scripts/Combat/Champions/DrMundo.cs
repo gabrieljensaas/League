@@ -1,9 +1,6 @@
 using Simulator.Combat;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class DrMundo : ChampionCombat
 {
@@ -70,7 +67,7 @@ public class DrMundo : ChampionCombat
     public override void CombatUpdate()
     {
         myStats.AD -= bonusAD;
-        bonusAD = myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats,cap: 70);
+        bonusAD = myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats, cap: 70);
         myStats.AD += bonusAD;
         if (pCD <= 0) GoesWhereHePleases();
         base.CombatUpdate();
@@ -87,7 +84,7 @@ public class DrMundo : ChampionCombat
         CheckDeath();
         var a = myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats);
         var b = myStats.qSkill[0].UseSkill(4, qKeys[1], myStats, targetStats);
-        UpdateAbilityTotalDamage(ref qSum, 0, a > b ? a : b, myStats.qSkill[0].basic.name, SkillDamageType.Spell);
+        UpdateAbilityTotalDamage(ref qSum, 0, new Damage(a > b ? a : b, SkillDamageType.Spell), myStats.qSkill[0].basic.name);
         UpdateTotalHeal(ref hSum, 50, myStats.qSkill[0].basic.name);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
@@ -134,7 +131,7 @@ public class DrMundo : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
     }
 
     public void GoesWhereHePleases()

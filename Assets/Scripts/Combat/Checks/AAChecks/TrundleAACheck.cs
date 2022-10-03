@@ -6,11 +6,11 @@ public class TrundleAACheck : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("Chomp", out Buff value))
         {
-            damage += value.value;
+            damage.value += value.value;
             combat.qSum += value.value;
             combat.myUI.abilitySum[0].text = combat.qSum.ToString();
             combat.myStats.buffManager.buffs.Remove("Chomp");

@@ -8,14 +8,14 @@ public class ZedAACheck : Check
         this.zed = zed;
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
-        if(!zed.usedPassive && combat.targetStats.currentHealth <= combat.targetStats.maxHealth * 0.5f)
+        if (!zed.usedPassive && combat.targetStats.currentHealth <= combat.targetStats.maxHealth * 0.5f)
         {
-            damage += Zed.GetZedPassivePercentByLevel(combat.myStats.level) * combat.targetStats.maxHealth * 0.01f;
+            damage.value += Zed.GetZedPassivePercentByLevel(combat.myStats.level) * combat.targetStats.maxHealth * 0.01f;
             zed.StartCoroutine(zed.ContempForTheWeak());
         }
-        if (zed.markedForDeath) zed.markedRawDamage += damage;
+        if (zed.markedForDeath) zed.markedRawDamage += damage.value;
         return damage;
     }
 

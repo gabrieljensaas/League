@@ -140,7 +140,7 @@ public class Renekton : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         furyPassive += myStats.currentHealth < myStats.maxHealth * 0.5f ? 7.5f : 5;
         furyPassive = furyPassive > 100 ? 100 : furyPassive;
     }
@@ -154,7 +154,7 @@ public class Renekton : ChampionCombat
 
     public IEnumerator Dominus(float time)
     {
-        if(time == 0)
+        if (time == 0)
         {
             furyPassive += myStats.currentHealth < myStats.maxHealth * 0.5f ? 30 : 20;
             furyPassive = furyPassive > 100 ? 100 : furyPassive;
@@ -163,7 +163,7 @@ public class Renekton : ChampionCombat
             myStats.bonusHP += myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
             yield return new WaitForSeconds(0.5f);
         }
-        else if(time % 1 == 0)
+        else if (time % 1 == 0)
         {
             furyPassive += myStats.currentHealth < myStats.maxHealth * 0.5f ? 7.5f : 5;
             furyPassive = furyPassive > 100 ? 100 : furyPassive;
@@ -173,7 +173,7 @@ public class Renekton : ChampionCombat
             UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 4, rKeys[1]);
         }
 
-        if ( time != 15f)
+        if (time != 15f)
         {
             yield return new WaitForSeconds(0.5f);
             StartCoroutine(Dominus(time + 0.5f));

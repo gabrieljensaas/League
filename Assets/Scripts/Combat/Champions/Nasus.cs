@@ -77,7 +77,7 @@ public class Nasus : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("ArmorBuff", new ArmorBuff(rSum, myStats.buffManager, myStats.rSkill[0].basic.name, myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats), "ArmorBuff"));
-        myStats.buffManager.buffs.Add("MRBuff", new MagicResistanceBuff(rSum, myStats.buffManager, myStats.rSkill[0].basic.name,(int) myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats), "MRBuff"));
+        myStats.buffManager.buffs.Add("MRBuff", new MagicResistanceBuff(rSum, myStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats), "MRBuff"));
         StartCoroutine(FuryOfTheSands(0));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }

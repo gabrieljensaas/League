@@ -56,7 +56,7 @@ public class Vi : ChampionCombat
 
         passiveCD -= Time.deltaTime;
         eRecharge -= Time.deltaTime;
-        if(eRecharge <= 0 && eStack < 2)
+        if (eRecharge <= 0 && eStack < 2)
         {
             eStack++;
             eRecharge = myStats.eSkill[0].basic.coolDown[4];
@@ -110,7 +110,7 @@ public class Vi : ChampionCombat
             StopCoroutine(RelentlessForce());
             myStats.eCD = 1;
         }
-        else AutoAttack();   
+        else AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         StopCoroutine(DentingBlows());
         StartCoroutine(DentingBlows());
     }
@@ -138,7 +138,7 @@ public class Vi : ChampionCombat
     public IEnumerator DentingBlows()
     {
         wStack++;
-        if(wStack == 3)
+        if (wStack == 3)
         {
             UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
             targetStats.buffManager.buffs.Add(myStats.wSkill[0].basic.name, new ArmorReductionBuff(4, targetStats.buffManager, myStats.wSkill[0].basic.name, 20, myStats.wSkill[0].basic.name));

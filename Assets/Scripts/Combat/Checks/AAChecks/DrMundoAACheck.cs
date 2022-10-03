@@ -8,13 +8,13 @@ public class DrMundoAACheck : Check
         this.drMundo = drMundo;
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (drMundo.EActive)
         {
             float missingHP = (combat.myStats.maxHealth - combat.myStats.currentHealth) / combat.myStats.maxHealth;
-            float multiplier = missingHP > 0.4 ? 0.6f: missingHP * 1.5f;
-            damage += combat.myStats.eSkill[0].UseSkill(4, combat.eKeys[2], combat.myStats, combat.targetStats) * (multiplier + 1);
+            float multiplier = missingHP > 0.4 ? 0.6f : missingHP * 1.5f;
+            damage.value += combat.myStats.eSkill[0].UseSkill(4, combat.eKeys[2], combat.myStats, combat.targetStats) * (multiplier + 1);
             drMundo.StopCoroutine(drMundo.BluntForceTrauma());
             drMundo.EActive = false;
         }

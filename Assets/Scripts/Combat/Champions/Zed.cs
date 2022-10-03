@@ -1,6 +1,5 @@
 using Simulator.Combat;
 using System.Collections;
-using System.Threading;
 using UnityEngine;
 
 public class Zed : ChampionCombat
@@ -67,7 +66,7 @@ public class Zed : ChampionCombat
         for (int i = 0; i < shadowCount + 1; i++)
         {
             float damage = myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats);
-            UpdateAbilityTotalDamage(ref qSum, 0, damage, myStats.qSkill[0].basic.name, SkillDamageType.Phyiscal);
+            UpdateAbilityTotalDamage(ref qSum, 0, new Damage(damage, SkillDamageType.Phyiscal), myStats.qSkill[0].basic.name);
             if (markedForDeath) markedRawDamage += damage;
         }
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
@@ -90,7 +89,7 @@ public class Zed : ChampionCombat
         for (int i = 0; i < shadowCount + 1; i++)
         {
             float damage = myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats);
-            UpdateAbilityTotalDamage(ref eSum, 2, damage, myStats.eSkill[0].basic.name, SkillDamageType.Phyiscal);
+            UpdateAbilityTotalDamage(ref eSum, 2, new Damage(damage, SkillDamageType.Phyiscal), myStats.eSkill[0].basic.name);
             myStats.wCD -= 2f;
             if (markedForDeath) markedRawDamage += damage;
         }
@@ -137,7 +136,7 @@ public class Zed : ChampionCombat
         yield return new WaitForSeconds(3f);
         markedForDeath = false;
         //exploding damage      0.55f needs to change by skill level
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats) + (markedRawDamage * 0.55f), myStats.rSkill[0].basic.name, SkillDamageType.Phyiscal);
+        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats) + (markedRawDamage * 0.55f), SkillDamageType.Phyiscal), myStats.rSkill[0].basic.name);
     }
 
     public IEnumerator HMarkedForDeath(int skillLevel)
@@ -146,6 +145,6 @@ public class Zed : ChampionCombat
         yield return new WaitForSeconds(3f);
         hMarkedForDeath = false;
         //exploding damage      0.55f needs to change by skill level
-        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0].UseSkill(skillLevel, rKeys[0], myStats, targetStats) + (hMarkedRawDamage * 0.55f), myStats.rSkill[0].basic.name, SkillDamageType.Phyiscal);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, new Damage(myStats.rSkill[0].UseSkill(skillLevel, rKeys[0], myStats, targetStats) + (hMarkedRawDamage * 0.55f), SkillDamageType.Phyiscal), myStats.rSkill[0].basic.name);
     }
 }

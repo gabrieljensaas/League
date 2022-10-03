@@ -7,16 +7,17 @@ public class ZiggsAACheck : Check
 
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
-        if(combat.myStats.pCD == 0)
-		{
-            return damage + Ziggs.ShortFuseDamageByLevel(combat.myStats.level);
-        }
-		else
-		{
+        if (combat.myStats.pCD == 0)
+        {
+            damage.value += Ziggs.ShortFuseDamageByLevel(combat.myStats.level);
             return damage;
-		}
+        }
+        else
+        {
+            return damage;
+        }
 
     }
 

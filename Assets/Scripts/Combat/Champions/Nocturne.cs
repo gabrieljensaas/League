@@ -98,15 +98,15 @@ public class Nocturne : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        if(passiveNocturneReady < 13)
-		{
-            AutoAttack();
+        if (passiveNocturneReady < 13)
+        {
+            AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
             passiveNocturneReady += 3;
         }
-		else
-		{
-			AutoAttack(1.2f); //yet to implement crit
+        else
+        {
+            AutoAttack(new Damage(myStats.AD * 1.2f, SkillDamageType.Phyiscal)); //yet to implement crit
             UpdateTotalHeal(ref hSum, 12 + myStats.level + (myStats.AP * 0.3f), "Heal");
-		}
-	}
+        }
+    }
 }

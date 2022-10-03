@@ -112,11 +112,11 @@ public class Graves : ChampionCombat
         timeSinceLastAA = 0;
         if (currentAmmo == 2)
         {
-            AutoAttack();
+            AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         }
         else if (currentAmmo == 1)
         {
-            AutoAttack();
+            AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         }
     }
 }

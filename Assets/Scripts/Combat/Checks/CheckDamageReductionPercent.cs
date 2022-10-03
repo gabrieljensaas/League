@@ -6,11 +6,11 @@ public class CheckDamageReductionPercent : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("DamageReduction", out Buff value))
         {
-            damage *= (100 - value.value) * 0.01f;
+            damage.value *= (100 - value.value) * 0.01f;
         }
         return damage;
     }

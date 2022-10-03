@@ -798,15 +798,15 @@ public class ChampionDataGenerator : MonoBehaviour
             {
                 //if (Resources.Load<SkillList>($"Skills/{version}/{abilityKey}/{champName} {abilityKey}[{i}]") == null)
                 //{
-                    SkillList asset = ScriptableObject.CreateInstance<SkillList>();
-                    //asset.unit = new UnitList();
-                    asset.atrList = new AttributeList();
-                    asset.basic = new SkillBasic
-                    {
-                        champion = champName,
-                        name = api.abilities[abilityKey][i].name
-                    };
-                    GenerateSkill(champName, i, asset, null, skillIndex);
+                SkillList asset = ScriptableObject.CreateInstance<SkillList>();
+                //asset.unit = new UnitList();
+                asset.atrList = new AttributeList();
+                asset.basic = new SkillBasic
+                {
+                    champion = champName,
+                    name = api.abilities[abilityKey][i].name
+                };
+                GenerateSkill(champName, i, asset, null, skillIndex);
                 //}
             }
         }

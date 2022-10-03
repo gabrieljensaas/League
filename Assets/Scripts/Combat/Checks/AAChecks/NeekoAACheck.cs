@@ -8,11 +8,11 @@ public class NeekoAACheck : Check
         this.neeko = neeko;
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (neeko.HasWPassive)
         {
-            damage += combat.WSkill().UseSkill(4, combat.wKeys[0], combat.myStats, combat.targetStats);
+            damage.value += combat.WSkill().UseSkill(4, combat.wKeys[0], combat.myStats, combat.targetStats);
             neeko.HasWPassive = false;
             neeko.NeekoWPassive();
         }

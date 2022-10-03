@@ -1,8 +1,7 @@
 using Simulator.Combat;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 public class Yorick : ChampionCombat
 {
@@ -61,7 +60,7 @@ public class Yorick : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         TouchOfTheMaidenProc();
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
@@ -83,7 +82,7 @@ public class Yorick : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         float damage = (targetStats.maxHealth * 0.15f > myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats)) ? targetStats.maxHealth : myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats);
-        UpdateAbilityTotalDamage(ref eSum, 2, damage, myStats.eSkill[0].name, SkillDamageType.Spell);
+        UpdateAbilityTotalDamage(ref eSum, 2, new Damage(damage, SkillDamageType.Spell), myStats.eSkill[0].name);
         targetStats.buffManager.buffs.Add("MourningMistCurse", new MourningMistCursedBuff(4, targetStats.buffManager, myStats.eSkill[0].name));
 
         foreach (Pet pet in pets.Where(pet => pet is MistWalker))
@@ -102,16 +101,16 @@ public class Yorick : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         pets.Add(new MaidenOfTheMist(this, 3300 + (myStats.maxHealth * 0.75f), 40 + (myStats.AD * 0.5f), 1, 0, 0)); //all stats are for max level change when level adjusting of skills done
         for (int i = 0; i < myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats); i++)
-            pets.Add(new MistWalker(this, MistWalkerHP(myStats.level) + (myStats.maxHealth * 0.2f), MistWalkerAA(myStats.level) + (myStats.AD * 0.25f), MistWalkerAS(myStats.level), 0 ,0));
+            pets.Add(new MistWalker(this, MistWalkerHP(myStats.level) + (myStats.maxHealth * 0.2f), MistWalkerAA(myStats.level) + (myStats.AD * 0.25f), MistWalkerAS(myStats.level), 0, 0));
 
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
     private void TouchOfTheMaidenProc()
     {
-        if(targetStats.buffManager.buffs.TryGetValue("TouchOfTheMaiden", out Buff buff))
+        if (targetStats.buffManager.buffs.TryGetValue("TouchOfTheMaiden", out Buff buff))
         {
-            UpdateAbilityTotalDamage(ref rSum, 3, targetStats.maxHealth * 0.9f, myStats.rSkill[0].name, SkillDamageType.Spell);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(targetStats.maxHealth * 0.9f, SkillDamageType.Spell), myStats.rSkill[0].name);
             buff.Kill();
         }
     }

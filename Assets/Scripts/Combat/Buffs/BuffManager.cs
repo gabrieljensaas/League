@@ -22,7 +22,7 @@ public class BuffManager
 
     public void Add(string key, Buff newBuff)
     {
-        if(buffs.TryGetValue(key, out Buff oldBuff) && oldBuff.duration < newBuff.duration)
+        if (buffs.TryGetValue(key, out Buff oldBuff) && oldBuff.duration < newBuff.duration)
             oldBuff.duration = newBuff.duration;
         else
             buffs.Add(key, newBuff);

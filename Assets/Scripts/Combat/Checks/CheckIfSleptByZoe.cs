@@ -6,11 +6,12 @@ public class CheckIfSleptByZoe : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("Sleep", out Buff value))
         {
-            combat.targetCombat.UpdateAbilityTotalDamage(ref combat.targetCombat.eSum, 2, damage, "Sleepy Trouble Bubble", SkillDamageType.True);
+            damage.damageType = SkillDamageType.True;
+            combat.targetCombat.UpdateAbilityTotalDamage(ref combat.targetCombat.eSum, 2, damage, "Sleepy Trouble Bubble");
             value.Kill();
         }
         return damage;

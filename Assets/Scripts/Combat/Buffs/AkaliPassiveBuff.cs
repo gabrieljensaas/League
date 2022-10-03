@@ -19,4 +19,4 @@ public class AkaliPassiveBuff : Buff
         manager.simulationManager.ShowText($"{manager.stats.name} Doesn't Have Any Swinging Kama!");
         manager.buffs.Remove("AkaliPassive");
     }
-} 
+}

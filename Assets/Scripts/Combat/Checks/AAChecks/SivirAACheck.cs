@@ -6,7 +6,7 @@ public class SivirAACheck : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.myStats.buffManager.buffs.ContainsKey("OnTheHunt"))
         {

@@ -30,7 +30,7 @@ public class Sylas : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
         checksW.Add(new CheckIfImmobilize(this));
         checksE.Add(new CheckIfImmobilize(this));
-        autoattackcheck = new SylasAACheck(this,this);
+        autoattackcheck = new SylasAACheck(this, this);
         checksQ.Add(new CheckIfChanneling(this));
         checksW.Add(new CheckIfChanneling(this));
         checksE.Add(new CheckIfChanneling(this));
@@ -143,7 +143,7 @@ public class Sylas : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         CheckVitals();
         if (targetStats.buffManager.buffs.TryGetValue("Plasma", out Buff value)) value.duration = 4;
         else targetStats.buffManager.buffs.Add("Plasma", new PlasmaBuff(4, targetStats.buffManager, "Sylas' Auto Attack"));

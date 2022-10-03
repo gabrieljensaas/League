@@ -8,9 +8,9 @@ public class CheckMordekaiserIndestructible : Check
         this.mordekaiser = mordekaiser;
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
-        mordekaiser.Indestructible(damage * 0.15f);
+        mordekaiser.Indestructible(damage.value * 0.15f);
         return damage;
     }
 

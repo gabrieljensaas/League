@@ -89,52 +89,52 @@ namespace Simulator.Combat
             isCasting = false;
         }
 
-        public float UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1, SkillComponentTypes skillComponent = SkillComponentTypes.None)
+        public float UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1, SkillComponentTypes skillComponentTypes = SkillComponentTypes.None)
         {
-            float damageGiven = targetCombat.TakeDamage(damageModifier * skill.UseSkill(level, skillKey, myStats, targetStats), skill.basic.name, skill.skillDamageType);
+            float damageGiven = targetCombat.TakeDamage(new Damage(damageModifier * skill.UseSkill(level, skillKey, myStats, targetStats), skill.skillDamageType, skillComponentTypes), skill.basic.name);
             totalDamage += damageGiven;
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
             return damageGiven;
         }
 
-        public void UpdateAbilityTotalDamageSylas(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1, SkillComponentTypes skillComponent = SkillComponentTypes.None)
+        public void UpdateAbilityTotalDamageSylas(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1, SkillComponentTypes skillComponentTypes = SkillComponentTypes.None)
         {
-            totalDamage += TakeDamage(damageModifier * skill.SylasUseSkill(level, skillKey, targetStats, myStats), skill.basic.name, skill.skillDamageType);
+            totalDamage += TakeDamage(new Damage(damageModifier * skill.SylasUseSkill(level, skillKey, targetStats, myStats), skill.skillDamageType, skillComponentTypes), skill.basic.name);
             targetCombat.myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
-        public float UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, float damage, string skillName, SkillDamageType skillDamageType, SkillComponentTypes skillComponent = SkillComponentTypes.None)
+        public float UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, Damage damage, string skillName)
         {
-            float damageGiven = targetCombat.TakeDamage(damage, skillName, skillDamageType);
+            float damageGiven = targetCombat.TakeDamage(damage, skillName);
             totalDamage += damageGiven;
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
             return damageGiven;
         }
 
-        public void UpdateAbilityTotalDamageSylas(ref float totalDamage, int totalDamageTextIndex, float damage, string skillName, SkillDamageType skillDamageType, SkillComponentTypes skillComponent = SkillComponentTypes.None)
+        public void UpdateAbilityTotalDamageSylas(ref float totalDamage, int totalDamageTextIndex, Damage damage, string skillName)
         {
-            totalDamage += TakeDamage(damage, skillName, skillDamageType);
+            totalDamage += TakeDamage(damage, skillName);
             targetCombat.myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
-        public void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level, string skillKey, SkillComponentTypes skillComponent = SkillComponentTypes.None)
+        public void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level, string skillKey)
         {
             totalHeal += HealHealth(skill.UseSkill(level, skillKey, myStats, targetStats) * (100 - myStats.grievouswounds) / 100, skill.basic.name);
             myUI.healSum.text = totalHeal.ToString();
         }
-        public void UpdateTotalHealSylas(ref float totalHeal, SkillList skill, int level, string skillKey, SkillComponentTypes skillComponent = SkillComponentTypes.None)
+        public void UpdateTotalHealSylas(ref float totalHeal, SkillList skill, int level, string skillKey)
         {
             totalHeal += targetCombat.HealHealth(skill.UseSkill(level, skillKey, targetStats, myStats) * (100 - targetStats.grievouswounds) / 100, skill.basic.name);
             targetCombat.myUI.healSum.text = totalHeal.ToString();
         }
 
-        public void UpdateTotalHeal(ref float totalHeal, float heal, string skillName, SkillComponentTypes skillComponent = SkillComponentTypes.None)
+        public void UpdateTotalHeal(ref float totalHeal, float heal, string skillName)
         {
             totalHeal += HealHealth(heal * (100 - targetStats.grievouswounds) / 100, skillName);
             myUI.healSum.text = totalHeal.ToString();
         }
 
-        public void UpdateTotalHealSylas(ref float totalHeal, float heal, string skillName, SkillComponentTypes skillComponent = SkillComponentTypes.None)
+        public void UpdateTotalHealSylas(ref float totalHeal, float heal, string skillName)
         {
             totalHeal += targetCombat.HealHealth(heal * (100 - targetStats.grievouswounds) / 100, skillName);
             targetCombat.myUI.healSum.text = totalHeal.ToString();
@@ -188,7 +188,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksA)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(0.1f));
-            AutoAttack();
+            AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         }
 
         protected virtual IEnumerator ExecuteSkillIfReady(string skill)
@@ -215,7 +215,7 @@ namespace Simulator.Combat
             }
         }
 
-        protected AutoAttackReturn AutoAttack(float aaMultiplier = 1, SkillDamageType damageType = SkillDamageType.Phyiscal, SkillComponentTypes componentTypes = SkillComponentTypes.None)
+        protected AutoAttackReturn AutoAttack(Damage damage)
         {
             OnAutoAttack?.Invoke();
 
@@ -224,21 +224,20 @@ namespace Simulator.Combat
                 isCrit = false
             };
 
-            float damage = myStats.AD * aaMultiplier;
             if (Random.Range(0, 1f) <= myStats.critStrikeChance)
             {
-                damage *= myStats.critStrikeDamage;
+                damage.value *= myStats.critStrikeDamage;
                 autoAttackReturn.isCrit = true;
             }
 
-            if (damage < 0)
-                damage = 0;
+            if (damage.value < 0)
+                damage.value = 0;
 
-            if (autoattackcheck != null) damage = autoattackcheck.Control(damage, damageType, componentTypes);
+            if (autoattackcheck != null) damage = autoattackcheck.Control(damage);
 
-            float damageGiven = targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack", SkillDamageType.Phyiscal, true);
+            float damageGiven = targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack", true);
             aSum += damageGiven;
-            hSum += HealHealth(damage * myStats.lifesteal, "Lifesteal");
+            hSum += HealHealth(damageGiven * myStats.lifesteal, "Lifesteal");
             autoAttackReturn.damage = damageGiven;
 
             myUI.aaSum.text = aSum.ToString();
@@ -249,22 +248,22 @@ namespace Simulator.Combat
             return autoAttackReturn;
         }
 
-        public float TakeDamage(float rawDamage, string source, SkillDamageType damageType, bool isAutoAttack = false, SkillComponentTypes skillComponentType = SkillComponentTypes.None)
+        public float TakeDamage(Damage damage, string source, bool isAutoAttack = false)
         {
             if (!isAutoAttack)
-                rawDamage = CheckForDamageControl(checkTakeDamageAbility, rawDamage, damageType, skillComponentType);
+                damage = CheckForDamageControl(checkTakeDamageAbility, damage);
             else
-                rawDamage = CheckForDamageControl(checkTakeDamageAA, rawDamage, damageType, skillComponentType);
+                damage = CheckForDamageControl(checkTakeDamageAA, damage);
 
             int postMitigationDamage = 0;
-            if (damageType == SkillDamageType.Phyiscal) postMitigationDamage = (int)(rawDamage * 100 / (100 + myStats.armor));
-            else if (damageType == SkillDamageType.Spell) postMitigationDamage = (int)(rawDamage * 100 / (100 + myStats.spellBlock));
-            else if (damageType == SkillDamageType.True) postMitigationDamage = (int)rawDamage;
+            if (damage.damageType == SkillDamageType.Phyiscal) postMitigationDamage = (int)(damage.value * 100 / (100 + myStats.armor));
+            else if (damage.damageType == SkillDamageType.Spell) postMitigationDamage = (int)(damage.value * 100 / (100 + myStats.spellBlock));
+            else if (damage.damageType == SkillDamageType.True) postMitigationDamage = (int)damage.value;
 
             if (!isAutoAttack)
-                postMitigationDamage = (int)CheckForDamageControl(checkTakeDamageAbilityPostMitigation, rawDamage, damageType);
+                postMitigationDamage = (int)CheckForDamageControl(checkTakeDamageAbilityPostMitigation, damage).value;
             else
-                postMitigationDamage = (int)CheckForDamageControl(checkTakeDamageAAPostMitigation, rawDamage, damageType);
+                postMitigationDamage = (int)CheckForDamageControl(checkTakeDamageAAPostMitigation, damage).value;
 
             if (postMitigationDamage <= 0) return 0;
 
@@ -282,19 +281,19 @@ namespace Simulator.Combat
                 EndBattle();
         }
 
-        public float HealHealth(float health, string source)
+        public float HealHealth(float heal, string source)
         {
-            if (health <= 0) return 0;
+            if (heal <= 0) return 0;
 
             //add checks here
 
 
-            myStats.currentHealth += (int)health;
+            myStats.currentHealth += (int)heal;
             if (myStats.currentHealth > myStats.maxHealth) myStats.currentHealth = myStats.maxHealth;
 
-            simulationManager.ShowText($"{myStats.name} Took {health} Heal From {source}!");
+            simulationManager.ShowText($"{myStats.name} Took {heal} Heal From {source}!");
 
-            return health;
+            return heal;
         }
 
         protected void EndBattle()
@@ -326,10 +325,10 @@ namespace Simulator.Combat
             return true;
         }
 
-        protected float CheckForDamageControl(List<Check> checks, float damage,SkillDamageType damageType, SkillComponentTypes skillComponentType = SkillComponentTypes.None)
+        protected Damage CheckForDamageControl(List<Check> checks, Damage damage)
         {
             foreach (Check item in checks)
-                damage = item.Control(damage,damageType, skillComponentType);
+                damage = item.Control(damage);
 
             return damage;
         }
@@ -342,5 +341,21 @@ namespace Simulator.Combat
             UpdateTotalHeal(ref hSum, myStats.hpRegen * 0.1f, "Health Regeneration");
             StartCoroutine(StartHPRegeneration());
         }
+    }
+}
+
+public class Damage
+{
+    public float value;
+    public SkillDamageType damageType;
+    public SkillComponentTypes skillComponentType;
+    public string[] buffNames;
+
+    public Damage(float value, SkillDamageType damageType, SkillComponentTypes skillComponentType = SkillComponentTypes.None, string[] buffNames = null)
+    {
+        this.value = value;
+        this.damageType = damageType;
+        this.skillComponentType = skillComponentType;
+        this.buffNames = buffNames;
     }
 }

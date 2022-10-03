@@ -1,8 +1,5 @@
 using Simulator.Combat;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
 
 public class Tryndamere : ChampionCombat
 {
@@ -63,7 +60,7 @@ public class Tryndamere : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        if (AutoAttack().isCrit)
+        if (AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal)).isCrit)
         {
             myStats.eCD -= 1.5f;
             AddFury(10);
@@ -76,7 +73,7 @@ public class Tryndamere : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateTotalHeal(ref hSum, myStats.qSkill[0].UseSkill(4, qKeys[3], myStats, targetStats) + (fury * (myStats.qSkill[0].UseSkill(4, qKeys[4], myStats, targetStats) + (0.012f * myStats.AP))) , myStats.qSkill[0].basic.name);
+        UpdateTotalHeal(ref hSum, myStats.qSkill[0].UseSkill(4, qKeys[3], myStats, targetStats) + (fury * (myStats.qSkill[0].UseSkill(4, qKeys[4], myStats, targetStats) + (0.012f * myStats.AP))), myStats.qSkill[0].basic.name);
         fury = 0;
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
@@ -98,7 +95,7 @@ public class Tryndamere : ChampionCombat
 
     public override IEnumerator ExecuteR()
     {
-        if(myStats.PercentCurrentHealth < 0.15f) //if tryndamere is at 15% health
+        if (myStats.PercentCurrentHealth < 0.15f) //if tryndamere is at 15% health
         {
             if (!CheckForAbilityControl(checksR)) yield break;
 

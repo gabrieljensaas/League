@@ -11,9 +11,13 @@ public class KassadinAACheck : Check
         throw new System.NotImplementedException();
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes skillComponenetType = SkillComponentTypes.None)
+    public override Damage Control(Damage damage)
     {
-        if (combat.myStats.qLevel > 0) combat.UpdateAbilityTotalDamage(ref combat.wSum, 1, 20 + (combat.myStats.AP * 0.1f), combat.WSkill().basic.name, SkillDamageType.Spell, SkillComponentTypes.ProcDamage);
+        if (combat.MyBuffManager.buffs.ContainsKey("NetherBlade"))
+        {
+            combat.UpdateAbilityTotalDamage(ref combat.wSum, 1, combat.WSkill(), combat.myStats.wLevel, combat.wKeys[0]);
+        }
+        if (combat.myStats.qLevel > 0) combat.UpdateAbilityTotalDamage(ref combat.wSum, 1, new Damage(20 + (combat.myStats.AP * 0.1f), SkillDamageType.Spell, SkillComponentTypes.ProcDamage), combat.WSkill().basic.name);
         return damage;
     }
 }

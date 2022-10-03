@@ -93,7 +93,7 @@ public class Diana : ChampionCombat
     public override IEnumerator ExecuteE()
     {
         yield return base.ExecuteE();
-        if(targetStats.buffManager.buffs.TryGetValue("Moonlight", out Buff buff))
+        if (targetStats.buffManager.buffs.TryGetValue("Moonlight", out Buff buff))
         {
             buff.Kill();
             myStats.eCD = 0.5f;
@@ -116,12 +116,12 @@ public class Diana : ChampionCombat
 
     private void MoonsilverBladeAA()
     {
-        if(myStats.buffManager.buffs.TryGetValue("MoonsilverBlade", out Buff buff))
+        if (myStats.buffManager.buffs.TryGetValue("MoonsilverBlade", out Buff buff))
         {
             if (++buff.value == 2)
             {
                 buff.Kill();
-                UpdateAbilityTotalDamage(ref pSum, 4, MoonsilverBladeCleave(myStats.level) + (myStats.AP * 0.5f), myStats.passiveSkill.skillName, SkillDamageType.Spell);
+                UpdateAbilityTotalDamage(ref pSum, 4, new Damage(MoonsilverBladeCleave(myStats.level) + (myStats.AP * 0.5f), SkillDamageType.Spell), myStats.passiveSkill.skillName);
             }
         }
         else
@@ -131,9 +131,9 @@ public class Diana : ChampionCombat
     private void MoonsilverBladeBonusAS()
     {
         StopCoroutine(ReturnToNormalMoonsilverAS());
-        if(myStats.buffManager.buffs.TryGetValue("MoonsilverAS", out Buff AS))
+        if (myStats.buffManager.buffs.TryGetValue("MoonsilverAS", out Buff AS))
             AS.Kill();
-        else if(myStats.buffManager.buffs.TryGetValue("MoonsilverBonusAS", out Buff bonusAS))
+        else if (myStats.buffManager.buffs.TryGetValue("MoonsilverBonusAS", out Buff bonusAS))
             bonusAS.duration = 3;
 
         myStats.buffManager.buffs.Add("MoonsilverBonusAS", new AttackSpeedBuff(3, myStats.buffManager, "Moonsilver Blade Bonus AS", MoonsilverBladeAS(myStats.level) * 3, "MoonsilverBonusAS"));

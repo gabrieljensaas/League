@@ -107,7 +107,7 @@ public class LeBlanc : ChampionCombat
                 yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
                 if (enemyMarked) ExplodeMark();
                 if (enemyMarkedR) ExplodeMarkR();
-                UpdateAbilityTotalDamage(ref rSum, 1, myStats.rSkill[0],2, rKeys[2]);
+                UpdateAbilityTotalDamage(ref rSum, 1, myStats.rSkill[0], 2, rKeys[2]);
                 myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
                 break;
             case "E":

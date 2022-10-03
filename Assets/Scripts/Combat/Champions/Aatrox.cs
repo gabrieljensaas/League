@@ -82,6 +82,7 @@ public class Aatrox : ChampionCombat
             targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.25f, targetStats.buffManager, myStats.qSkill[0].basic.name));
             UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
         }
+        pCD -= 4;
     }
 
     public override IEnumerator ExecuteW()
@@ -93,7 +94,8 @@ public class Aatrox : ChampionCombat
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         yield return new WaitForSeconds(1.5f);
         UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
-        targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.25f, targetStats.buffManager, myStats.qSkill[0].basic.name));  //pulled airborne needs research
+        targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.1f, targetStats.buffManager, myStats.qSkill[0].basic.name));  //pulled airborne needs research
+        pCD -= 2;
     }
 
     public override IEnumerator ExecuteR()

@@ -1,6 +1,5 @@
-using System.Collections;
 using Simulator.Combat;
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
 
 public class Katarina : ChampionCombat
@@ -38,7 +37,7 @@ public class Katarina : ChampionCombat
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
 
-        checksQ.Add(new CheckIfCasting(this)); 
+        checksQ.Add(new CheckIfCasting(this));
         checksW.Add(new CheckIfCasting(this));
         checksE.Add(new CheckIfCasting(this));
         checksR.Add(new CheckIfCasting(this));
@@ -64,18 +63,18 @@ public class Katarina : ChampionCombat
         base.UpdatePriorityAndChecks();
     }
 
-    public IEnumerator Voracity( float landingTime)
+    public IEnumerator Voracity(float landingTime)
     {
         yield return new WaitForSeconds(landingTime);
-        UpdateAbilityTotalDamage(ref pSum,0, KatarinaPassiveFlatDamageByLevel[myStats.level] + (myStats.bonusAD * 0.6f) + (GetKatPassiveAPPercentByLevel(myStats.level) * 0.01f * myStats.AP), myStats.passiveSkill.skillName,SkillDamageType.Spell);
+        UpdateAbilityTotalDamage(ref pSum, 0, new Damage(KatarinaPassiveFlatDamageByLevel[myStats.level] + (myStats.bonusAD * 0.6f) + (GetKatPassiveAPPercentByLevel(myStats.level) * 0.01f * myStats.AP), SkillDamageType.Spell), myStats.passiveSkill.skillName);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[0] - (GetKatPassiveECooldownReduction(myStats.level) * 0.01f * myStats.eSkill[0].basic.coolDown[0]);
     }
 
     public override IEnumerator ExecuteQ()
     {
         yield return base.ExecuteQ();
-		StartCoroutine(Voracity(1f));
-	}
+        StartCoroutine(Voracity(1f));
+    }
 
     public override IEnumerator ExecuteW()
     {
@@ -83,8 +82,8 @@ public class Katarina : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
-		StartCoroutine(Voracity(1.25f));
-	}
+        StartCoroutine(Voracity(1.25f));
+    }
 
     public override IEnumerator ExecuteE()
     {
@@ -115,7 +114,7 @@ public class Katarina : ChampionCombat
         time += 0.166f;
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
-        if(targetStats.buffManager.buffs.TryGetValue(myStats.rSkill[0].basic.name, out Buff value))
+        if (targetStats.buffManager.buffs.TryGetValue(myStats.rSkill[0].basic.name, out Buff value))
         {
             value.duration = 3f;
         }

@@ -130,6 +130,6 @@ public class Kaisa : ChampionCombat
 
     public void DealPassiveDamage(float rawdamage)
     {
-        UpdateAbilityTotalDamage(ref pSum, 4, rawdamage, myStats.passiveSkill.skillName, SkillDamageType.Spell);
+        UpdateAbilityTotalDamage(ref pSum, 4, new Damage(rawdamage, SkillDamageType.Spell), myStats.passiveSkill.skillName);
     }
 }

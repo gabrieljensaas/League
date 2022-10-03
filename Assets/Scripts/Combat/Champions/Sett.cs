@@ -68,7 +68,7 @@ public class Sett : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
         StartCoroutine(HaymakerShield());
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats, grit), myStats.wSkill[0].basic.name, SkillDamageType.True);
+        UpdateAbilityTotalDamage(ref wSum, 1, new Damage(myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats, grit), SkillDamageType.True), myStats.wSkill[0].basic.name);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
@@ -107,10 +107,10 @@ public class Sett : ChampionCombat
     {
         if (!CheckForAbilityControl(checksA)) yield break;
 
-        if(knuckleDown > 0)
+        if (knuckleDown > 0)
         {
             yield return StartCoroutine(StartCastingAbility(1f));
-            AutoAttack((myStats.AD + myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats)) / myStats.AD);
+            AutoAttack(new Damage(myStats.AD + myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats), SkillDamageType.Phyiscal));
             pCD = 0;
             leftPunched = false;
             knuckleDown--;
@@ -118,14 +118,14 @@ public class Sett : ChampionCombat
         else if (leftPunched)
         {
             yield return StartCoroutine(StartCastingAbility(0.0125f));
-            AutoAttack((myStats.AD + (5 * myStats.level) + (myStats.bonusAD)) / myStats.AD);
+            AutoAttack(new Damage(myStats.AD + (5 * myStats.level) + (myStats.bonusAD), SkillDamageType.Phyiscal));
             pCD = 0;
             leftPunched = false;
         }
         else
         {
             yield return StartCoroutine(StartCastingAbility(0.1f));
-            AutoAttack();
+            AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
             leftPunched = true;
             pCD = 0;
         }
@@ -142,7 +142,7 @@ public class Sett : ChampionCombat
     {
         myStats.buffManager.shields.Add(myStats.wSkill[0].basic.name, new ShieldBuff(3, myStats.buffManager, myStats.wSkill[0].basic.name, grit, myStats.wSkill[0].basic.name));
         yield return new WaitForSeconds(0.75f);
-        if(myStats.buffManager.shields.TryGetValue(myStats.wSkill[0].basic.name, out ShieldBuff value))
+        if (myStats.buffManager.shields.TryGetValue(myStats.wSkill[0].basic.name, out ShieldBuff value))
         {
             value.decaying = true;
         }

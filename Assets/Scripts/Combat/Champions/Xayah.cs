@@ -84,7 +84,7 @@ public class Xayah : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats) * (feathersInGround - (FindMultiplier(feathersInGround - 1) * 0.05f)), myStats.eSkill[0].basic.name, SkillDamageType.Phyiscal);
+        UpdateAbilityTotalDamage(ref eSum, 2, new Damage(myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats) * (feathersInGround - (FindMultiplier(feathersInGround - 1) * 0.05f)), SkillDamageType.Phyiscal), myStats.eSkill[0].basic.name);
         StartCoroutine(PulledFeathers());
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
@@ -121,7 +121,7 @@ public class Xayah : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
     }
 
     public IEnumerator FeatherInGround()

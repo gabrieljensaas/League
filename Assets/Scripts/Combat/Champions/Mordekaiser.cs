@@ -7,7 +7,7 @@ public class Mordekaiser : ChampionCombat
     private float shieldStored;
     public static float DarknessRiseDamage(int level) => 4.4f + (0.6f * level);
     public static float DarknessRiseTargetMaxHPPercentDamage(int level) => 0.01f + (0.04f / 17 * (level - 1));
-    
+
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "E", "Q", "A", "W" };
@@ -51,8 +51,8 @@ public class Mordekaiser : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        Indestructible(AutoAttack().damage);
-        Indestructible(UpdateAbilityTotalDamage(ref pSum, 4, 0.4f * myStats.AP, myStats.passiveSkill.skillName, SkillDamageType.Spell));
+        Indestructible(AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal)).damage);
+        Indestructible(UpdateAbilityTotalDamage(ref pSum, 4, new Damage(0.4f * myStats.AP, SkillDamageType.Spell), myStats.passiveSkill.skillName));
         DarknessRiseStacks(myStats.passiveSkill.skillName);
     }
 
@@ -103,7 +103,7 @@ public class Mordekaiser : ChampionCombat
 
     private void DarknessRiseStacks(string source)
     {
-        if(myStats.buffManager.buffs.TryGetValue("DarknessRise", out Buff buff))
+        if (myStats.buffManager.buffs.TryGetValue("DarknessRise", out Buff buff))
         {
             buff.duration = 4;
             if (buff.value < 3) buff.value++;
@@ -152,9 +152,9 @@ public class Mordekaiser : ChampionCombat
     private IEnumerator ConsumeShield()
     {
         yield return new WaitForSeconds(4);
-        if(myStats.buffManager.buffs.TryGetValue(myStats.wSkill[0].basic.name, out Buff buff))
+        if (myStats.buffManager.buffs.TryGetValue(myStats.wSkill[0].basic.name, out Buff buff))
         {
-            UpdateTotalHeal(ref hSum, buff.value * myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats) * 0.01f, myStats.wSkill[0].name); 
+            UpdateTotalHeal(ref hSum, buff.value * myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats) * 0.01f, myStats.wSkill[0].name);
             buff.Kill();
         }
     }

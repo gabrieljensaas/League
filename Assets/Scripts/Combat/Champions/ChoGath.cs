@@ -80,7 +80,7 @@ public class ChoGath : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), myStats.rSkill[0].basic.name, SkillDamageType.True);
+        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), myStats.rSkill[0].basic.name);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
@@ -93,8 +93,8 @@ public class ChoGath : ChampionCombat
         {
             UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
             eStack--;
-            AutoAttack();
-            if(eStack == 0)
+            AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
+            if (eStack == 0)
             {
                 StopCoroutine(VorpalSpikes());
                 eStack = 0;
@@ -103,7 +103,7 @@ public class ChoGath : ChampionCombat
         }
         else
         {
-            AutoAttack();
+            AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         }
     }
 

@@ -10,7 +10,7 @@ public class CheckIfDisarmed : Check
     {
         return !combat.myStats.buffManager.HasDisarm;
     }
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         throw new System.NotImplementedException();
     }

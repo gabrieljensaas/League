@@ -30,7 +30,7 @@ public class MaidenOfTheMist : Pet
 
     public void AutoAttack()
     {
-        owner.targetCombat.TakeDamage(aaDamage, "Maiden Of This Mist Auto Attack", SkillDamageType.Spell, true);
+        owner.targetCombat.TakeDamage(new Damage(aaDamage, SkillDamageType.Spell), "Maiden Of This Mist Auto Attack", true);
         aaTimer = 1f / attackSpeed;
 
         if (touchOfTheMaidenTimer >= 0.2f && !owner.targetStats.buffManager.buffs.ContainsKey("TouchOfTheMaiden"))

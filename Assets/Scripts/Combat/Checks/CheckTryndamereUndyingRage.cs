@@ -6,10 +6,10 @@ public class CheckTryndamereUndyingRage : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
-        if (combat.myStats.buffManager.buffs.ContainsKey("UndyingRage") && combat.myStats.currentHealth - damage < combat.myStats.rSkill[0].UseSkill(2, combat.rKeys[1], combat.myStats, combat.targetStats))
-            damage = combat.myStats.currentHealth + combat.myStats.rSkill[0].UseSkill(2, combat.rKeys[1], combat.myStats, combat.targetStats);
+        if (combat.myStats.buffManager.buffs.ContainsKey("UndyingRage") && combat.myStats.currentHealth - damage.value < combat.myStats.rSkill[0].UseSkill(2, combat.rKeys[1], combat.myStats, combat.targetStats))
+            damage.value = combat.myStats.currentHealth + combat.myStats.rSkill[0].UseSkill(2, combat.rKeys[1], combat.myStats, combat.targetStats);
 
         return damage;
     }

@@ -6,7 +6,7 @@ public class OlafAACheck : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         combat.myStats.eCD--;
 

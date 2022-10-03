@@ -1,7 +1,5 @@
 using Simulator.Combat;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class Malphite : ChampionCombat
 {
@@ -56,7 +54,7 @@ public class Malphite : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        if(!myStats.buffManager.buffs.ContainsKey("GraniteShield") && !myStats.buffManager.buffs.ContainsKey("ThunderclapArmor")) //replace tripled armor with base bonus
+        if (!myStats.buffManager.buffs.ContainsKey("GraniteShield") && !myStats.buffManager.buffs.ContainsKey("ThunderclapArmor")) //replace tripled armor with base bonus
             myStats.buffManager.buffs.Add("ThunderclapArmor", new ArmorBuff(999f, myStats.buffManager, "Thunderclap", myStats.armor * 0.3f, "ThunderclapArmor"));
     }
 

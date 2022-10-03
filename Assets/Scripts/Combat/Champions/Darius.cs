@@ -62,7 +62,7 @@ public class Darius : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         CheckDariusPassiveHemorrhage("Auto Attack");
     }
 
@@ -102,7 +102,7 @@ public class Darius : ChampionCombat
         if (!dariusP.Control()) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats) * (1 + (0.2f * (int)targetStats.buffManager.buffs["Hemorrhage"]?.value)), "Noxian Guillotine", SkillDamageType.True);
+        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats) * (1 + (0.2f * (int)targetStats.buffManager.buffs["Hemorrhage"]?.value)), SkillDamageType.True), "Noxian Guillotine");
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 

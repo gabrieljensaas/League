@@ -6,12 +6,13 @@ public class CheckSpellShield : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("SpellShield", out Buff buff))
         {
             buff.Kill();
-            return 0;
+            damage.value = 0;
+            return damage;
         }
 
         return damage;

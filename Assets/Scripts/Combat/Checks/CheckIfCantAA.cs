@@ -10,7 +10,7 @@ public class CheckIfCantAA : Check
     {
         return !combat.myStats.buffManager.buffs.ContainsKey("CantAA");
     }
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         throw new System.NotImplementedException();
     }

@@ -124,7 +124,7 @@ public class Varus : ChampionCombat
         UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         if (qEmpowered)
         {
-            targetCombat.TakeDamage((targetStats.maxHealth - targetStats.currentHealth) * GetVarusWActiveTargetsMissingHealthMultiplier(myStats.level), myStats.wSkill[0].basic.name, SkillDamageType.Spell);
+            targetCombat.TakeDamage(new Damage((targetStats.maxHealth - targetStats.currentHealth) * GetVarusWActiveTargetsMissingHealthMultiplier(myStats.level), SkillDamageType.Spell), myStats.wSkill[0].basic.name);
             qEmpowered = false;
         }
         CheckBlightStacks(1.5f);

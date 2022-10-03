@@ -41,8 +41,8 @@ public class Trundle : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("Chomp", new ChompBuff(7, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats)));
-        myStats.buffManager.buffs.Add("BonusAD", new AttackDamageBuff(5, myStats.buffManager, myStats.qSkill[0].basic.name, (int) myStats.qSkill[0].UseSkill(4, qKeys[1], myStats, targetStats),"BonusAD"));
-        targetStats.buffManager.buffs.Add("ADReduction", new AttackDamageReductionBuff(5, targetStats.buffManager, myStats.qSkill[0].basic.name, (int) myStats.qSkill[0].UseSkill(4, qKeys[2], myStats, targetStats),"ADReduction"));
+        myStats.buffManager.buffs.Add("BonusAD", new AttackDamageBuff(5, myStats.buffManager, myStats.qSkill[0].basic.name, (int)myStats.qSkill[0].UseSkill(4, qKeys[1], myStats, targetStats), "BonusAD"));
+        targetStats.buffManager.buffs.Add("ADReduction", new AttackDamageReductionBuff(5, targetStats.buffManager, myStats.qSkill[0].basic.name, (int)myStats.qSkill[0].UseSkill(4, qKeys[2], myStats, targetStats), "ADReduction"));
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         attackCooldown = 0;
     }
@@ -73,9 +73,9 @@ public class Trundle : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);        //need to split half of the damage to time
         UpdateTotalHeal(ref rSum, myStats.rSkill[0], 2, rKeys[0]);
-        myStats.buffManager.buffs.Add("BonusArmor", new ArmorBuff(8, myStats.buffManager, myStats.rSkill[0].basic.name, (float) 0.4 * targetStats.armor, "BonusArmor"));
+        myStats.buffManager.buffs.Add("BonusArmor", new ArmorBuff(8, myStats.buffManager, myStats.rSkill[0].basic.name, (float)0.4 * targetStats.armor, "BonusArmor"));
         myStats.buffManager.buffs.Add("ArmorReduction", new ArmorReductionBuff(8, targetStats.buffManager, myStats.qSkill[0].basic.name, (float)0.4 * targetStats.armor, "ArmorReduction"));
-        myStats.buffManager.buffs.Add("BonusMR", new MagicResistanceBuff(8, myStats.buffManager, myStats.qSkill[0].basic.name, (int) (0.4 *targetStats.spellBlock), "BonusMR"));
+        myStats.buffManager.buffs.Add("BonusMR", new MagicResistanceBuff(8, myStats.buffManager, myStats.qSkill[0].basic.name, (int)(0.4 * targetStats.spellBlock), "BonusMR"));
         myStats.buffManager.buffs.Add("MRReduction", new MagicResistanceReductionBuff(8, myStats.buffManager, myStats.qSkill[0].basic.name, (float)0.4 * targetStats.spellBlock, "MRReduction"));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }

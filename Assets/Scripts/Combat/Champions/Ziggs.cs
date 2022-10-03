@@ -4,7 +4,7 @@ using System.Collections;
 public class Ziggs : ChampionCombat
 {
     public static float ShortFuseDamageByLevel(int level)
-	{
+    {
         return level switch
         {
             < 7 => 16 + 4 * level,
@@ -15,7 +15,7 @@ public class Ziggs : ChampionCombat
     }
 
     public static float ShortFuseCooldownReduceByLevel(int level)
-	{
+    {
         return level switch
         {
             < 7 => 4,

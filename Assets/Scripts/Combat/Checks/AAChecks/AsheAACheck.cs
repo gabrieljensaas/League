@@ -6,11 +6,11 @@ public class AsheAACheck : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("Flurry", out Buff value))
         {
-            damage = combat.myStats.qSkill[0].UseSkill(4, combat.qKeys[1], combat.myStats, combat.targetStats);
+            damage.value = combat.myStats.qSkill[0].UseSkill(4, combat.qKeys[1], combat.myStats, combat.targetStats);
         }
         else
         {

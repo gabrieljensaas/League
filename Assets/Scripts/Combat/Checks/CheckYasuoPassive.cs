@@ -8,7 +8,7 @@ public class CheckYasuoPassive : Check
         this.yasuo = yasuo;
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (yasuo.pCD <= 0)
         {

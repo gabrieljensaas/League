@@ -1,8 +1,6 @@
 using Simulator.Combat;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 public class Hecarim : ChampionCombat
 {
@@ -54,7 +52,7 @@ public class Hecarim : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        SpiritOfTheDread(AutoAttack().damage);
+        SpiritOfTheDread(AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal)).damage);
     }
 
     public override IEnumerator ExecuteQ()
@@ -63,7 +61,7 @@ public class Hecarim : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         StopCoroutine(LoseRampageStacks());
-        SpiritOfTheDread(UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) + (rampageStacks * 0.04f * myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats)), myStats.qSkill[0].name, SkillDamageType.Phyiscal)); //no bonus AD for now
+        SpiritOfTheDread(UpdateAbilityTotalDamage(ref qSum, 0, new Damage(myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) + (rampageStacks * 0.04f * myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats)), SkillDamageType.Phyiscal), myStats.qSkill[0].name)); //no bonus AD for now
         if (rampageStacks < 3) rampageStacks++;
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         myStats.qCD -= rampageStacks * 0.75f;
@@ -104,8 +102,8 @@ public class Hecarim : ChampionCombat
     private IEnumerator LoseRampageStacks()
     {
         yield return new WaitForSeconds(6);
-        
-        while(rampageStacks > 0)
+
+        while (rampageStacks > 0)
         {
             rampageStacks--;
             yield return new WaitForSeconds(1);

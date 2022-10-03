@@ -39,11 +39,11 @@ public class Amumu : ChampionCombat
         eKeys.Add("Magic Damage");
         rKeys.Add("Magic Damage");
 
-        if(timeSinceCurse > 3 && targetStats.buffManager.buffs.TryGetValue("CurseBuff", out Buff curseBuff))
-          
-		{
+        if (timeSinceCurse > 3 && targetStats.buffManager.buffs.TryGetValue("CurseBuff", out Buff curseBuff))
+
+        {
             curseBuff.Kill();
-		}
+        }
 
         base.UpdatePriorityAndChecks();
     }
@@ -54,27 +54,27 @@ public class Amumu : ChampionCombat
 
         timeSinceCurse += Time.deltaTime;
         qCharge++;
-	}
+    }
 
-	public override IEnumerator ExecuteQ()
-    { 
-		if (!CheckForAbilityControl(checksQ)) yield break;
+    public override IEnumerator ExecuteQ()
+    {
+        if (!CheckForAbilityControl(checksQ)) yield break;
 
-        if (qCharge > 0 )
+        if (qCharge > 0)
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
             MyBuffManager.Add("StunBuff", new StunBuff(1f, TargetBuffManager, QSkill().basic.name));
             UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
-            if(hasCurse)
-			{
-                UpdateAbilityTotalDamage(ref qSum, 0, QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * 0.1f, QSkill().basic.name, SkillDamageType.True);
+            if (hasCurse)
+            {
+                UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * 0.1f, SkillDamageType.True), QSkill().basic.name);
             }
             myStats.qCD = QSkill().basic.coolDown[4];
             qCharge--;
             yield return new WaitForSeconds(3f);
 
         }
-	}
+    }
 
 
     public override IEnumerator ExecuteW()
@@ -95,7 +95,7 @@ public class Amumu : ChampionCombat
         UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
         if (hasCurse)
         {
-            UpdateAbilityTotalDamage(ref eSum, 2, ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats) * 0.1f, ESkill().basic.name, SkillDamageType.True);
+            UpdateAbilityTotalDamage(ref eSum, 2, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats) * 0.1f, SkillDamageType.True), ESkill().basic.name);
         }
         myStats.eCD = ESkill().basic.coolDown[4];
     }
@@ -117,7 +117,7 @@ public class Amumu : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         ApplyCurse();
     }
 
@@ -127,7 +127,7 @@ public class Amumu : ChampionCombat
         UpdateAbilityTotalDamage(ref wSum, 1, WSkill(0), myStats.wLevel, wKeys[0]);
         if (hasCurse)
         {
-            UpdateAbilityTotalDamage(ref wSum, 1, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats) * 0.1f, WSkill().basic.name, SkillDamageType.True);
+            UpdateAbilityTotalDamage(ref wSum, 1, new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats) * 0.1f, SkillDamageType.True), WSkill().basic.name);
         }
         timeSinceCurse = 0;
         StartCoroutine(Despair());
@@ -135,27 +135,27 @@ public class Amumu : ChampionCombat
 
     public void DamagedByAutoAttack(float damage)
     {
-        if(damage > 0)
-		{
+        if (damage > 0)
+        {
             myStats.eCD -= 0.5f;
-		}
-    } 
+        }
+    }
 
     public void DamagedByAbility(float damage)
     {
-        if(damage > 0)
-		{
+        if (damage > 0)
+        {
             //waiting for gabriel to give instruction
-		}
+        }
     }
 
     public void ApplyCurse()
-	{
-        if(!hasCurse)
-		{
+    {
+        if (!hasCurse)
+        {
             MyBuffManager.Add("CurseBuff", new AmumuCurseBuff(3f, TargetBuffManager, "CurseBuff"));
             timeSinceCurse = 0;
-		}
-	}
+        }
+    }
 
 }

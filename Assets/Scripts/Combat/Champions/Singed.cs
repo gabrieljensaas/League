@@ -67,8 +67,8 @@ public class Singed : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("BonusAP", new AbilityPowerBuff(25, myStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), "BonusAP"));
         myStats.buffManager.buffs.Add("BonusArmor", new ArmorBuff(25, myStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), "BonusArmor"));
-        myStats.buffManager.buffs.Add("BonusMR", new MagicResistanceBuff (25, myStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), "BonusMR"));
-        targetStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new GrievousWoundsBuff (26, targetStats.buffManager, myStats.rSkill[0].basic.name, 25, myStats.rSkill[0].basic.name));
+        myStats.buffManager.buffs.Add("BonusMR", new MagicResistanceBuff(25, myStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), "BonusMR"));
+        targetStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new GrievousWoundsBuff(26, targetStats.buffManager, myStats.rSkill[0].basic.name, 25, myStats.rSkill[0].basic.name));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 

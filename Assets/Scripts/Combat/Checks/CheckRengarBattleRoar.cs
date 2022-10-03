@@ -12,15 +12,15 @@ public class CheckRengarBattleRoar : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
-        damageInstance.Add(new DamageInstance { damage = damage });
+        damageInstance.Add(new DamageInstance { damage = damage.value });
         return damage;
     }
 
     public void Update()
     {
-        foreach(DamageInstance damage in damageInstance)
+        foreach (DamageInstance damage in damageInstance)
         {
             damage.time += Time.deltaTime;
             if (damage.time > 1.5f) damageInstance.Remove(damage);

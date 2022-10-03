@@ -37,7 +37,7 @@ public class Kayle : ChampionCombat
         rKeys.Add("Invulnerability Duration");
         rKeys.Add("Magic Damage");
 
-        pState = myStats.level < 6 ? 0 : myStats.level < 11 ? 1 : myStats.level < 16 ? 2 : 3; 
+        pState = myStats.level < 6 ? 0 : myStats.level < 11 ? 1 : myStats.level < 16 ? 2 : 3;
 
         base.UpdatePriorityAndChecks();
     }
@@ -88,7 +88,7 @@ public class Kayle : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         StopCoroutine(PStackExpired());
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         if (eActive)
         {
             StopCoroutine(StarfireSpellblade());
@@ -97,11 +97,11 @@ public class Kayle : ChampionCombat
         }
         if (pState == 2 && isExalted)
         {
-            UpdateAbilityTotalDamage(ref pSum, 5, 35 + (myStats.bonusAD * 0.1f) + (myStats.AP * 0.25f), "Divine Ascent", SkillDamageType.Spell);         //35 is calculated with e's level implement it later
+            UpdateAbilityTotalDamage(ref pSum, 5, new Damage(35 + (myStats.bonusAD * 0.1f) + (myStats.AP * 0.25f), SkillDamageType.Spell), "Divine Ascent");         //35 is calculated with e's level implement it later
         }
-        if(pState == 3)
+        if (pState == 3)
         {
-            UpdateAbilityTotalDamage(ref pSum, 5, 35 + (myStats.bonusAD * 0.1f) + (myStats.AP * 0.25f), "Divine Ascent", SkillDamageType.Spell);        //35 is calculated with e's level implement it later
+            UpdateAbilityTotalDamage(ref pSum, 5, new Damage(35 + (myStats.bonusAD * 0.1f) + (myStats.AP * 0.25f), SkillDamageType.Spell), "Divine Ascent");        //35 is calculated with e's level implement it later
             pStack = 5;
             myStats.buffManager.buffs.Remove("DivineAscent");
             myStats.buffManager.buffs.Add("DivineAscent", new AttackSpeedBuff(5f, myStats.buffManager, "DivineAscent", pStack * myStats.baseAttackSpeed * 0.0006f * myStats.AP, "DivineAscent"));
@@ -115,7 +115,7 @@ public class Kayle : ChampionCombat
     }
 
     public IEnumerator PStackExpired()
-	{
+    {
         yield return new WaitForSeconds(5f);
         pStack = 0;
         myStats.buffManager.buffs.Remove("DivineAscent");

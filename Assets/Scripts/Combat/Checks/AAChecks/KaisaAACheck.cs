@@ -8,11 +8,11 @@ public class KaisaAACheck : Check
         this.kaisa = kaisa;
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.targetStats.buffManager.buffs.TryGetValue("Plasma", out Buff value))
         {
-            damage += Kaisa.GetKaisaPassiveDamageByLevel(combat.myStats.level, (int)value.value, combat.myStats.AP);
+            damage.value += Kaisa.GetKaisaPassiveDamageByLevel(combat.myStats.level, (int)value.value, combat.myStats.AP);
             if (value.value == 5)
             {
                 kaisa.DealPassiveDamage((combat.targetStats.maxHealth - combat.targetStats.currentHealth) / 100 * (15 + (5 * (combat.myStats.AP % 100))));

@@ -104,11 +104,11 @@ public class Lucian : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         yield return new WaitForSeconds(0.25f);
         if (myStats.buffManager.buffs.TryGetValue("Lightslinger", out Buff value))
         {
-            AutoAttack(passiveMultiplier);
+            AutoAttack(new Damage(myStats.AD * passiveMultiplier, SkillDamageType.Phyiscal));
             myStats.eCD -= 2f;
             value.Kill();
         }

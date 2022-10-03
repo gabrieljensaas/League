@@ -1,6 +1,4 @@
-using UnityEngine;
-
-public abstract class Rune 
+public abstract class Rune
 {
     protected RuneManager manager;
 

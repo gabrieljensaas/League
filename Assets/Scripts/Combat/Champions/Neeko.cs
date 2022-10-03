@@ -1,8 +1,7 @@
 using Simulator.Combat;
 using System.Collections;
-using UnityEngine;
 
-public class Neeko: ChampionCombat
+public class Neeko : ChampionCombat
 {
     public bool HasWPassive = false;
     private int wPassiveStack = 0;
@@ -89,13 +88,13 @@ public class Neeko: ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         wPassiveStack++;
     }
     public void NeekoWPassive()
     {
-        if(wPassiveStack == 2)
-		{
+        if (wPassiveStack == 2)
+        {
             HasWPassive = true;
         }
     }

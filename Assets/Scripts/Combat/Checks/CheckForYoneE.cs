@@ -8,9 +8,9 @@ public class CheckForYoneE : Check
         this.yone = yone;
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
-        if (yone.InE) yone.EDamage += damage * yone.myStats.eSkill[0].UseSkill(4, yone.eKeys[0], yone.myStats, combat.myStats);
+        if (yone.InE) yone.EDamage += damage.value * yone.myStats.eSkill[0].UseSkill(4, yone.eKeys[0], yone.myStats, combat.myStats);
         return damage;
     }
 

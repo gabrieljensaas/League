@@ -66,7 +66,7 @@ public class Veigar : ChampionCombat
         float missingHealthModifier = ((1 - targetStats.currentHealth / targetStats.maxHealth) * 1.5f) + 1;
         if (missingHealthModifier > 2) missingHealthModifier = 2;
         float damage = 325 * missingHealthModifier;
-        UpdateAbilityTotalDamage(ref rSum, 3, damage, myStats.rSkill[0].name, SkillDamageType.Spell);
+        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(damage, SkillDamageType.Spell), myStats.rSkill[0].name);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         PhenomenalEvilPowerStack();
     }
@@ -78,7 +78,7 @@ public class Veigar : ChampionCombat
         float missingHealthModifier = ((1 - myStats.currentHealth / myStats.maxHealth) * 1.5f) + 1;
         if (missingHealthModifier > 2) missingHealthModifier = 2;
         float damage = 325 * missingHealthModifier;
-        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, damage, myStats.rSkill[0].name, SkillDamageType.Spell);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, new Damage(damage, SkillDamageType.Spell), myStats.rSkill[0].name);
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
     }
 

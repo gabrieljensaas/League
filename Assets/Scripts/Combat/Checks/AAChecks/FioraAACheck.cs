@@ -6,13 +6,13 @@ public class FioraAACheck : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("Bladework", out Buff value))
         {
             if (value.value == 1)
             {
-                damage *= combat.myStats.eSkill[0].UseSkill(4, combat.eKeys[1], combat.myStats, combat.targetStats); //level 5 bladework
+                damage.value *= combat.myStats.eSkill[0].UseSkill(4, combat.eKeys[1], combat.myStats, combat.targetStats); //level 5 bladework
                 value.Kill();
             }
             else

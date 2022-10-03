@@ -47,7 +47,7 @@ public class Ahri : ChampionCombat
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
 
         yield return new WaitForSeconds(2f);                // orb return time estimated by playing Ahri
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats), myStats.qSkill[0].basic.name, SkillDamageType.True);
+        UpdateAbilityTotalDamage(ref qSum, 0, new Damage(myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats), SkillDamageType.True), myStats.qSkill[0].basic.name);
     }
 
     public override IEnumerator ExecuteW()

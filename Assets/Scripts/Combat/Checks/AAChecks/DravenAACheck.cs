@@ -8,13 +8,13 @@ public class DravenAACheck : Check
         this.draven = draven;
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("SpinningAxe", out Buff value))
         {
             value.value--;
             combat.StartCoroutine(draven.SpinnigAxe());
-            damage += combat.myStats.qSkill[0].UseSkill(4, combat.qKeys[0], combat.myStats, combat.targetStats);
+            damage.value += combat.myStats.qSkill[0].UseSkill(4, combat.qKeys[0], combat.myStats, combat.targetStats);
             if (value.value == 0) value.Kill();
         }
         return damage;

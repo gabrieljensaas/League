@@ -6,17 +6,18 @@ public class MasterYiAACheck : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         combat.myStats.qCD--;
-        if (combat.myStats.buffManager.buffs.TryGetValue("WujuStyle", out Buff buff)) damage += buff.value;
+        if (combat.myStats.buffManager.buffs.TryGetValue("WujuStyle", out Buff buff)) damage.value += buff.value;
         if (combat.myStats.buffManager.buffs.TryGetValue("DoubleStrike", out Buff value))
         {
             if (value.value == 3)
             {
                 combat.simulationManager.ShowText($"{combat.myStats.name} Used His Stacks of Double Strike, His Next Attack Will Deal Extra Damage!");
                 combat.myStats.qCD--;
-                return damage * 1.5f;
+                damage.value *= 1.5f;
+                return damage;
             }
             else
             {

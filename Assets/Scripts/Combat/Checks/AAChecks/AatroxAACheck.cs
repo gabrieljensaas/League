@@ -8,11 +8,11 @@ public class AatroxAACheck : Check
         this.aatrox = aatrox;
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.myStats.buffManager.buffs.ContainsKey("DeathbringerStance"))
         {
-            damage += combat.targetStats.maxHealth * (5 + (7 / 17 * (combat.myStats.level - 1)));
+            damage.value += combat.targetStats.maxHealth * (5 + (7 / 17 * (combat.myStats.level - 1)));
         }
         else aatrox.pCD -= 2;
         return damage;

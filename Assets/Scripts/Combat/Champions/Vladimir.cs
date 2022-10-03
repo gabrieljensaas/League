@@ -72,7 +72,7 @@ public class Vladimir : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        if(bloodthirstCD > 0)
+        if (bloodthirstCD > 0)
         {
             UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[2]);
             UpdateTotalHeal(ref hSum, myStats.qSkill[0].UseSkill(4, qKeys[1], myStats, targetStats) + 20 + (10 * myStats.level) + ((myStats.maxHealth - myStats.currentHealth) * (5 + (4 * (myStats.AP % 100))) * 0.01f), myStats.qSkill[0].basic.name);
@@ -106,7 +106,7 @@ public class Vladimir : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        if(myStats.currentHealth > myStats.maxHealth * 0.12f) myStats.currentHealth *= 0.92f;
+        if (myStats.currentHealth > myStats.maxHealth * 0.12f) myStats.currentHealth *= 0.92f;
         isStasis = true;
         myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(1, myStats.buffManager, myStats.eSkill[0].basic.name, "TidesOfBlood"));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
@@ -134,7 +134,7 @@ public class Vladimir : ChampionCombat
     {
         yield return new WaitForSeconds(cd);
         bloodthirstStack++;
-        if(bloodthirstStack == 2)
+        if (bloodthirstStack == 2)
         {
             bloodthirstCD = 2.5f;
         }

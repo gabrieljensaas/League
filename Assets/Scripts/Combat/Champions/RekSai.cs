@@ -52,8 +52,8 @@ public class RekSai : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        if(!isBorrowed)
-		{
+        if (!isBorrowed)
+        {
             autoattackQ = 3;
             timeSinceQ = 0;
             if (timeSinceQ > 5)
@@ -63,8 +63,8 @@ public class RekSai : ChampionCombat
             myStats.qCD = 4;
 
         }
-		else
-		{
+        else
+        {
             UpdateAbilityTotalDamage(ref qSum, 1, QSkill(), myStats.qLevel, qKeys[1]);
             myStats.qCD = QSkill().basic.coolDown[4];
             furyPassive += 25;
@@ -76,13 +76,13 @@ public class RekSai : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        if(!isBorrowed)
-		{
+        if (!isBorrowed)
+        {
             isBorrowed = true;
             myStats.wCD = 4;
         }
-		else
-		{
+        else
+        {
             isBorrowed = false;
             UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
             TargetBuffManager.Add("KnockOff", new AirborneBuff(0.1f, TargetBuffManager, "KnockOff"));
@@ -97,14 +97,14 @@ public class RekSai : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        if(!isBorrowed)
-		{
-            if(furyPassive == 100)
-			{
-                UpdateAbilityTotalDamage(ref eSum, 2, ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), ESkill().basic.name, SkillDamageType.True);
+        if (!isBorrowed)
+        {
+            if (furyPassive == 100)
+            {
+                UpdateAbilityTotalDamage(ref eSum, 2, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), SkillDamageType.True), ESkill().basic.name);
             }
-			else
-			{
+            else
+            {
                 UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
             }
             furyPassive += 25;
@@ -130,7 +130,7 @@ public class RekSai : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         furyPassive += 25;
     }
 }

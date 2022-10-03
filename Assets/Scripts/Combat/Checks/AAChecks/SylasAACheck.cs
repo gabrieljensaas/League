@@ -8,7 +8,7 @@ public class SylasAACheck : Check
         this.sylas = sylas;
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (sylas.UnshackledStack > 0)
         {
@@ -19,7 +19,7 @@ public class SylasAACheck : Check
                 sylas.myStats.buffManager.buffs["Unshackled"].Kill();
             }
 
-            return (damage * 1.3f) + (combat.myStats.AP * 0.2f);
+            damage.value = (damage.value * 1.3f) + (combat.myStats.AP * 0.2f);
         }
 
         return damage;

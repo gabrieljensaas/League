@@ -108,13 +108,13 @@ public class Kennen : ChampionCombat
     {
         if (kennenP.Control())
         {
-            if (passiveStunTimer<6)
+            if (passiveStunTimer < 6)
             {
                 targetStats.buffManager.buffs.Add("Stun", new StunBuff(0.5f, targetStats.buffManager, myStats.passiveSkill.skillName));
                 passiveStunTimer = 0;
             }
-			else
-			{
+            else
+            {
                 targetStats.buffManager.buffs.Add("Stun", new StunBuff(1.25f, targetStats.buffManager, myStats.passiveSkill.skillName));
                 passiveStunTimer = 0;
             }
@@ -136,10 +136,10 @@ public class Kennen : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         ePassive++;
-		if (ePassive == 4)
-		{
+        if (ePassive == 4)
+        {
             UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
             ePassive = 0;
         }

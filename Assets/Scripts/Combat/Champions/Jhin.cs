@@ -82,9 +82,9 @@ public class Jhin : ChampionCombat
             if (damage < 0)
                 damage = 0;
 
-            if (autoattackcheck != null) damage = autoattackcheck.Control(damage, SkillDamageType.Phyiscal);
+            if (autoattackcheck != null) damage = autoattackcheck.Control(new Damage(damage, SkillDamageType.Phyiscal)).value;
 
-            aSum += targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack", SkillDamageType.Phyiscal, true);
+            aSum += targetCombat.TakeDamage(new Damage(damage, SkillDamageType.Phyiscal), $"{myStats.name}'s Auto Attack", true);
             hSum += HealHealth(damage * myStats.lifesteal, "Lifesteal");
             myUI.aaSum.text = aSum.ToString();
             myUI.healSum.text = hSum.ToString();
@@ -94,7 +94,7 @@ public class Jhin : ChampionCombat
         else
         {
             whisperShot++;
-            AutoAttack();
+            AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         }
     }
 

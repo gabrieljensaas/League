@@ -64,7 +64,7 @@ public class Teemo : ChampionCombat
         yield return base.ExecuteA();
 
         UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
-        if(targetStats.buffManager.buffs.TryGetValue("ToxicShot", out Buff buff))
+        if (targetStats.buffManager.buffs.TryGetValue("ToxicShot", out Buff buff))
             buff.duration = 4;
         else
             targetStats.buffManager.buffs.Add("ToxicShot", new ToxicShotBuff(4, targetStats.buffManager, myStats.eSkill[0].name));

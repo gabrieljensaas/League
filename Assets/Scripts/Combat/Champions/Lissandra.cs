@@ -68,14 +68,14 @@ public class Lissandra : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        if(myStats.PercentCurrentHealth < 0.2)
-		{
+        if (myStats.PercentCurrentHealth < 0.2)
+        {
             MyBuffManager.Add("StasisBuff", new StasisBuff(2.5f, MyBuffManager, RSkill().basic.name));
             UpdateTotalHeal(ref rSum, RSkill().UseSkill(2, rKeys[1], myStats, targetStats) + (RSkill().UseSkill(2, rKeys[1], myStats, targetStats) * myStats.PercentMissingHealth), RSkill().basic.name);
             UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[0]);
         }
-		else
-		{
+        else
+        {
             UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[0]);
             MyBuffManager.Add("KnockDownBuff", new KnockdownBuff(0.1f, TargetBuffManager, RSkill().basic.name));
             MyBuffManager.Add("StunBuff", new StunBuff(1.5f, TargetBuffManager, RSkill().basic.name));

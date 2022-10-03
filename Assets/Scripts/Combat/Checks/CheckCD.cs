@@ -8,7 +8,7 @@ public class CheckCD : Check
         this.skill = skill;
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damages)
     {
         throw new System.NotImplementedException();
     }

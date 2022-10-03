@@ -98,7 +98,7 @@ public class Akali : ChampionCombat
         {
             yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
             float multiplier = (targetStats.maxHealth - targetStats.currentHealth) / targetStats.maxHealth * 0.0286f;
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats) * (1 + (multiplier > 2 ? 2 : multiplier)), myStats.rSkill[0].basic.name, SkillDamageType.Spell);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats) * (1 + (multiplier > 2 ? 2 : multiplier)), SkillDamageType.Spell), myStats.rSkill[0].basic.name);
             StopCoroutine(PerfectExecution());
             myStats.rCD = myStats.rSkill[0].basic.coolDown[2] - timeSinceR;
         }
@@ -119,7 +119,7 @@ public class Akali : ChampionCombat
         {
             yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
             float multiplier = (myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth * 0.0286f;
-            UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0].SylasUseSkill(skillLevel, rKeys[1], targetStats, myStats) * (1 + (multiplier > 2 ? 2 : multiplier)), myStats.rSkill[0].basic.name, SkillDamageType.Spell);
+            UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, new Damage(myStats.rSkill[0].SylasUseSkill(skillLevel, rKeys[1], targetStats, myStats) * (1 + (multiplier > 2 ? 2 : multiplier)), SkillDamageType.Spell), myStats.rSkill[0].basic.name);
             StopCoroutine(HPerfectExecution(skillLevel));
             targetStats.rCD = (targetStats.rSkill[0].basic.coolDown[skillLevel] - hTimeSinceR) * 2;
         }

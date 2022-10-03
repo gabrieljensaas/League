@@ -4,7 +4,7 @@ using System.Collections;
 public class Ryze : ChampionCombat
 {
     private static float RyzeRPassiveDamageByLevel(int level)
-	{
+    {
         if (level == 0) return 0.1f;
         if (level == 1) return 0.4f;
         if (level == 2) return 0.7f;
@@ -12,7 +12,7 @@ public class Ryze : ChampionCombat
     }
 
     public bool hasFlux = false;
-    
+
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "Q", "W", "R", "A" };
@@ -48,14 +48,14 @@ public class Ryze : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        if(!hasFlux)
-		{
+        if (!hasFlux)
+        {
             UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
         }
-		else
-		{
+        else
+        {
             float increasedDamage = QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * RyzeRPassiveDamageByLevel(myStats.rLevel);
-            UpdateAbilityTotalDamage(ref qSum, 0, QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) + increasedDamage, QSkill().basic.name, SkillDamageType.Spell);
+            UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) + increasedDamage, SkillDamageType.Spell), QSkill().basic.name);
 
         }
 

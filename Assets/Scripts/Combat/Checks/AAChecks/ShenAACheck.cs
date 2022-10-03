@@ -6,11 +6,11 @@ public class ShenAACheck : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
-        if(combat.myStats.buffManager.buffs.TryGetValue("TwilightAssault", out Buff value))
+        if (combat.myStats.buffManager.buffs.TryGetValue("TwilightAssault", out Buff value))
         {
-            damage += combat.myStats.qSkill[0].UseSkill(4, combat.qKeys[0], combat.myStats, combat.targetStats) - Shen.GetShenQBaseDamageByLevel(4) + Shen.GetShenQBaseDamageByLevel(combat.myStats.level);
+            damage.value += combat.myStats.qSkill[0].UseSkill(4, combat.qKeys[0], combat.myStats, combat.targetStats) - Shen.GetShenQBaseDamageByLevel(4) + Shen.GetShenQBaseDamageByLevel(combat.myStats.level);
             value.value--;
             if (value.value == 0)
             {

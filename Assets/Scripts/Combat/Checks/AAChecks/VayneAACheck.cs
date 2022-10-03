@@ -6,11 +6,11 @@ public class VayneAACheck : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("Tumble", out Buff value))
         {
-            damage += value.value;
+            damage.value += value.value;
             value.Kill();
         }
 
@@ -21,7 +21,7 @@ public class VayneAACheck : Check
                 val.Kill();
                 float percentDamage = combat.myStats.wSkill[0].UseSkill(4, combat.wKeys[0], combat.myStats, combat.targetStats);
                 float minDamage = combat.myStats.wSkill[0].UseSkill(4, combat.wKeys[1], combat.myStats, combat.targetStats);
-                combat.UpdateAbilityTotalDamage(ref combat.wSum, 1, percentDamage > minDamage ? percentDamage : minDamage, combat.myStats.wSkill[0].basic.name, SkillDamageType.True);
+                combat.UpdateAbilityTotalDamage(ref combat.wSum, 1, new Damage(percentDamage > minDamage ? percentDamage : minDamage, SkillDamageType.True), combat.myStats.wSkill[0].basic.name);
             }
             else
             {

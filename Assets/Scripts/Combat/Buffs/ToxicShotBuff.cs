@@ -17,7 +17,7 @@ public class ToxicShotBuff : Buff
         if (duration <= 0) Kill();
 
         tickTimer += Time.deltaTime;
-        if(tickTimer >= 1)
+        if (tickTimer >= 1)
         {
             manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.targetCombat.eSum, 2, manager.combat.targetStats.eSkill[1], 4, manager.combat.targetCombat.eKeys[0]);
             tickTimer = 0;

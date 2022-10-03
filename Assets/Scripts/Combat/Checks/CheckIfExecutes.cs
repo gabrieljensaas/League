@@ -12,7 +12,7 @@ public class CheckIfExecutes : Check
         this.multiplier = multiplier;
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         throw new System.NotImplementedException();
     }

@@ -8,12 +8,12 @@ public class XayahAACheck : Check
         this.xayah = xayah;
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
-        if (combat.myStats.buffManager.buffs.ContainsKey(combat.myStats.wSkill[0].basic.name)) damage *= 1.2f;
+        if (combat.myStats.buffManager.buffs.ContainsKey(combat.myStats.wSkill[0].basic.name)) damage.value *= 1.2f;
         if (xayah.feathersAtHand > 0)
         {
-            damage += Xayah.GetXayahPassiveADPercent(combat.myStats.level) * 0.01f * combat.myStats.AD;
+            damage.value += Xayah.GetXayahPassiveADPercent(combat.myStats.level) * 0.01f * combat.myStats.AD;
             xayah.StartCoroutine(xayah.FeatherInGround());
         }
         return damage;

@@ -78,7 +78,7 @@ public class Twitch : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
 
         //TODO: Pass 35% Bonus AD to contaminate
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats) + ((int)targetStats.buffManager.buffs["Deadly Venom"]?.value * myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats)), myStats.eSkill[0].basic.name, SkillDamageType.Spell);
+        UpdateAbilityTotalDamage(ref eSum, 2, new Damage(myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats) + ((int)targetStats.buffManager.buffs["Deadly Venom"]?.value * myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats)), SkillDamageType.Spell), myStats.eSkill[0].basic.name);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
@@ -107,7 +107,7 @@ public class Twitch : ChampionCombat
         if (myStats.buffManager.buffs.TryGetValue("Ambush", out Buff ambush))
             ambush.Kill();
 
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         CheckDeadlyVenom("Auto Attack");
     }
 

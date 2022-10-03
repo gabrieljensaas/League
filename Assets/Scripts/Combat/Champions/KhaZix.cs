@@ -1,8 +1,6 @@
 using Simulator.Combat;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 public class KhaZix : ChampionCombat
 {
@@ -68,7 +66,7 @@ public class KhaZix : ChampionCombat
 
         if (isUnseenThreat)
         {
-            UpdateAbilityTotalDamage(ref pSum, 4, UnseenThreatDamage(myStats.level) + (myStats.bonusAD * 0.4f), myStats.passiveSkill.skillName, SkillDamageType.Spell);
+            UpdateAbilityTotalDamage(ref pSum, 4, new Damage(UnseenThreatDamage(myStats.level) + (myStats.bonusAD * 0.4f), SkillDamageType.Spell), myStats.passiveSkill.skillName);
             isUnseenThreat = false;
         }
 
@@ -114,7 +112,7 @@ public class KhaZix : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         StartCoroutine(VoidAssaultCD());
 
-        if(recastTimer >= 2)
+        if (recastTimer >= 2)
         {
             recastTimer = 0;
             recastR--;

@@ -142,11 +142,11 @@ public class Camille : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        if (qCast == 0) AutoAttack();
+        if (qCast == 0) AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         else if (qCast == 1)
         {
             StopCoroutine(PrecisionProtocol());
-            AutoAttack(1 + myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats));
+            AutoAttack(new Damage(myStats.AD * (1 + myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats)), SkillDamageType.Phyiscal));
             if (timeSinceQ < 2.5f) StartCoroutine(WaitForEmpoweredQ());
             qCast = 2;
             myStats.qCD = 0.25f;
@@ -154,14 +154,14 @@ public class Camille : ChampionCombat
         else if (qCast == 2)
         {
             StopCoroutine(PrecisionProtocol());
-            AutoAttack(1 + myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats));
+            AutoAttack(new Damage(myStats.AD * (1 + myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats)), SkillDamageType.Phyiscal));
             qCast = 0;
         }
         else if (qCast == 3)
         {
             StopCoroutine(PrecisionProtocol());
-            UpdateAbilityTotalDamage(ref qSum, 0, (myStats.AD + (2 * myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats))) * QTrueDamageMultiplier[myStats.level], myStats.qSkill[0].basic.name, SkillDamageType.True);
-            AutoAttack((1 - QTrueDamageMultiplier[myStats.level]) * (1 + (myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) * 2)));
+            UpdateAbilityTotalDamage(ref qSum, 0, new Damage((myStats.AD + (2 * myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats))) * QTrueDamageMultiplier[myStats.level], SkillDamageType.True), myStats.qSkill[0].basic.name);
+            AutoAttack(new Damage(myStats.AD * (1 - QTrueDamageMultiplier[myStats.level]) * (1 + (myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) * 2)), SkillDamageType.True));
             qCast = 0;
         }
 
@@ -169,7 +169,7 @@ public class Camille : ChampionCombat
         if (timeInsideR > 0)
         {
             float damage = myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats);
-            UpdateAbilityTotalDamage(ref rSum, 3, damage, myStats.rSkill[0].basic.name, SkillDamageType.Spell);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(damage, SkillDamageType.Spell), myStats.rSkill[0].basic.name);
         }
     }
 

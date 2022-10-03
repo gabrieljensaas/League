@@ -1,6 +1,5 @@
 using Simulator.Combat;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Yone : ChampionCombat                  //add passive ap damage when damage class added 
@@ -151,9 +150,9 @@ public class Yone : ChampionCombat                  //add passive ap damage when
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats), myStats.wSkill[0].basic.name, SkillDamageType.Phyiscal);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0].UseSkill(4, wKeys[1], myStats, targetStats), myStats.wSkill[0].basic.name, SkillDamageType.Spell);
-        myStats.buffManager.shields.Add(myStats.wSkill[0].basic.name, new ShieldBuff(1.5f, myStats.buffManager, myStats.wSkill[0].basic.name,2 * (35 + (20 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.55f)) , myStats.wSkill[0].basic.name));
+        UpdateAbilityTotalDamage(ref wSum, 1, new Damage(myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats), SkillDamageType.Phyiscal), myStats.wSkill[0].basic.name);
+        UpdateAbilityTotalDamage(ref wSum, 1, new Damage(myStats.wSkill[0].UseSkill(4, wKeys[1], myStats, targetStats), SkillDamageType.Spell), myStats.wSkill[0].basic.name);
+        myStats.buffManager.shields.Add(myStats.wSkill[0].basic.name, new ShieldBuff(1.5f, myStats.buffManager, myStats.wSkill[0].basic.name, 2 * (35 + (20 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.55f)), myStats.wSkill[0].basic.name));
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
@@ -176,8 +175,8 @@ public class Yone : ChampionCombat                  //add passive ap damage when
         myStats.buffManager.buffs.Add("UnableToAct", new UnableToActBuff(0.3f, myStats.buffManager, myStats.rSkill[0].basic.name));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         yield return new WaitForSeconds(0.3f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), myStats.rSkill[0].basic.name, SkillDamageType.Phyiscal);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats), myStats.rSkill[0].basic.name, SkillDamageType.Spell);
+        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.Phyiscal), myStats.rSkill[0].basic.name);
+        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats), SkillDamageType.Spell), myStats.rSkill[0].basic.name);
     }
 
     public override IEnumerator HijackedR(int skillLevel)
@@ -188,8 +187,8 @@ public class Yone : ChampionCombat                  //add passive ap damage when
         targetStats.buffManager.buffs.Add("UnableToAct", new UnableToActBuff(0.3f, targetStats.buffManager, myStats.rSkill[0].basic.name));
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
         yield return new WaitForSeconds(0.3f);
-        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0].UseSkill(skillLevel, rKeys[0], targetStats, myStats), myStats.rSkill[0].basic.name, SkillDamageType.Phyiscal);
-        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0].UseSkill(skillLevel, rKeys[1], targetStats, myStats), myStats.rSkill[0].basic.name, SkillDamageType.Spell);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, new Damage(myStats.rSkill[0].UseSkill(skillLevel, rKeys[0], targetStats, myStats), SkillDamageType.Phyiscal), myStats.rSkill[0].basic.name);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, new Damage(myStats.rSkill[0].UseSkill(skillLevel, rKeys[1], targetStats, myStats), SkillDamageType.Spell), myStats.rSkill[0].basic.name);
     }
 
     public IEnumerator QStack()
@@ -204,7 +203,7 @@ public class Yone : ChampionCombat                  //add passive ap damage when
         InE = true;
         yield return new WaitForSeconds(5f);
         InE = false;
-        UpdateAbilityTotalDamage(ref eSum, 2, EDamage, "Soul Unbound", SkillDamageType.True);
+        UpdateAbilityTotalDamage(ref eSum, 2, new Damage(EDamage, SkillDamageType.True), "Soul Unbound");
         StartCoroutine(StartCastingAbility(0.25f));
     }
 }

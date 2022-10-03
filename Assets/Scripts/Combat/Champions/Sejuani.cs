@@ -125,7 +125,7 @@ public class Sejuani : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         passiveTimer = 0;
         CheckIfFrozen();
         if (timeSinceEPassive >= 10 && !targetStats.buffManager.buffs.ContainsKey("Frozen")) frost++;
@@ -134,7 +134,7 @@ public class Sejuani : ChampionCombat
     {
         if (targetStats.buffManager.buffs.TryGetValue("Frozen", out Buff frozen))
         {
-            UpdateAbilityTotalDamage(ref pSum, 4, targetStats.maxHealth * 0.1f, "Frozen", SkillDamageType.Spell);
+            UpdateAbilityTotalDamage(ref pSum, 4, new Damage(targetStats.maxHealth * 0.1f, SkillDamageType.Spell), "Frozen");
             passiveTimer = 0;
             frozen.Kill();
         }

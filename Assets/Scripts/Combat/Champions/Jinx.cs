@@ -45,7 +45,7 @@ public class Jinx : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         StopCoroutine(QStackExpired());
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         if (qStack != 3) qStack++;
         myStats.buffManager.buffs.Remove(myStats.qSkill[0].basic.name);
         myStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) * (qStack + 1) * 0.5f, myStats.qSkill[0].basic.name));

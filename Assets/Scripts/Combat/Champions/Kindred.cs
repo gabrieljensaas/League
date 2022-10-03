@@ -9,7 +9,7 @@ public class Kindred : ChampionCombat
     private int wolfFrenzyStack;
     public int currentMark = 0;
 
-	public override void UpdatePriorityAndChecks()
+    public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "W", "Q", "R", "A" };
 
@@ -81,7 +81,7 @@ public class Kindred : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
         myStats.buffManager.buffs.TryAdd("Untargetable", new UntargetableBuff(4, myStats.buffManager, myStats.rSkill[0].basic.name));
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-		myStats.currentHealth += myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
+        myStats.currentHealth += myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
         targetStats.currentHealth += myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
@@ -92,7 +92,7 @@ public class Kindred : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         float missingHealth = myStats.maxHealth - myStats.currentHealth;
-        if(wolfFrenzyStack >= 100 && missingHealth != 0)
+        if (wolfFrenzyStack >= 100 && missingHealth != 0)
         {
             UpdateTotalHeal(ref wSum, (45 + (2 * myStats.level)) * (1 + (missingHealth / myStats.maxHealth) > 0.8f ? 1f : (missingHealth / myStats.maxHealth) * 1.25f), "Wolf Frenzy Passive"); // Logic not sure here about how much health to add
             wolfFrenzyStack = 0;
@@ -101,14 +101,14 @@ public class Kindred : ChampionCombat
         {
             WolfFrenzy();
         }
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         CheckMoundingDreadDamage();
     }
 
     public void WolfFrenzy()
-	{
+    {
         wolfFrenzyStack += UnityEngine.Random.Range(2, 3);
-	}
+    }
 
     public IEnumerator WolfsFrenzy()
     {
@@ -122,7 +122,7 @@ public class Kindred : ChampionCombat
         if (moundingDreadCheck.Control())
         {
             //Apply's Crit as well so not sure about damage calculated
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats), myStats.eSkill[0].basic.name, SkillDamageType.Phyiscal);
+            UpdateAbilityTotalDamage(ref eSum, 2, new Damage(myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats), SkillDamageType.Phyiscal), myStats.eSkill[0].basic.name);
             targetStats.buffManager.buffs["MoundingDread"].Kill();
         }
         else if (myStats.buffManager.buffs.TryGetValue("MoundingDread", out Buff moundingDread))

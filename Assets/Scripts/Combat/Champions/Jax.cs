@@ -44,7 +44,7 @@ public class Jax : ChampionCombat
 
         autoattackcheck = new JaxAACheck(this);
         checkTakeDamageAA.Add(new CheckCounterStrike(this));
-        
+
         qKeys.Add("Physical Damage");
         wKeys.Add("Bonus Magic Damage");
         eKeys.Add("Minimum Physical Damage");
@@ -62,13 +62,13 @@ public class Jax : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         StopCoroutine(PStackExpired());
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         if (pStack < 8) pStack++;
         myStats.buffManager.buffs.Remove("RelentlessAssault");
         myStats.buffManager.buffs.Add("RelentlessAssault", new AttackSpeedBuff(2.5f, myStats.buffManager, "RelentlessAssault", RelentlessAssaultAS(myStats.level, pStack), "RelentlessAssault"));
         StartCoroutine(PStackExpired());
 
-        if(rStack < 3)
+        if (rStack < 3)
             rStack++;
         else
         {

@@ -8,11 +8,11 @@ public class ZoeAACheck : Check
         this.zoe = zoe;
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (zoe.HasPassive)
         {
-            damage += Zoe.ZoePassiveDamageByLevel[combat.myStats.level] + (combat.myStats.AP * 0.2f);
+            damage.value += Zoe.ZoePassiveDamageByLevel[combat.myStats.level] + (combat.myStats.AP * 0.2f);
             zoe.HasPassive = false;
             zoe.StopCoroutine(zoe.ZoePassive());
         }

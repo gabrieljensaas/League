@@ -6,13 +6,13 @@ public class RivenAACheck : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("RunicBlade", out Buff value))
         {
             value.value--;
             value.duration = 6;
-            damage += Riven.GetRivenPassiveDamagePercentByLevel(combat.myStats.level) * combat.myStats.AD;
+            damage.value += Riven.GetRivenPassiveDamagePercentByLevel(combat.myStats.level) * combat.myStats.AD;
             if (value.value == 0) value.Kill();
         }
         return damage;

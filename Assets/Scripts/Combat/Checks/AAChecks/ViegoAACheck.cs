@@ -6,9 +6,9 @@ public class ViegoAACheck : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
-        
+
 
 
         return damage;

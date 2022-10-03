@@ -46,7 +46,7 @@ public class Kassadin : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         TargetBuffManager.Add("Disrupt", new DisruptBuff(0.1f, TargetBuffManager, QSkill().basic.name));
         MyBuffManager.Add(QSkill().basic.name, new ShieldBuff(1.5f, MyBuffManager, QSkill().basic.name, QSkill().UseSkill(myStats.qLevel, qKeys[1], myStats, targetStats), QSkill().basic.name, shieldType: ShieldBuff.ShieldType.Magic));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponent: SkillComponentTypes.Projectile);
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 
@@ -55,7 +55,7 @@ public class Kassadin : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        MyBuffManager.Add("NetherBlade", new NetherBladeBuff(5, MyBuffManager, WSkill().basic.name));
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
@@ -82,6 +82,6 @@ public class Kassadin : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
     }
 }

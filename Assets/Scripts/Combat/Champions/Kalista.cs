@@ -52,7 +52,7 @@ public class Kalista : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         targetStats.buffManager.buffs.TryGetValue("Rend", out Buff value);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats) + ((value.value - 1) * myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats)), myStats.eSkill[0].basic.name, SkillDamageType.Phyiscal);
+        UpdateAbilityTotalDamage(ref eSum, 2, new Damage(myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats) + ((value.value - 1) * myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats)), SkillDamageType.Phyiscal), myStats.eSkill[0].basic.name);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         value.Kill();
     }
@@ -67,7 +67,7 @@ public class Kalista : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack(0.9f);
+        AutoAttack(new Damage(myStats.AD * 0.9f, SkillDamageType.Phyiscal));
         if (targetStats.buffManager.buffs.TryGetValue("Rend", out Buff value))
         {
             value.value++;

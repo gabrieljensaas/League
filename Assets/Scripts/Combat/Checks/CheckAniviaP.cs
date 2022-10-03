@@ -8,10 +8,10 @@ public class CheckAniviaP : Check
         this.anivia = anivia;
     }
 
-    public override float Control(float hp, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage hp)
     {
-        hp = combat.myStats.currentHealth;
-        anivia.PassiveEgg(hp);
+        hp.value = combat.myStats.currentHealth;
+        anivia.PassiveEgg(hp.value);
         return hp;
     }
 

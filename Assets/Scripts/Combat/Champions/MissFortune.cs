@@ -104,12 +104,12 @@ public class MissFortune : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         if (!loveTapped) LoveTap();
     }
     private void LoveTap()
     {
-        UpdateAbilityTotalDamage(ref pSum, 4, myStats.AD * GetMissfortunePassiveADMultiplier(myStats.level), myStats.passiveSkill.skillName, SkillDamageType.Phyiscal);
+        UpdateAbilityTotalDamage(ref pSum, 4, new Damage(myStats.AD * GetMissfortunePassiveADMultiplier(myStats.level), SkillDamageType.Phyiscal), myStats.passiveSkill.skillName);
         myStats.wCD -= 2;
         loveTapped = true;
     }
@@ -138,7 +138,7 @@ public class MissFortune : ChampionCombat
     {
         if (waveCount == 0) yield break;
         yield return new WaitForSeconds(myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats));
-        UpdateAbilityTotalDamage(ref rSum, 3, (myStats.AD * 0.75f) + (myStats.AP * 0.2f), "Bullet Time", SkillDamageType.Phyiscal);
+        UpdateAbilityTotalDamage(ref rSum, 3, new Damage((myStats.AD * 0.75f) + (myStats.AP * 0.2f), SkillDamageType.Phyiscal), "Bullet Time");
         StartCoroutine(BulletTime(waveCount--));
     }
 
@@ -146,7 +146,7 @@ public class MissFortune : ChampionCombat
     {
         if (waveCount == 0) yield break;
         yield return new WaitForSeconds(myStats.rSkill[0].SylasUseSkill(skillLevel, rKeys[1], targetStats, myStats));
-        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, (myStats.AP * 0.45f) + (myStats.AP * 0.2f), "Bullet Time", SkillDamageType.Phyiscal);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, new Damage((myStats.AP * 0.45f) + (myStats.AP * 0.2f), SkillDamageType.Phyiscal), "Bullet Time");
         StartCoroutine(HBulletTime(waveCount--, skillLevel));
     }
 

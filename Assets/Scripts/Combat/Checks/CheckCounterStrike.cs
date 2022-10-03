@@ -1,5 +1,4 @@
 using Simulator.Combat;
-using System.Linq;
 
 public class CheckCounterStrike : Check
 {
@@ -7,12 +6,13 @@ public class CheckCounterStrike : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
-        if(combat.myStats.buffManager.buffs.TryGetValue("CounterStrikeBuff", out Buff buff))
+        if (combat.myStats.buffManager.buffs.TryGetValue("CounterStrikeBuff", out Buff buff))
             if (buff.value > 5) buff.value++;
 
-        return 0;
+        damage.value = 0;
+        return damage;
     }
 
     public override bool Control()

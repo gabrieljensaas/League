@@ -6,10 +6,10 @@ public class MalphiteAACheck : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.myStats.buffManager.buffs.ContainsKey("ThunderclapBuff"))
-            damage = combat.myStats.wSkill[0].UseSkill(5, combat.wKeys[2], combat.myStats, combat.targetStats);
+            damage.value = combat.myStats.wSkill[0].UseSkill(5, combat.wKeys[2], combat.myStats, combat.targetStats);
 
         return damage;
     }

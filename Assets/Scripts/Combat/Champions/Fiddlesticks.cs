@@ -1,8 +1,6 @@
 using Simulator.Combat;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 public class FiddleSticks : ChampionCombat
 {
@@ -66,7 +64,7 @@ public class FiddleSticks : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
 
         float damage = (QSkill().UseSkill(4, qKeys[1], myStats, targetStats) > QSkill().UseSkill(4, qKeys[2], myStats, targetStats)) ? QSkill().UseSkill(4, qKeys[1], myStats, targetStats) : QSkill().UseSkill(4, qKeys[2], myStats, targetStats);
-        UpdateAbilityTotalDamage(ref qSum, 0, damage, QSkill().name, SkillDamageType.Spell);
+        UpdateAbilityTotalDamage(ref qSum, 0, new Damage(damage, SkillDamageType.Spell), QSkill().name);
         TargetBuffManager.Add("Flee", new FleeBuff(QSkill().UseSkill(4, qKeys[0], myStats, targetStats), TargetBuffManager, QSkill().basic.name));
         myStats.qCD = QSkill().basic.coolDown[4];
     }
@@ -100,7 +98,7 @@ public class FiddleSticks : ChampionCombat
 
     public override void StopChanneling(string uniqueKey)
     {
-        if(uniqueKey == RSkill().basic.name)
+        if (uniqueKey == RSkill().basic.name)
             StartCoroutine(Crowstorm());
         else if (uniqueKey == WSkill().basic.name)
         {
@@ -111,7 +109,7 @@ public class FiddleSticks : ChampionCombat
 
     private IEnumerator BountifulHarvest()
     {
-        for(int i = 0; i < 7; i++)
+        for (int i = 0; i < 7; i++)
         {
             bountifulHarvestDamage += UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[0]);
             yield return new WaitForSeconds(0.25f);
@@ -121,7 +119,7 @@ public class FiddleSticks : ChampionCombat
 
     private IEnumerator Crowstorm()
     {
-        for(int i = 0; i < 20; i++)
+        for (int i = 0; i < 20; i++)
         {
             UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[0]);
             yield return new WaitForSeconds(0.25f);

@@ -10,7 +10,7 @@ public class CheckIfEnemyHasRend : Check
     {
         return combat.targetStats.buffManager.buffs.ContainsKey("Rend");
     }
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         throw new System.NotImplementedException();
     }

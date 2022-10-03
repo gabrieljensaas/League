@@ -34,7 +34,7 @@ public class Orianna : ChampionCombat
 
     }
 
-	
+
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "W", "Q", "R", "A" };
@@ -115,15 +115,15 @@ public class Orianna : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(0.1f));
         StopCoroutine(PStackExpired());
         if (passiveStack == 1)
-		{
-            AutoAttack();
-            UpdateAbilityTotalDamage(ref pSum, 4, ClockworkWindUpDamageByLevel(myStats.level, passiveStack), myStats.passiveSkill.name, SkillDamageType.Spell);
+        {
+            AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
+            UpdateAbilityTotalDamage(ref pSum, 4, new Damage(ClockworkWindUpDamageByLevel(myStats.level, passiveStack), SkillDamageType.Spell), myStats.passiveSkill.name);
             passiveStack++;
         }
-        else if(passiveStack == 2)
-		{
-            AutoAttack();
-            UpdateAbilityTotalDamage(ref pSum, 4, ClockworkWindUpDamageByLevel(myStats.level, passiveStack), myStats.passiveSkill.name, SkillDamageType.Spell);
+        else if (passiveStack == 2)
+        {
+            AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
+            UpdateAbilityTotalDamage(ref pSum, 4, new Damage(ClockworkWindUpDamageByLevel(myStats.level, passiveStack), SkillDamageType.Spell), myStats.passiveSkill.name);
         }
         StartCoroutine(PStackExpired());
     }

@@ -10,8 +10,9 @@ public class CheckIfHemoplague : Check
     {
         throw new System.NotImplementedException();
     }
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
-        return combat.myStats.buffManager.buffs.ContainsKey("Hemoplague") ? damage * 1.1f : damage;
+        damage.value *= combat.myStats.buffManager.buffs.ContainsKey("Hemoplague") ? 1.1f : 1;
+        return damage;
     }
 }

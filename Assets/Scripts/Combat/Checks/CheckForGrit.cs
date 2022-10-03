@@ -8,12 +8,12 @@ public class CheckForGrit : Check
         this.sett = sett;
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
-        if (damage < (sett.myStats.maxHealth * 0.5f) - sett.grit)
+        if (damage.value < (sett.myStats.maxHealth * 0.5f) - sett.grit)
         {
-            sett.grit += damage;
-            sett.gritList.Add(new GritBuff(4, combat.myStats.buffManager, "Haymaker", damage, sett));
+            sett.grit += damage.value;
+            sett.gritList.Add(new GritBuff(4, combat.myStats.buffManager, "Haymaker", damage.value, sett));
         }
         else
         {

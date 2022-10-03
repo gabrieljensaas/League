@@ -6,11 +6,11 @@ public class KogMawAACheck : Check
     {
     }
 
-    public override float Control(float damage, SkillDamageType damageType, SkillComponentTypes componentTypes)
+    public override Damage Control(Damage damage)
     {
         if (combat.myStats.buffManager.buffs.TryGetValue("BioArcaneBarrage", out Buff value))
         {
-            damage += value.value;
+            damage.value += value.value;
             combat.wSum += value.value;
             combat.myUI.abilitySum[1].text = combat.wSum.ToString();
         }

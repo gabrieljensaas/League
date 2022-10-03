@@ -201,7 +201,7 @@ public class Gnar : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         if (IsMini) HyperCount++;
-        AutoAttack();
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         StopCoroutine(GenerateRage());
         StartCoroutine(GenerateRage());
         if (!CantRage) RageBar = RageBar + (2 * GetQGeneratedRageByLevel(myStats.level)) > 100 ? 100 : RageBar + (GetQGeneratedRageByLevel(myStats.level) * 2);

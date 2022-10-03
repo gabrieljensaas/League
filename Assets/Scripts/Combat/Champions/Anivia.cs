@@ -5,16 +5,16 @@ using UnityEngine;
 public class Anivia : ChampionCombat
 {
     private static float CheckBonusResistanceByLevel(int level)
-	{
+    {
         return level switch
         {
             < 5 => -40,
-            < 8 =>  -25,
+            < 8 => -25,
             < 12 => -10,
             < 15 => 5,
-            _ => 20, 
+            _ => 20,
         };
-	}
+    }
     public bool isChilled = false;
     public override void UpdatePriorityAndChecks()
     {
@@ -118,13 +118,13 @@ public class Anivia : ChampionCombat
     }
 
     public void PassiveEgg(float currenthp)
-	{
-        if(currenthp < 0)
-		{
+    {
+        if (currenthp < 0)
+        {
             myStats.currentHealth = myStats.maxHealth;
-			MyBuffManager.Add("EggPassive", new UnableToActBuff(6, MyBuffManager, "EggPassive"));
+            MyBuffManager.Add("EggPassive", new UnableToActBuff(6, MyBuffManager, "EggPassive"));
             MyBuffManager.Add("BonusArmor", new ArmorBuff(6, MyBuffManager, myStats.passiveSkill.skillName, CheckBonusResistanceByLevel(myStats.level), "BonusArmor"));
-            MyBuffManager.Add("BonusMagicResistance", new MagicResistanceBuff(6, MyBuffManager, myStats.passiveSkill.skillName, (int) CheckBonusResistanceByLevel(myStats.level), "BonusMagicResistance"));
+            MyBuffManager.Add("BonusMagicResistance", new MagicResistanceBuff(6, MyBuffManager, myStats.passiveSkill.skillName, (int)CheckBonusResistanceByLevel(myStats.level), "BonusMagicResistance"));
         }
-	}
+    }
 }

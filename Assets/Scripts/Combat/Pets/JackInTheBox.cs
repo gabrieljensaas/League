@@ -27,7 +27,7 @@ public class JackInTheBox : Pet
     {
         activationTime -= Time.deltaTime;
 
-        if(activationTime <= 0)
+        if (activationTime <= 0)
         {
             aaTimer -= Time.deltaTime;
             if (aaTimer <= 0) AutoAttack();
@@ -39,7 +39,7 @@ public class JackInTheBox : Pet
 
     public void AutoAttack()
     {
-        owner.targetCombat.TakeDamage(aaDamage, "Jack In The Box Attack", SkillDamageType.Spell, true);
+        owner.targetCombat.TakeDamage(new Damage(aaDamage, SkillDamageType.Spell), "Jack In The Box Attack", true);
         aaTimer = 1f / attackSpeed;
     }
 

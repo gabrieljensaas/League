@@ -83,7 +83,7 @@ public class Lux : ChampionCombat
         if (targetCombat.myStats.buffManager.buffs.TryGetValue("Illumination", out Buff illumination))
         {
             illumination.Kill();
-            UpdateAbilityTotalDamage(ref pSum, 4, myStats.AD * GetLuxIlluminationByLevel(myStats.level, myStats.AP), myStats.passiveSkill.skillName, SkillDamageType.Spell);
+            UpdateAbilityTotalDamage(ref pSum, 4, new Damage(myStats.AD * GetLuxIlluminationByLevel(myStats.level, myStats.AP), SkillDamageType.Spell), myStats.passiveSkill.skillName);
         }
     }
 }

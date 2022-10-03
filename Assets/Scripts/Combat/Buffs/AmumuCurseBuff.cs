@@ -13,7 +13,7 @@ public class AmumuCurseBuff : Buff
     {
         duration -= Time.deltaTime;
         if (duration <= 0) Kill();
-        
+
     }
     public override void Kill()
     {

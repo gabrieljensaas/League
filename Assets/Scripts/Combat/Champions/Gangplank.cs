@@ -83,12 +83,12 @@ public class Gangplank : ChampionCombat
         }
         else
         {
-            if(trialByFireTimer <= 0)
+            if (trialByFireTimer <= 0)
             {
                 StartCoroutine(TrialByFire());
                 trialByFireTimer = 15;
             }
-            AutoAttack();
+            AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         }
     }
 
@@ -99,7 +99,7 @@ public class Gangplank : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         UpdateTotalHeal(ref hSum, myStats.wSkill[0], 4, wKeys[0]);
 
-        foreach(Buff buff in myStats.buffManager.buffs.Values)
+        foreach (Buff buff in myStats.buffManager.buffs.Values)
             if (Buff.IsDisrupt(buff) && buff is not StasisBuff) buff.Kill();
 
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
@@ -126,9 +126,9 @@ public class Gangplank : ChampionCombat
     //5 tick damage
     private IEnumerator TrialByFire()
     {
-        for(int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++)
         {
-            UpdateAbilityTotalDamage(ref pSum, 4, (TrialByFireBaseDamage(myStats.level) + myStats.bonusAD) / 5, myStats.passiveSkill.skillName, SkillDamageType.True);
+            UpdateAbilityTotalDamage(ref pSum, 4, new Damage((TrialByFireBaseDamage(myStats.level) + myStats.bonusAD) / 5, SkillDamageType.True), myStats.passiveSkill.skillName);
             yield return new WaitForSeconds(0.5f);
         }
     }

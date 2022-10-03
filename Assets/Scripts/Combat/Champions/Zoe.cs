@@ -47,7 +47,7 @@ public class Zoe : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) - ZoeQBaseDamageByLevel[4] + ZoeQBaseDamageByLevel[myStats.level], myStats.qSkill[0].basic.name, SkillDamageType.Spell);
+        UpdateAbilityTotalDamage(ref qSum, 0, new Damage(myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) - ZoeQBaseDamageByLevel[4] + ZoeQBaseDamageByLevel[myStats.level], SkillDamageType.Spell), myStats.qSkill[0].basic.name);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 

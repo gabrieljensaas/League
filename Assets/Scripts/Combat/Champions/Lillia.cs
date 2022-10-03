@@ -1,6 +1,5 @@
 using Simulator.Combat;
 using System.Collections;
-using UnityEngine;
 
 public class Lillia : ChampionCombat
 {
@@ -100,7 +99,7 @@ public class Lillia : ChampionCombat
 
     private void LiltingLullabyProc()
     {
-        if(TargetBuffManager.buffs.TryGetValue("Sleep", out Buff buff))
+        if (TargetBuffManager.buffs.TryGetValue("Sleep", out Buff buff))
         {
             buff.Kill();
             UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[1]);

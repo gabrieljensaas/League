@@ -1,5 +1,5 @@
-using System.Collections;
 using Simulator.Combat;
+using System.Collections;
 using UnityEngine;
 
 public class Cassiopeia : ChampionCombat
@@ -68,12 +68,12 @@ public class Cassiopeia : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        if(isPoisoned)
-		{
+        if (isPoisoned)
+        {
             UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
             UpdateTotalHeal(ref eSum, ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), ESkill().basic.name);
         }
-        UpdateAbilityTotalDamage(ref eSum, 2, 48 + 4 * myStats.level, ESkill().basic.name, SkillDamageType.Spell);
+        UpdateAbilityTotalDamage(ref eSum, 2, new Damage(48 + 4 * myStats.level, SkillDamageType.Spell), ESkill().basic.name);
         myStats.eCD = ESkill().basic.coolDown[4];
     }
 
