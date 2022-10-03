@@ -42,10 +42,10 @@ public class Cassiopeia : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        if (targetStats.buffManager.buffs.TryGetValue("PoisonBuff", out Buff buff))
+        if (TargetBuffManager.buffs.TryGetValue("PoisonBuff", out Buff buff))
             buff.duration = 3;
         else
-            targetStats.buffManager.buffs.Add("PoisonBuff", new PoisonBuff(3, TargetBuffManager, "PoisonBuff"));
+            TargetBuffManager.Add("PoisonBuff", new PoisonBuff(3, TargetBuffManager, "PoisonBuff"));
         myStats.qCD = QSkill().basic.coolDown[4];
         StartCoroutine(NoxiousBlast());
     }
@@ -55,10 +55,10 @@ public class Cassiopeia : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        if (targetStats.buffManager.buffs.TryGetValue("PoisonBuff", out Buff buff))
+        if (TargetBuffManager.buffs.TryGetValue("PoisonBuff", out Buff buff))
             buff.duration = 5;
         else
-            targetStats.buffManager.buffs.Add("PoisonBuff", new PoisonBuff(5, TargetBuffManager, "PoisonBuff"));
+            TargetBuffManager.Add("PoisonBuff", new PoisonBuff(5, TargetBuffManager, "PoisonBuff"));
         myStats.wCD = WSkill().basic.coolDown[4];
         StartCoroutine(Miasma());
     }
@@ -84,7 +84,7 @@ public class Cassiopeia : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         if (isPoisoned)
-            MyBuffManager.Add("PetrifyingGaze", new StunBuff(2, TargetBuffManager, "PetrifyingGaze"));
+            TargetBuffManager.Add("PetrifyingGaze", new StunBuff(2, TargetBuffManager, "PetrifyingGaze"));
         myStats.rCD = RSkill().basic.coolDown[2];
     }
 
