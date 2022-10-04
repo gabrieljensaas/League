@@ -29,6 +29,7 @@ namespace Simulator.Combat
         [HideInInspector] public List<Check> checkTakeDamageAbility = new();
         [HideInInspector] public List<Check> checkTakeDamageAAPostMitigation = new();
         [HideInInspector] public List<Check> checkTakeDamageAbilityPostMitigation = new();
+        [HideInInspector] public List<Check> castingCheck = new();
         [HideInInspector] public Check autoattackcheck;
         [HideInInspector] public List<string> qKeys = new();
         [HideInInspector] public List<string> wKeys = new();
@@ -82,8 +83,9 @@ namespace Simulator.Combat
             }
         }
 
-        public IEnumerator StartCastingAbility(float castTime)
+        public virtual IEnumerator StartCastingAbility(float castTime)
         {
+            CheckForAbilityControl(castingCheck);
             isCasting = true;
             yield return new WaitForSeconds(castTime);
             isCasting = false;

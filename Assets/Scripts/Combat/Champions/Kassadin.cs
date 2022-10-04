@@ -1,8 +1,11 @@
 using Simulator.Combat;
 using System.Collections;
+using UnityEngine;
 
 public class Kassadin : ChampionCombat
 {
+    public int eStack = 0;
+    public int rStack = 0;
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "E", "W", "Q", "A" };
@@ -29,12 +32,14 @@ public class Kassadin : ChampionCombat
         checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
         checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
         autoattackcheck = new KassadinAACheck(this);
+        targetCombat.castingCheck.Add(new CheckKassadinEPassive(targetCombat, this));
 
         qKeys.Add("Magic Damage");
         qKeys.Add("Magic Shield Strength");
-        wKeys.Add("");
-        eKeys.Add("");
-        rKeys.Add("");
+        wKeys.Add("Increased Bonus Magic Damage");
+        eKeys.Add("Magic Damage");
+        rKeys.Add("Magic Damage");
+        rKeys.Add("Bonus Damage Per Stack");
 
         base.UpdatePriorityAndChecks();
     }
@@ -59,29 +64,31 @@ public class Kassadin : ChampionCombat
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
-    public virtual IEnumerator ExecuteE()
+    public override IEnumerator ExecuteE()
     {
         if (!CheckForAbilityControl(checksE)) yield break;
-
+        if (eStack < 6) yield break;
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        eStack = 0;
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0]);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
-    public virtual IEnumerator ExecuteR()
+    public override IEnumerator ExecuteR()
     {
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats,targetStats) + (rStack * RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats)), SkillDamageType.Spell, SkillComponentTypes.Blink), RSkill().basic.name);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        StopCoroutine(RStacks());
+        StartCoroutine(RStacks());
     }
 
-    public virtual IEnumerator ExecuteA()
+    public IEnumerator RStacks()
     {
-        if (!CheckForAbilityControl(checksA)) yield break;
-
-        yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
+        rStack = rStack == 4 ? 4 : rStack++;
+        yield return new WaitForSeconds(5f);
+        rStack = 0;
     }
 }
