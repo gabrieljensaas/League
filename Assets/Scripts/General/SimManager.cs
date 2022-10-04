@@ -1,5 +1,6 @@
 using Simulator.Combat;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -26,6 +27,8 @@ public class SimManager : MonoBehaviour
     private ChampionManager championManager;
     public ChampionStats[] champStats;
     public ChampionCombat[] champCombat;
+
+    public List<SnapShot> snaps = new List<SnapShot>();
 
     #region Singleton
     private static SimManager _instance;
@@ -217,6 +220,7 @@ public class SimManager : MonoBehaviour
         isSimulating = true;
         champStats[0].MyCombat.StartCoroutine(champStats[0].MyCombat.StartHPRegeneration());
         champStats[1].MyCombat.StartCoroutine(champStats[1].MyCombat.StartHPRegeneration());
+        StartCoroutine(TakeSnapShot());
         timer = 0f;
     }
 
@@ -248,8 +252,10 @@ public class SimManager : MonoBehaviour
         stats2.level = response.APIMatchInfo.championInfo[1].champLevel;
 
         GetStatsByLevel(stats1, so1);
+        stats1.maxHealth = stats1.baseHealth + stats1.bonusHP;
         stats1.currentHealth = stats1.maxHealth;
         GetStatsByLevel(stats2, so2);
+        stats2.maxHealth = stats2.baseHealth + stats2.bonusHP;
         stats2.currentHealth = stats2.maxHealth;
 
         stats1.StaticUIUpdate();
@@ -284,5 +290,12 @@ public class SimManager : MonoBehaviour
                 champCombat[0] = stats.MyCombat;
                 return;
         }
+    }
+
+    public IEnumerator TakeSnapShot()
+    {
+        yield return new WaitForSeconds(0.5f);
+        snaps.Add(new SnapShot("", new ChampionSnap(champStats[0].name, champStats[0].PercentCurrentHealth * 100), new ChampionSnap(champStats[1].name, champStats[1].PercentCurrentHealth * 100)));
+        StartCoroutine(TakeSnapShot());
     }
 }

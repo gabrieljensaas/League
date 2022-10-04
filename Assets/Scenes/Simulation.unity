@@ -2145,6 +2145,10 @@ MonoBehaviour:
   eCD: 0
   rCD: 0
   pCD: 0
+  qLevel: 0
+  wLevel: 0
+  eLevel: 0
+  rLevel: 0
   level: 0
   maxHealth: 0
   currentHealth: 0
@@ -2158,13 +2162,30 @@ MonoBehaviour:
   grievouswounds: 0
   baseHealth: 0
   baseAD: 0
-  baseAP: 0
   baseArmor: 0
   baseSpellBlock: 0
   baseAttackSpeed: 0
   bonusAD: 0
   bonusHP: 0
   bonusAS: 0
+  bonusArmor: 0
+  bonusSpellBlock: 0
+  critStrikeChance: 0
+  critStrikeDamage: 1.75
+  armorPenetrationFlat: 0
+  armorPenetrationPercent: 0
+  magicPenetrationFlat: 0
+  magicPenetrationPercent: 0
+  omniVamp: 0
+  physicalVamp: 0
+  spellVamp: 0
+  healShieldPower: 0
+  abilityHaste: 0
+  basicAbilityHaste: 0
+  ultimateHaste: 0
+  itemHaste: 0
+  sumSpellHaste: 0
+  hpRegen: 0
 --- !u!114 &155855321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6000,6 +6021,10 @@ MonoBehaviour:
   eCD: 0
   rCD: 0
   pCD: 0
+  qLevel: 0
+  wLevel: 0
+  eLevel: 0
+  rLevel: 0
   level: 0
   maxHealth: 0
   currentHealth: 0
@@ -6013,13 +6038,30 @@ MonoBehaviour:
   grievouswounds: 0
   baseHealth: 0
   baseAD: 0
-  baseAP: 0
   baseArmor: 0
   baseSpellBlock: 0
   baseAttackSpeed: 0
   bonusAD: 0
   bonusHP: 0
   bonusAS: 0
+  bonusArmor: 0
+  bonusSpellBlock: 0
+  critStrikeChance: 0
+  critStrikeDamage: 1.75
+  armorPenetrationFlat: 0
+  armorPenetrationPercent: 0
+  magicPenetrationFlat: 0
+  magicPenetrationPercent: 0
+  omniVamp: 0
+  physicalVamp: 0
+  spellVamp: 0
+  healShieldPower: 0
+  abilityHaste: 0
+  basicAbilityHaste: 0
+  ultimateHaste: 0
+  itemHaste: 0
+  sumSpellHaste: 0
+  hpRegen: 0
 --- !u!114 &488366047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22016,7 +22058,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: '{"APIMatchInfo":{"version":"12.10.1","championInfo":[{"champName":"Ashe","champLevel":18,"items":[1037,1037,1037,1037,1037,1037]},{"champName":"Ashe","champLevel":18,"items":[1037,1037,1037,1037,1037,1037]}]}}'
+          m_StringArgument: '{"APIMatchInfo":{"version":"12.17.1","championInfo":[{"champName":"Ashe","champLevel":18,"items":[1037,1037,1037,1037,1037,1037]},{"champName":"Ashe","champLevel":18,"items":[1037,1037,1037,1037,1037,1037]}]}}'
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1638351006
