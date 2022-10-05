@@ -86,11 +86,12 @@ public class Talon : ChampionCombat
     private void CheckTalonPassiveDamage()
     {
         if (talonP.Control())
-        { if(passiveStack == 3){
+        { 
+            if(passiveStack == 3)
+            {
                 UpdateAbilityTotalDamage(ref pSum, 4, new Damage((65 + 10 * myStats.level), SkillDamageType.Phyiscal), myStats.passiveSkill.name);
                 myStats.buffManager.buffs.Remove("BladeEnd");
             }
-
         }
         else
         {
