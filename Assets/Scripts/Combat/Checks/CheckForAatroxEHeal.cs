@@ -16,11 +16,11 @@ public class CheckForAatroxEHeal : Check
     {
         if (combat.targetStats.buffManager.buffs.ContainsKey(aatrox.myStats.rSkill[0].basic.name))
         {
-            aatrox.UpdateTotalHeal(ref aatrox.hSum, damage.value * aatrox.myStats.eSkill[0].UseSkill(4, aatrox.eKeys[1], aatrox.myStats, combat.myStats), aatrox.myStats.eSkill[0].basic.name);
+            aatrox.UpdateTotalHeal(ref aatrox.hSum, damage.value * aatrox.myStats.eSkill[0].UseSkill(aatrox.myStats.eLevel, aatrox.eKeys[1], aatrox.myStats, combat.myStats), aatrox.ESkill().basic.name);
         }
         else
         {
-            aatrox.UpdateTotalHeal(ref aatrox.hSum, damage.value * aatrox.myStats.eSkill[0].UseSkill(4, aatrox.eKeys[0], aatrox.myStats, combat.myStats), aatrox.myStats.eSkill[0].basic.name);
+            aatrox.UpdateTotalHeal(ref aatrox.hSum, damage.value * aatrox.myStats.eSkill[0].UseSkill(aatrox.myStats.eLevel, aatrox.eKeys[0], aatrox.myStats, combat.myStats), aatrox.ESkill().basic.name);
         }
         return damage;
     }
