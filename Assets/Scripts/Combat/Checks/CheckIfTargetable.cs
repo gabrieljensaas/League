@@ -12,7 +12,7 @@ public class CheckIfTargetable : Check
     }
     public override Damage Control(Damage damage)
     {
-        damage.value = combat.myStats.buffManager.buffs.ContainsKey("Untargetable") ? 0 : damage.value;
+        damage.value = (combat.myStats.buffManager.buffs.ContainsKey("Untargetable") || combat.myStats.buffManager.buffs.ContainsKey("Stasis")) ? 0 : damage.value;
         return damage;
     }
 }
