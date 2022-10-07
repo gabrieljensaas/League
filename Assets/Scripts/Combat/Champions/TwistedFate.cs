@@ -66,13 +66,11 @@ public class TwistedFate : ChampionCombat
             if (myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats) >= targetStats.currentHealth)
             {
                 wBlueCard = true;
-                AutoAttack(new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), SkillDamageType.Spell));
             }
             else
             {
                 wGoldCard = true;
                 TargetBuffManager.Add("StunBuff", new StunBuff(WSkill().UseSkill(myStats.wLevel, wKeys[3], myStats, targetStats), TargetBuffManager, "StunBuff"));
-                AutoAttack(new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[2], myStats, targetStats), SkillDamageType.Spell));
             }
             myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         }
@@ -86,25 +84,44 @@ public class TwistedFate : ChampionCombat
 		{
             if (wBlueCard)
             {
-                AutoAttack(new Damage(myStats.AD + WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats) + ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), SkillDamageType.PhysAndSpell));
+                if (AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal)).damage != float.MinValue)
+                {
+                    AutoAttack(new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), SkillDamageType.Spell));
+                    AutoAttack(new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), SkillDamageType.Spell));
+                }
             }
             else if (wGoldCard)
             {
-                AutoAttack(new Damage(myStats.AD + WSkill().UseSkill(myStats.wLevel, wKeys[2], myStats, targetStats) + ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), SkillDamageType.PhysAndSpell));
+                if (AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal)).damage != float.MinValue)
+                {
+                    AutoAttack(new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[2], myStats, targetStats), SkillDamageType.Spell));
+                    AutoAttack(new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), SkillDamageType.Spell));
+                }
             }
             else
-                AutoAttack(new Damage(myStats.AD + ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), SkillDamageType.Phyiscal));
+			{
+                if (AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal)).damage != float.MinValue)
+                {
+                    AutoAttack(new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), SkillDamageType.Spell));
+                }
+            }
             eStack = 0;
         }
 		else
 		{
             if (wBlueCard)
             {
-                AutoAttack(new Damage(myStats.AD + WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), SkillDamageType.PhysAndSpell));
+                if (AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal)).damage != float.MinValue)
+                {
+                    AutoAttack(new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), SkillDamageType.Spell));
+                }
             }
             else if (wGoldCard)
             {
-                AutoAttack(new Damage(myStats.AD + WSkill().UseSkill(myStats.wLevel, wKeys[2], myStats, targetStats), SkillDamageType.PhysAndSpell));
+                if (AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal)).damage != float.MinValue)
+                {
+                    AutoAttack(new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[2], myStats, targetStats), SkillDamageType.Spell));
+                }
             }
             else
                 AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
