@@ -23,6 +23,10 @@ public enum SkillComponentTypes
     OnHit = 8,
     ProcDamage = 16,
     PersistentDamage = 32,
+    Spellblockable = 64,
+    Dodgeable = 128,
+    Blockable = 256,
+    Blindable = 512,
 }
 
 [CreateAssetMenu(fileName = "new Spell", menuName = "ScriptableObjects/SkillList")]

@@ -272,6 +272,9 @@ public class SimManager : MonoBehaviour
             case "Aatrox":
                 stats.MyCombat = stats.gameObject.AddComponent<Aatrox>();
                 break;
+            case "Ahri":
+                stats.MyCombat = stats.gameObject.AddComponent<Ahri>();
+                break;
             case "Garen":
                 stats.MyCombat = stats.gameObject.AddComponent<Garen>();
                 break;
