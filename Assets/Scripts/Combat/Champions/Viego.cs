@@ -111,7 +111,7 @@ public class Viego : ChampionCombat
         {
             UpdateAbilityTotalDamage(ref qSum, 0, new Damage(damage, SkillDamageType.Phyiscal), QSkill().basic.name);
             AutoAttack(new Damage(myStats.AD * (1 + multiplier), SkillDamageType.Phyiscal));
-
+            buff.Kill();
             UpdateTotalHeal(ref qSum, damage * 1.35f, QSkill().basic.name);
         }
         else
