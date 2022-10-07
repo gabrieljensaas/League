@@ -88,6 +88,7 @@ public class Aatrox : ChampionCombat
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == 0) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
@@ -103,6 +104,7 @@ public class Aatrox : ChampionCombat
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == 0) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
@@ -113,6 +115,7 @@ public class Aatrox : ChampionCombat
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == 0) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));

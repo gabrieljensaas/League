@@ -9,7 +9,7 @@ public class Ekko : ChampionCombat
     private float lostHealthPast4Seconds;
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "E", "W", "Q", "R", "A" };
+        combatPrio = new string[] { "R", "W", "Q", "E", "A" };
 
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
@@ -87,6 +87,7 @@ public class Ekko : ChampionCombat
     public override IEnumerator ExecuteR()
     {
         if (!CheckForAbilityControl(checksR)) yield break;
+        if (myStats.PercentCurrentHealth > 0.5f) yield break;
 
         MyBuffManager.Add("Stasis", new StasisBuff(0.5f, MyBuffManager, RSkill().basic.name));
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
