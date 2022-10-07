@@ -5,6 +5,7 @@ using UnityEngine;
 public class Orianna : ChampionCombat
 {
     public int passiveStack;
+    private bool hasBall = true;
     public static float ClockworkWindUpDamageByLevel(int level, int stack)
     {
         if (stack < 2)
@@ -65,6 +66,12 @@ public class Orianna : ChampionCombat
         eKeys.Add("Shield Strength");
         rKeys.Add("Magic Damage");
 
+        if(hasBall)
+		{
+            MyBuffManager.Add("ArmorBuff", new ArmorBuff(float.MaxValue, MyBuffManager, ESkill().basic.name, ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), "ArmorBuff"));
+            MyBuffManager.Add("MRBuff", new MagicResistanceBuff(float.MaxValue, MyBuffManager, ESkill().basic.name, (int) ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), "MRBuff"));
+		}
+        
         base.UpdatePriorityAndChecks();
     }
 
@@ -73,7 +80,8 @@ public class Orianna : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), 4, qKeys[0]);
+        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
+        hasBall = false;
         myStats.qCD = QSkill().basic.coolDown[4];
     }
 
@@ -82,7 +90,7 @@ public class Orianna : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[0]);
+        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
         myStats.wCD = WSkill().basic.coolDown[4];
     }
 
@@ -91,9 +99,9 @@ public class Orianna : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), 4, eKeys[1]);
-        //need help to add resistance when ball is with orianna
-        MyBuffManager.Add(ESkill().basic.name, new ShieldBuff(2.5f, MyBuffManager, ESkill().basic.name, ESkill().UseSkill(4, eKeys[2], myStats, targetStats), ESkill().basic.name));
+        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[1]);
+        hasBall = true;
+        MyBuffManager.Add(ESkill().basic.name, new ShieldBuff(2.5f, MyBuffManager, ESkill().basic.name, ESkill().UseSkill(myStats.eLevel, eKeys[2], myStats, targetStats), ESkill().basic.name));
         myStats.eCD = ESkill().basic.coolDown[4];
     }
 
@@ -102,7 +110,7 @@ public class Orianna : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[0]);
+        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         MyBuffManager.Add(RSkill().basic.name, new StunBuff(0.75f, TargetBuffManager, RSkill().basic.name));
         MyBuffManager.Add("KnockOff", new AirborneBuff(0.1f, TargetBuffManager, RSkill().basic.name));
         myStats.rCD = RSkill().basic.coolDown[2];
