@@ -171,7 +171,8 @@ public class Qiyana : ChampionCombat
         if(passiveCooldown <=0)
 		{
             hasPassive = true;
+            passiveCooldown = 25;
         }
-        passiveCooldown = 25;
+        
     }
 }
