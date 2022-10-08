@@ -29,6 +29,8 @@ namespace Simulator.Combat
         [HideInInspector] public List<Check> checkTakeDamageAbility = new();
         [HideInInspector] public List<Check> checkTakeDamageAAPostMitigation = new();
         [HideInInspector] public List<Check> checkTakeDamageAbilityPostMitigation = new();
+        [HideInInspector] public List<Check> checkPostMitigationDamageAA = new();
+        [HideInInspector] public List<Check> checkPostMitigationDamageAbility = new();
         [HideInInspector] public List<Check> castingCheck = new();
         [HideInInspector] public Check autoattackcheck;
         [HideInInspector] public List<string> qKeys = new();
@@ -257,24 +259,28 @@ namespace Simulator.Combat
             else
                 damage = CheckForDamageControl(checkTakeDamageAA, damage);
 
-            int postMitigationDamage = 0;
-            if (damage.damageType == SkillDamageType.Phyiscal) postMitigationDamage = (int)(damage.value * 100 / (100 + myStats.armor));
-            else if (damage.damageType == SkillDamageType.Spell) postMitigationDamage = (int)(damage.value * 100 / (100 + myStats.spellBlock));
-            else if (damage.damageType == SkillDamageType.True) postMitigationDamage = (int)damage.value;
+            if (damage.damageType == SkillDamageType.Phyiscal) damage.value = (int)(damage.value * 100 / (100 + myStats.armor));
+            else if (damage.damageType == SkillDamageType.Spell) damage.value = (int)(damage.value * 100 / (100 + myStats.spellBlock));
+            else if (damage.damageType == SkillDamageType.True) damage.value = (int)damage.value;
 
             if (!isAutoAttack)
-                postMitigationDamage = (int)CheckForDamageControl(checkTakeDamageAbilityPostMitigation, damage).value;
+                damage.value = (int)CheckForDamageControl(checkTakeDamageAbilityPostMitigation, damage).value;
             else
-                postMitigationDamage = (int)CheckForDamageControl(checkTakeDamageAAPostMitigation, damage).value;
+                damage.value = (int)CheckForDamageControl(checkTakeDamageAAPostMitigation, damage).value;
 
-            if (postMitigationDamage <= 0) return 0;
+            if (damage.value <= 0) return 0;
 
-            myStats.currentHealth -= postMitigationDamage;
-            simulationManager.ShowText($"{myStats.name} Took {postMitigationDamage} Damage From {source}!");
+            if (!isAutoAttack)
+                 CheckForDamageControl(checkPostMitigationDamageAbility, damage);
+            else
+                CheckForDamageControl(checkPostMitigationDamageAA, damage);
+
+            myStats.currentHealth -= damage.value;
+            simulationManager.ShowText($"{myStats.name} Took {damage.value} Damage From {source}!");
 
             CheckDeath();
 
-            return postMitigationDamage;
+            return damage.value;
         }
 
         protected virtual void CheckDeath()
