@@ -35,11 +35,20 @@ public class Shyvana : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
         checksR.Add(new CheckIfImmobilize(this));
 
+        targetCombat.checksQ.Add(new CheckIfEnemyTargetable(targetCombat));
+        targetCombat.checksW.Add(new CheckIfEnemyTargetable(targetCombat));
+        targetCombat.checksE.Add(new CheckIfEnemyTargetable(targetCombat));
+        targetCombat.checksR.Add(new CheckIfEnemyTargetable(targetCombat));
+        targetCombat.checksA.Add(new CheckIfEnemyTargetable(targetCombat));
+
         qKeys.Add("Bonus Physical Damage");
+
         wKeys.Add("Magic Damage Per Tick");
         wKeys.Add("Magic Damage");
+
         eKeys.Add("Magic Damage");
         eKeys.Add("Increased Damage");
+
         rKeys.Add("Fury Generation per Second");
         rKeys.Add("Magic Damage");
         rKeys.Add("Bonus Health");
