@@ -10,6 +10,7 @@ public class NoxiousTrapBuff : Buff
     {
         base.duration = duration;
         base.source = source;
+        this.activationTime = activationTime;
         manager.simulationManager.ShowText($"{manager.stats.name} has Poison for {duration} seconds from {source}!");
     }
 

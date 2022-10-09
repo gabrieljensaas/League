@@ -18,7 +18,7 @@ public class Kayn : ChampionCombat
 
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "R", "E", "Q", "W", "A" };
+        combatPrio = new string[] { "Q", "A", "W", "E", "R" };
 
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));

@@ -91,7 +91,7 @@ public class Teemo : ChampionCombat
         if (!CheckForAbilityControl(checksR) || targetStats.buffManager.buffs.ContainsKey("NoxiousTrap") || noxiousTrapCharges <= 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        targetStats.buffManager.buffs.Add("NoxiousTrap", new NoxiousTrapBuff(4, targetStats.buffManager, myStats.eSkill[0].name, 1));
+        targetStats.buffManager.buffs.Add("NoxiousTrap", new NoxiousTrapBuff(5, targetStats.buffManager, myStats.eSkill[0].name, 1));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 }
