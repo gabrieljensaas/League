@@ -13,7 +13,7 @@ public class Shyvana : ChampionCombat
 
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "E", "W", "Q", "R", "A" };
+        combatPrio = new string[] { "R", "E", "W", "Q", "A" };
 
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
