@@ -3,7 +3,7 @@ using UnityEngine;
 public class MagicResistanceBuff : Buff
 {
     public string uniqueKey;
-    public MagicResistanceBuff(float duration, BuffManager manager, string source, int magicResistance, string uniqueKey) : base(manager)
+    public MagicResistanceBuff(float duration, BuffManager manager, string source, float magicResistance, string uniqueKey) : base(manager)
     {
         manager.stats.spellBlock += magicResistance;
         value = magicResistance;
