@@ -9,7 +9,7 @@ public class AkaliAACheck : Check
 
     public override Damage Control(Damage damage)
     {
-        damage.value += (combat.myStats.baseAD + Akali.AkaliPassiveDamageByLevel[combat.myStats.level] + (combat.myStats.bonusAD * 0.6f) + (0.55f * combat.myStats.AP));
+        //damage.value += (combat.myStats.baseAD + Akali.AkaliPassiveDamageByLevel[combat.myStats.level] + (combat.myStats.bonusAD * 0.6f) + (0.55f * combat.myStats.AP));
         return damage;
     }
 

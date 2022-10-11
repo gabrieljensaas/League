@@ -63,7 +63,7 @@ public class Aatrox : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         if (qCounter == 0)
         {
-            myStats.qCD = QSkill().basic.coolDown[4];
+            myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
             timeSinceLastQ = 0f;
             qCounter++;
             targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.25f, targetStats.buffManager, QSkill().basic.name));
@@ -92,7 +92,7 @@ public class Aatrox : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
         if (UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable) > 0)
         {
             yield return new WaitForSeconds(1.5f);
@@ -109,7 +109,7 @@ public class Aatrox : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         UpdateAbilityTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, SkillComponentTypes.Dash), ESkill().basic.name);
-        myStats.eCD = ESkill().basic.coolDown[4];
+        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
         attackCooldown = 0;
     }
 
@@ -120,14 +120,14 @@ public class Aatrox : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new AttackDamageBuff(10, myStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), myStats.rSkill[0].basic.name));
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
     }
 
     public override IEnumerator HijackedR(int skillLevel)
     {
         yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new AttackDamageBuff(10, targetStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(skillLevel, rKeys[0], targetStats, myStats), myStats.rSkill[0].basic.name));
-        targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
     }
 
     public override IEnumerator ExecuteA()

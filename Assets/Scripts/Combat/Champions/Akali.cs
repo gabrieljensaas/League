@@ -12,16 +12,18 @@ public class Akali : ChampionCombat
     public bool hRCast = false;
     public float timeSinceR = 0f;
     public float hTimeSinceR = 0f;
+    public float remainingShroudTime;
+    public float bannedFromShroud;
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "R", "E", "Q", "A", "" };
+        combatPrio = new string[] { "R", "W", "E", "Q", "A" };
 
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
         checksE.Add(new CheckCD(this, "E"));
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
-        autoattackcheck = new AkaliAACheck(this);
+        //autoattackcheck = new AkaliAACheck(this);
         checksE.Add(new CheckIfImmobilize(this));
         checksQ.Add(new CheckIfCasting(this));
         checksW.Add(new CheckIfCasting(this));
@@ -35,8 +37,14 @@ public class Akali : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
         checksR.Add(new CheckIfImmobilize(this));
+        targetCombat.checksQ.Add(new CheckIfEnemyTargetable(targetCombat));
+        targetCombat.checksW.Add(new CheckIfEnemyTargetable(targetCombat));
+        targetCombat.checksE.Add(new CheckIfEnemyTargetable(targetCombat));
+        targetCombat.checksR.Add(new CheckIfEnemyTargetable(targetCombat));
+        targetCombat.checksA.Add(new CheckIfEnemyTargetable(targetCombat));
 
         qKeys.Add("Magic Damage");
+        wKeys.Add("Shroud Duration");
         eKeys.Add("Magic Damage");
         eKeys.Add("Magic Damage");
         rKeys.Add("Magic Damage");
@@ -45,19 +53,40 @@ public class Akali : ChampionCombat
 
         base.UpdatePriorityAndChecks();
     }
-
-    public override IEnumerator ExecuteQ()
-    {
-        yield return base.ExecuteQ();
-        AssassinsMark();
-    }
-
     public override void CombatUpdate()
     {
         base.CombatUpdate();
         timeSinceE += Time.deltaTime;
         timeSinceR += Time.deltaTime;
         hTimeSinceR += Time.deltaTime;
+        remainingShroudTime -= remainingShroudTime > 0 ? Time.deltaTime : 0;
+        bannedFromShroud -= bannedFromShroud > 0 ? Time.deltaTime : 0;
+        if(bannedFromShroud <= 0 && remainingShroudTime > 0 && !MyBuffManager.buffs.ContainsKey("Untargetable"))
+        {
+            MyBuffManager.Add("Untargetable", new UntargetableBuff(remainingShroudTime, MyBuffManager, WSkill().basic.name));
+        }
+    }
+
+    public override IEnumerator ExecuteQ()
+    {
+        if (!CheckForAbilityControl(checksQ)) yield break;
+
+        bannedFromShroud = 1f;                                 //changes with game time
+        if (MyBuffManager.buffs.TryGetValue("Untargetable", out Buff value)) value.Kill();
+        yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
+        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
+        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
+        //AssassinsMark();
+    }
+
+    public override IEnumerator ExecuteW()
+    {
+        if (!CheckForAbilityControl(checksW)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+        remainingShroudTime = WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats);
+        MyBuffManager.Add("Untargetable", new UntargetableBuff(remainingShroudTime, MyBuffManager, WSkill().basic.name));
+        myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
     }
 
     public override IEnumerator ExecuteE()
@@ -66,18 +95,30 @@ public class Akali : ChampionCombat
 
         if (!eCast)
         {
+            bannedFromShroud = 1f;
+            if (MyBuffManager.buffs.TryGetValue("Untargetable", out Buff value)) value.Kill();
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            StartCoroutine(ShurikenFlip());
-            myStats.eCD = 0.4f;
-            timeSinceE = 0;
-            AssassinsMark();
+            if(UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile) != float.MinValue)
+            {
+                StartCoroutine(ShurikenFlip());
+                myStats.eCD = 0.4f;
+                timeSinceE = 0;
+                //AssassinsMark();
+            }
+            else
+            {
+                myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
+            }
         }
         else
         {
+            bannedFromShroud = 1f;
+            if (MyBuffManager.buffs.TryGetValue("Untargetable", out Buff value)) value.Kill();
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable);
             StopCoroutine(ShurikenFlip());
-            myStats.eCD = myStats.eSkill[0].basic.coolDown[4] - timeSinceE;
+            eCast = false;
+            myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel] - timeSinceE;
         }
     }
 
@@ -87,20 +128,25 @@ public class Akali : ChampionCombat
 
         if (!rCast)
         {
+            bannedFromShroud = 1f;
+            if (MyBuffManager.buffs.TryGetValue("Untargetable", out Buff value)) value.Kill();
             yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
             StartCoroutine(PerfectExecution());
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
             myStats.rCD = 2.5f;
             timeSinceR = 0;
-            AssassinsMark();
+            //AssassinsMark();
         }
         else
         {
+            bannedFromShroud = 1f;
+            if (MyBuffManager.buffs.TryGetValue("Untargetable", out Buff value)) value.Kill();
             yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-            float multiplier = (targetStats.maxHealth - targetStats.currentHealth) / targetStats.maxHealth * 0.0286f;
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats) * (1 + (multiplier > 2 ? 2 : multiplier)), SkillDamageType.Spell), myStats.rSkill[0].basic.name);
+            float multiplier = (targetStats.maxHealth - targetStats.currentHealth) / targetStats.maxHealth > 0.7f ? 0.7f : targetStats.PercentMissingHealth * 0.0286f;
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(myStats.rSkill[0].UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats) * (1 + multiplier), SkillDamageType.Spell, SkillComponentTypes.Spellblockable), myStats.rSkill[0].basic.name);
             StopCoroutine(PerfectExecution());
-            myStats.rCD = myStats.rSkill[0].basic.coolDown[2] - timeSinceR;
+            rCast = false;
+            myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel] - timeSinceR;
         }
     }
 
@@ -111,35 +157,46 @@ public class Akali : ChampionCombat
         {
             yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
             StartCoroutine(HPerfectExecution(skillLevel));
-            UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
+            UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
             targetStats.rCD = 2.5f;
             hTimeSinceR = 0;
         }
         else
         {
             yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
-            float multiplier = (myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth * 0.0286f;
-            UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, new Damage(myStats.rSkill[0].SylasUseSkill(skillLevel, rKeys[1], targetStats, myStats) * (1 + (multiplier > 2 ? 2 : multiplier)), SkillDamageType.Spell), myStats.rSkill[0].basic.name);
+            float multiplier = (myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth > 0.7f ? 0.7f : myStats.PercentMissingHealth * 0.0286f;
+            UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, new Damage(myStats.rSkill[0].SylasUseSkill(skillLevel, rKeys[1], targetStats, myStats) * (1 + multiplier), SkillDamageType.Spell, SkillComponentTypes.Spellblockable), myStats.rSkill[0].basic.name);
             StopCoroutine(HPerfectExecution(skillLevel));
+            hRCast = false;
             targetStats.rCD = (targetStats.rSkill[0].basic.coolDown[skillLevel] - hTimeSinceR) * 2;
         }
     }
 
-    public void AssassinsMark()
+    public override IEnumerator ExecuteA()
+    {
+        if (!CheckForAbilityControl(checksA)) yield break;
+
+        bannedFromShroud = 1f;
+        if (MyBuffManager.buffs.TryGetValue("Untargetable", out Buff value)) value.Kill();
+        yield return StartCoroutine(StartCastingAbility(0.1f));
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
+    }
+
+    /*public void AssassinsMark()
     {
         if (!targetStats.buffManager.buffs.TryAdd("AkaliPassiveBuff", new AkaliPassiveBuff(4, targetStats.buffManager, myStats.passiveSkill.skillName)))
         {
             targetStats.buffManager.buffs["AkaliPassiveBuff"].duration = 4;
             myStats.buffManager.buffs.Remove("AkaliPassive");
         }
-    }
+    }*/
 
     public IEnumerator ShurikenFlip()
     {
         eCast = true;
         yield return new WaitForSeconds(3f);
         eCast = false;
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4] - timeSinceE;
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel] - timeSinceE;
     }
 
     public IEnumerator PerfectExecution()
@@ -147,7 +204,7 @@ public class Akali : ChampionCombat
         rCast = true;
         yield return new WaitForSeconds(10f);
         rCast = false;
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2] - timeSinceR;
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel] - timeSinceR;
     }
 
     public IEnumerator HPerfectExecution(int skillLevel)
