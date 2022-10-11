@@ -86,6 +86,14 @@ public class Ahri : ChampionCombat
         myStats.rCD = rStacks > 0 ? 1 : myStats.rSkill[0].basic.coolDown[myStats.rLevel];
     }
 
+    public override IEnumerator ExecuteA()
+    {
+        if (!CheckForAbilityControl(checksA)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(0.1f));
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal,SkillComponentTypes.Projectile | SkillComponentTypes.OnHit | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable));
+    }
+
     public override IEnumerator HijackedR(int skillLevel)
     {
         if (targetStats.buffManager.HasImmobilize) yield break;

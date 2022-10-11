@@ -192,7 +192,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksA)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(0.1f));
-            AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
+            AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal, SkillComponentTypes.OnHit | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable));
         }
 
         protected virtual IEnumerator ExecuteSkillIfReady(string skill)

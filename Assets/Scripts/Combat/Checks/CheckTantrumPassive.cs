@@ -2,15 +2,21 @@ using Simulator.Combat;
 
 public class CheckTantrumPassive : Check
 {
-    private Amumu amumu;
-    public CheckTantrumPassive(ChampionCombat ccombat, Amumu amumu) : base(ccombat)
+    public CheckTantrumPassive(ChampionCombat ccombat) : base(ccombat)
     {
-        this.amumu = amumu;
     }
 
     public override Damage Control(Damage damage)
     {
-        amumu.DamagedByAutoAttack(damage.value);
+        if(damage.damageType == SkillDamageType.Phyiscal)
+        {
+            var reduction = combat.ESkill().UseSkill(combat.myStats.eLevel, combat.eKeys[0], combat.myStats, combat.targetStats);
+            damage.value -= damage.value * 0.5f > reduction ? reduction : damage.value * 0.5f;
+        }
+        if(damage.skillComponentType == SkillComponentTypes.OnHit)
+        {
+            combat.myStats.eCD -= 0.5f;
+        }
         return damage;
     }
 

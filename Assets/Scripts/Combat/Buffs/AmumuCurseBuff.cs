@@ -18,6 +18,6 @@ public class AmumuCurseBuff : Buff
     public override void Kill()
     {
         manager.simulationManager.ShowText($"{manager.stats.name} no longer has Curse!");
-        manager.buffs.Remove("CurseBuff");
+        manager.buffs.Remove("AmumuCurse");
     }
 }

@@ -179,7 +179,7 @@ public class Akali : ChampionCombat
         bannedFromShroud = 1f;
         if (MyBuffManager.buffs.TryGetValue("Untargetable", out Buff value)) value.Kill();
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal, SkillComponentTypes.OnHit | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable));
     }
 
     /*public void AssassinsMark()
