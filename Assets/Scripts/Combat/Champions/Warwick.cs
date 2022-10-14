@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Warwick : ChampionCombat
 {
-	private bool eCast;
+    private bool eCast;
     private float timeSinceE;
-	public override void UpdatePriorityAndChecks()
+    public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "W", "Q", "R", "A" };
 
@@ -64,7 +64,7 @@ public class Warwick : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         UpdateAbilityTotalDamage(ref qSum, 0, new Damage(1.2f * myStats.AD, SkillDamageType.Phyiscal), QSkill().basic.name);
-        UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * targetStats.maxHealth, SkillDamageType.Spell), QSkill().basic.name); 
+        UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * targetStats.maxHealth, SkillDamageType.Spell), QSkill().basic.name);
         UpdateTotalHeal(ref qSum, QSkill().UseSkill(myStats.qLevel, qKeys[1], myStats, targetStats), QSkill().basic.name);
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
     }
@@ -101,7 +101,7 @@ public class Warwick : ChampionCombat
         MyBuffManager.Add("Channeling", new ChannelingBuff(1.5f, MyBuffManager, RSkill().basic.name, "InfiniteDuress"));
         TargetBuffManager.Add("SuppressBuff", new SuppressionBuff(1.5f, TargetBuffManager, RSkill().basic.name));
 
-        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.Blockable | SkillComponentTypes.Dash |SkillComponentTypes.OnHit), QSkill().basic.name);
+        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.Blockable | SkillComponentTypes.Dash | SkillComponentTypes.OnHit), QSkill().basic.name);
         UpdateTotalHeal(ref rSum, RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats), RSkill().basic.name); //need to change to post mitigation
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
     }

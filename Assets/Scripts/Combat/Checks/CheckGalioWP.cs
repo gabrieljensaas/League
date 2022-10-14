@@ -13,7 +13,7 @@ public class CheckGalioWP : Check
     }
     public override Damage Control(Damage damage)
     {
-        if (galio.hasShieldOfDurandPassive) galio.hasShieldOfDurandPassive = false; 
+        if (galio.hasShieldOfDurandPassive) galio.hasShieldOfDurandPassive = false;
         return damage;
     }
 }

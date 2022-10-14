@@ -11,7 +11,7 @@ public class PantheonAACheck : Check
     public override Damage Control(Damage damage)
     {
         if (pantheon.hasMortalWill)
-		{
+        {
             //need to apply Pantheon W crit
         }
 

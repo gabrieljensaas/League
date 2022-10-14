@@ -107,7 +107,7 @@ public class Amumu : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         MyBuffManager.Add(RSkill().basic.name, new KnockdownBuff(0.1f, TargetBuffManager, RSkill().basic.name));
         MyBuffManager.Add("Stun", new StunBuff(1.5f, TargetBuffManager, RSkill().basic.name));
-        if(UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] {"Stun"}) != float.MinValue) ApplyCurse();
+        if (UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] { "Stun" }) != float.MinValue) ApplyCurse();
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
     }
 
@@ -116,7 +116,7 @@ public class Amumu : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        if(AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal, SkillComponentTypes.OnHit | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable)).damage != float.MinValue) ApplyCurse();
+        if (AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal, SkillComponentTypes.OnHit | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable)).damage != float.MinValue) ApplyCurse();
     }
 
     public IEnumerator Despair()

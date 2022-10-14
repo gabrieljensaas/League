@@ -79,7 +79,7 @@ public class Kassadin : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats,targetStats) + (rStack * RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats)), SkillDamageType.Spell, SkillComponentTypes.Blink), RSkill().basic.name);
+        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) + (rStack * RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats)), SkillDamageType.Spell, SkillComponentTypes.Blink), RSkill().basic.name);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         StopCoroutine(RStacks());
         StartCoroutine(RStacks());

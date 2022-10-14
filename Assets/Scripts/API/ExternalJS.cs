@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -17,12 +16,16 @@ public class ExternalJS : MonoBehaviour
 [System.Serializable]
 public class WebData
 {
-    public string[] logs;
-    public SnapShot[] snapShots;
-    public WebData(string[] logs, SnapShot[] snap)
+    public DamageLog[] DamageLogs;
+    public SnapShot[] SnapShots;
+    public HealLog[] HealLogs;
+    public BuffLog[] BuffLogs;
+    public WebData(SnapShot[] snap, DamageLog[] dmglogs, HealLog[] hlogs, BuffLog[] bufflogs)
     {
-        this.logs = logs;
-        this.snapShots = snap;
+        this.DamageLogs = dmglogs;
+        this.SnapShots = snap;
+        this.HealLogs = hlogs;
+        this.BuffLogs = bufflogs;
     }
 }
 [System.Serializable]
@@ -31,12 +34,14 @@ public class SnapShot
     public string log;
     public ChampionSnap champion1;
     public ChampionSnap champion2;
+    public float time;
 
-    public SnapShot(string log, ChampionSnap champion1, ChampionSnap champion2)
+    public SnapShot(string log, ChampionSnap champion1, ChampionSnap champion2, float time)
     {
         this.log = log;
         this.champion1 = champion1;
         this.champion2 = champion2;
+        this.time = time;
     }
 }
 [System.Serializable]
@@ -49,5 +54,57 @@ public class ChampionSnap
     {
         this.championName = championName;
         this.health = health;
+    }
+}
+
+[System.Serializable]
+public class DamageLog
+{
+    public string championName;
+    public string skillName;
+    public float value;
+    public float time;
+
+    public DamageLog(string championName, string skillName, float value, float seconds)
+    {
+        this.championName = championName;
+        this.skillName = skillName;
+        this.value = value;
+        this.time = seconds;
+    }
+}
+
+[System.Serializable]
+public class HealLog
+{
+    public string championName;
+    public string skillName;
+    public float value;
+    public float time;
+
+    public HealLog(string championName, string skillName, float value, float seconds)
+    {
+        this.championName = championName;
+        this.skillName = skillName;
+        this.value = value;
+        this.time = seconds;
+    }
+}
+
+[System.Serializable]
+public class BuffLog
+{
+    public string championName;
+    public string skillName;
+    public float duration;
+    public float time;
+    public string effect;
+
+    public BuffLog(string championName, string skillName, float duration, float seconds, string effect)
+    {
+        this.championName = championName;
+        this.skillName = skillName;
+        this.effect = effect;
+        this.time = seconds;
     }
 }

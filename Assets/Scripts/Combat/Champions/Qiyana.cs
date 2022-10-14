@@ -1,5 +1,4 @@
 using Simulator.Combat;
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -43,10 +42,10 @@ public class Qiyana : ChampionCombat
         eKeys.Add("Physical Damage");
         rKeys.Add("Physical Damage");
 
-        if(hasElement)
-		{
+        if (hasElement)
+        {
             MyBuffManager.Add("AttackSpeedBuff", new AttackSpeedBuff(float.MaxValue, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), "AttackSpeedBuff"));
-		}
+        }
 
         base.UpdatePriorityAndChecks();
     }
@@ -105,21 +104,21 @@ public class Qiyana : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        if(targetStats.PercentMissingHealth < 0.5)
-		{
+        if (targetStats.PercentMissingHealth < 0.5)
+        {
             hasTerrain = true;
-		}
-		else
-        { 
+        }
+        else
+        {
             int check = UnityEngine.Random.Range(0, 1);
             if (check == 1)
             {
                 hasBrush = true;
             }
             else if (check == 0)
-			{
+            {
                 hasRiver = true;
-			}
+            }
         }
         hasElement = true;
         passiveCooldown = 0;
@@ -150,7 +149,7 @@ public class Qiyana : ChampionCombat
         }
         TargetBuffManager.Add("Airborne", new AirborneBuff(0.1f, TargetBuffManager, RSkill().basic.name));
         UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
-        float check = UnityEngine.Random.Range(0.5f, 1);;
+        float check = UnityEngine.Random.Range(0.5f, 1); ;
         TargetBuffManager.Add("Stun", new StunBuff(check, TargetBuffManager, RSkill().basic.name));
         myStats.rCD = RSkill().basic.coolDown[2];
     }
@@ -160,19 +159,19 @@ public class Qiyana : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        if(hasElement)
-		{
+        if (hasElement)
+        {
             AutoAttack(new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.OnHit));
         }
         AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
     }
     public void RoyalPrivilege()
-	{
-        if(passiveCooldown <=0)
-		{
+    {
+        if (passiveCooldown <= 0)
+        {
             hasPassive = true;
             passiveCooldown = 25;
         }
-        
+
     }
 }

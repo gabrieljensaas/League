@@ -61,7 +61,7 @@ public class Akali : ChampionCombat
         hTimeSinceR += Time.deltaTime;
         remainingShroudTime -= remainingShroudTime > 0 ? Time.deltaTime : 0;
         bannedFromShroud -= bannedFromShroud > 0 ? Time.deltaTime : 0;
-        if(bannedFromShroud <= 0 && remainingShroudTime > 0 && !MyBuffManager.buffs.ContainsKey("Untargetable"))
+        if (bannedFromShroud <= 0 && remainingShroudTime > 0 && !MyBuffManager.buffs.ContainsKey("Untargetable"))
         {
             MyBuffManager.Add("Untargetable", new UntargetableBuff(remainingShroudTime, MyBuffManager, WSkill().basic.name));
         }
@@ -98,7 +98,7 @@ public class Akali : ChampionCombat
             bannedFromShroud = 1f;
             if (MyBuffManager.buffs.TryGetValue("Untargetable", out Buff value)) value.Kill();
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            if(UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile) != float.MinValue)
+            if (UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile) != float.MinValue)
             {
                 StartCoroutine(ShurikenFlip());
                 myStats.eCD = 0.4f;

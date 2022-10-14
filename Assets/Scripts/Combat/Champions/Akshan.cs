@@ -272,7 +272,7 @@ public class Akshan : ChampionCombat
     public override void StopChanneling(string uniqueKey)
     {
         StopCoroutine(uniqueKey);
-        if("HeroicSwing" == uniqueKey) myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
+        if ("HeroicSwing" == uniqueKey) myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
         if ("Comeuppance" == uniqueKey) myStats.rCD = 5f;
     }
 
@@ -280,10 +280,10 @@ public class Akshan : ChampionCombat
     {
         yield return new WaitForSeconds(2.5f);
         StartCastingAbility(bullets * 0.1f);
-        while(bullets > 0)
+        while (bullets > 0)
         {
             yield return new WaitForSeconds(0.1f);
-            if(UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], damageModifier: 1 + (targetStats.PercentMissingHealth * 3), skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable) != float.MinValue)
+            if (UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], damageModifier: 1 + (targetStats.PercentMissingHealth * 3), skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable) != float.MinValue)
             {
                 if (MyBuffManager.buffs.TryGetValue("DirtyFighting", out Buff value))
                 {

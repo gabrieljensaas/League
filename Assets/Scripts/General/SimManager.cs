@@ -18,7 +18,7 @@ public class SimManager : MonoBehaviour
     [SerializeField] private TMP_Dropdown[] championsDropdowns;
     [SerializeField] private TMP_InputField[] championsExperienceInput;
 
-    private float timer;
+    public float timer;
     public TextMeshProUGUI outputText;
     public GameObject OutputField;
     public Button startButton;
@@ -29,6 +29,9 @@ public class SimManager : MonoBehaviour
     public ChampionCombat[] champCombat;
 
     public List<SnapShot> snaps = new List<SnapShot>();
+    public List<DamageLog> damagelogs = new List<DamageLog>();
+    public List<HealLog> heallogs = new List<HealLog>();
+    public List<BuffLog> bufflogs = new List<BuffLog>();
 
     #region Singleton
     private static SimManager _instance;
@@ -248,8 +251,16 @@ public class SimManager : MonoBehaviour
 
         stats1.name = champName1;
         stats1.level = response.APIMatchInfo.championInfo[0].champLevel;
+        stats1.qLevel = response.APIMatchInfo.championInfo[0].ability[0];
+        stats1.wLevel = response.APIMatchInfo.championInfo[0].ability[1];
+        stats1.eLevel = response.APIMatchInfo.championInfo[0].ability[2];
+        stats1.rLevel = response.APIMatchInfo.championInfo[0].ability[3];
         stats2.name = champName2;
         stats2.level = response.APIMatchInfo.championInfo[1].champLevel;
+        stats2.qLevel = response.APIMatchInfo.championInfo[1].ability[0];
+        stats2.wLevel = response.APIMatchInfo.championInfo[1].ability[1];
+        stats2.eLevel = response.APIMatchInfo.championInfo[1].ability[2];
+        stats2.rLevel = response.APIMatchInfo.championInfo[1].ability[3];
 
         GetStatsByLevel(stats1, so1);
         stats1.maxHealth = stats1.baseHealth + stats1.bonusHP;
@@ -547,7 +558,22 @@ public class SimManager : MonoBehaviour
     public IEnumerator TakeSnapShot()
     {
         yield return new WaitForSeconds(0.5f);
-        snaps.Add(new SnapShot("", new ChampionSnap(champStats[0].name, champStats[0].PercentCurrentHealth * 100), new ChampionSnap(champStats[1].name, champStats[1].PercentCurrentHealth * 100)));
+        snaps.Add(new SnapShot("", new ChampionSnap(champStats[0].name, champStats[0].PercentCurrentHealth * 100), new ChampionSnap(champStats[1].name, champStats[1].PercentCurrentHealth * 100), timer % 60));
         StartCoroutine(TakeSnapShot());
+    }
+
+    public void AddDamageLog(DamageLog log)
+    {
+        damagelogs.Add(log);
+    }
+
+    public void AddHealLog(HealLog log)
+    {
+        heallogs.Add(log);
+    }
+
+    public void AddBuffLog(BuffLog log)
+    {
+        bufflogs.Add(log);
     }
 }

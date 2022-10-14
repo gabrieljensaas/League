@@ -5,10 +5,10 @@ using UnityEngine;
 public class Galio : ChampionCombat
 {
     private static float DamageWithWChannelTime(float time)
-	{
+    {
         return time switch
         {
-            < 0.25f =>0,
+            < 0.25f => 0,
             < 0.5f => 0.25f,
             < 0.75f => 0.5f,
             < 1f => 0.75f,
@@ -16,15 +16,15 @@ public class Galio : ChampionCombat
             < 1.5f => 1.25f,
             < 1.75f => 1.5f,
             < 2f => 1.75f,
-            _  => 2f,
+            _ => 2f,
         };
-	}
+    }
 
     private static float TauntWithWChannelTime(float time)
-	{
+    {
         return time switch
         {
-            < 0.25f =>0.5f,
+            < 0.25f => 0.5f,
             < 0.5f => 0.63f,
             < 0.75f => 0.75f,
             < 1f => 0.88f,
@@ -32,16 +32,16 @@ public class Galio : ChampionCombat
             < 1.5f => 1.13f,
             < 1.75f => 1.25f,
             < 2f => 1.38f,
-            _  => 1.5f,
+            _ => 1.5f,
         };
-	}
+    }
     private bool hasEmpoweredAuto = false;
-	private bool wCast;
+    private bool wCast;
     private float timeSinceChannel;
-	public bool hasShieldOfDurandPassive = true;
+    public bool hasShieldOfDurandPassive = true;
     private float passiveCooldown;
 
-	public override void UpdatePriorityAndChecks()
+    public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "W", "Q", "R", "A" };
 
@@ -110,7 +110,7 @@ public class Galio : ChampionCombat
         {
             yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
             MyBuffManager.Add("Channeling", new ChannelingBuff(3f, MyBuffManager, WSkill().basic.name, "Channeling"));
-            MyBuffManager.Add("MRBuff", new MagicResistanceBuff(3f, MyBuffManager, WSkill().basic.name, (int) WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), "MRBuff"));
+            MyBuffManager.Add("MRBuff", new MagicResistanceBuff(3f, MyBuffManager, WSkill().basic.name, (int)WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), "MRBuff"));
             MyBuffManager.Add("ArmorBuff", new ArmorBuff(3f, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats) * 0.5f, "ArmorBuff"));
             timeSinceChannel = 0;
 
@@ -156,15 +156,15 @@ public class Galio : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(0.1f));
         CheckColossalSmash();
         if (hasEmpoweredAuto)
-		{
-            AutoAttack(new Damage(15+ 10.88235f *(myStats.level - 1), SkillDamageType.Spell)); //need to apply crit
+        {
+            AutoAttack(new Damage(15 + 10.88235f * (myStats.level - 1), SkillDamageType.Spell)); //need to apply crit
             hasEmpoweredAuto = false;
         }
         else
             AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
     }
     private void CheckColossalSmash()
-	{
+    {
         if (passiveCooldown <= 0)
         {
             hasEmpoweredAuto = true;

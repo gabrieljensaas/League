@@ -6,7 +6,7 @@ public class Rammus : ChampionCombat
 {
     private int durationTimesIncreased;
 
-	public override void UpdatePriorityAndChecks()
+    public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "W", "Q", "R", "A" };
 
@@ -82,7 +82,7 @@ public class Rammus : ChampionCombat
             value.duration = ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats);
         }
         MyBuffManager.Add(WSkill().basic.name, new DefensiveBallCurlBuff(6, MyBuffManager, WSkill().basic.name));
-        MyBuffManager.Add(WSkill().basic.name, new ArmorBuff(6, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel,wKeys[0], myStats, targetStats), "ArmorBuff"));
+        MyBuffManager.Add(WSkill().basic.name, new ArmorBuff(6, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), "ArmorBuff"));
         MyBuffManager.Add(WSkill().basic.name, new MagicResistanceBuff(6, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), "MRBuff"));
         myStats.wCD = WSkill().basic.coolDown[4];
     }
@@ -136,7 +136,7 @@ public class Rammus : ChampionCombat
             }
             durationTimesIncreased++;
         }
-          
+
         AutoAttack(new Damage(10 + 0.1f * myStats.armor, SkillDamageType.Spell, skillComponentType: SkillComponentTypes.ProcDamage));
     }
 }

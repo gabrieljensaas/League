@@ -5,15 +5,15 @@ using UnityEngine;
 public class Volibear : ChampionCombat
 {
     private static float LightningClaws(int value)
-	{
+    {
         return value switch
         {
             <= 3 => 1,
             <= 6 => 2,
-            <=13 => 3,
+            <= 13 => 3,
             _ => 4
         };
-	}
+    }
 
     private int pStack;
     private float timeSinceWounded;
@@ -54,9 +54,9 @@ public class Volibear : ChampionCombat
         wKeys.Add("Physical Damage");
         wKeys.Add("Increased Damage");
         wKeys.Add("Heal");
-        
+
         eKeys.Add("Magic Damage");
-        
+
         rKeys.Add("Bonus Health");
         rKeys.Add("Physical Damage");
 
@@ -79,16 +79,16 @@ public class Volibear : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        if(timeSinceWounded > 8)
-		{
+        if (timeSinceWounded > 8)
+        {
             UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
         }
-		else
-		{
-			UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[1]);
-            UpdateTotalHeal(ref wSum, WSkill().UseSkill(myStats.wLevel, wKeys[2], myStats, targetStats),WSkill().basic.name);
+        else
+        {
+            UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[1]);
+            UpdateTotalHeal(ref wSum, WSkill().UseSkill(myStats.wLevel, wKeys[2], myStats, targetStats), WSkill().basic.name);
         }
-		timeSinceWounded = 0;
+        timeSinceWounded = 0;
         myStats.wCD = WSkill().basic.coolDown[4];
     }
 
@@ -120,11 +120,11 @@ public class Volibear : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(0.1f));
         StopCoroutine(PStackExpired());
         AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
-		if (pStack >= 5) pStack = 5;
+        if (pStack >= 5) pStack = 5;
         else pStack++;
-        if(pStack == 5)
-		{
-            AutoAttack(new Damage(10 + LightningClaws(myStats.level) , SkillDamageType.Spell));
+        if (pStack == 5)
+        {
+            AutoAttack(new Damage(10 + LightningClaws(myStats.level), SkillDamageType.Spell));
         }
         myStats.buffManager.buffs.Remove("RelentlessStorm");
         myStats.buffManager.buffs.Add("RelentlessStorm", new AttackSpeedBuff(6f, myStats.buffManager, "RelentlessStorm", 0.05f * pStack, "RelentlessStorm"));
@@ -134,7 +134,7 @@ public class Volibear : ChampionCombat
     private IEnumerator PStackExpired()
     {
         yield return new WaitForSeconds(6);
-        pStack = 0 ;
+        pStack = 0;
         myStats.buffManager.buffs.Remove("RelentlessStorm");
     }
 }

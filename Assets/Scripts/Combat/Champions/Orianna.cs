@@ -66,12 +66,12 @@ public class Orianna : ChampionCombat
         eKeys.Add("Shield Strength");
         rKeys.Add("Magic Damage");
 
-        if(hasBall)
-		{
+        if (hasBall)
+        {
             MyBuffManager.Add("ArmorBuff", new ArmorBuff(float.MaxValue, MyBuffManager, ESkill().basic.name, ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), "ArmorBuff"));
-            MyBuffManager.Add("MRBuff", new MagicResistanceBuff(float.MaxValue, MyBuffManager, ESkill().basic.name, (int) ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), "MRBuff"));
-		}
-        
+            MyBuffManager.Add("MRBuff", new MagicResistanceBuff(float.MaxValue, MyBuffManager, ESkill().basic.name, (int)ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), "MRBuff"));
+        }
+
         base.UpdatePriorityAndChecks();
     }
 

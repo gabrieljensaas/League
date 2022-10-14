@@ -4,7 +4,7 @@ using System.Collections;
 public class Quinn : ChampionCombat
 {
     public static float HarrierCooldownByCrit(float crit)
-	{
+    {
         return crit switch
         {
             < 10 => 8f,
@@ -20,7 +20,7 @@ public class Quinn : ChampionCombat
             _ => 2.93f,
 
         };
-	}
+    }
     private bool hasSkyStrike = false;
     private bool rCast;
     public override void UpdatePriorityAndChecks()
@@ -117,18 +117,18 @@ public class Quinn : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(0.1f));
         if (targetStats.buffManager.buffs.TryGetValue("HarrierVulnerable", out Buff buff))
         {
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage(5 + 5* myStats.level, SkillDamageType.Phyiscal), myStats.passiveSkill.skillName);
+            UpdateAbilityTotalDamage(ref pSum, 4, new Damage(5 + 5 * myStats.level, SkillDamageType.Phyiscal), myStats.passiveSkill.skillName);
             MyBuffManager.Add("AttackSpeedBuff", new AttackSpeedBuff(2f, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), "AttackSppedBuff"));
             buff.Kill();
             myStats.pCD = HarrierCooldownByCrit(myStats.critStrikeChance);
         }
         AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
     }
-    
+
     void HarrierVulnerable(string source)
-	{
-        if(myStats.pCD == 0)
-		{
+    {
+        if (myStats.pCD == 0)
+        {
             if (targetStats.buffManager.buffs.TryGetValue("HarrierVulnerable", out Buff buff))
                 buff.duration = 4;
             else
@@ -136,13 +136,13 @@ public class Quinn : ChampionCombat
         }
     }
     public void CheckiFSkyStrike()
-	{
-        if(hasSkyStrike)
-		{
+    {
+        if (hasSkyStrike)
+        {
             UpdateAbilityTotalDamage(ref rSum, 3, new Damage(0.7f * myStats.AD, SkillDamageType.Phyiscal), RSkill().basic.name);
             hasSkyStrike = false;
         }
-	}
+    }
     public override void StopChanneling(string uniqueKey)
     {
         StopCoroutine(uniqueKey);

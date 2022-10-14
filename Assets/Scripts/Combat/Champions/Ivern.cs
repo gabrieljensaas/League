@@ -7,7 +7,7 @@ public class Ivern : ChampionCombat
     private int brushMakerCharge = 3;
     public bool inBrush;
     private float timeSinceBush = 0;
- 
+
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "W", "Q", "E", "A" };
@@ -64,7 +64,7 @@ public class Ivern : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.Spell ), QSkill().basic.name);
+        UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.Spell), QSkill().basic.name);
         TargetBuffManager.Add("RootBuff", new RootBuff(QSkill().UseSkill(myStats.qLevel, qKeys[1], myStats, targetStats), TargetBuffManager, "RootCaller"));
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
     }
@@ -75,8 +75,8 @@ public class Ivern : ChampionCombat
             if (!CheckForAbilityControl(checksW)) yield break;
             yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
 
-            if(timeSinceBush >= 30)
-			{
+            if (timeSinceBush >= 30)
+            {
                 MyBuffManager.Add("Brushmaker", new BrushMakerBuff(30f, MyBuffManager, WSkill().basic.name));
                 timeSinceBush = 0;
             }
@@ -110,8 +110,8 @@ public class Ivern : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
-        if(inBrush)
-		{
+        if (inBrush)
+        {
             AutoAttack(new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), SkillDamageType.Spell));
         }
     }

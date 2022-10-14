@@ -9,6 +9,7 @@ public class APIMatchInfo
 [Serializable]
 public class ChampionInfo
 {
+    public List<int> ability;
     public string champName;
     public int champLevel;
     public List<int> items;

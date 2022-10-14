@@ -9,10 +9,10 @@ public class Pantheon : ChampionCombat
     private float timeSinceQ;
     public int passiveStack = 5;
     public bool hasMortalWill = false;
-	private bool eCast;
+    private bool eCast;
     private float timeSinceE;
 
-	public override void UpdatePriorityAndChecks()
+    public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "W", "Q", "R", "A" };
 
@@ -129,7 +129,7 @@ public class Pantheon : ChampionCombat
         CheckMortalWill();
         MyBuffManager.Add("Channeling", new ChannelingBuff(4.2f, MyBuffManager, RSkill().basic.name, "Channelling"));
         yield return new WaitForSeconds(4f);
-        UpdateAbilityTotalDamage(ref rSum, 3, new Damage( PantheonRDamageByQLevel[myStats.qLevel], SkillDamageType.Phyiscal), RSkill().basic.name);
+        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(PantheonRDamageByQLevel[myStats.qLevel], SkillDamageType.Phyiscal), RSkill().basic.name);
         UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         passiveStack = 5;
         myStats.rCD = RSkill().basic.coolDown[2];
@@ -137,15 +137,15 @@ public class Pantheon : ChampionCombat
 
     private void CheckMortalWill()
     {
-        if(passiveStack == 5)
-		{
+        if (passiveStack == 5)
+        {
             hasMortalWill = true;
             passiveStack = 0;
-		}
+        }
         else
-		{
+        {
             passiveStack++;
-		}
+        }
     }
 
     public IEnumerator CometSpear()
@@ -157,7 +157,7 @@ public class Pantheon : ChampionCombat
     }
 
     public IEnumerator AegisAssault()
-	{
+    {
         yield return new WaitForSeconds(0.125f);
         UpdateAbilityTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
         yield return new WaitForSeconds(0.125f);

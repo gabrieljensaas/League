@@ -10,7 +10,7 @@ public class BerserkBuff : Buff
         if (manager.buffs.TryGetValue("Channeling", out Buff value))
             value.Kill();
 
-        manager.simulationManager.ShowText($"{manager.stats.name} is Berserked by {source} for {base.duration:F3} seconds!");
+        SimManager.Instance.AddBuffLog(new BuffLog(manager.stats.name, source, duration, SimManager.Instance.timer % 60, "Berserk"));
     }
 
     public override void Update()

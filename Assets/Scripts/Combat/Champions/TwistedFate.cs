@@ -4,7 +4,7 @@ using System.Collections;
 public class TwistedFate : ChampionCombat
 {
 
-	private bool wCast;
+    private bool wCast;
     private bool wBlueCard;
     private bool wGoldCard;
     private int eStack;
@@ -80,8 +80,8 @@ public class TwistedFate : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        if(eStack >= 3)
-		{
+        if (eStack >= 3)
+        {
             if (wBlueCard)
             {
                 if (AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal)).damage != float.MinValue)
@@ -99,7 +99,7 @@ public class TwistedFate : ChampionCombat
                 }
             }
             else
-			{
+            {
                 if (AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal)).damage != float.MinValue)
                 {
                     AutoAttack(new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), SkillDamageType.Spell));
@@ -107,8 +107,8 @@ public class TwistedFate : ChampionCombat
             }
             eStack = 0;
         }
-		else
-		{
+        else
+        {
             if (wBlueCard)
             {
                 if (AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal)).damage != float.MinValue)

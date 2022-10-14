@@ -70,7 +70,7 @@ public class Shyvana : ChampionCombat
         if (fury <= 0)
             hasDragonForm = false;
         else
-            fury += (int)(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * Time.deltaTime); 
+            fury += (int)(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * Time.deltaTime);
     }
 
     public override IEnumerator ExecuteQ()
@@ -161,10 +161,10 @@ public class Shyvana : ChampionCombat
         if (isMarked)
         {
             AutoAttack(new Damage(0.35f * targetStats.maxHealth, SkillDamageType.Spell, SkillComponentTypes.OnHit));
-            if (timeSinceMarked >=5)
-			{
+            if (timeSinceMarked >= 5)
+            {
                 isMarked = false;
-			}   
+            }
         }
         AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         fury += 2;
@@ -204,7 +204,7 @@ public class BurnoutBuff : Buff
 
 public class DragonDescentBuff : Buff
 {
-    public DragonDescentBuff(int fury,BuffManager manager, string source, int HP) : base(manager)
+    public DragonDescentBuff(int fury, BuffManager manager, string source, int HP) : base(manager)
     {
         manager.stats.maxHealth += HP;
         manager.stats.currentHealth += HP;

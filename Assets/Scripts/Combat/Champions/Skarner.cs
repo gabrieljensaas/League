@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Skarner : ChampionCombat
 {
-	private bool isCharged = false;
+    private bool isCharged = false;
     public bool hasCrystalVenom;
     public bool hasImpale;
-	public override void UpdatePriorityAndChecks()
+    public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "Q", "W", "R", "A" };
 
@@ -54,7 +54,7 @@ public class Skarner : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
-        if(isCharged) UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1]);
+        if (isCharged) UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1]);
         isCharged = true;
         myStats.qCD = QSkill().basic.coolDown[4];
     }
@@ -70,7 +70,7 @@ public class Skarner : ChampionCombat
 
     public override IEnumerator ExecuteE()
     {
-        if (!CheckForAbilityControl(checksE)|| hasImpale) yield break;
+        if (!CheckForAbilityControl(checksE) || hasImpale) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
@@ -98,8 +98,8 @@ public class Skarner : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
-        if(hasCrystalVenom)
-		{
+        if (hasCrystalVenom)
+        {
             UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[1]);
             TargetBuffManager.Add("StunBuff", new StunBuff(1.25f, TargetBuffManager, ESkill().basic.name));
             myStats.eCD -= 1.25f;
@@ -108,7 +108,7 @@ public class Skarner : ChampionCombat
 }
 public class CrystalVenomBuff : Buff
 {
-    private  readonly Skarner skarner;
+    private readonly Skarner skarner;
     public CrystalVenomBuff(float duration, BuffManager manager, string source) : base(manager)
     {
         base.duration = duration;

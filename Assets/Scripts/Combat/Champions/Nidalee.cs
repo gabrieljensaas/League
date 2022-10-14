@@ -71,7 +71,7 @@ public class Nidalee : ChampionCombat
             if (!cougarQReady) yield break;
             yield return StartCoroutine(StartCastingAbility(QSkill(1).basic.castTime));
 
-            if(MyBuffManager.buffs.TryGetValue("HuntMarkBuff", out Buff buff))
+            if (MyBuffManager.buffs.TryGetValue("HuntMarkBuff", out Buff buff))
             {
                 UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill(1).UseSkill(3, qKeys[2], myStats, targetStats) * (QSkill(1).UseSkill(3, qKeys[4], myStats, targetStats) + 1) * 1.4f, SkillDamageType.Spell), QSkill(1).name);
                 buff.Kill();
@@ -121,7 +121,7 @@ public class Nidalee : ChampionCombat
             if (!cougarEReady) yield break;
             yield return StartCoroutine(StartCastingAbility(ESkill(1).basic.castTime));
 
-            if(MyBuffManager.buffs.TryGetValue("HuntMarkBuff", out Buff buff))
+            if (MyBuffManager.buffs.TryGetValue("HuntMarkBuff", out Buff buff))
             {
                 UpdateAbilityTotalDamage(ref eSum, 2, new Damage(ESkill(1).UseSkill(3, eKeys[3], myStats, targetStats) * 1.4f, SkillDamageType.Spell), ESkill(1).name);
                 buff.Kill();

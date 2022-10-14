@@ -71,7 +71,7 @@ public class Ahri : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add("Charm", new CharmBuff(myStats.eSkill[0].UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), myStats.buffManager, myStats.eSkill[0].basic.name));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], buffNames: new string[] { "Charm" }, skillComponentTypes: SkillComponentTypes.Projectile |SkillComponentTypes.Spellblockable);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], buffNames: new string[] { "Charm" }, skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
     }
 
@@ -91,7 +91,7 @@ public class Ahri : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal,SkillComponentTypes.Projectile | SkillComponentTypes.OnHit | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable));
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal, SkillComponentTypes.Projectile | SkillComponentTypes.OnHit | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable));
     }
 
     public override IEnumerator HijackedR(int skillLevel)

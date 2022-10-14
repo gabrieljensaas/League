@@ -4,7 +4,7 @@ using System.Collections;
 public class XinZhao : ChampionCombat
 {
     private static float DeterminationDamageByLevel(int level)
-	{
+    {
         return level switch
         {
             < 6 => 0.15f,
@@ -12,7 +12,7 @@ public class XinZhao : ChampionCombat
             < 16 => 0.35f,
             _ => 0.45f,
         };
-	}
+    }
 
     private int pStacks;
     private int talonStrikeAuto;
@@ -107,18 +107,18 @@ public class XinZhao : ChampionCombat
         AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         pStacks++;
         if (pStacks == 3)
-		{
+        {
             UpdateAbilityTotalDamage(ref pSum, 4, new Damage(DeterminationDamageByLevel(myStats.level), SkillDamageType.Phyiscal, SkillComponentTypes.ProcDamage), myStats.passiveSkill.skillName);
             UpdateTotalHeal(ref pSum, 2 + 4 * myStats.level, myStats.passiveSkill.skillName);
-		}
-        if(talonStrikeAuto > 0)
-		{            
+        }
+        if (talonStrikeAuto > 0)
+        {
             UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.Phyiscal, SkillComponentTypes.ProcDamage), myStats.passiveSkill.skillName);
             myStats.wCD--;
             myStats.eCD--;
             myStats.rCD--;
             if (talonStrikeAuto == 1) TargetBuffManager.Add("ThreeTalonStrike", new AirborneBuff(0.75f, TargetBuffManager, QSkill().basic.name));
-            talonStrikeAuto--;  
+            talonStrikeAuto--;
         }
     }
 }

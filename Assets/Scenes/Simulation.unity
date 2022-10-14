@@ -6060,6 +6060,7 @@ MonoBehaviour:
   championsExperienceInput:
   - {fileID: 714535108}
   - {fileID: 701714040}
+  timer: 0
   outputText: {fileID: 1912723367}
   OutputField: {fileID: 821539516}
   startButton: {fileID: 1356002495}
@@ -6071,6 +6072,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   snaps: []
+  damagelogs: []
+  heallogs: []
+  bufflogs: []
 --- !u!4 &488965731
 Transform:
   m_ObjectHideFlags: 0
@@ -21997,7 +22001,14 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: '{"APIMatchInfo":{"version":"12.17.1","championInfo":[{"champName":"Ashe","champLevel":18,"items":[1037,1037,1037,1037,1037,1037]},{"champName":"Ashe","champLevel":18,"items":[1037,1037,1037,1037,1037,1037]}]}}'
+          m_StringArgument: '    {         "APIMatchInfo": {             "version":
+            "12.17.1",             "championInfo": [                 {                    
+            "ability": [1,2,3,2],                     "champLevel": 6,                    
+            "champName": "Kayle",                     "items": [1043, 3006, 1052]                
+            },                 {                     "ability": [1,2,3,2],                    
+            "champLevel": 7,                     "champName": "Jinx",                    
+            "items": [6670, 1001, 1042]                 }             ]         }    
+            }'
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1638351006

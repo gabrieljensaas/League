@@ -104,20 +104,20 @@ public class Gragas : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
-        if(hasDrunkenRage)
-		{
+        if (hasDrunkenRage)
+        {
             AutoAttack(new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), SkillDamageType.Spell));
         }
     }
 
     public void CheckIfPassiveReady()
-	{
-        if(timeSincePassive >= 8 && myStats.currentHealth < myStats.maxHealth)
-		{
+    {
+        if (timeSincePassive >= 8 && myStats.currentHealth < myStats.maxHealth)
+        {
             UpdateTotalHeal(ref pSum, 0.65f * myStats.maxHealth, myStats.passiveSkill.skillName);
             timeSincePassive = 0;
         }
-	}
+    }
 }
 
 public class DrunkenRageBuff : Buff

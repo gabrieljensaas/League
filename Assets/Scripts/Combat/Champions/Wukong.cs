@@ -5,11 +5,11 @@ using UnityEngine;
 public class Wukong : ChampionCombat
 {
     public int pStack;
-	private bool hasCrushingBlow;
+    private bool hasCrushingBlow;
     private float timeSinceCrushingBlowActive;
     private bool hasClone;
 
-	public override void UpdatePriorityAndChecks()
+    public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "W", "Q", "R", "A" };
 
@@ -78,7 +78,7 @@ public class Wukong : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
         MyBuffManager.Add("InvisibleBuff", new UntargetableBuff(1f, MyBuffManager, WSkill().basic.name));
-        pets.Add(new WarriorTrickster(this, myStats.currentHealth, myStats.AD, myStats.attackSpeed, myStats.spellBlock, myStats.armor,3.25f, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats)));
+        pets.Add(new WarriorTrickster(this, myStats.currentHealth, myStats.AD, myStats.attackSpeed, myStats.spellBlock, myStats.armor, 3.25f, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats)));
         hasClone = true;
         yield return new WaitForSeconds(3.25f);
         hasClone = false;
@@ -91,9 +91,9 @@ public class Wukong : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         UpdateAbilityTotalDamage(ref eSum, 2, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.Spell), ESkill().basic.name);
-        MyBuffManager.Add("AttackSpeed", new AttackSpeedBuff(5f, MyBuffManager, ESkill().basic.name, ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats),"NimbusStrike"));
+        MyBuffManager.Add("AttackSpeed", new AttackSpeedBuff(5f, MyBuffManager, ESkill().basic.name, ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), "NimbusStrike"));
         if (hasClone)
-		{
+        {
             UpdateAbilityTotalDamage(ref eSum, 2, new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats) * ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.Spell), ESkill().basic.name);
             //need a way to add buff to pet
         }
@@ -123,13 +123,13 @@ public class Wukong : ChampionCombat
         //need to add bonus regen
         StartCoroutine(PStackExpired());
 
-        if(timeSinceCrushingBlowActive < 5 && hasCrushingBlow)
-		{
+        if (timeSinceCrushingBlowActive < 5 && hasCrushingBlow)
+        {
             AutoAttack(new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.Phyiscal));
             TargetBuffManager.Add("ArmorReduction", new ArmorReductionBuff(3f, TargetBuffManager, QSkill().basic.name, QSkill().UseSkill(myStats.qLevel, qKeys[1], myStats, targetStats), "CrushingBlow"));
             hasCrushingBlow = false;
-            if(hasClone)
-			{
+            if (hasClone)
+            {
                 AutoAttack(new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats) * QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.Phyiscal));
                 TargetBuffManager.Add("ArmorReduction", new ArmorReductionBuff(3f, TargetBuffManager, QSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats) * QSkill().UseSkill(myStats.qLevel, qKeys[1], myStats, targetStats), "CrushingBlow"));
             }

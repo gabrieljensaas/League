@@ -65,7 +65,7 @@ public class Kayn : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        if(kaynForm == KaynForm.Darkin)
+        if (kaynForm == KaynForm.Darkin)
         {
             UpdateAbilityTotalDamage(ref qSum, 0, new Damage((myStats.AD * 0.65f) + ((0.05f + (0.035f * (int)(myStats.AD / 100))) * targetStats.maxHealth), SkillDamageType.Phyiscal), QSkill().name);
         }
@@ -108,7 +108,7 @@ public class Kayn : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
 
-        if(kaynForm == KaynForm.Darkin)
+        if (kaynForm == KaynForm.Darkin)
         {
             UpdateAbilityTotalDamage(ref rSum, 0, new Damage((0.15f + (0.13f * (int)(myStats.AD / 100))) * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().name);
             UpdateTotalHeal(ref hSum, 0.0975f + (0.0845f * (int)(myStats.AD / 100)), RSkill().name);
@@ -138,9 +138,9 @@ public class Kayn : ChampionCombat
         {
             if (kayn.kaynForm == KaynForm.Darkin)
                 kayn.UpdateTotalHeal(ref kayn.hSum, damage.value * DarkinBonus(kayn.myStats.level), kayn.myStats.passiveSkill.skillName);
-            else if(kayn.kaynForm == KaynForm.ShadowAssassin)
+            else if (kayn.kaynForm == KaynForm.ShadowAssassin)
                 kayn.UpdateAbilityTotalDamage(ref kayn.pSum, 4, new Damage(damage.value * ShadowAssassinBonus(kayn.myStats.level), SkillDamageType.Spell), kayn.myStats.passiveSkill.skillName);
-                
+
             return damage;
         }
     }

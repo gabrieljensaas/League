@@ -96,6 +96,8 @@ namespace Simulator.Combat
         public float UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1, SkillComponentTypes skillComponentTypes = SkillComponentTypes.None, string[] buffNames = null)
         {
             float damageGiven = targetCombat.TakeDamage(new Damage(damageModifier * skill.UseSkill(level, skillKey, myStats, targetStats), skill.skillDamageType, skillComponentTypes, buffNames), skill.basic.name);
+            if (damageGiven <= 0) return damageGiven;
+            simulationManager.AddDamageLog(new DamageLog(myStats.name, skill.basic.name, damageGiven, simulationManager.timer % 60));
             totalDamage += damageGiven;
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
             return damageGiven;
@@ -103,13 +105,18 @@ namespace Simulator.Combat
 
         public void UpdateAbilityTotalDamageSylas(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1, SkillComponentTypes skillComponentTypes = SkillComponentTypes.None, string[] buffNames = null)
         {
-            totalDamage += TakeDamage(new Damage(damageModifier * skill.SylasUseSkill(level, skillKey, targetStats, myStats), skill.skillDamageType, skillComponentTypes, buffNames), skill.basic.name);
+            float damageGiven = TakeDamage(new Damage(damageModifier * skill.SylasUseSkill(level, skillKey, targetStats, myStats), skill.skillDamageType, skillComponentTypes, buffNames), skill.basic.name);
+            if (damageGiven <= 0) return;
+            totalDamage += damageGiven;
             targetCombat.myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
+            simulationManager.AddDamageLog(new DamageLog(targetStats.name, skill.basic.name, damageGiven, simulationManager.timer % 60));
         }
 
         public float UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, Damage damage, string skillName)
         {
             float damageGiven = targetCombat.TakeDamage(damage, skillName);
+            if (damageGiven <= 0) return 0;
+            simulationManager.AddDamageLog(new DamageLog(myStats.name, skillName, damageGiven, simulationManager.timer % 60));
             totalDamage += damageGiven;
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
             return damageGiven;
@@ -117,30 +124,45 @@ namespace Simulator.Combat
 
         public void UpdateAbilityTotalDamageSylas(ref float totalDamage, int totalDamageTextIndex, Damage damage, string skillName)
         {
-            totalDamage += TakeDamage(damage, skillName);
+            float damageGiven = TakeDamage(damage, skillName);
+            if (damageGiven <= 0) return;
+            simulationManager.AddDamageLog(new DamageLog(targetStats.name, skillName, damageGiven, simulationManager.timer % 60));
+            totalDamage += damageGiven;
             targetCombat.myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
         public void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level, string skillKey)
         {
-            totalHeal += HealHealth(skill.UseSkill(level, skillKey, myStats, targetStats) * (100 - myStats.grievouswounds) / 100, skill.basic.name);
+            float healGiven = HealHealth(skill.UseSkill(level, skillKey, myStats, targetStats) * (100 - myStats.grievouswounds) / 100, skill.basic.name);
+            if (healGiven <= 0) return;
+            simulationManager.AddHealLog(new HealLog(myStats.name, skill.basic.name, healGiven, simulationManager.timer % 60));
+            totalHeal += healGiven;
             myUI.healSum.text = totalHeal.ToString();
         }
         public void UpdateTotalHealSylas(ref float totalHeal, SkillList skill, int level, string skillKey)
         {
-            totalHeal += targetCombat.HealHealth(skill.UseSkill(level, skillKey, targetStats, myStats) * (100 - targetStats.grievouswounds) / 100, skill.basic.name);
+            float healGiven = targetCombat.HealHealth(skill.UseSkill(level, skillKey, targetStats, myStats) * (100 - targetStats.grievouswounds) / 100, skill.basic.name);
+            if (healGiven <= 0) return;
+            simulationManager.AddHealLog(new HealLog(targetStats.name, skill.basic.name, healGiven, simulationManager.timer % 60));
+            totalHeal += healGiven;
             targetCombat.myUI.healSum.text = totalHeal.ToString();
         }
 
         public void UpdateTotalHeal(ref float totalHeal, float heal, string skillName)
         {
-            totalHeal += HealHealth(heal * (100 - targetStats.grievouswounds) / 100, skillName);
+            float healGiven = HealHealth(heal * (100 - targetStats.grievouswounds) / 100, skillName);
+            if (healGiven <= 0) return;
+            simulationManager.AddHealLog(new HealLog(myStats.name, skillName, healGiven, simulationManager.timer % 60));
+            totalHeal += healGiven;
             myUI.healSum.text = totalHeal.ToString();
         }
 
         public void UpdateTotalHealSylas(ref float totalHeal, float heal, string skillName)
         {
-            totalHeal += targetCombat.HealHealth(heal * (100 - targetStats.grievouswounds) / 100, skillName);
+            float healGiven = targetCombat.HealHealth(heal * (100 - targetStats.grievouswounds) / 100, skillName);
+            if (healGiven <= 0) return;
+            simulationManager.AddHealLog(new HealLog(targetStats.name, skillName, healGiven, simulationManager.timer % 60));
+            totalHeal += healGiven;
             targetCombat.myUI.healSum.text = totalHeal.ToString();
         }
 
@@ -150,7 +172,7 @@ namespace Simulator.Combat
 
             yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
             UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
-            myStats.qCD = QSkill().basic.coolDown[4];
+            myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
         }
 
         public virtual IEnumerator ExecuteW()
@@ -159,7 +181,7 @@ namespace Simulator.Combat
 
             yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
             UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
-            myStats.wCD = WSkill().basic.coolDown[4];
+            myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
         }
 
         public virtual IEnumerator ExecuteE()
@@ -168,7 +190,7 @@ namespace Simulator.Combat
 
             yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
             UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
-            myStats.eCD = ESkill().basic.coolDown[4];
+            myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
         }
 
         public virtual IEnumerator ExecuteR()
@@ -177,7 +199,7 @@ namespace Simulator.Combat
 
             yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
             UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
-            myStats.rCD = RSkill().basic.coolDown[2];
+            myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
         }
 
         public virtual IEnumerator HijackedR(int skillLevel)
@@ -244,6 +266,7 @@ namespace Simulator.Combat
             hSum += HealHealth(damageGiven * myStats.lifesteal, "Lifesteal");
             autoAttackReturn.damage = damageGiven;
 
+            simulationManager.AddDamageLog(new DamageLog(myStats.name, $"{myStats.name}'s Auto Attack", damageGiven, (int)simulationManager.timer % 60));
             myUI.aaSum.text = aSum.ToString();
             myUI.healSum.text = hSum.ToString();
 
@@ -271,7 +294,7 @@ namespace Simulator.Combat
             if (damage.value <= 0) return 0;
 
             if (!isAutoAttack)
-                 CheckForDamageControl(checkPostMitigationDamageAbility, damage);
+                CheckForDamageControl(checkPostMitigationDamageAbility, damage);
             else
                 CheckForDamageControl(checkPostMitigationDamageAA, damage);
 
@@ -312,7 +335,7 @@ namespace Simulator.Combat
             StopAllCoroutines();
             targetCombat.StopAllCoroutines();
             simulationManager.StopCoroutine(simulationManager.TakeSnapShot());
-            APIRequestManager.Instance.SendOutputToJS(new WebData(simulationManager.outputText.text.Split("\n"), simulationManager.snaps.ToArray()));
+            APIRequestManager.Instance.SendOutputToJS(new WebData(simulationManager.snaps.ToArray(), simulationManager.damagelogs.ToArray(), simulationManager.heallogs.ToArray(), simulationManager.bufflogs.ToArray()));
         }
 
         public void UpdateTarget(int index)

@@ -54,7 +54,7 @@ public class Talon : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        passiveStack+=2;
+        passiveStack += 2;
         UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
         myStats.wCD = WSkill().basic.coolDown[4];
     }
@@ -86,8 +86,8 @@ public class Talon : ChampionCombat
     private void CheckTalonPassiveDamage()
     {
         if (talonP.Control())
-        { 
-            if(passiveStack == 3)
+        {
+            if (passiveStack == 3)
             {
                 UpdateAbilityTotalDamage(ref pSum, 4, new Damage((65 + 10 * myStats.level), SkillDamageType.Phyiscal), myStats.passiveSkill.name);
                 myStats.buffManager.buffs.Remove("BladeEnd");

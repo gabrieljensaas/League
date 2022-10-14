@@ -54,7 +54,7 @@ public class Fizz : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        if(UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes:SkillComponentTypes.Dash) != float.MinValue)  //needs to be countered by parry too but could not find a way to implement that
+        if (UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Dash) != float.MinValue)  //needs to be countered by parry too but could not find a way to implement that
         {
             UpdateAbilityTotalDamage(ref qSum, 0, new Damage(myStats.AD, SkillDamageType.Phyiscal), QSkill().basic.name);   // will apply on hit effects but since it can be countered by spell shield didnt add that as skillcomponenttype
         }
@@ -98,14 +98,14 @@ public class Fizz : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        if(AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal, SkillComponentTypes.OnHit)).damage != float.MinValue)
+        if (AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal, SkillComponentTypes.OnHit)).damage != float.MinValue)
         {
             StopCoroutine(SeastoneTridentPassive(3f));
             StartCoroutine(SeastoneTridentPassive(3f));
 
-            if(MyBuffManager.buffs.TryGetValue("SeastoneTrident", out Buff buff))
+            if (MyBuffManager.buffs.TryGetValue("SeastoneTrident", out Buff buff))
             {
-                if(buff.value == 1)
+                if (buff.value == 1)
                 {
                     buff.duration = 5f;
                     buff.value = 0;

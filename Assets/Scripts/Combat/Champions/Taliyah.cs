@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Taliyah : ChampionCombat
 {
-	private bool hasQActive = true;
+    private bool hasQActive = true;
     private float timeSinceW;
 
-	public override void UpdatePriorityAndChecks()
+    public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "W", "Q", "R", "A" };
 
@@ -51,8 +51,8 @@ public class Taliyah : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        if(hasQActive)
-		{
+        if (hasQActive)
+        {
             UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[0], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.Projectile), QSkill().basic.name);
             yield return new WaitForSeconds(0.3f);
             UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[1], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.Projectile), QSkill().basic.name);
@@ -65,18 +65,18 @@ public class Taliyah : ChampionCombat
             yield return new WaitForSeconds(0.3f);
             UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[1], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.Projectile), QSkill().basic.name);
             myStats.qCD = QSkill().basic.coolDown[4];
-			hasQActive = !hasQActive;
-		}
-		else
-		{
+            hasQActive = !hasQActive;
+        }
+        else
+        {
             UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[2], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.Projectile), QSkill().basic.name);
             myStats.qCD = QSkill().basic.coolDown[4] / 2;
-			if (myStats.qCD < 0.75) myStats.qCD = 0.75f;
-            hasQActive = !hasQActive;     
-		}
+            if (myStats.qCD < 0.75) myStats.qCD = 0.75f;
+            hasQActive = !hasQActive;
+        }
 
 
-	}
+    }
 
     public override IEnumerator ExecuteW()
     {
@@ -94,8 +94,8 @@ public class Taliyah : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
         timeSinceW = 0;
-        if(timeSinceW <= 4 && TargetBuffManager.buffs.TryGetValue("Airborne", out Buff airborne)) //need to check if enemy has a dash or not
-		{
+        if (timeSinceW <= 4 && TargetBuffManager.buffs.TryGetValue("Airborne", out Buff airborne)) //need to check if enemy has a dash or not
+        {
             TargetBuffManager.Add("StunBuff", new StunBuff(2f, TargetBuffManager, ESkill().basic.name));
             UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[1]);
         }
