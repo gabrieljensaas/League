@@ -266,6 +266,261 @@ public class SimManager : MonoBehaviour
     {
         switch (charName)
         {
+            case "Zoe":
+                stats.MyCombat = stats.gameObject.AddComponent<Zoe>();
+                break;
+            case "Ziggs":
+                stats.MyCombat = stats.gameObject.AddComponent<Ziggs>();
+                break;
+            case "Zed":
+                stats.MyCombat = stats.gameObject.AddComponent<Zed>();
+                break;
+            case "Zac":
+                stats.MyCombat = stats.gameObject.AddComponent<Zac>();
+                break;
+            case "Yorick":
+                stats.MyCombat = stats.gameObject.AddComponent<Yorick>();
+                break;
+            case "XinZhao":
+                stats.MyCombat = stats.gameObject.AddComponent<XinZhao>();
+                break;
+            case "Xerath":
+                stats.MyCombat = stats.gameObject.AddComponent<Xerath>();
+                break;
+            case "Xayah":
+                stats.MyCombat = stats.gameObject.AddComponent<Xayah>();
+                break;
+            case "Warwick":
+                stats.MyCombat = stats.gameObject.AddComponent<Warwick>();
+                break;
+            case "Vladimir":
+                stats.MyCombat = stats.gameObject.AddComponent<Vladimir>();
+                break;
+            case "Viktor":
+                stats.MyCombat = stats.gameObject.AddComponent<Viktor>();
+                break;
+            case "Vi":
+                stats.MyCombat = stats.gameObject.AddComponent<Vi>();
+                break;
+            case "Veigar":
+                stats.MyCombat = stats.gameObject.AddComponent<Veigar>();
+                break;
+            case "Varus":
+                stats.MyCombat = stats.gameObject.AddComponent<Varus>();
+                break;
+            case "Vayne":
+                stats.MyCombat = stats.gameObject.AddComponent<Vayne>();
+                break;
+            case "Twitch":
+                stats.MyCombat = stats.gameObject.AddComponent<Twitch>();
+                break;
+            case "TwistedFate":
+                stats.MyCombat = stats.gameObject.AddComponent<TwistedFate>();
+                break;
+            case "Tryndamere":
+                stats.MyCombat = stats.gameObject.AddComponent<Tryndamere>();
+                break;
+            case "Trundle":
+                stats.MyCombat = stats.gameObject.AddComponent<Trundle>();
+                break;
+            case "Tristana":
+                stats.MyCombat = stats.gameObject.AddComponent<Tristana>();
+                break;
+            case "Teemo":
+                stats.MyCombat = stats.gameObject.AddComponent<Teemo>();
+                break;
+            case "Talon":
+                stats.MyCombat = stats.gameObject.AddComponent<Talon>();
+                break;
+            case "Skarner":
+                stats.MyCombat = stats.gameObject.AddComponent<Skarner>();
+                break;
+            case "Sion":
+                stats.MyCombat = stats.gameObject.AddComponent<Sion>();
+                break;
+            case "Singed":
+                stats.MyCombat = stats.gameObject.AddComponent<Singed>();
+                break;
+            case "Shyvana":
+                stats.MyCombat = stats.gameObject.AddComponent<Shyvana>();
+                break;
+            case "Sett":
+                stats.MyCombat = stats.gameObject.AddComponent<Sett>();
+                break;
+            case "Sejuani":
+                stats.MyCombat = stats.gameObject.AddComponent<Sejuani>();
+                break;
+            case "Ryze":
+                stats.MyCombat = stats.gameObject.AddComponent<Ryze>();
+                break;
+            case "Riven":
+                stats.MyCombat = stats.gameObject.AddComponent<Riven>();
+                break;
+            case "Renekton":
+                stats.MyCombat = stats.gameObject.AddComponent<Renekton>();
+                break;
+            case "RekSai":
+                stats.MyCombat = stats.gameObject.AddComponent<RekSai>();
+                break;
+            case "Rammus":
+                stats.MyCombat = stats.gameObject.AddComponent<Rammus>();
+                break;
+            case "Qiyana":
+                stats.MyCombat = stats.gameObject.AddComponent<Qiyana>();
+                break;
+            case "Ornn":
+                stats.MyCombat = stats.gameObject.AddComponent<Ornn>();
+                break;
+            case "Orianna":
+                stats.MyCombat = stats.gameObject.AddComponent<Orianna>();
+                break;
+            case "Olaf":
+                stats.MyCombat = stats.gameObject.AddComponent<Olaf>();
+                break;
+            case "Nidalee":
+                stats.MyCombat = stats.gameObject.AddComponent<Nidalee>();
+                break;
+            case "Neeko":
+                stats.MyCombat = stats.gameObject.AddComponent<Neeko>();
+                break;
+            case "Nasus":
+                stats.MyCombat = stats.gameObject.AddComponent<Nasus>();
+                break;
+            case "Mordekaiser":
+                stats.MyCombat = stats.gameObject.AddComponent<Mordekaiser>();
+                break;
+            case "MissFortune":
+                stats.MyCombat = stats.gameObject.AddComponent<MissFortune>();
+                break;
+            case "MasterYi":
+                stats.MyCombat = stats.gameObject.AddComponent<MasterYi>();
+                break;
+            case "Malphite":
+                stats.MyCombat = stats.gameObject.AddComponent<Malphite>();
+                break;
+            case "Lux":
+                stats.MyCombat = stats.gameObject.AddComponent<Lux>();
+                break;
+            case "Lucian":
+                stats.MyCombat = stats.gameObject.AddComponent<Lucian>();
+                break;
+            case "Lissandra":
+                stats.MyCombat = stats.gameObject.AddComponent<Lissandra>();
+                break;
+            case "Lillia":
+                stats.MyCombat = stats.gameObject.AddComponent<Lillia>();
+                break;
+            case "LeeSin":
+                stats.MyCombat = stats.gameObject.AddComponent<LeeSin>();
+                break;
+            case "Leblanc":
+                stats.MyCombat = stats.gameObject.AddComponent<LeBlanc>();
+                break;
+            case "KogMaw":
+                stats.MyCombat = stats.gameObject.AddComponent<KogMaw>();
+                break;
+            case "Kennen":
+                stats.MyCombat = stats.gameObject.AddComponent<Kennen>();
+                break;
+            case "Kayle":
+                stats.MyCombat = stats.gameObject.AddComponent<Kayle>();
+                break;
+            case "Katarina":
+                stats.MyCombat = stats.gameObject.AddComponent<Katarina>();
+                break;
+            case "Kassadin":
+                stats.MyCombat = stats.gameObject.AddComponent<Kassadin>();
+                break;
+            case "Karthus":
+                stats.MyCombat = stats.gameObject.AddComponent<Karthus>();
+                break;
+            case "Kalista":
+                stats.MyCombat = stats.gameObject.AddComponent<Kalista>();
+                break;
+            case "Kaisa":
+                stats.MyCombat = stats.gameObject.AddComponent<Kaisa>();
+                break;
+            case "Jinx":
+                stats.MyCombat = stats.gameObject.AddComponent<Jinx>();
+                break;
+            case "Jhin":
+                stats.MyCombat = stats.gameObject.AddComponent<Jhin>();
+                break;
+            case "Jayce":
+                stats.MyCombat = stats.gameObject.AddComponent<Jayce>();
+                break;
+            case "Jax":
+                stats.MyCombat = stats.gameObject.AddComponent<Jax>();
+                break;
+            case "Irelia":
+                stats.MyCombat = stats.gameObject.AddComponent<Irelia>();
+                break;
+            case "Gragas":
+                stats.MyCombat = stats.gameObject.AddComponent<Gragas>();
+                break;
+            case "GnarBig":
+                stats.MyCombat = stats.gameObject.AddComponent<Gnar>();
+                break;
+            case "Gnar":
+                stats.MyCombat = stats.gameObject.AddComponent<Gnar>();
+                break;
+            case "Garen":
+                stats.MyCombat = stats.gameObject.AddComponent<Garen>();
+                break;
+            case "Gangplank":
+                stats.MyCombat = stats.gameObject.AddComponent<Gangplank>();
+                break;
+            case "Galio":
+                stats.MyCombat = stats.gameObject.AddComponent<Galio>();
+                break;
+            case "Fizz":
+                stats.MyCombat = stats.gameObject.AddComponent<Fizz>();
+                break;
+            case "Fiora":
+                stats.MyCombat = stats.gameObject.AddComponent<Fiora>();
+                break;
+            case "Ezreal":
+                stats.MyCombat = stats.gameObject.AddComponent<Ezreal>();
+                break;
+            case "Draven":
+                stats.MyCombat = stats.gameObject.AddComponent<Draven>();
+                break;
+            case "DrMundo":
+                stats.MyCombat = stats.gameObject.AddComponent<DrMundo>();
+                break;
+            case "Diana":
+                stats.MyCombat = stats.gameObject.AddComponent<Diana>();
+                break;
+            case "Chogath":
+                stats.MyCombat = stats.gameObject.AddComponent<ChoGath>();
+                break;
+            case "Cassiopeia":
+                stats.MyCombat = stats.gameObject.AddComponent<Cassiopeia>();
+                break;
+            case "Caitlyn":
+                stats.MyCombat = stats.gameObject.AddComponent<Caitlyn>();
+                break;
+            case "Azir":
+                stats.MyCombat = stats.gameObject.AddComponent<Azir>();
+                break;
+            case "Akali":
+                stats.MyCombat = stats.gameObject.AddComponent<Akali>();
+                break;
+            case "Viego":
+                stats.MyCombat = stats.gameObject.AddComponent<Viego>();
+                break;
+            case "Velkoz":
+                stats.MyCombat = stats.gameObject.AddComponent<VelKoz>();
+                break;
+            case "Ekko":
+                stats.MyCombat = stats.gameObject.AddComponent<Ekko>();
+                break;
+            case "Ivern":
+                stats.MyCombat = stats.gameObject.AddComponent<Ivern>();
+                break;
+            case "Amumu":
+                stats.MyCombat = stats.gameObject.AddComponent<Amumu>();
+                break;
             case "Ashe":
                 stats.MyCombat = stats.gameObject.AddComponent<Ashe>();
                 break;
@@ -275,14 +530,8 @@ public class SimManager : MonoBehaviour
             case "Ahri":
                 stats.MyCombat = stats.gameObject.AddComponent<Ahri>();
                 break;
-            case "Garen":
-                stats.MyCombat = stats.gameObject.AddComponent<Garen>();
-                break;
             case "Annie":
                 stats.MyCombat = stats.gameObject.AddComponent<Annie>();
-                break;
-            case "Master Yi":
-                stats.MyCombat = stats.gameObject.AddComponent<MasterYi>();
                 break;
             case "Darius":
                 stats.MyCombat = stats.gameObject.AddComponent<Darius>();

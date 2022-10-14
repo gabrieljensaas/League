@@ -2040,7 +2040,6 @@ GameObject:
   m_Component:
   - component: {fileID: 155855318}
   - component: {fileID: 155855320}
-  - component: {fileID: 155855319}
   - component: {fileID: 155855321}
   m_Layer: 0
   m_Name: Champion Prototype 2
@@ -2066,36 +2065,6 @@ Transform:
   m_Father: {fileID: 1982030956}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &155855319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 155855317}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98054cb7ff41573478ca17de0556fd74, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myStats: {fileID: 155855320}
-  targetStats: {fileID: 488366046}
-  targetCombat: {fileID: 488366045}
-  myUI: {fileID: 0}
-  simulationManager: {fileID: 0}
-  attackCooldown: 0
-  qKeys: []
-  wKeys: []
-  eKeys: []
-  rKeys: []
-  aSum: 0
-  hSum: 0
-  qSum: 0
-  wSum: 0
-  eSum: 0
-  rSum: 0
-  pSum: 0
-  isCasting: 0
 --- !u!114 &155855320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2108,7 +2077,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0031815f00d90f94083d544da18684a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MyCombat: {fileID: 155855319}
+  MyCombat: {fileID: 0}
   staticStatsUI:
   - {fileID: 365588432}
   - {fileID: 976647659}
@@ -5924,7 +5893,6 @@ GameObject:
   m_Component:
   - component: {fileID: 488366044}
   - component: {fileID: 488366046}
-  - component: {fileID: 488366045}
   - component: {fileID: 488366047}
   m_Layer: 0
   m_Name: Champion Prototype
@@ -5950,36 +5918,6 @@ Transform:
   m_Father: {fileID: 1982030956}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &488366045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 488366043}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98054cb7ff41573478ca17de0556fd74, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myStats: {fileID: 488366046}
-  targetStats: {fileID: 155855320}
-  targetCombat: {fileID: 155855319}
-  myUI: {fileID: 0}
-  simulationManager: {fileID: 0}
-  attackCooldown: 0
-  qKeys: []
-  wKeys: []
-  eKeys: []
-  rKeys: []
-  aSum: 0
-  hSum: 0
-  qSum: 0
-  wSum: 0
-  eSum: 0
-  rSum: 0
-  pSum: 0
-  isCasting: 0
 --- !u!114 &488366046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5992,7 +5930,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0031815f00d90f94083d544da18684a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MyCombat: {fileID: 488366045}
+  MyCombat: {fileID: 0}
   staticStatsUI:
   - {fileID: 1373135710}
   - {fileID: 1224494997}
@@ -6130,8 +6068,9 @@ MonoBehaviour:
   - {fileID: 488366046}
   - {fileID: 155855320}
   champCombat:
-  - {fileID: 488366045}
-  - {fileID: 155855319}
+  - {fileID: 0}
+  - {fileID: 0}
+  snaps: []
 --- !u!4 &488965731
 Transform:
   m_ObjectHideFlags: 0
