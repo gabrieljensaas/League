@@ -39,7 +39,6 @@ namespace Simulator.Combat
         private void Start()
         {
             simulationManager = SimManager.Instance;
-            buffManager = new BuffManager(this, MyCombat, simulationManager);
         }
 
         private void Update()
@@ -50,7 +49,7 @@ namespace Simulator.Combat
             rCD -= Time.deltaTime;
             pCD -= Time.deltaTime;
 
-            buffManager.Update();                //update remaining duration of buffs
+            buffManager?.Update();                //update remaining duration of buffs
 
             currentHP.text = currentHealth.ToString();             //update health text
         }
@@ -72,6 +71,7 @@ namespace Simulator.Combat
             staticStatsUI[9].text = armor.ToString();
             staticStatsUI[10].text = spellBlock.ToString();
             staticStatsUI[11].text = attackSpeed.ToString();
+            buffManager = new BuffManager(this, MyCombat, simulationManager);
         }
 
         public void Heal(float heal)

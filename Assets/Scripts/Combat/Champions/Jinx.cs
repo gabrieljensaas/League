@@ -69,7 +69,7 @@ public class Jinx : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         yield return new WaitForSeconds(0.9f); // chompers landing and arming time
-        targetStats.buffManager.buffs.Add("Root", new RootBuff(1.5f, targetStats.buffManager, myStats.eSkill[0].basic.name));
+        targetStats.buffManager.buffs.TryAdd("Root", new RootBuff(1.5f, targetStats.buffManager, myStats.eSkill[0].basic.name));
         UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }

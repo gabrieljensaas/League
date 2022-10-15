@@ -76,7 +76,7 @@ public class Kayle : ChampionCombat
     {
         if (!CheckForAbilityControl(checksR)) yield break;
 
-        myStats.buffManager.buffs.TryAdd("Untargetable", new UntargetableBuff(myStats.rSkill[0].UseSkill(2, myStats.rSkill[0].basic.name, myStats, targetStats), myStats.buffManager, myStats.rSkill[0].basic.name));
+        myStats.buffManager.buffs.TryAdd("Untargetable", new UntargetableBuff(myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats), myStats.buffManager, myStats.rSkill[0].basic.name));
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
@@ -93,7 +93,7 @@ public class Kayle : ChampionCombat
         {
             StopCoroutine(StarfireSpellblade());
             eActive = false;
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         }
         if (pState == 2 && isExalted)
         {
