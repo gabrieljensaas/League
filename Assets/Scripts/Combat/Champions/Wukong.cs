@@ -1,4 +1,5 @@
 using Simulator.Combat;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,8 +9,10 @@ public class Wukong : ChampionCombat
     private bool hasCrushingBlow;
     private float timeSinceCrushingBlowActive;
     private bool hasClone;
+	private bool rCast;
+	private float timeSinceR;
 
-    public override void UpdatePriorityAndChecks()
+	public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "W", "Q", "R", "A" };
 
@@ -102,14 +105,64 @@ public class Wukong : ChampionCombat
 
     public override IEnumerator ExecuteR()
     {
-        if (!CheckForAbilityControl(checksR) || myStats.rLevel == 0) yield break;
+        if (!CheckForAbilityControl(checksR)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
-        myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
+        if (!rCast)
+        {
+            yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+            StartCoroutine(Cyclone());
+            myStats.rCD = 2.5f;
+            timeSinceR = 0;
+            //need to apply damage from clone and only make sure the only one knock off hits
+
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            yield return WaitForSeconds(0.25f);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            yield return WaitForSeconds(0.25f);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            yield return WaitForSeconds(0.25f);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            yield return WaitForSeconds(0.25f);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            yield return WaitForSeconds(0.25f);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            yield return WaitForSeconds(0.25f);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            yield return WaitForSeconds(0.25f);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            yield return WaitForSeconds(0.25f);
+        }
+        else
+        {
+            yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+            StopCoroutine(Cyclone());
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            yield return WaitForSeconds(0.25f);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            yield return WaitForSeconds(0.25f);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            yield return WaitForSeconds(0.25f);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            yield return WaitForSeconds(0.25f);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            yield return WaitForSeconds(0.25f);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            yield return WaitForSeconds(0.25f);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            yield return WaitForSeconds(0.25f);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            yield return WaitForSeconds(0.25f);
+            rCast = false;
+            myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel] - timeSinceR;
+        }
     }
 
-    public override IEnumerator ExecuteA()
+	private object WaitForSeconds(float v)
+	{
+		throw new NotImplementedException();
+	}
+
+	public override IEnumerator ExecuteA()
     {
         if (!CheckForAbilityControl(checksA)) yield break;
 
@@ -141,5 +194,12 @@ public class Wukong : ChampionCombat
         yield return new WaitForSeconds(5f);
         pStack = 0;
         myStats.buffManager.buffs.Remove("StoneSkin");
+    }
+    private IEnumerator Cyclone()
+	{
+        rCast = true;
+        yield return new WaitForSeconds(10f);
+        rCast = false;
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel] - timeSinceR;
     }
 }

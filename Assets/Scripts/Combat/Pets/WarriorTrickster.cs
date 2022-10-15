@@ -30,7 +30,6 @@ public class WarriorTrickster : Pet
 
         deathTimer -= Time.deltaTime;
         if (deathTimer <= 0) owner.pets.Remove(this);
-
     }
 
     public void AutoAttack()
