@@ -112,17 +112,16 @@ public class Nautilus : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
-        if(timeSinceStaggeringBlow > 6)
+        if(timeSinceStaggeringBlow > 6 && AutoAttack(new Damage(2 + 6 * myStats.level, SkillDamageType.Phyiscal, SkillComponentTypes.ProcDamage)).damage != float.MinValue)
 		{
-            AutoAttack(new Damage(2 + 6* myStats.level, SkillDamageType.Phyiscal));
             TargetBuffManager.Add("RootBuff", new RootBuff(StaggeringBlowRootDuration(myStats.level), TargetBuffManager, myStats.passiveSkill.skillName));
             timeSinceStaggeringBlow = 0;
         }
         if (MyBuffManager.buffs.ContainsKey("TitanWarth"))
         {
-            AutoAttack(new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats) * 0.5f, SkillDamageType.Spell));
+            AutoAttack(new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats) * 0.5f, SkillDamageType.Spell, SkillComponentTypes.ProcDamage));
             yield return new WaitForSeconds(1.25f);
-            AutoAttack(new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats) * 0.5f, SkillDamageType.Spell));
+            AutoAttack(new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats) * 0.5f, SkillDamageType.Spell, SkillComponentTypes.ProcDamage));
         }
     }
 }
