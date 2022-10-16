@@ -69,6 +69,7 @@ public class Akali : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == 0) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         bannedFromShroud = 1f;                                 //changes with game time
@@ -81,6 +82,7 @@ public class Akali : ChampionCombat
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == 0) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
@@ -91,6 +93,7 @@ public class Akali : ChampionCombat
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == 0) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
         if (!eCast)
@@ -124,6 +127,7 @@ public class Akali : ChampionCombat
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == 0) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
         if (!rCast)
