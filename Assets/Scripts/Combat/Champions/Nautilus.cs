@@ -118,7 +118,7 @@ public class Nautilus : ChampionCombat
             TargetBuffManager.Add("RootBuff", new RootBuff(StaggeringBlowRootDuration(myStats.level), TargetBuffManager, myStats.passiveSkill.skillName));
             timeSinceStaggeringBlow = 0;
         }
-        if (MyBuffManager.buffs.TryGetValue("TitanWarth", out Buff buff))
+        if (MyBuffManager.buffs.ContainsKey("TitanWarth"))
         {
             AutoAttack(new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats) * 0.5f, SkillDamageType.Spell));
             yield return new WaitForSeconds(1.25f);
