@@ -17,7 +17,7 @@ public class PowderKegBuff : Buff
     {
         if (!isActive && duration <= activationTime) isActive = true;
 
-        duration -= Time.deltaTime;
+        duration -= Time.fixedDeltaTime;
         if (duration <= 0) Kill();
     }
 

@@ -62,15 +62,15 @@ public class Shyvana : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        timeSinceMarked += Time.deltaTime;
+        timeSinceMarked += Time.fixedDeltaTime;
         fury = Mathf.Clamp(fury, 0, 100);
 
         if (hasDragonForm)
-            fury -= (int)(2.5f * Time.deltaTime * 0.5f);
+            fury -= (int)(2.5f * Time.fixedDeltaTime * 0.5f);
         if (fury <= 0)
             hasDragonForm = false;
         else
-            fury += (int)(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * Time.deltaTime);
+            fury += (int)(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * Time.fixedDeltaTime);
     }
 
     public override IEnumerator ExecuteQ()
@@ -192,7 +192,7 @@ public class BurnoutBuff : Buff
 
     public override void Update()
     {
-        duration -= Time.deltaTime;
+        duration -= Time.fixedDeltaTime;
         if (duration <= 0) Kill();
     }
     public override void Kill()
@@ -217,7 +217,7 @@ public class DragonDescentBuff : Buff
 
     public override void Update()
     {
-        if (!paused) duration -= 2.5f * Time.deltaTime * 0.5f;
+        if (!paused) duration -= 2.5f * Time.fixedDeltaTime * 0.5f;
         if (duration <= 0) Kill();
     }
     public override void Kill()

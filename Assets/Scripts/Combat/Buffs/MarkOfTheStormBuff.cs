@@ -14,7 +14,7 @@ public class MarkOfTheStormBuff : Buff
     }
     public override void Kill()
     {
-        duration = -Time.deltaTime;
+        duration = -Time.fixedDeltaTime;
         manager.simulationManager.ShowText($"{manager.stats.name} Doesn't Have Any Mark Stacks Anymore!");
         manager.buffs.Remove("MarkOfTheStorm");
     }

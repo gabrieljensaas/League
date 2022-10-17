@@ -88,8 +88,8 @@ public class Galio : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        passiveCooldown -= Time.deltaTime;
-        timeSinceChannel += Time.deltaTime;
+        passiveCooldown -= Time.fixedDeltaTime;
+        timeSinceChannel += Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteQ()

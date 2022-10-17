@@ -14,7 +14,7 @@ public class OrganicDestructionBuff : Buff
     }
     public override void Kill()
     {
-        duration = -Time.deltaTime;
+        duration = -Time.fixedDeltaTime;
         manager.simulationManager.ShowText($"{manager.stats.name} Doesn't Have Any stack Anymore!");
         manager.buffs.Remove("OrganicDestruction");
     }

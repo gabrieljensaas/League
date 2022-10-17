@@ -50,7 +50,7 @@ public class Azir : ChampionCombat
 
         if (SoldierStack < 2)
         {
-            SoldierRecharge += Time.deltaTime;
+            SoldierRecharge += Time.fixedDeltaTime;
             if (SoldierRecharge >= SandSoldierRechargeBySkillLevel[4])
             {
                 SoldierStack++;

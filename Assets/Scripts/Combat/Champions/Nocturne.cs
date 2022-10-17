@@ -44,7 +44,7 @@ public class Nocturne : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        passiveNocturneReady += Time.deltaTime;
+        passiveNocturneReady += Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteQ()

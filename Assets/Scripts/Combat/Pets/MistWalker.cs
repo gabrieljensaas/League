@@ -21,7 +21,7 @@ public class MistWalker : Pet
 
     public override void Update()
     {
-        aaTimer -= Time.deltaTime;
+        aaTimer -= Time.fixedDeltaTime;
         if (aaTimer <= 0) AutoAttack();
     }
 

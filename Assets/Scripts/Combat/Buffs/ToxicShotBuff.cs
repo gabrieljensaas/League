@@ -13,10 +13,10 @@ public class ToxicShotBuff : Buff
 
     public override void Update()
     {
-        duration -= Time.deltaTime;
+        duration -= Time.fixedDeltaTime;
         if (duration <= 0) Kill();
 
-        tickTimer += Time.deltaTime;
+        tickTimer += Time.fixedDeltaTime;
         if (tickTimer >= 1)
         {
             manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.targetCombat.eSum, 2, manager.combat.targetStats.eSkill[1], 4, manager.combat.targetCombat.eKeys[0]);

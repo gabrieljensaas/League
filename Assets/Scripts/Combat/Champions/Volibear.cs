@@ -151,7 +151,7 @@ public class ThunderingSmashBuff : Buff
 
     public override void Update()
     {
-        duration -= Time.deltaTime;
+        duration -= Time.fixedDeltaTime;
         if (duration <= 0) Kill();
     }
     public override void Kill()
@@ -199,7 +199,7 @@ public class StormbringerBuff : Buff
 
     public override void Update()
     {
-        if (!paused) duration -= Time.deltaTime;
+        if (!paused) duration -= Time.fixedDeltaTime;
         if (duration <= 0) Kill();
     }
     public override void Kill()

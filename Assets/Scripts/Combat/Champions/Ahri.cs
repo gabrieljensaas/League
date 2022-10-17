@@ -70,7 +70,7 @@ public class Ahri : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        targetStats.buffManager.buffs.Add("Charm", new CharmBuff(myStats.eSkill[0].UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), myStats.buffManager, myStats.eSkill[0].basic.name));
+        targetStats.buffManager.buffs.Add("Charm", new CharmBuff(myStats.eSkill[0].UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), TargetBuffManager, myStats.eSkill[0].basic.name));
         UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], buffNames: new string[] { "Charm" }, skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
     }

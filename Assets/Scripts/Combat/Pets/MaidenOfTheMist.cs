@@ -22,10 +22,10 @@ public class MaidenOfTheMist : Pet
 
     public override void Update()
     {
-        aaTimer -= Time.deltaTime;
+        aaTimer -= Time.fixedDeltaTime;
         if (aaTimer <= 0) AutoAttack();
 
-        touchOfTheMaidenTimer += Time.deltaTime;
+        touchOfTheMaidenTimer += Time.fixedDeltaTime;
     }
 
     public void AutoAttack()

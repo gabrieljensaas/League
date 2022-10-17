@@ -22,9 +22,9 @@ public class Daisy : Pet
 
     public override void Update()
     {
-        aaTimer -= Time.deltaTime;
+        aaTimer -= Time.fixedDeltaTime;
         if (aaTimer <= 0) AutoAttack();
-        timeSinceDaisySmash += Time.deltaTime;
+        timeSinceDaisySmash += Time.fixedDeltaTime;
 
     }
 

@@ -41,7 +41,7 @@ public class Kennen : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        passiveStunTimer += Time.deltaTime;
+        passiveStunTimer += Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteQ()

@@ -52,7 +52,7 @@ public class Nami : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        timeSinceBlessing += Time.deltaTime;
+        timeSinceBlessing += Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteQ()

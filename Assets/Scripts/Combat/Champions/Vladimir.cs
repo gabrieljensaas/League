@@ -64,7 +64,7 @@ public class Vladimir : ChampionCombat
     {
         base.CombatUpdate();
 
-        bloodthirstCD -= Time.deltaTime * (isStasis || myStats.buffManager.buffs.ContainsKey("Stasis") ? 0.25f : 1);
+        bloodthirstCD -= Time.fixedDeltaTime * (isStasis || myStats.buffManager.buffs.ContainsKey("Stasis") ? 0.25f : 1);
     }
 
     public override IEnumerator ExecuteQ()

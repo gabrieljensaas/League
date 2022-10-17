@@ -62,10 +62,10 @@ public class Riven : ChampionCombat
     {
         base.CombatUpdate();
 
-        timeSinceLastQ += Time.deltaTime;
-        timeSinceR += Time.deltaTime;
+        timeSinceLastQ += Time.fixedDeltaTime;
+        timeSinceR += Time.fixedDeltaTime;
         if (timeSinceR > 15) hasWindSlash = false;
-        hTimeSinceR += Time.deltaTime;
+        hTimeSinceR += Time.fixedDeltaTime;
         if (hTimeSinceR > 15) hHasWindSlash = false;
     }
 

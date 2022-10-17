@@ -55,7 +55,7 @@ public class Ivern : ChampionCombat
     {
         base.CombatUpdate();
 
-        timeSinceBush += Time.deltaTime;
+        timeSinceBush += Time.fixedDeltaTime;
         AddBrushmakerCharge();
     }
 
@@ -136,7 +136,7 @@ public class BrushMakerBuff : Buff
 
     public override void Update()
     {
-        duration -= Time.deltaTime;
+        duration -= Time.fixedDeltaTime;
         if (duration <= 0) Kill();
     }
     public override void Kill()

@@ -16,14 +16,14 @@ public class HemorrhageBuff : Buff
     {
         float damage = Darius.GetDariusHemorrhageByLevel(manager.combat.targetStats.level, (int)value);
 
-        _hemorrhageTimer += Time.deltaTime;
+        _hemorrhageTimer += Time.fixedDeltaTime;
         if (_hemorrhageTimer >= 1.25f)
         {
             _hemorrhageTimer = 0f;
             manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.pSum, 4, new Damage(damage, SkillDamageType.Phyiscal), $"Hemorrhage {value}");
         }
 
-        duration -= Time.deltaTime;
+        duration -= Time.fixedDeltaTime;
         if (duration <= 0) Kill();
     }
 

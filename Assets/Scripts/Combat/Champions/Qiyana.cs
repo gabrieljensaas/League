@@ -52,7 +52,7 @@ public class Qiyana : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        passiveCooldown -= Time.deltaTime;
+        passiveCooldown -= Time.fixedDeltaTime;
     }
     public override IEnumerator ExecuteQ()
     {

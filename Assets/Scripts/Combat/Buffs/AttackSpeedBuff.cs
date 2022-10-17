@@ -16,7 +16,7 @@ public class AttackSpeedBuff : Buff
 
     public override void Update()
     {
-        if (!paused) duration -= Time.deltaTime;
+        if (!paused) duration -= Time.fixedDeltaTime;
         if (duration <= 0) Kill();
     }
     public override void Kill()

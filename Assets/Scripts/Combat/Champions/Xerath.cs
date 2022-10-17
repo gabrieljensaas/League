@@ -47,7 +47,7 @@ public class Xerath : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        timeSinceQ += Time.deltaTime;
+        timeSinceQ += Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteQ()

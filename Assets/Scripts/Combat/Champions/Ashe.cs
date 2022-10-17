@@ -39,15 +39,17 @@ public class Ashe : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == 0) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(4, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats), myStats.qSkill[0].basic.name));
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+        myStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(4, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), myStats.qSkill[0].basic.name));
+        myStats.qCD = myStats.qSkill[0].basic.coolDown[myStats.qLevel];
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == 0) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
@@ -56,12 +58,13 @@ public class Ashe : ChampionCombat
             targetStats.buffManager.buffs["Frosted"].duration = 2;
             targetStats.buffManager.buffs["Frosted"].source = myStats.wSkill[0].basic.name;
         }
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0]);
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == 0) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
@@ -71,8 +74,8 @@ public class Ashe : ChampionCombat
             targetStats.buffManager.buffs["Frosted"].duration = 2;
             targetStats.buffManager.buffs["Frosted"].source = myStats.rSkill[0].basic.name;
         }
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0]);
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
     }
     public override IEnumerator HijackedR(int skillLevel)
     {
@@ -84,6 +87,6 @@ public class Ashe : ChampionCombat
             myStats.buffManager.buffs["Frosted"].source = myStats.rSkill[0].basic.name;
         }
         UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
-        targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
     }
 }

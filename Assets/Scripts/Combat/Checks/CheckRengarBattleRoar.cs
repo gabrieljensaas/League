@@ -22,7 +22,7 @@ public class CheckRengarBattleRoar : Check
     {
         foreach (DamageInstance damage in damageInstance)
         {
-            damage.time += Time.deltaTime;
+            damage.time += Time.fixedDeltaTime;
             if (damage.time > 1.5f) damageInstance.Remove(damage);
         }
     }

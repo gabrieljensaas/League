@@ -59,7 +59,7 @@ public class Gangplank : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        powderKegTimer += Time.deltaTime;
+        powderKegTimer += Time.fixedDeltaTime;
 
         if (powderKegTimer > powderKegRechargeRate && powderKegCharges < (int)myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats))
         {
@@ -67,7 +67,7 @@ public class Gangplank : ChampionCombat
             powderKegCharges++;
         }
 
-        trialByFireTimer -= Time.deltaTime;
+        trialByFireTimer -= Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteA()

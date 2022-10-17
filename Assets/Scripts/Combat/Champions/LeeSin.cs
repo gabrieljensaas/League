@@ -44,9 +44,9 @@ public class LeeSin : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        timeSinceQ += Time.deltaTime;
-        timeSinceW += Time.deltaTime;
-        timeSinceE += Time.deltaTime;
+        timeSinceQ += Time.fixedDeltaTime;
+        timeSinceW += Time.fixedDeltaTime;
+        timeSinceE += Time.fixedDeltaTime;
     }
 
 

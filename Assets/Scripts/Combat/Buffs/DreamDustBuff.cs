@@ -13,10 +13,10 @@ public class DreamDustBuff : Buff
 
     public override void Update()
     {
-        duration -= Time.deltaTime;
+        duration -= Time.fixedDeltaTime;
         if (duration <= 0) Kill();
 
-        tickTimer += Time.deltaTime;
+        tickTimer += Time.fixedDeltaTime;
         if (tickTimer >= 1)
         {
             manager.combat.UpdateAbilityTotalDamage(ref manager.combat.pSum, 4, new Damage((manager.combat.targetStats.maxHealth * 0.06f + (0.012f * (int)(manager.combat.myStats.AP / 100))) / 3, SkillDamageType.Spell), manager.combat.myStats.passiveSkill.skillName);

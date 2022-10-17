@@ -13,7 +13,7 @@ public class VenomCaskBuff : Buff
 
     public override void Update()
     {
-        timer += Time.deltaTime;
+        timer += Time.fixedDeltaTime;
 
         if (timer >= 1)
         {
@@ -37,7 +37,7 @@ public class VenomCaskBuff : Buff
             timer = 0;
         }
 
-        duration -= Time.deltaTime;
+        duration -= Time.fixedDeltaTime;
         if (duration <= 0) Kill();
     }
 

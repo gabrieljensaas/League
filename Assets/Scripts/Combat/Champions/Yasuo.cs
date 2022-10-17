@@ -92,7 +92,7 @@ public class Yasuo : ChampionCombat
     {
         base.CombatUpdate();
 
-        pCD -= Time.deltaTime;
+        pCD -= Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteQ()

@@ -27,8 +27,8 @@ public class ShieldBuff : Buff
 
     public override void Update()
     {
-        duration -= Time.deltaTime;
-        if (decaying) value -= (Time.deltaTime / duration) * value;
+        duration -= Time.fixedDeltaTime;
+        if (decaying) value -= (Time.fixedDeltaTime / duration) * value;
         if (duration <= 0) Kill();
     }
     public override void Kill()

@@ -48,7 +48,7 @@ public class Sett : ChampionCombat
     {
         base.CombatUpdate();
 
-        pCD += Time.deltaTime;
+        pCD += Time.fixedDeltaTime;
         if (pCD >= 2) leftPunched = false;
     }
 

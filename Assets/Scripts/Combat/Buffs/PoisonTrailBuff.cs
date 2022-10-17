@@ -13,14 +13,14 @@ public class PoisonTrailBuff : Buff
 
     public override void Update()
     {
-        _poisonTimer += Time.deltaTime;
+        _poisonTimer += Time.fixedDeltaTime;
         if (_poisonTimer >= 0.25f)
         {
             _poisonTimer = 0f;
             manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.targetCombat.qSum, 0, manager.combat.targetStats.qSkill[0], 4, manager.combat.targetCombat.qKeys[0]);
         }
 
-        duration -= Time.deltaTime;
+        duration -= Time.fixedDeltaTime;
         if (duration <= 0) Kill();
     }
 

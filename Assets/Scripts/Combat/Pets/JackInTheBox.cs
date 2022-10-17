@@ -25,14 +25,14 @@ public class JackInTheBox : Pet
 
     public override void Update()
     {
-        activationTime -= Time.deltaTime;
+        activationTime -= Time.fixedDeltaTime;
 
         if (activationTime <= 0)
         {
-            aaTimer -= Time.deltaTime;
+            aaTimer -= Time.fixedDeltaTime;
             if (aaTimer <= 0) AutoAttack();
 
-            deathTimer -= Time.deltaTime;
+            deathTimer -= Time.fixedDeltaTime;
             if (deathTimer <= 0) Kill();
         }
     }

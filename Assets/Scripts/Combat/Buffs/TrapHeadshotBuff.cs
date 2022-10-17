@@ -11,7 +11,7 @@ public class TrapHeadshotBuff : Buff
 
     public override void Update()
     {
-        duration -= Time.deltaTime;
+        duration -= Time.fixedDeltaTime;
         if (duration <= 0) Kill();
     }
     public override void Kill()

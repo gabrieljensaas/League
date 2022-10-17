@@ -32,8 +32,8 @@ public class Amumu : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
         checksQ.Add(new CheckIfImmobilize(this));
 
-        targetCombat.checkTakeDamageAA.Add(new CheckForAmumuCurse(this));
-        targetCombat.checkTakeDamageAbility.Add(new CheckForAmumuCurse(this));
+        targetCombat.checkTakeDamageAA.Add(new CheckForAmumuCurse(targetCombat));
+        targetCombat.checkTakeDamageAbility.Add(new CheckForAmumuCurse(targetCombat));
 
         checkTakeDamageAAPostMitigation.Add(new CheckTantrumPassive(this));
         checkTakeDamageAbilityPostMitigation.Add(new CheckTantrumPassive(this)); //need to implement for ability
@@ -53,7 +53,7 @@ public class Amumu : ChampionCombat
 
         if (qCharge != 2)
         {
-            qRecharge += Time.deltaTime;
+            qRecharge += Time.fixedDeltaTime;
             if (qRecharge > qCD[myStats.qLevel])
             {
                 qCharge++;
@@ -70,7 +70,7 @@ public class Amumu : ChampionCombat
         if (qCharge > 0)
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            MyBuffManager.Add("Stun", new StunBuff(1f, TargetBuffManager, QSkill().basic.name));
+            TargetBuffManager.Add("Stun", new StunBuff(1f, TargetBuffManager, QSkill().basic.name));
 
             UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], buffNames: new string[] { "Stun" }, skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
 
@@ -105,8 +105,7 @@ public class Amumu : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        MyBuffManager.Add(RSkill().basic.name, new KnockdownBuff(0.1f, TargetBuffManager, RSkill().basic.name));
-        MyBuffManager.Add("Stun", new StunBuff(1.5f, TargetBuffManager, RSkill().basic.name));
+        TargetBuffManager.Add("Stun", new StunBuff(1.5f, TargetBuffManager, RSkill().basic.name));
         if (UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] { "Stun" }) != float.MinValue) ApplyCurse();
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
     }

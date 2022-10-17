@@ -21,7 +21,7 @@ public class RuneManager : MonoBehaviour
         runes.Add(newRune);
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
         foreach (Rune rune in runes)
             rune.Update();

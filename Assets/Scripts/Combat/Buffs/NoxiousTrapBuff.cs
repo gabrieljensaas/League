@@ -16,12 +16,12 @@ public class NoxiousTrapBuff : Buff
 
     public override void Update()
     {
-        duration -= Time.deltaTime;
+        duration -= Time.fixedDeltaTime;
         if (duration <= 0) Kill();
 
         if (!isActive && duration <= activationTime) isActive = true;
 
-        tickTimer += Time.deltaTime;
+        tickTimer += Time.fixedDeltaTime;
         if (tickTimer >= 1 && isActive)
         {
             manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.targetCombat.rSum, 2, manager.combat.targetStats.rSkill[1], 2, manager.combat.targetCombat.rKeys[0]);

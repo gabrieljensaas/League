@@ -43,7 +43,7 @@ public class Graves : ChampionCombat
     {
         base.CombatUpdate();
 
-        timeSinceLastAA += Time.deltaTime;
+        timeSinceLastAA += Time.fixedDeltaTime;
 
         if (currentAmmo != 2)
         {

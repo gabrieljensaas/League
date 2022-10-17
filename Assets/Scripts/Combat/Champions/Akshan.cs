@@ -57,7 +57,7 @@ public class Akshan : ChampionCombat
     {
         base.CombatUpdate();
 
-        pCD -= Time.deltaTime;
+        pCD -= Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteQ()

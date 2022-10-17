@@ -51,7 +51,7 @@ public class Gragas : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        timeSincePassive += Time.deltaTime;
+        timeSincePassive += Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteQ()
@@ -133,7 +133,7 @@ public class DrunkenRageBuff : Buff
 
     public override void Update()
     {
-        duration -= Time.deltaTime;
+        duration -= Time.fixedDeltaTime;
         if (duration <= 0) Kill();
     }
     public override void Kill()

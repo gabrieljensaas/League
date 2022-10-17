@@ -57,7 +57,7 @@ public class KhaZix : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        recastTimer += Time.deltaTime;
+        recastTimer += Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteA()

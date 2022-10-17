@@ -27,9 +27,9 @@ public class Tibbers : Pet
 
     public override void Update()
     {
-        flameAuraTimer -= Time.deltaTime;
-        aaTimer -= Time.deltaTime;
-        enrageTimer -= Time.deltaTime;
+        flameAuraTimer -= Time.fixedDeltaTime;
+        aaTimer -= Time.fixedDeltaTime;
+        enrageTimer -= Time.fixedDeltaTime;
         if (aaTimer <= 0) AutoAttack();
         if (flameAuraTimer <= 0) ExecuteFlameAuraDamage();
         if (enrageTimer <= 0)

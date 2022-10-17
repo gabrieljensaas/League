@@ -66,7 +66,7 @@ public class SkillList : ScriptableObject
            (effect.percentTargetMissingHP[level] * (targetStats.maxHealth - targetStats.currentHealth) * 0.01f) +
            (effect.percent[level] * 0.01f) +
            (effect.percentTargetMaxHP[level] * 0.01f) + (effect.percentPer100AP[level] * (myStats.AP % 100) * 0.01f * targetStats.maxHealth) + (effect.percentPer100AD[level] * (myStats.AD % 100) * 0.01f * targetStats.maxHealth) +
-           (effect.percentMissingHP[level] * 0.01f * ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) > cap ? cap : myStats.maxHealth - myStats.currentHealth) +
+           (effect.percentMissingHP[level] * 0.01f * ((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) >= cap ? cap : myStats.maxHealth - myStats.currentHealth) +
            (effect.percentDmgDealt[level] * 0.01f) +
            (((effect.expendedGrit[level] * 0.01f) + (myStats.bonusAD * 0.0025f)) * expendedGrit) +
            (effect.percentPrimaryTargetBonusHP[level] * 0.01f * targetStats.bonusHP)) +

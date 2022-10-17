@@ -6052,8 +6052,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _simulatorTargetedFPS: 60
-  _simulatorTimeScale: 10
-  _simulatorFixedTimeStep: 0.01
+  _simulatorTimeScale: 5
+  _simulatorFixedTimeStep: 0.033
   championsDropdowns:
   - {fileID: 884130053}
   - {fileID: 1652948117}
@@ -22002,11 +22002,15 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: '{     "APIMatchInfo": {         "version": "12.17.1",        
-            "championInfo": [             {                 "ability": [ 1, 1, 3,
-            1],                 "champLevel": 6,                 "champName": "Kayle",                
-            "items": [1043, 3006, 1052]             },             {                
-            "ability": [ 4, 1, 1, 1],                 "champLevel": 7,                
-            "champName": "Jinx",                 "items": [6670, 1001, 1042]            
+            "championInfo": [             {                 "champName": "Ahri",                
+            "champLevel": 8,                 "items": [                     6655,                    
+            1001                 ],                 "ability": [                    
+            4,                     1,                     2,                    
+            1                 ]             },             {                 "champName":
+            "Amumu",                 "champLevel": 7,                 "items": [                    
+            6660,                     3047,                     3105                
+            ],                 "ability": [                     1,                    
+            1,                     4,                     1                 ]            
             }         ]     } }'
           m_BoolArgument: 0
         m_CallState: 2

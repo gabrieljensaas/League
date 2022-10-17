@@ -9,7 +9,7 @@ public class Vex : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        gloomTimer -= Time.deltaTime;
+        gloomTimer -= Time.fixedDeltaTime;
     }
 
     public override void UpdatePriorityAndChecks()

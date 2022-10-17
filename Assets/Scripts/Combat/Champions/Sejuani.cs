@@ -49,8 +49,8 @@ public class Sejuani : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        timeSinceEPassive += Time.deltaTime;
-        passiveTimer += Time.deltaTime;
+        timeSinceEPassive += Time.fixedDeltaTime;
+        passiveTimer += Time.fixedDeltaTime;
 
         if (passiveTimer >= 12 - (6 / 17 * (myStats.level - 1)))
         {

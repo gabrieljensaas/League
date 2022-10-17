@@ -43,7 +43,7 @@ public class Taliyah : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        timeSinceW += Time.deltaTime;
+        timeSinceW += Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteQ()

@@ -80,7 +80,7 @@ public class Gnar : ChampionCombat
     {
         base.CombatUpdate();
 
-        HyperTimer += Time.deltaTime;
+        HyperTimer += Time.fixedDeltaTime;
         if (HyperTimer > 3.5f)
         {
             HyperTimer = 0f;

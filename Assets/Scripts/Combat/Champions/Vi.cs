@@ -54,8 +54,8 @@ public class Vi : ChampionCombat
     {
         base.CombatUpdate();
 
-        passiveCD -= Time.deltaTime;
-        eRecharge -= Time.deltaTime;
+        passiveCD -= Time.fixedDeltaTime;
+        eRecharge -= Time.fixedDeltaTime;
         if (eRecharge <= 0 && eStack < 2)
         {
             eStack++;

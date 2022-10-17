@@ -42,7 +42,7 @@ public class ChoGath : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        timeSinceE += Time.deltaTime;
+        timeSinceE += Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteQ()

@@ -56,11 +56,11 @@ public class Akali : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        timeSinceE += Time.deltaTime;
-        timeSinceR += Time.deltaTime;
-        hTimeSinceR += Time.deltaTime;
-        remainingShroudTime -= remainingShroudTime > 0 ? Time.deltaTime : 0;
-        bannedFromShroud -= bannedFromShroud > 0 ? Time.deltaTime : 0;
+        timeSinceE += Time.fixedDeltaTime;
+        timeSinceR += Time.fixedDeltaTime;
+        hTimeSinceR += Time.fixedDeltaTime;
+        remainingShroudTime -= remainingShroudTime > 0 ? Time.fixedDeltaTime : 0;
+        bannedFromShroud -= bannedFromShroud > 0 ? Time.fixedDeltaTime : 0;
         if (bannedFromShroud <= 0 && remainingShroudTime > 0 && !MyBuffManager.buffs.ContainsKey("Untargetable"))
         {
             MyBuffManager.Add("Untargetable", new UntargetableBuff(remainingShroudTime, MyBuffManager, WSkill().basic.name));

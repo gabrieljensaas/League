@@ -47,7 +47,7 @@ public class VelKoz : ChampionCombat
     {
         base.CombatUpdate();
 
-        timeSinceAuto += Time.deltaTime;
+        timeSinceAuto += Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteQ()

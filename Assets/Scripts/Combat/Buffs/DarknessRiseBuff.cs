@@ -16,10 +16,10 @@ public class DarknessRiseBuff : Buff
 
     public override void Update()
     {
-        duration -= Time.deltaTime;
+        duration -= Time.fixedDeltaTime;
         if (duration <= 0) Kill();
 
-        tickTimer += Time.deltaTime;
+        tickTimer += Time.fixedDeltaTime;
         if (value == 3 && tickTimer >= 1)
         {
             mordekaiser.Indestructible(manager.combat.UpdateAbilityTotalDamage(ref manager.combat.pSum, 4, new Damage(

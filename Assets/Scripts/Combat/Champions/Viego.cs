@@ -43,8 +43,8 @@ public class Viego : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        timeSinceW += Time.deltaTime;
-        timeChanneled += Time.deltaTime;
+        timeSinceW += Time.fixedDeltaTime;
+        timeChanneled += Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteQ()

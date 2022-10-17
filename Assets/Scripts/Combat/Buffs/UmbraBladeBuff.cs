@@ -14,7 +14,7 @@ public class UmbraBladeBuff : Buff
     }
     public override void Kill()
     {
-        duration = -Time.deltaTime;
+        duration = -Time.fixedDeltaTime;
         manager.buffs.Remove("UmbraBladeBuff");
     }
 }

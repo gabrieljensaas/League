@@ -22,7 +22,7 @@ namespace Simulator.Combat
 
 
         [HideInInspector] public int level;                                            //stats of champion
-        [HideInInspector] public float maxHealth, currentHealth, AD, AP, armor, spellBlock, attackSpeed, tenacity = 0, lifesteal = 0, grievouswounds = 0;
+        public float maxHealth, currentHealth, AD, AP, armor, spellBlock, attackSpeed, tenacity = 0, lifesteal = 0, grievouswounds = 0;
         [HideInInspector] public float baseHealth, baseAD, baseArmor, baseSpellBlock, baseAttackSpeed;
         [HideInInspector] public float bonusAD, bonusHP, bonusAS, bonusArmor, bonusSpellBlock;
         [HideInInspector] public float critStrikeChance = 0, critStrikeDamage = 1.75f;
@@ -41,13 +41,13 @@ namespace Simulator.Combat
             simulationManager = SimManager.Instance;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
-            qCD -= Time.deltaTime;            //update skills cooldown
-            wCD -= Time.deltaTime;
-            eCD -= Time.deltaTime;
-            rCD -= Time.deltaTime;
-            pCD -= Time.deltaTime;
+            qCD -= Time.fixedDeltaTime;            //update skills cooldown
+            wCD -= Time.fixedDeltaTime;
+            eCD -= Time.fixedDeltaTime;
+            rCD -= Time.fixedDeltaTime;
+            pCD -= Time.fixedDeltaTime;
 
             buffManager?.Update();                //update remaining duration of buffs
 

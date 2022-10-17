@@ -12,7 +12,7 @@ public class ZDriveResonanceBuff : Buff
 
     public override void Update()
     {
-        duration -= Time.deltaTime;
+        duration -= Time.fixedDeltaTime;
         if (value >= 3)
         {
             manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.targetCombat.pSum, 5, new Damage(Ekko.passiveDamageFlat[manager.combat.targetStats.level] + (manager.combat.targetStats.AP * 0.9f), SkillDamageType.Spell), "Z-Drive Resonance");

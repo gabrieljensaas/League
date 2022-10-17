@@ -69,9 +69,9 @@ public class Camille : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        timeSinceQ += Time.deltaTime;
-        timeInsideR -= Time.deltaTime;
-        pCD -= Time.deltaTime;
+        timeSinceQ += Time.fixedDeltaTime;
+        timeInsideR -= Time.fixedDeltaTime;
+        pCD -= Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteQ()

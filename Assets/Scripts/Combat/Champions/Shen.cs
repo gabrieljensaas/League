@@ -37,7 +37,7 @@ public class Shen : ChampionCombat
     {
         base.CombatUpdate();
 
-        pCD -= Time.deltaTime;
+        pCD -= Time.fixedDeltaTime;
     }
 
     public override void UpdatePriorityAndChecks()

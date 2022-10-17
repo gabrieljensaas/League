@@ -71,7 +71,7 @@ public class DrMundo : ChampionCombat
         myStats.AD += bonusAD;
         if (pCD <= 0) GoesWhereHePleases();
         base.CombatUpdate();
-        pCD -= Time.deltaTime;
+        pCD -= Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteQ()

@@ -47,9 +47,9 @@ public class Aatrox : ChampionCombat
     {
         base.CombatUpdate();
 
-        timeSinceLastQ += Time.deltaTime;
+        timeSinceLastQ += Time.fixedDeltaTime;
         if (timeSinceLastQ > 4) qCounter = 0;
-        pCD -= Time.deltaTime;
+        pCD -= Time.fixedDeltaTime;
         if (pCD <= 0 && !myStats.buffManager.buffs.ContainsKey("DeathbringerStance")) myStats.buffManager.buffs.Add("DeathbringerStance", new DeathbringerStanceBuff(float.MaxValue, myStats.buffManager, "Deathbringer Stance"));
     }
 

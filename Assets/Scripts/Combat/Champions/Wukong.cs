@@ -57,7 +57,7 @@ public class Wukong : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        timeSinceCrushingBlowActive += Time.deltaTime;
+        timeSinceCrushingBlowActive += Time.fixedDeltaTime;
         foreach (var item in pets)
         {
             item.Update();

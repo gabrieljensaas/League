@@ -196,7 +196,7 @@ public class Nidalee : ChampionCombat
 
         public override void Update()
         {
-            duration -= Time.deltaTime;
+            duration -= Time.fixedDeltaTime;
             if (duration <= 0) Kill();
 
         }
@@ -223,12 +223,12 @@ public class Nidalee : ChampionCombat
 
         public override void Update()
         {
-            duration -= Time.deltaTime;
+            duration -= Time.fixedDeltaTime;
             if (duration <= 0) Kill();
 
             if (!isActive && duration <= activationTime) isActive = true;
 
-            tickTimer += Time.deltaTime;
+            tickTimer += Time.fixedDeltaTime;
             if (tickTimer >= 1 && isActive)
             {
                 manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.wSum, 1, manager.combat.WSkill(), manager.combat.myStats.wLevel, manager.combat.wKeys[0]);

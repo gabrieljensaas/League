@@ -25,10 +25,10 @@ public class WarriorTrickster : Pet
 
     public override void Update()
     {
-        aaTimer -= Time.deltaTime;
+        aaTimer -= Time.fixedDeltaTime;
         if (aaTimer <= 0) AutoAttack();
 
-        deathTimer -= Time.deltaTime;
+        deathTimer -= Time.fixedDeltaTime;
         if (deathTimer <= 0) owner.pets.Remove(this);
     }
 

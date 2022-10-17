@@ -61,7 +61,7 @@ public class Caitlyn : ChampionCombat
     {
         base.CombatUpdate();
 
-        wCD += Time.deltaTime;
+        wCD += Time.fixedDeltaTime;
         if (wCD > CaitlynTrapRechargeBySkillLevel[4])
         {
             if (wStack != wStackMax)

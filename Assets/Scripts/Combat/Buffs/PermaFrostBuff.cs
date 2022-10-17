@@ -14,7 +14,7 @@ public class PermaFrostBuff : Buff
     }
     public override void Kill()
     {
-        duration = -Time.deltaTime;
+        duration = -Time.fixedDeltaTime;
         manager.simulationManager.ShowText($"{manager.stats.name} Doesn't Have Any PermaFrost Anymore!");
         manager.buffs.Remove("PermaFrost");
     }
