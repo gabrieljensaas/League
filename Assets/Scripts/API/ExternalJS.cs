@@ -11,6 +11,7 @@ public class ExternalJS : MonoBehaviour
     {
         HelloString(JsonUtility.ToJson(data));
         //Debug.Log(JsonUtility.ToJson(data));      // for test comment out the line in the up and use this
+        SimManager.Instance.Reset();
     }
 }
 [System.Serializable]

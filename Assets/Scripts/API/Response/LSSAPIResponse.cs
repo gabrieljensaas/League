@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class APIMatchInfo
 {
     public string version;
+    public float minute;
     public List<ChampionInfo> championInfo;
 }
 [Serializable]
