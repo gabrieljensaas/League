@@ -8,9 +8,9 @@ public class CheckMoltenShield : Check
 
     public override Damage Control(Damage damage)
     {
-        if (combat.myStats.buffManager.shields.ContainsKey("Molten Shield"))
+        if (combat.myStats.buffManager.shields.ContainsKey("Molten Shield") && combat.myStats.eLevel > 0)
         {
-            combat.UpdateAbilityTotalDamage(ref combat.eSum, 2, combat.myStats.eSkill[0], 4, combat.eKeys[1]);
+            combat.UpdateAbilityTotalDamage(ref combat.eSum, 2, combat.myStats.eSkill[0], combat.myStats.eLevel, combat.eKeys[1]);
         }
         return damage;
     }

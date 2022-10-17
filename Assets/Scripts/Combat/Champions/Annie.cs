@@ -57,26 +57,33 @@ public class Annie : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == 0) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        CheckAnniePassiveStun(myStats.qSkill[0].basic.name);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+        if (CheckAnniePassiveStun(myStats.qSkill[0].basic.name))
+            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable, buffNames: new string[] { "Stun"});
+        else 
+            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
+        myStats.qCD = myStats.qSkill[0].basic.coolDown[myStats.qLevel];
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == 0) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        CheckAnniePassiveStun(myStats.wSkill[0].basic.name);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        if (CheckAnniePassiveStun(myStats.wSkill[0].basic.name))
+            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] {"Stun"});
+        else
+            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == 0) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
@@ -89,35 +96,39 @@ public class Annie : ChampionCombat
         {
             myStats.buffManager.buffs.Add("Pyromania", new PyromaniaBuff(myStats.buffManager, myStats.eSkill[0].basic.name));
         }
-        myStats.buffManager.buffs.Add(myStats.eSkill[0].basic.name, new ShieldBuff(3, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats), myStats.eSkill[0].basic.name));
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        myStats.buffManager.buffs.Add(myStats.eSkill[0].basic.name, new ShieldBuff(3, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), myStats.eSkill[0].basic.name));
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == 0) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        CheckAnniePassiveStun(myStats.rSkill[0].basic.name);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
-        pets.Add(new Tibbers(this, 3100, 100 + (myStats.AP * 15 / 100), 0.625f, 90, 90)); //all stats are for max level change when level adjusting of skills done
+        if(CheckAnniePassiveStun(myStats.rSkill[0].basic.name))
+            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] {"Stun"});
+        else
+            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
+        pets.Add(new Tibbers(this, 3100, ((myStats.rLevel + 1) / 2 * 50) + (myStats.AP * 15 / 100), 0.625f, 90, 90)); //health, armor and mresist are for max level change when level adjusting of skills done
     }
 
     public override IEnumerator HijackedR(int skillLevel)
     {
         yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
+        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
-        targetCombat.pets.Add(new Tibbers(this, 3100, 100 + (myStats.AP * 15 / 100), 0.625f, 90, 90)); //all stats are for max level change when level adjusting of skills done
+        targetCombat.pets.Add(new Tibbers(this, 3100, ((skillLevel + 1) / 2 * 50) + (myStats.AP * 15 / 100), 0.625f, 90, 90)); //health, armor and mresist are for max level change when level adjusting of skills done
     }
 
-    private void CheckAnniePassiveStun(string skillName)
+    private bool CheckAnniePassiveStun(string skillName)
     {
         if (annieP.Control())
         {
             targetStats.buffManager.buffs.Add("Stun", new StunBuff(GetAnnieStunDurationByLevel(myStats.level), targetStats.buffManager, myStats.passiveSkill.skillName));
             myStats.buffManager.buffs.Remove("Pyromania");
+            return true;
         }
         else if (myStats.buffManager.buffs.TryGetValue("Pyromania", out Buff pyromania))
         {
@@ -128,5 +139,6 @@ public class Annie : ChampionCombat
         {
             myStats.buffManager.buffs.Add("Pyromania", new PyromaniaBuff(myStats.buffManager, skillName));
         }
+        return false;
     }
 }

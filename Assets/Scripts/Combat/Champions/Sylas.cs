@@ -220,6 +220,7 @@ public class Sylas : ChampionCombat
 
     public override void StopChanneling(string uniqueKey)
     {
+        if ("Comeuppance" == uniqueKey) myStats.rCD = 5f;
         targetCombat.StopCoroutine(uniqueKey);
     }
 }

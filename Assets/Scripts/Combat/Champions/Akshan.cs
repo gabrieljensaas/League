@@ -155,7 +155,17 @@ public class Akshan : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         StartCoroutine(Comeuppance(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats)));
-        MyBuffManager.Add("Channeling", new ChannelingBuff(2.5f, MyBuffManager, ESkill().basic.name, "Comeuppance"));
+        MyBuffManager.Add("Channeling", new ChannelingBuff(2.5f, MyBuffManager, RSkill().basic.name, "Comeuppance"));
+    }
+
+    public override IEnumerator HijackedR(int skillLevel)
+    {
+        if (myStats.PercentCurrentHealth > 0.5) yield break;
+        if (!CheckForAbilityControl(checksR)) yield break;
+
+        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(RSkill().basic.castTime));
+        StartCoroutine(HComeuppance(RSkill().UseSkill(skillLevel, rKeys[0], targetStats, myStats)));
+        TargetBuffManager.Add("Channeling", new ChannelingBuff(2.5f, MyBuffManager, RSkill().basic.name, "Comeuppance"));
     }
 
     public override IEnumerator ExecuteA()
@@ -307,5 +317,17 @@ public class Akshan : ChampionCombat
             }
         }
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
+    }
+
+    public IEnumerator HComeuppance(float bullets)
+    {
+        yield return new WaitForSeconds(2.5f);
+        targetCombat.StartCastingAbility(bullets * 0.1f);
+        while (bullets > 0)
+        {
+            yield return new WaitForSeconds(0.1f);
+            targetCombat.UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, RSkill(), targetStats.rLevel, rKeys[1], damageModifier: 1 + (myStats.PercentMissingHealth * 3), skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
+        }
+        targetStats.rCD = RSkill().basic.coolDown[targetStats.rLevel] * 2;
     }
 }

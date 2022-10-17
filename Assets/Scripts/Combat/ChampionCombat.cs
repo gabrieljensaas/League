@@ -103,13 +103,14 @@ namespace Simulator.Combat
             return damageGiven;
         }
 
-        public void UpdateAbilityTotalDamageSylas(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1, SkillComponentTypes skillComponentTypes = SkillComponentTypes.None, string[] buffNames = null)
+        public float UpdateAbilityTotalDamageSylas(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1, SkillComponentTypes skillComponentTypes = SkillComponentTypes.None, string[] buffNames = null)
         {
             float damageGiven = TakeDamage(new Damage(damageModifier * skill.SylasUseSkill(level, skillKey, targetStats, myStats), skill.skillDamageType, skillComponentTypes, buffNames), skill.basic.name);
-            if (damageGiven <= 0) return;
+            if (damageGiven <= 0) return damageGiven;
             totalDamage += damageGiven;
             targetCombat.myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
             simulationManager.AddDamageLog(new DamageLog(targetStats.name, skill.basic.name, damageGiven, simulationManager.timer % 60));
+            return damageGiven;
         }
 
         public float UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, Damage damage, string skillName)
