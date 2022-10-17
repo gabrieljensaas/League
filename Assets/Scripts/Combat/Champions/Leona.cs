@@ -49,6 +49,12 @@ public class Leona : ChampionCombat
         base.UpdatePriorityAndChecks();
     }
 
+    public override void CombatUpdate()
+    {
+        base.CombatUpdate();
+        timeSinceShieldIlluminated += Time.deltaTime;
+    }
+
     public override IEnumerator ExecuteQ()
     {
         if (!CheckForAbilityControl(checksQ) || myStats.qLevel == 0) yield break;
