@@ -558,7 +558,7 @@ public class SimManager : MonoBehaviour
     public IEnumerator TakeSnapShot()
     {
         yield return new WaitForSeconds(0.5f);
-        snaps.Add(new SnapShot("", new ChampionSnap(champStats[0].name, champStats[0].PercentCurrentHealth * 100), new ChampionSnap(champStats[1].name, champStats[1].PercentCurrentHealth * 100), timer % 60));
+        snaps.Add(new SnapShot("", new ChampionSnap(champStats[0].name, champStats[0].PercentCurrentHealth * 100), new ChampionSnap(champStats[1].name, champStats[1].PercentCurrentHealth * 100), timer));
         StartCoroutine(TakeSnapShot());
     }
 

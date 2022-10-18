@@ -33,8 +33,8 @@ namespace Simulator.Combat
         [HideInInspector] public float abilityHaste = 0, basicAbilityHaste = 0, ultimateHaste = 0, itemHaste = 0, sumSpellHaste = 0;
         [HideInInspector] public float hpRegen;
 
-        public float PercentCurrentHealth => currentHealth / maxHealth;
-        public float PercentMissingHealth => (maxHealth - currentHealth) / maxHealth;
+        public float PercentCurrentHealth => currentHealth > 0 ? currentHealth : 0 / maxHealth;
+        public float PercentMissingHealth => (maxHealth - currentHealth > 0 ? currentHealth : 0) / maxHealth;
 
         private void Start()
         {
