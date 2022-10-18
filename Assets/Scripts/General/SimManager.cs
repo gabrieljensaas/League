@@ -251,16 +251,16 @@ public class SimManager : MonoBehaviour
 
         stats1.name = champName1;
         stats1.level = response.APIMatchInfo.championInfo[0].champLevel;
-        stats1.qLevel = response.APIMatchInfo.championInfo[0].ability[0];
-        stats1.wLevel = response.APIMatchInfo.championInfo[0].ability[1];
-        stats1.eLevel = response.APIMatchInfo.championInfo[0].ability[2];
-        stats1.rLevel = response.APIMatchInfo.championInfo[0].ability[3];
+        stats1.qLevel = response.APIMatchInfo.championInfo[0].ability[0] - 1;
+        stats1.wLevel = response.APIMatchInfo.championInfo[0].ability[1]-1;
+        stats1.eLevel = response.APIMatchInfo.championInfo[0].ability[2] - 1;
+        stats1.rLevel = response.APIMatchInfo.championInfo[0].ability[3] - 1;
         stats2.name = champName2;
         stats2.level = response.APIMatchInfo.championInfo[1].champLevel;
-        stats2.qLevel = response.APIMatchInfo.championInfo[1].ability[0];
-        stats2.wLevel = response.APIMatchInfo.championInfo[1].ability[1];
-        stats2.eLevel = response.APIMatchInfo.championInfo[1].ability[2];
-        stats2.rLevel = response.APIMatchInfo.championInfo[1].ability[3];
+        stats2.qLevel = response.APIMatchInfo.championInfo[1].ability[0] - 1;
+        stats2.wLevel = response.APIMatchInfo.championInfo[1].ability[1] - 1;
+        stats2.eLevel = response.APIMatchInfo.championInfo[1].ability[2] - 1;
+        stats2.rLevel = response.APIMatchInfo.championInfo[1].ability[3] - 1;
 
         GetStatsByLevel(stats1, so1);
         stats1.maxHealth = stats1.baseHealth + stats1.bonusHP;

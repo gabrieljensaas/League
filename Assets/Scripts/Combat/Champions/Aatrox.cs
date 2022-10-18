@@ -55,7 +55,7 @@ public class Aatrox : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
-        if (myStats.qLevel == 0) yield break;
+        if (myStats.qLevel == -1) yield break;
         if (qCounter == 0 && myStats.qCD > 0) yield break;
         if (timeSinceLastQ < 1f) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;

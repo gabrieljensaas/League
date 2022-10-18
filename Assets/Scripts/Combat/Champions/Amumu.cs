@@ -64,7 +64,7 @@ public class Amumu : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
-        if (myStats.qLevel == 0) yield break;
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         if (qCharge > 0)
@@ -81,7 +81,7 @@ public class Amumu : ChampionCombat
 
     public override IEnumerator ExecuteW()
     {
-        if (myStats.wLevel == 0) yield break;
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
         if (wCast) yield break;
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
@@ -91,7 +91,7 @@ public class Amumu : ChampionCombat
 
     public override IEnumerator ExecuteE()
     {
-        if (myStats.eLevel == 0) yield break;
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
@@ -101,7 +101,7 @@ public class Amumu : ChampionCombat
 
     public override IEnumerator ExecuteR()
     {
-        if (myStats.rLevel == 0) yield break;
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));

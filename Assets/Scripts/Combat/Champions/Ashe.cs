@@ -39,7 +39,7 @@ public class Ashe : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
-        if (myStats.qLevel == 0) yield break;
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
@@ -49,7 +49,7 @@ public class Ashe : ChampionCombat
 
     public override IEnumerator ExecuteW()
     {
-        if (myStats.wLevel == 0) yield break;
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
@@ -64,7 +64,7 @@ public class Ashe : ChampionCombat
 
     public override IEnumerator ExecuteR()
     {
-        if (myStats.rLevel == 0) yield break;
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));

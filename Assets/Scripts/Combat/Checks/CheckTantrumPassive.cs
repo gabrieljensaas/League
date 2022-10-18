@@ -8,7 +8,7 @@ public class CheckTantrumPassive : Check
 
     public override Damage Control(Damage damage)
     {
-        if (damage.damageType == SkillDamageType.Phyiscal)
+        if (damage.damageType == SkillDamageType.Phyiscal && combat.myStats.eLevel > -1)
         {
             var reduction = combat.ESkill().UseSkill(combat.myStats.eLevel, combat.eKeys[0], combat.myStats, combat.targetStats);
             damage.value -= damage.value * 0.5f > reduction ? reduction : damage.value * 0.5f;
