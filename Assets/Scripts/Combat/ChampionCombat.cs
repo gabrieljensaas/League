@@ -14,6 +14,8 @@ namespace Simulator.Combat
 {
     public class ChampionCombat : MonoBehaviour, IExecuteQ, IExecuteW, IExecuteE, IExecuteR, IExecuteA
     {
+        public static string[] indexSkillMap = { "Q", "W", "E", "R", "P" };
+
         [SerializeField] public ChampionStats myStats;
         [SerializeField] public ChampionStats targetStats;
         [SerializeField] public ChampionCombat targetCombat;
@@ -98,7 +100,7 @@ namespace Simulator.Combat
         {
             float damageGiven = targetCombat.TakeDamage(new Damage(damageModifier * skill.UseSkill(level, skillKey, myStats, targetStats), skill.skillDamageType, skillComponentTypes, buffNames), skill.basic.name);
             if (damageGiven <= 0) return damageGiven;
-            simulationManager.AddDamageLog(new DamageLog(myStats.name, skill.basic.name, damageGiven, simulationManager.timer));
+            simulationManager.AddDamageLog(new DamageLog(myStats.name, skill.basic.name, damageGiven, simulationManager.timer, indexSkillMap[totalDamageTextIndex]));
             totalDamage += damageGiven;
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
             return damageGiven;
@@ -110,7 +112,7 @@ namespace Simulator.Combat
             if (damageGiven <= 0) return damageGiven;
             totalDamage += damageGiven;
             targetCombat.myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
-            simulationManager.AddDamageLog(new DamageLog(targetStats.name, skill.basic.name, damageGiven, simulationManager.timer));
+            simulationManager.AddDamageLog(new DamageLog(targetStats.name, skill.basic.name, damageGiven, simulationManager.timer, indexSkillMap[totalDamageTextIndex]));
             return damageGiven;
         }
 
@@ -118,7 +120,7 @@ namespace Simulator.Combat
         {
             float damageGiven = targetCombat.TakeDamage(damage, skillName);
             if (damageGiven <= 0) return 0;
-            simulationManager.AddDamageLog(new DamageLog(myStats.name, skillName, damageGiven, simulationManager.timer));
+            simulationManager.AddDamageLog(new DamageLog(myStats.name, skillName, damageGiven, simulationManager.timer, indexSkillMap[totalDamageTextIndex]));
             totalDamage += damageGiven;
             myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
             return damageGiven;
@@ -128,7 +130,7 @@ namespace Simulator.Combat
         {
             float damageGiven = TakeDamage(damage, skillName);
             if (damageGiven <= 0) return;
-            simulationManager.AddDamageLog(new DamageLog(targetStats.name, skillName, damageGiven, simulationManager.timer));
+            simulationManager.AddDamageLog(new DamageLog(targetStats.name, skillName, damageGiven, simulationManager.timer, indexSkillMap[totalDamageTextIndex]));
             totalDamage += damageGiven;
             targetCombat.myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
@@ -268,7 +270,7 @@ namespace Simulator.Combat
             hSum += HealHealth(damageGiven * myStats.lifesteal, "Lifesteal");
             autoAttackReturn.damage = damageGiven;
 
-            simulationManager.AddDamageLog(new DamageLog(myStats.name, $"{myStats.name}'s Auto Attack", damageGiven, (int)simulationManager.timer % 60));
+            simulationManager.AddDamageLog(new DamageLog(myStats.name, $"{myStats.name}'s Auto Attack", damageGiven, simulationManager.timer, "A"));
             myUI.aaSum.text = aSum.ToString();
             myUI.healSum.text = hSum.ToString();
 
@@ -311,7 +313,7 @@ namespace Simulator.Combat
         protected virtual void CheckDeath()
         {
             if (myStats.currentHealth <= 0)
-                EndBattle();
+                EndBattle(targetStats.name);
         }
 
         public float HealHealth(float heal, string source)
@@ -329,7 +331,7 @@ namespace Simulator.Combat
             return heal;
         }
 
-        protected void EndBattle()
+        protected void EndBattle(string winner)
         {
             Time.timeScale = 1;
             SimManager.isSimulating = false;
@@ -338,7 +340,7 @@ namespace Simulator.Combat
             targetCombat.StopAllCoroutines();
             simulationManager.StopCoroutine(simulationManager.TakeSnapShot());
             simulationManager.snaps.Add(new SnapShot("", new ChampionSnap(simulationManager.champStats[0].name, simulationManager.champStats[0].PercentCurrentHealth * 100), new ChampionSnap(simulationManager.champStats[1].name, simulationManager.champStats[1].PercentCurrentHealth * 100), simulationManager.timer));
-            APIRequestManager.Instance.SendOutputToJS(new WebData(simulationManager.snaps.ToArray(), simulationManager.damagelogs.ToArray(), simulationManager.heallogs.ToArray(), simulationManager.bufflogs.ToArray()));
+            APIRequestManager.Instance.SendOutputToJS(new WebData(simulationManager.snaps.ToArray(), simulationManager.damagelogs.ToArray(), simulationManager.heallogs.ToArray(), simulationManager.bufflogs.ToArray(), winner, simulationManager.timer));
         }
 
         public void UpdateTarget(int index)

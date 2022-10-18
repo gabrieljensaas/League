@@ -17,16 +17,20 @@ public class ExternalJS : MonoBehaviour
 [System.Serializable]
 public class WebData
 {
+    public string winner;
+    public float fightDuration;
     public DamageLog[] DamageLogs;
     public SnapShot[] SnapShots;
     public HealLog[] HealLogs;
     public BuffLog[] BuffLogs;
-    public WebData(SnapShot[] snap, DamageLog[] dmglogs, HealLog[] hlogs, BuffLog[] bufflogs)
+    public WebData(SnapShot[] snap, DamageLog[] dmglogs, HealLog[] hlogs, BuffLog[] bufflogs, string winner, float fightDuration)
     {
         this.DamageLogs = dmglogs;
         this.SnapShots = snap;
         this.HealLogs = hlogs;
         this.BuffLogs = bufflogs;
+        this.winner = winner;
+        this.fightDuration = fightDuration;
     }
 }
 [System.Serializable]
@@ -63,15 +67,17 @@ public class DamageLog
 {
     public string championName;
     public string skillName;
+    public string skillType;
     public float value;
     public float time;
 
-    public DamageLog(string championName, string skillName, float value, float seconds)
+    public DamageLog(string championName, string skillName, float value, float seconds, string skillType)
     {
         this.championName = championName;
         this.skillName = skillName;
         this.value = value;
         this.time = seconds;
+        this.skillType = skillType;
     }
 }
 
