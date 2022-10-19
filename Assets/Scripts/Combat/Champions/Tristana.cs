@@ -46,8 +46,8 @@ public class Tristana : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("AmbushAS", new AttackSpeedBuff(5, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats), "AmbushAS"));
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+        myStats.buffManager.buffs.Add("AmbushAS", new AttackSpeedBuff(5, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), "AmbushAS"));
+        myStats.qCD = myStats.qSkill[0].basic.coolDown[myStats.qLevel];
         CheckExplosiveCharge();
     }
 
@@ -55,7 +55,7 @@ public class Tristana : ChampionCombat
     {
         if (!CheckForAbilityControl(checksE)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(attackCooldown));
+        yield return StartCoroutine(StartCastingAbility(1f / myStats.attackSpeed));
         targetStats.buffManager.buffs.Add("Explosive Charge", new ExplosiveChargeBuff(4, targetStats.buffManager, myStats.eSkill[0].basic.name));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }

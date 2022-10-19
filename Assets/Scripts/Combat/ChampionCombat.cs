@@ -172,6 +172,7 @@ namespace Simulator.Combat
 
         public virtual IEnumerator ExecuteQ()
         {
+            if (myStats.qLevel == -1) yield break;
             if (!CheckForAbilityControl(checksQ)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
@@ -181,6 +182,7 @@ namespace Simulator.Combat
 
         public virtual IEnumerator ExecuteW()
         {
+            if (myStats.wLevel == -1) yield break;
             if (!CheckForAbilityControl(checksW)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
@@ -190,6 +192,7 @@ namespace Simulator.Combat
 
         public virtual IEnumerator ExecuteE()
         {
+            if (myStats.eLevel == -1) yield break;
             if (!CheckForAbilityControl(checksE)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
@@ -199,6 +202,7 @@ namespace Simulator.Combat
 
         public virtual IEnumerator ExecuteR()
         {
+            if (myStats.rLevel == -1) yield break;
             if (!CheckForAbilityControl(checksR)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
@@ -323,8 +327,8 @@ namespace Simulator.Combat
             //add checks here
 
 
-            myStats.currentHealth += (int)heal;
-            if (myStats.currentHealth > myStats.maxHealth) myStats.currentHealth = myStats.maxHealth;
+            if (myStats.currentHealth + heal > myStats.maxHealth) myStats.currentHealth = myStats.maxHealth;
+            else myStats.currentHealth += (int)heal;
 
             simulationManager.ShowText($"{myStats.name} Took {heal} Heal From {source}!");
 

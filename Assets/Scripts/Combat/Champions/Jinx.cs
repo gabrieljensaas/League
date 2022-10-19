@@ -44,41 +44,46 @@ public class Jinx : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        StopCoroutine(QStackExpired());
-        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
-        if (qStack != 3) qStack++;
-        myStats.buffManager.buffs.Remove(myStats.qSkill[0].basic.name);
-        myStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) * (qStack + 1) * 0.5f, myStats.qSkill[0].basic.name));
-        StartCoroutine(QStackExpired());
+        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal, SkillComponentTypes.Projectile | SkillComponentTypes.OnHit | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable));
+        if(myStats.qLevel > -1)
+        {
+            StopCoroutine(QStackExpired());
+            if (qStack != 3) qStack++;
+            ((AttackSpeedBuff)myStats.buffManager.buffs[myStats.qSkill[0].basic.name]).KillSilent();
+            myStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * (qStack + 1) * 0.5f, myStats.qSkill[0].basic.name));
+            StartCoroutine(QStackExpired());
+        }
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
         myStats.wSkill[0].basic.castTime = GetJinxWCastTime(myStats.bonusAS);
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0]);
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         yield return new WaitForSeconds(0.9f); // chompers landing and arming time
         targetStats.buffManager.buffs.TryAdd("Root", new RootBuff(1.5f, targetStats.buffManager, myStats.eSkill[0].basic.name));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0]);
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
     }
 
     private IEnumerator QStackExpired()
     {
         yield return new WaitForSeconds(2.5f);
         qStack--;
-        myStats.buffManager.buffs.Remove(myStats.qSkill[0].basic.name);
-        if (qStack > 0) myStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) * (qStack + 1) * 0.5f, myStats.qSkill[0].basic.name));
+        ((AttackSpeedBuff)myStats.buffManager.buffs[myStats.qSkill[0].basic.name]).KillSilent();
+        if (qStack > 0) myStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * (qStack + 1) * 0.5f, myStats.qSkill[0].basic.name));
     }
 }

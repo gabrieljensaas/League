@@ -55,40 +55,43 @@ public class MissFortune : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
-        if (!loveTapped) LoveTap();
+        if (UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0]) != float.MinValue && !loveTapped) LoveTap();
+        myStats.qCD = myStats.qSkill[0].basic.coolDown[myStats.qLevel];
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add(myStats.wSkill[0].basic.name, new AttackSpeedBuff(4, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats), myStats.wSkill[0].basic.name));
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        myStats.buffManager.buffs.Add(myStats.wSkill[0].basic.name, new AttackSpeedBuff(4, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), myStats.wSkill[0].basic.name));
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         StartCoroutine(MakeItRain());
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(3, myStats.buffManager, myStats.rSkill[0].basic.name, "BulletTime"));
-        StartCoroutine(BulletTime((int)myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats)));
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        StartCoroutine(BulletTime((int)myStats.rSkill[0].UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats)));
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
     }
 
     public override IEnumerator HijackedR(int skillLevel)
@@ -96,7 +99,7 @@ public class MissFortune : ChampionCombat
         yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(3, targetStats.buffManager, myStats.rSkill[0].basic.name, "HBulletTime"));
         StartCoroutine(HBulletTime((int)myStats.rSkill[0].SylasUseSkill(skillLevel, rKeys[0], targetStats, myStats), skillLevel));
-        targetStats.rCD = myStats.rSkill[0].basic.coolDown[2] * 2;
+        targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
     }
 
     public override IEnumerator ExecuteA()
@@ -109,7 +112,7 @@ public class MissFortune : ChampionCombat
     }
     private void LoveTap()
     {
-        UpdateAbilityTotalDamage(ref pSum, 4, new Damage(myStats.AD * GetMissfortunePassiveADMultiplier(myStats.level), SkillDamageType.Phyiscal), myStats.passiveSkill.skillName);
+        UpdateAbilityTotalDamage(ref pSum, 4, new Damage(myStats.AD * GetMissfortunePassiveADMultiplier(myStats.level), SkillDamageType.Phyiscal, SkillComponentTypes.ProcDamage), myStats.passiveSkill.skillName);
         myStats.wCD -= 2;
         loveTapped = true;
     }
@@ -117,21 +120,21 @@ public class MissFortune : ChampionCombat
     private IEnumerator MakeItRain()
     {
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0], 0.125f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], 0.125f);
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0], 0.125f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], 0.125f);
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0], 0.125f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], 0.125f);
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0], 0.125f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], 0.125f);
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0], 0.125f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], 0.125f);
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0], 0.125f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], 0.125f);
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0], 0.125f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], 0.125f);
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0], 0.125f);
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], 0.125f);
     }
 
     private IEnumerator BulletTime(int waveCount)

@@ -26,4 +26,11 @@ public class AttackSpeedBuff : Buff
         manager.stats.attackSpeed -= value * manager.stats.attackSpeed;
         manager.buffs.Remove(uniqueKey);
     }
+
+    public void KillSilent()
+    {
+        manager.combat.attackCooldown *= manager.stats.attackSpeed / (manager.stats.attackSpeed - (value * manager.stats.attackSpeed));
+        manager.stats.attackSpeed -= value * manager.stats.attackSpeed;
+        manager.buffs.Remove(uniqueKey);
+    }
 }
