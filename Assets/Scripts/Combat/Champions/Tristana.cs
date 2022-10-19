@@ -62,7 +62,12 @@ public class Tristana : ChampionCombat
 
     public override IEnumerator ExecuteR()
     {
-        yield return StartCoroutine(base.ExecuteR());
+        if (myStats.rLevel == -1) yield break;
+        if (!CheckForAbilityControl(checksR)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
+        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+        myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
         targetStats.buffManager.buffs.Add("Stun", new StunBuff(0.75f, targetStats.buffManager, myStats.rSkill[0].basic.name));
         CheckExplosiveCharge();
     }
@@ -84,7 +89,7 @@ public class Tristana : ChampionCombat
 
     private void CheckExplosiveCharge()
     {
-        if (myStats.buffManager.buffs.TryGetValue("Explosive Charge", out Buff explosiveCharge))
+        if (targetStats.buffManager.buffs.TryGetValue("Explosive Charge", out Buff explosiveCharge))
         {
             explosiveCharge.value++;
             if (explosiveCharge.value == 4)
