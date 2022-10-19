@@ -1,11 +1,12 @@
 using Simulator.Combat;
 using System.Collections;
+using UnityEngine;
 
 public class Rakan : ChampionCombat
 {
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "E", "W", "Q", "R", "A" };
+        combatPrio = new string[] { "R", "W", "Q", "A", "E" };
 
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
@@ -25,6 +26,7 @@ public class Rakan : ChampionCombat
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
+        checksW.Add(new CheckIfImmobilize(this));
 
         targetCombat.checksQ.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksW.Add(new CheckIfEnemyTargetable(targetCombat));
@@ -37,7 +39,10 @@ public class Rakan : ChampionCombat
         wKeys.Add("Magic Damage");
 
         rKeys.Add("Magic Damage");
+        rKeys.Add("Disable Duration");
 
+        //didn't added the shield recovery as the champion will be always on combat
+        myStats.buffManager.buffs.Add("FeyFeathers", new ShieldBuff(999f, myStats.buffManager, "FeyFeathers", 30+ 195 / 17 * (myStats.level-1) , "FeyFeathers"));
         base.UpdatePriorityAndChecks();
     }
 
@@ -47,8 +52,9 @@ public class Rakan : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
-/*        UpdateTotalHeal(ref qSum, );*/
-        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
+        yield return new WaitForSeconds(3f);
+		UpdateTotalHeal(ref qSum, 25+ 5 * myStats.level, QSkill().basic.name);
+		myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
     }
 
     public override IEnumerator ExecuteW()
@@ -56,17 +62,10 @@ public class Rakan : ChampionCombat
         if (!CheckForAbilityControl(checksW) || myStats.wLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+        yield return new WaitForSeconds(0.35f);
+        TargetBuffManager.Add("Airborne", new AirborneBuff(1f, TargetBuffManager, WSkill().basic.name));
+        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] { "Airborne"});
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
-    }
-
-    public override IEnumerator ExecuteE()
-    {
-        if (!CheckForAbilityControl(checksE) || myStats.eLevel == 0) yield break;
-
-        yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
-        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
     }
 
     public override IEnumerator ExecuteR()
@@ -74,7 +73,8 @@ public class Rakan : ChampionCombat
         if (!CheckForAbilityControl(checksR) || myStats.rLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+        TargetBuffManager.Add("Charm", new CharmBuff(RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats), TargetBuffManager, RSkill().basic.name));
+        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] {"Charm"});
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
     }
 
