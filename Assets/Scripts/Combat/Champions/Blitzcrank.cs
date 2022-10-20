@@ -1,9 +1,13 @@
 using Simulator.Combat;
 using System.Collections;
+using UnityEngine;
 
 public class Blitzcrank : ChampionCombat
 {
-    public override void UpdatePriorityAndChecks()
+    private bool hasPowerFist;
+	private bool hasStaticFieldPassive;
+
+	public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "W", "Q", "R", "A" };
 
@@ -39,6 +43,9 @@ public class Blitzcrank : ChampionCombat
         rKeys.Add("Magic Damage");
         rKeys.Add("Magic Damage");
         //Need to add manabarrier when Hp less than 30%S
+
+        if (myStats.rCD <= 0)
+            hasStaticFieldPassive = true;
         base.UpdatePriorityAndChecks();
     }
 
@@ -58,7 +65,8 @@ public class Blitzcrank : ChampionCombat
         if (!CheckForAbilityControl(checksW) || myStats.wLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+
+        MyBuffManager.Add("AttackSpeed", new AttackSpeedBuff(5, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), WSkill().basic.name));
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
     }
 
@@ -67,7 +75,8 @@ public class Blitzcrank : ChampionCombat
         if (!CheckForAbilityControl(checksE) || myStats.eLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
+        hasPowerFist = true;
+        attackCooldown = 0;
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
     }
 
@@ -76,7 +85,12 @@ public class Blitzcrank : ChampionCombat
         if (!CheckForAbilityControl(checksR) || myStats.rLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
+        if (TargetBuffManager.buffs.TryGetValue("Shield", out Buff value))
+        {
+            value.Kill();
+        }
+        TargetBuffManager.Add("Silence", new SilenceBuff(0.5f, TargetBuffManager, RSkill().basic.name));
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
     }
 
@@ -86,5 +100,20 @@ public class Blitzcrank : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
+        if (MyBuffManager.buffs.ContainsKey("AttackSpeed"))
+        {
+            AutoAttack(new Damage(0.01f * targetStats.maxHealth, SkillDamageType.Spell, SkillComponentTypes.OnHit));
+        }
+        if (hasPowerFist && AutoAttack(new Damage(myStats.AD * 0.75f, SkillDamageType.Phyiscal, SkillComponentTypes.ProcDamage | SkillComponentTypes.Spellblockable)).damage != float.MinValue)
+        {
+            TargetBuffManager.Add("Airborne", new AirborneBuff(1f, TargetBuffManager, ESkill().basic.name));
+            hasPowerFist = false;
+        }
+        if(hasStaticFieldPassive)
+		{
+            yield return new WaitForSeconds(1f);
+            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats), SkillDamageType.Spell), RSkill().basic.name);
+		}
+
     }
 }
