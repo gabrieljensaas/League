@@ -38,7 +38,7 @@ public class Blitzcrank : ChampionCombat
 
         rKeys.Add("Magic Damage");
         rKeys.Add("Magic Damage");
-
+        //Need to add manabarrier when Hp less than 30%S
         base.UpdatePriorityAndChecks();
     }
 
@@ -47,7 +47,9 @@ public class Blitzcrank : ChampionCombat
         if (!CheckForAbilityControl(checksQ) || myStats.qLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]); UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.True), QSkill().basic.name);
+        TargetBuffManager.Add("Stun", new StunBuff(0.65f, TargetBuffManager, QSkill().basic.name));
+        TargetBuffManager.Add("Airborne", new AirborneBuff(0.1f, TargetBuffManager, QSkill().basic.name));
+        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable | SkillComponentTypes.Blockable, buffNames: new string[] { "Stun", "Airborne"});
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
     }
 
