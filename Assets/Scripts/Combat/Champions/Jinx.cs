@@ -49,7 +49,7 @@ public class Jinx : ChampionCombat
         {
             StopCoroutine(QStackExpired());
             if (qStack != 3) qStack++;
-            ((AttackSpeedBuff)myStats.buffManager.buffs[myStats.qSkill[0].basic.name]).KillSilent();
+            if(MyBuffManager.buffs.TryGetValue(myStats.qSkill[0].basic.name, out Buff value)) ((AttackSpeedBuff)value).KillSilent();
             myStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * (qStack + 1) * 0.5f, myStats.qSkill[0].basic.name));
             StartCoroutine(QStackExpired());
         }
@@ -83,7 +83,7 @@ public class Jinx : ChampionCombat
     {
         yield return new WaitForSeconds(2.5f);
         qStack--;
-        ((AttackSpeedBuff)myStats.buffManager.buffs[myStats.qSkill[0].basic.name]).KillSilent();
+        if (MyBuffManager.buffs.TryGetValue(myStats.qSkill[0].basic.name, out Buff value)) ((AttackSpeedBuff)value).KillSilent();
         if (qStack > 0) myStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * (qStack + 1) * 0.5f, myStats.qSkill[0].basic.name));
     }
 }
