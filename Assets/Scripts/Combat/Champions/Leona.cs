@@ -52,7 +52,7 @@ public class Leona : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        timeSinceShieldIlluminated += Time.fixedDeltaTime;
+        timeSinceShieldIlluminated += Time.deltaTime;
     }
 
     public override IEnumerator ExecuteQ()

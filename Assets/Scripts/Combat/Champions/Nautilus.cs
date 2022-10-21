@@ -61,7 +61,7 @@ public class Nautilus : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        timeSinceStaggeringBlow += Time.fixedDeltaTime;
+        timeSinceStaggeringBlow += Time.deltaTime;
     }
 
     public override IEnumerator ExecuteQ()
