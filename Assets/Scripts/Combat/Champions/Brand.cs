@@ -56,7 +56,7 @@ public class Brand : ChampionCombat
     public override void CombatUpdate()
     {
         base.CombatUpdate();
-        timeSinceDetonation += Time.deltaTime;
+        timeSinceDetonation += Time.fixedDeltaTime;
     }
 
     public override IEnumerator ExecuteQ()
