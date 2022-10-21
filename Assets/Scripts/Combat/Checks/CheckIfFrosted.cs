@@ -12,7 +12,7 @@ public class CheckIfFrosted : Check
     }
     public override Damage Control(Damage damage)
     {
-        damage.value *= combat.myStats.buffManager.buffs.ContainsKey("Frosted") ? 1.1f : 1f;
+        if(damage.skillComponentType == SkillComponentTypes.OnHit && combat.myStats.buffManager.buffs.ContainsKey("Frosted")) damage.value *= 1.1f;
         return damage;
     }
 }

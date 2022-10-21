@@ -39,7 +39,7 @@ public class Azir : ChampionCombat
         eKeys.Add("Shield Strength");
         rKeys.Add("Magic Damage");
 
-        myStats.attackSpeed += myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats) * myStats.baseAttackSpeed;
+        myStats.attackSpeed += myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats) * myStats.baseAttackSpeed;
 
         base.UpdatePriorityAndChecks();
     }
@@ -51,7 +51,7 @@ public class Azir : ChampionCombat
         if (SoldierStack < 2)
         {
             SoldierRecharge += Time.fixedDeltaTime;
-            if (SoldierRecharge >= SandSoldierRechargeBySkillLevel[4])
+            if (SoldierRecharge >= SandSoldierRechargeBySkillLevel[myStats.wLevel])
             {
                 SoldierStack++;
                 SoldierRecharge = 0;
@@ -61,49 +61,56 @@ public class Azir : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
+        if (SoldierCount == 0 && myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
-        if (SoldierCount == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
+        myStats.qCD = myStats.qSkill[0].basic.coolDown[myStats.qLevel];
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
         if (SoldierStack == 0) yield break;
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         SoldierStack--;
         StartCoroutine(SummonSoldier());
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        myStats.buffManager.shields.Add(myStats.eSkill[0].basic.name, new ShieldBuff(1.5f, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats), myStats.eSkill[0].basic.name));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        myStats.buffManager.shields.Add(myStats.eSkill[0].basic.name, new ShieldBuff(1.5f, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), myStats.eSkill[0].basic.name));
+        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(1f, targetStats.buffManager, myStats.rSkill[0].basic.name));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        if(UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable) != float.MinValue)
+        {
+            targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(1f, targetStats.buffManager, myStats.rSkill[0].basic.name));
+        }
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
     }
 
     public override IEnumerator HijackedR(int skillLevel)
     {
         yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("Airborne", new AirborneBuff(1f, myStats.buffManager, myStats.rSkill[0].basic.name));
-        UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
+        if(UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]) != float.MinValue)
+        {
+            myStats.buffManager.buffs.Add("Airborne", new AirborneBuff(1f, myStats.buffManager, myStats.rSkill[0].basic.name));
+        }
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
     }
 
@@ -112,7 +119,7 @@ public class Azir : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        if (SoldierCount == 0) AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
+        if (SoldierCount == 0) AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal, SkillComponentTypes.OnHit | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable));
         else
         {
             float damage = SandSoldierFlatDamageByLevel[myStats.level] + (myStats.AP * 0.55f);
@@ -123,7 +130,7 @@ public class Azir : ChampionCombat
     public IEnumerator SummonSoldier()
     {
         SoldierCount++;
-        if (SoldierCount == 3) myStats.buffManager.buffs.Add(myStats.wSkill[0].basic.name, new AttackSpeedBuff(5f, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats), myStats.wSkill[0].basic.name));
+        if (SoldierCount == 3) myStats.buffManager.buffs.Add(myStats.wSkill[0].basic.name, new AttackSpeedBuff(5f, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), myStats.wSkill[0].basic.name));
         yield return new WaitForSeconds(5f);
         SoldierCount--;
     }
