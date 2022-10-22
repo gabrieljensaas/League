@@ -79,7 +79,7 @@ public class Zilean : ChampionCombat
 		{
             if (!CheckForAbilityControl(checksR) || myStats.rLevel == 0) yield break;
 
-            yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
+            yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime)); // need revision
             if(myStats.currentHealth == 0)
 			{
                 MyBuffManager.Add("Invulnerable", new UntargetableBuff(3f, MyBuffManager, RSkill().basic.name));
