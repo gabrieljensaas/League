@@ -8,4 +8,5 @@ public abstract class Rune
     }
 
     public abstract void Update();
+    public abstract void Destroy();
 }

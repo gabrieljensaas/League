@@ -55,6 +55,10 @@ namespace Simulator.Combat
 
         public delegate void CombatEvent();
         public event CombatEvent OnAutoAttack;
+        public event CombatEvent OnAbilityHit;
+
+        public delegate void HealEvent(float heal);
+        public event HealEvent OnHeal;
 
         protected virtual void Start()
         {
