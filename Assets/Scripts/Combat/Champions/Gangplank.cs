@@ -78,7 +78,7 @@ public class Gangplank : ChampionCombat
 
         if (myStats.buffManager.buffs.TryGetValue("PowderKeg", out Buff buff))
         {
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
             buff.Kill();
         }
         else
@@ -128,7 +128,7 @@ public class Gangplank : ChampionCombat
     {
         for (int i = 0; i < 5; i++)
         {
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage((TrialByFireBaseDamage(myStats.level) + myStats.bonusAD) / 5, SkillDamageType.True), myStats.passiveSkill.skillName);
+            UpdateTotalDamage(ref pSum, 4, new Damage((TrialByFireBaseDamage(myStats.level) + myStats.bonusAD) / 5, SkillDamageType.True), myStats.passiveSkill.skillName);
             yield return new WaitForSeconds(0.5f);
         }
     }
@@ -138,7 +138,7 @@ public class Gangplank : ChampionCombat
         for (int i = 0; i < 4; i++)
         {
             yield return new WaitForSeconds(2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[1], 2, rKeys[0]);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[1], 2, rKeys[0]);
         }
     }
 }

@@ -31,10 +31,10 @@ public class Mordekaiser : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
 
-        checkTakeDamageAA.Add(new CheckMordekaiserIndestructible(this, this));
-        checkTakeDamageAbility.Add(new CheckMordekaiserIndestructible(this, this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamage.Add(new CheckMordekaiserIndestructible(this, this));
+        checkTakeDamage.Add(new CheckMordekaiserIndestructible(this, this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Magic Damage");
         qKeys.Add("Damage Increase");
@@ -52,7 +52,7 @@ public class Mordekaiser : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         Indestructible(AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal)).damage);
-        Indestructible(UpdateAbilityTotalDamage(ref pSum, 4, new Damage(0.4f * myStats.AP, SkillDamageType.Spell), myStats.passiveSkill.skillName));
+        Indestructible(UpdateTotalDamage(ref pSum, 4, new Damage(0.4f * myStats.AP, SkillDamageType.Spell), myStats.passiveSkill.skillName));
         DarknessRiseStacks(myStats.passiveSkill.skillName);
     }
 
@@ -61,8 +61,8 @@ public class Mordekaiser : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        Indestructible(UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]));
-        Indestructible(UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1])); //additional damage
+        Indestructible(UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]));
+        Indestructible(UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1])); //additional damage
         DarknessRiseStacks(myStats.qSkill[0].name);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
@@ -85,7 +85,7 @@ public class Mordekaiser : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        Indestructible(UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]));
+        Indestructible(UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]));
         DarknessRiseStacks(myStats.eSkill[0].name);
         targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.1f, targetStats.buffManager, myStats.eSkill[0].name)); //pull
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];

@@ -85,7 +85,7 @@ public class Jayce : ChampionCombat
             if (myStats.buffManager.HasImmobilize) yield break;
             if (myStats.qCD > 0) yield break;
             yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+            UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
             myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         }
         else
@@ -93,8 +93,8 @@ public class Jayce : ChampionCombat
             if (!CheckForAbilityControl(checksQ)) yield break;
             if (!cannonQReady) yield break;
             yield return StartCoroutine(StartCastingAbility(myStats.qSkill[1].basic.castTime));
-            if (acceleratorGate) UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[1], 4, qKeys[2]);
-            else UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[1], 4, qKeys[1]);
+            if (acceleratorGate) UpdateTotalDamage(ref qSum, 0, myStats.qSkill[1], 4, qKeys[2]);
+            else UpdateTotalDamage(ref qSum, 0, myStats.qSkill[1], 4, qKeys[1]);
             StartCoroutine(CannonQCD());
         }
     }
@@ -125,7 +125,7 @@ public class Jayce : ChampionCombat
             if (!CheckForAbilityControl(checksE)) yield break;
             if (myStats.eCD > 0) yield break;
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
             targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.1f, targetStats.buffManager, myStats.eSkill[0].basic.name));
             myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         }
@@ -181,7 +181,7 @@ public class Jayce : ChampionCombat
         AutoAttack(new Damage(hyperCharge > 0 ? myStats.wSkill[1].UseSkill(4, wKeys[1], myStats, targetStats) : myStats.AD, SkillDamageType.Phyiscal));
         if (gotCannonBuff)
         {
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(GetJayceRCannonDamageByLevel(myStats.level) + (myStats.bonusAD * 0.25f), SkillDamageType.Spell), myStats.rSkill[1].basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(GetJayceRCannonDamageByLevel(myStats.level) + (myStats.bonusAD * 0.25f), SkillDamageType.Spell), myStats.rSkill[1].basic.name);
             gotCannonBuff = false;
         }
 
@@ -197,13 +197,13 @@ public class Jayce : ChampionCombat
     public IEnumerator LightiningField()
     {
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
     }
 
     public IEnumerator CannonQCD()

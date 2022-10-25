@@ -44,11 +44,11 @@ public class Ahri : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
 
         yield return new WaitForSeconds(2f);                // orb return time estimated by playing Ahri
-        UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.True, SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable), QSkill().basic.name);
+        UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.True, SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable), QSkill().basic.name);
     }
 
     public override IEnumerator ExecuteW()
@@ -59,9 +59,9 @@ public class Ahri : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
     }
 
     public override IEnumerator ExecuteE()
@@ -71,7 +71,7 @@ public class Ahri : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add("Charm", new CharmBuff(myStats.eSkill[0].UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), TargetBuffManager, myStats.eSkill[0].basic.name));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], buffNames: new string[] { "Charm" }, skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], buffNames: new string[] { "Charm" }, skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
     }
 
@@ -82,7 +82,7 @@ public class Ahri : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         if (rStacks == 0) rStacks = 2;
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
         myStats.rCD = rStacks > 0 ? 1 : myStats.rSkill[0].basic.coolDown[myStats.rLevel];
     }
 

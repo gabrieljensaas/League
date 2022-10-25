@@ -37,8 +37,8 @@ public class JarvanIV : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
 
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Physical Damage");
         qKeys.Add("Armor Reduction");
@@ -57,7 +57,7 @@ public class JarvanIV : ChampionCombat
     {
         yield return base.ExecuteA();
         if (targetStats.buffManager.buffs.TryAdd("MartialCadence", new MartialCadenceBuff(MartialCadenceTargetImmunity(myStats.level), targetStats.buffManager, myStats.qSkill[0].name)))
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage(targetStats.maxHealth * 0.08f, SkillDamageType.Phyiscal), myStats.passiveSkill.skillName);
+            UpdateTotalDamage(ref pSum, 4, new Damage(targetStats.maxHealth * 0.08f, SkillDamageType.Phyiscal), myStats.passiveSkill.skillName);
     }
 
     public override IEnumerator ExecuteQ()
@@ -82,7 +82,7 @@ public class JarvanIV : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
         myStats.buffManager.buffs.Add("DemacianStandardAS", new AttackSpeedBuff(8, myStats.buffManager, myStats.eSkill[0].name, myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats), "DemacianStandardAS"));
         myStats.buffManager.buffs.Add("DemacianStandardFlag", new DemacianStandardBuff(8, myStats.buffManager, myStats.eSkill[0].name));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];

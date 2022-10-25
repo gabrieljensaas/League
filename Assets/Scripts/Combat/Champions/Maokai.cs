@@ -56,8 +56,8 @@ public class Maokai : ChampionCombat
         targetCombat.checksE.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksR.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksA.Add(new CheckIfEnemyTargetable(targetCombat));
-        checkTakeDamageAA.Add(new CheckMaokaiPassive(this));
-        checkTakeDamageAbility.Add(new CheckMaokaiPassive(this));
+        checkTakeDamage.Add(new CheckMaokaiPassive(this));
+        checkTakeDamage.Add(new CheckMaokaiPassive(this));
 
         qKeys.Add("Magic Damage");
 
@@ -85,7 +85,7 @@ public class Maokai : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         TargetBuffManager.Add("Stun", new StunBuff(0.5f, TargetBuffManager, QSkill().basic.name));
         TargetBuffManager.Add("Airborne", new AirborneBuff(0.1f, TargetBuffManager, QSkill().basic.name));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes:SkillComponentTypes.Spellblockable, buffNames: new string[] { "Stun", "Airborne"});
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes:SkillComponentTypes.Spellblockable, buffNames: new string[] { "Stun", "Airborne"});
         sapMagicCD -= 4;
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
     }
@@ -96,7 +96,7 @@ public class Maokai : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
         TargetBuffManager.Add("Root", new RootBuff(WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), TargetBuffManager, WSkill().basic.name));
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] { "Root"});
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] { "Root"});
         sapMagicCD -= 4;
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
     }
@@ -108,7 +108,7 @@ public class Maokai : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         //need to check if it is placed in a bush or not. Could be mistake on Ivern case as it creates bush
         yield return new WaitForSeconds(2.5f);
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes:SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile | SkillComponentTypes.Blockable);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes:SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile | SkillComponentTypes.Blockable);
         sapMagicCD -= 4;
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
     }
@@ -120,7 +120,7 @@ public class Maokai : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         //Distance Travelled = 0
         TargetBuffManager.Add("Root", new RootBuff(0.8f, TargetBuffManager, RSkill().basic.name));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable | SkillComponentTypes.Blockable, buffNames: new string[] {"Root"});
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable | SkillComponentTypes.Blockable, buffNames: new string[] {"Root"});
         sapMagicCD -= 4;
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
     }

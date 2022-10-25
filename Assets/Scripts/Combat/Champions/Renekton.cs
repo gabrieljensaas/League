@@ -62,12 +62,12 @@ public class Renekton : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         if (AngerMode)
         {
-            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
+            UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
             UpdateTotalHeal(ref hSum, myStats.qSkill[0].UseSkill(4, qKeys[4], myStats, targetStats), myStats.qSkill[0].basic.name);
         }
         else
         {
-            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+            UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
             UpdateTotalHeal(ref hSum, myStats.qSkill[0].UseSkill(4, qKeys[3], myStats, targetStats), myStats.qSkill[0].basic.name);
             furyPassive += myStats.currentHealth < myStats.maxHealth * 0.5f ? 15 : 10;
             furyPassive = furyPassive > 100 ? 100 : furyPassive;
@@ -103,7 +103,7 @@ public class Renekton : ChampionCombat
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
             StartCoroutine(SliceDice());
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
             timeSinceE = 0;
         }
         else
@@ -111,13 +111,13 @@ public class Renekton : ChampionCombat
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
             if (AngerMode)
             {
-                UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
-                UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[2]);
+                UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+                UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[2]);
                 myStats.buffManager.buffs.Add("ArmorReduction", new ArmorReductionBuff(4f, targetStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(4, qKeys[3], myStats, targetStats), "ArmorReduction"));
             }
             else
             {
-                UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+                UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
                 furyPassive += myStats.currentHealth < myStats.maxHealth * 0.5f ? 15 : 10;
                 furyPassive = furyPassive > 100 ? 100 : furyPassive;
             }
@@ -170,7 +170,7 @@ public class Renekton : ChampionCombat
         }
         else
         {
-            UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 4, rKeys[1]);
+            UpdateTotalDamage(ref rSum, 2, myStats.rSkill[0], 4, rKeys[1]);
         }
 
         if (time != 15f)

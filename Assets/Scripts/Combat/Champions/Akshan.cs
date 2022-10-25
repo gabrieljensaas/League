@@ -38,8 +38,8 @@ public class Akshan : ChampionCombat
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
         checksQ.Add(new CheckIfChanneling(this));
         checksW.Add(new CheckIfChanneling(this));
         checksE.Add(new CheckIfChanneling(this));
@@ -66,7 +66,7 @@ public class Akshan : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        if (UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable) != float.MinValue)
+        if (UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable) != float.MinValue)
         {
             if (MyBuffManager.buffs.TryGetValue("DirtyFighting", out Buff value))
             {
@@ -74,7 +74,7 @@ public class Akshan : ChampionCombat
                 value.value++;
                 if (value.value >= 3)
                 {
-                    UpdateAbilityTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
+                    UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
                     value.Kill();
                     if (pCD <= 0)
                     {
@@ -89,7 +89,7 @@ public class Akshan : ChampionCombat
             }
         }
         yield return new WaitForSeconds(0.65f);
-        if (UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable) != float.MinValue)
+        if (UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable) != float.MinValue)
         {
             if (MyBuffManager.buffs.TryGetValue("DirtyFighting", out Buff value))
             {
@@ -97,7 +97,7 @@ public class Akshan : ChampionCombat
                 value.value++;
                 if (value.value >= 3)
                 {
-                    UpdateAbilityTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
+                    UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
                     value.Kill();
                     if (pCD <= 0)
                     {
@@ -120,7 +120,7 @@ public class Akshan : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        if (UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Dash | SkillComponentTypes.Projectile | SkillComponentTypes.OnHit | SkillComponentTypes.Spellblockable | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable) != float.MinValue)
+        if (UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Dash | SkillComponentTypes.Projectile | SkillComponentTypes.OnHit | SkillComponentTypes.Spellblockable | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable) != float.MinValue)
         {
             if (MyBuffManager.buffs.TryGetValue("DirtyFighting", out Buff buff))
             {
@@ -128,7 +128,7 @@ public class Akshan : ChampionCombat
                 buff.value++;
                 if (buff.value >= 3)
                 {
-                    UpdateAbilityTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
+                    UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
                     buff.Kill();
                     buff.Kill();
                     if (pCD <= 0)
@@ -181,7 +181,7 @@ public class Akshan : ChampionCombat
                 value.value++;
                 if (value.value >= 3)
                 {
-                    UpdateAbilityTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
+                    UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
                     value.Kill();
                     if (pCD <= 0)
                     {
@@ -203,7 +203,7 @@ public class Akshan : ChampionCombat
                 buff.value++;
                 if (buff.value >= 3)
                 {
-                    UpdateAbilityTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
+                    UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
                     buff.Kill();
                     buff.Kill();
                     if (pCD <= 0)
@@ -225,7 +225,7 @@ public class Akshan : ChampionCombat
         if (shots > 0)
         {
             yield return new WaitForSeconds(0.23f);
-            if (UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Dash | SkillComponentTypes.Projectile | SkillComponentTypes.OnHit | SkillComponentTypes.Spellblockable | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable) != float.MinValue)
+            if (UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Dash | SkillComponentTypes.Projectile | SkillComponentTypes.OnHit | SkillComponentTypes.Spellblockable | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable) != float.MinValue)
             {
                 if (MyBuffManager.buffs.TryGetValue("DirtyFighting", out Buff buff))
                 {
@@ -233,7 +233,7 @@ public class Akshan : ChampionCombat
                     buff.value++;
                     if (buff.value >= 3)
                     {
-                        UpdateAbilityTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
+                        UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
                         buff.Kill();
                         buff.Kill();
                         if (pCD <= 0)
@@ -252,7 +252,7 @@ public class Akshan : ChampionCombat
         }
         else
         {
-            if (UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Dash | SkillComponentTypes.Projectile | SkillComponentTypes.OnHit | SkillComponentTypes.Spellblockable | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable) != float.MinValue)
+            if (UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Dash | SkillComponentTypes.Projectile | SkillComponentTypes.OnHit | SkillComponentTypes.Spellblockable | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable) != float.MinValue)
             {
                 if (MyBuffManager.buffs.TryGetValue("DirtyFighting", out Buff buff))
                 {
@@ -260,7 +260,7 @@ public class Akshan : ChampionCombat
                     buff.value++;
                     if (buff.value >= 3)
                     {
-                        UpdateAbilityTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
+                        UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
                         buff.Kill();
                         buff.Kill();
                         if (pCD <= 0)
@@ -293,7 +293,7 @@ public class Akshan : ChampionCombat
         while (bullets > 0)
         {
             yield return new WaitForSeconds(0.1f);
-            if (UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], damageModifier: 1 + (targetStats.PercentMissingHealth * 3), skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable) != float.MinValue)
+            if (UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], damageModifier: 1 + (targetStats.PercentMissingHealth * 3), skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable) != float.MinValue)
             {
                 if (MyBuffManager.buffs.TryGetValue("DirtyFighting", out Buff value))
                 {
@@ -301,7 +301,7 @@ public class Akshan : ChampionCombat
                     value.value++;
                     if (value.value >= 3)
                     {
-                        UpdateAbilityTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
+                        UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
                         value.Kill();
                         if (pCD <= 0)
                         {

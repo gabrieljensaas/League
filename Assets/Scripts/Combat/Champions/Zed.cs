@@ -48,8 +48,8 @@ public class Zed : ChampionCombat
         targetCombat.checksE.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksR.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksA.Add(new CheckIfEnemyTargetable(targetCombat));
-        checkTakeDamageAA.Add(new CheckForHijackedZedR(this, this));
-        checkTakeDamageAbility.Add(new CheckForHijackedZedR(this, this));
+        checkTakeDamage.Add(new CheckForHijackedZedR(this, this));
+        checkTakeDamage.Add(new CheckForHijackedZedR(this, this));
 
         qKeys.Add("Physical Damage");
         eKeys.Add("Physical Damage");
@@ -66,7 +66,7 @@ public class Zed : ChampionCombat
         for (int i = 0; i < shadowCount + 1; i++)
         {
             float damage = myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats);
-            UpdateAbilityTotalDamage(ref qSum, 0, new Damage(damage, SkillDamageType.Phyiscal), myStats.qSkill[0].basic.name);
+            UpdateTotalDamage(ref qSum, 0, new Damage(damage, SkillDamageType.Phyiscal), myStats.qSkill[0].basic.name);
             if (markedForDeath) markedRawDamage += damage;
         }
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
@@ -89,7 +89,7 @@ public class Zed : ChampionCombat
         for (int i = 0; i < shadowCount + 1; i++)
         {
             float damage = myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats);
-            UpdateAbilityTotalDamage(ref eSum, 2, new Damage(damage, SkillDamageType.Phyiscal), myStats.eSkill[0].basic.name);
+            UpdateTotalDamage(ref eSum, 2, new Damage(damage, SkillDamageType.Phyiscal), myStats.eSkill[0].basic.name);
             myStats.wCD -= 2f;
             if (markedForDeath) markedRawDamage += damage;
         }
@@ -136,7 +136,7 @@ public class Zed : ChampionCombat
         yield return new WaitForSeconds(3f);
         markedForDeath = false;
         //exploding damage      0.55f needs to change by skill level
-        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats) + (markedRawDamage * 0.55f), SkillDamageType.Phyiscal), myStats.rSkill[0].basic.name);
+        UpdateTotalDamage(ref rSum, 3, new Damage(myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats) + (markedRawDamage * 0.55f), SkillDamageType.Phyiscal), myStats.rSkill[0].basic.name);
     }
 
     public IEnumerator HMarkedForDeath(int skillLevel)

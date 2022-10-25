@@ -52,7 +52,7 @@ public class Viego : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), 4, qKeys[1]);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), 4, qKeys[1]);
         BladeMark(QSkill().basic.name);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
@@ -65,7 +65,7 @@ public class Viego : ChampionCombat
         if (!wCast)
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
             BladeMark(WSkill().basic.name);
             timeSinceW = 0;
             timeChanneled = 0;
@@ -74,7 +74,7 @@ public class Viego : ChampionCombat
         else
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
             MyBuffManager.Add("StunBuff", new StunBuff(0.25f + (timeChanneled > 1 ? 1 : timeChanneled), TargetBuffManager, "StunBuff")); //what happens when channeling gets cancelled
             BladeMark(WSkill().basic.name);
             myStats.wCD = myStats.wSkill[0].basic.coolDown[4] - timeSinceW;
@@ -96,7 +96,7 @@ public class Viego : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         float multiplier = RSkill().UseSkill(2, rKeys[0], myStats, targetStats) * 0.01f * myStats.PercentMissingHealth;
-        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(multiplier * 0.01f, SkillDamageType.Phyiscal), RSkill().basic.name);
+        UpdateTotalDamage(ref rSum, 3, new Damage(multiplier * 0.01f, SkillDamageType.Phyiscal), RSkill().basic.name);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
@@ -109,7 +109,7 @@ public class Viego : ChampionCombat
         float damage = 0.2f * myStats.AD;
         if (targetStats.buffManager.buffs.TryGetValue("BladeOFRuinedKing", out Buff buff))
         {
-            UpdateAbilityTotalDamage(ref qSum, 0, new Damage(damage, SkillDamageType.Phyiscal), QSkill().basic.name);
+            UpdateTotalDamage(ref qSum, 0, new Damage(damage, SkillDamageType.Phyiscal), QSkill().basic.name);
             AutoAttack(new Damage(myStats.AD * (1 + multiplier), SkillDamageType.Phyiscal));
             buff.Kill();
             UpdateTotalHeal(ref qSum, damage * 1.35f, QSkill().basic.name);

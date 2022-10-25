@@ -29,8 +29,8 @@ public class Zoe : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
         checksR.Add(new CheckIfImmobilize(this));
-        targetCombat.checkTakeDamageAAPostMitigation.Add(new CheckIfSleptByZoe(targetCombat));
-        targetCombat.checkTakeDamageAbilityPostMitigation.Add(new CheckIfSleptByZoe(targetCombat));
+        targetCombat.checkTakeDamagePostMitigation.Add(new CheckIfSleptByZoe(targetCombat));
+        targetCombat.checkTakeDamagePostMitigation.Add(new CheckIfSleptByZoe(targetCombat));
         autoattackcheck = new ZoeAACheck(this, this);
 
         qKeys.Add("Minimum Magic Damage");
@@ -47,7 +47,7 @@ public class Zoe : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, new Damage(myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) - ZoeQBaseDamageByLevel[4] + ZoeQBaseDamageByLevel[myStats.level], SkillDamageType.Spell), myStats.qSkill[0].basic.name);
+        UpdateTotalDamage(ref qSum, 0, new Damage(myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) - ZoeQBaseDamageByLevel[4] + ZoeQBaseDamageByLevel[myStats.level], SkillDamageType.Spell), myStats.qSkill[0].basic.name);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 
@@ -56,7 +56,7 @@ public class Zoe : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         yield return new WaitForSeconds(1.4f);
         targetStats.buffManager.buffs.Add("Sleep", new SleepBuff(2.25f, targetStats.buffManager, myStats.eSkill[0].basic.name));

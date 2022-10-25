@@ -50,12 +50,12 @@ public class Ryze : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         if (!hasFlux)
         {
-            UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
+            UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
         }
         else
         {
             float increasedDamage = QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * RyzeRPassiveDamageByLevel(myStats.rLevel);
-            UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) + increasedDamage, SkillDamageType.Spell), QSkill().basic.name);
+            UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) + increasedDamage, SkillDamageType.Spell), QSkill().basic.name);
 
         }
 
@@ -67,7 +67,7 @@ public class Ryze : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
         if (hasFlux)
         {
             TargetBuffManager.Add("RootBuff", new RootBuff(1.5f, TargetBuffManager, "RootBuff"));
@@ -81,7 +81,7 @@ public class Ryze : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
         TargetBuffManager.Add("FluxBuff", new FluxBuff(3, TargetBuffManager));
         myStats.qCD = 0;
         myStats.eCD = ESkill().basic.coolDown[4];

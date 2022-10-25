@@ -33,12 +33,12 @@ public class Daisy : Pet
         if (timeSinceDaisySmash > 3 && daisySmashStack == 2)
         {
             // need to apply emowered charge before stunning and dealing damage
-            owner.targetCombat.TakeDamage(new Damage(aaDamage, SkillDamageType.Phyiscal), "Daisy's Auto Attack", true);
+            owner.targetCombat.TakeDamage(new Damage(aaDamage, SkillDamageType.Phyiscal), "Daisy's Auto Attack");
             owner.TargetBuffManager.Add("StunBuff", new StunBuff(1f, owner.TargetBuffManager, "Daisy's Stun"));
             owner.TargetBuffManager.Add("KnockOff", new AirborneBuff(1f, owner.TargetBuffManager, "Daisy's Airborne"));
         }
         else
-            owner.targetCombat.TakeDamage(new Damage(aaDamage, SkillDamageType.Phyiscal), "Daisy's Auto Attack", true);
+            owner.targetCombat.TakeDamage(new Damage(aaDamage, SkillDamageType.Phyiscal), "Daisy's Auto Attack");
 
         aaTimer = 1f / attackSpeed;
     }

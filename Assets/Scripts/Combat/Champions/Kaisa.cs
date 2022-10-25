@@ -53,8 +53,8 @@ public class Kaisa : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksR.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Total Evolved Single-Target Damage");
         wKeys.Add("Magic Damage");
@@ -71,14 +71,14 @@ public class Kaisa : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         yield return new WaitForSeconds(0.4f);                                //missle travel time
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
     }
     public override IEnumerator ExecuteW()
     {
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         if (targetStats.buffManager.buffs.TryGetValue("Plasma", out Buff value))
         {
@@ -130,6 +130,6 @@ public class Kaisa : ChampionCombat
 
     public void DealPassiveDamage(float rawdamage)
     {
-        UpdateAbilityTotalDamage(ref pSum, 4, new Damage(rawdamage, SkillDamageType.Spell), myStats.passiveSkill.skillName);
+        UpdateTotalDamage(ref pSum, 4, new Damage(rawdamage, SkillDamageType.Spell), myStats.passiveSkill.skillName);
     }
 }

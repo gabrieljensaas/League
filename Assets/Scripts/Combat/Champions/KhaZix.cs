@@ -66,7 +66,7 @@ public class KhaZix : ChampionCombat
 
         if (isUnseenThreat)
         {
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage(UnseenThreatDamage(myStats.level) + (myStats.bonusAD * 0.4f), SkillDamageType.Spell), myStats.passiveSkill.skillName);
+            UpdateTotalDamage(ref pSum, 4, new Damage(UnseenThreatDamage(myStats.level) + (myStats.bonusAD * 0.4f), SkillDamageType.Spell), myStats.passiveSkill.skillName);
             isUnseenThreat = false;
         }
 
@@ -79,7 +79,7 @@ public class KhaZix : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1]);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1]);
         myStats.qCD = QSkill().basic.coolDown[4];
 
         if (isQEvolved) myStats.qCD *= 0.55f;

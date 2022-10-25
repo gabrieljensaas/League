@@ -67,17 +67,17 @@ public class Pantheon : ChampionCombat
             {
                 if (hasMortalWill)
                 {
-                    UpdateAbilityTotalDamage(ref qSum, 0, new Damage(20 + 220 / 17 * (myStats.level - 1), SkillDamageType.Phyiscal), QSkill().basic.name);
+                    UpdateTotalDamage(ref qSum, 0, new Damage(20 + 220 / 17 * (myStats.level - 1), SkillDamageType.Phyiscal), QSkill().basic.name);
                 }
-                UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1]);
+                UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1]);
             }
             else
             {
                 if (hasMortalWill)
                 {
-                    UpdateAbilityTotalDamage(ref qSum, 0, new Damage(20 + 220 / 17 * (myStats.level - 1), SkillDamageType.Phyiscal), QSkill().basic.name);
+                    UpdateTotalDamage(ref qSum, 0, new Damage(20 + 220 / 17 * (myStats.level - 1), SkillDamageType.Phyiscal), QSkill().basic.name);
                 }
-                UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
+                UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
             }
             StopCoroutine(CometSpear());
             myStats.qCD = QSkill().basic.coolDown[4] - timeSinceQ;
@@ -94,7 +94,7 @@ public class Pantheon : ChampionCombat
         {
             //Apply Crit through autoattackcheck
         }
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
         TargetBuffManager.Add("Stun", new StunBuff(1, TargetBuffManager, "Stun"));
         myStats.wCD = WSkill().basic.coolDown[4];
     }
@@ -115,7 +115,7 @@ public class Pantheon : ChampionCombat
         else
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), 4, eKeys[0]);
+            UpdateTotalDamage(ref eSum, 2, ESkill(), 4, eKeys[0]);
             StopCoroutine(AegisAssault());
             myStats.eCD = ESkill().basic.coolDown[4] - timeSinceE;
         }
@@ -129,8 +129,8 @@ public class Pantheon : ChampionCombat
         CheckMortalWill();
         MyBuffManager.Add("Channeling", new ChannelingBuff(4.2f, MyBuffManager, RSkill().basic.name, "Channelling"));
         yield return new WaitForSeconds(4f);
-        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(PantheonRDamageByQLevel[myStats.qLevel], SkillDamageType.Phyiscal), RSkill().basic.name);
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, new Damage(PantheonRDamageByQLevel[myStats.qLevel], SkillDamageType.Phyiscal), RSkill().basic.name);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         passiveStack = 5;
         myStats.rCD = RSkill().basic.coolDown[2];
     }
@@ -159,28 +159,28 @@ public class Pantheon : ChampionCombat
     public IEnumerator AegisAssault()
     {
         yield return new WaitForSeconds(0.125f);
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
         yield return new WaitForSeconds(0.125f);
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
         yield return new WaitForSeconds(0.125f);
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
         yield return new WaitForSeconds(0.125f);
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
         yield return new WaitForSeconds(0.125f);
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
         yield return new WaitForSeconds(0.125f);
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
         yield return new WaitForSeconds(0.125f);
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
         yield return new WaitForSeconds(0.125f);
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
         yield return new WaitForSeconds(0.125f);
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
         yield return new WaitForSeconds(0.125f);
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
         yield return new WaitForSeconds(0.125f);
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
         yield return new WaitForSeconds(0.125f);
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage((float)0.83 * myStats.AD, SkillDamageType.Phyiscal), ESkill().basic.name);
     }
 }

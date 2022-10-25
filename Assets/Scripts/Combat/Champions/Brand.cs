@@ -68,7 +68,7 @@ public class Brand : ChampionCombat
 		{
             TargetBuffManager.Add("Stun", new StunBuff(1.5f, TargetBuffManager, QSkill().basic.name));
 		}
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile | SkillComponentTypes.Blockable, buffNames: new string[] { "Stun"});
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile | SkillComponentTypes.Blockable, buffNames: new string[] { "Stun"});
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
     }
 
@@ -78,9 +78,9 @@ public class Brand : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
         if (ablazeStack > 0)
-            UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable);  
+            UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable);  
         else
-            UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
     }
 
@@ -89,7 +89,7 @@ public class Brand : ChampionCombat
         if (!CheckForAbilityControl(checksE) || myStats.eLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
     }
 
@@ -98,7 +98,7 @@ public class Brand : ChampionCombat
         if (!CheckForAbilityControl(checksR) || myStats.rLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable | SkillComponentTypes.Blockable);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable | SkillComponentTypes.Blockable);
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
     }
 
@@ -113,13 +113,13 @@ public class Brand : ChampionCombat
     private IEnumerator Blaze()
 	{
         yield return new WaitForSeconds(3.25f);
-        UpdateAbilityTotalDamage(ref pSum, 4, new Damage(0.026f* targetStats.maxHealth, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage | SkillComponentTypes.Spellblockable), myStats.passiveSkill.skillName);
+        UpdateTotalDamage(ref pSum, 4, new Damage(0.026f* targetStats.maxHealth, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage | SkillComponentTypes.Spellblockable), myStats.passiveSkill.skillName);
     } 
 
     private IEnumerator BlazeBlast()
 	{
         yield return new WaitForSeconds(2f);
-        UpdateAbilityTotalDamage(ref pSum, 4, new Damage((0.09f + (0.0025f *myStats.level)) * targetStats.maxHealth > 0.13f ? 0.13f :(0.09f + (0.0025f * myStats.level)) * targetStats.maxHealth, SkillDamageType.Spell,SkillComponentTypes.Spellblockable), myStats.passiveSkill.skillName);
+        UpdateTotalDamage(ref pSum, 4, new Damage((0.09f + (0.0025f *myStats.level)) * targetStats.maxHealth > 0.13f ? 0.13f :(0.09f + (0.0025f * myStats.level)) * targetStats.maxHealth, SkillDamageType.Spell,SkillComponentTypes.Spellblockable), myStats.passiveSkill.skillName);
         ablazeStack = 0;
         timeSinceDetonation = 0;
     }

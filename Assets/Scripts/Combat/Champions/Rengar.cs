@@ -36,8 +36,8 @@ public class Rengar : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
 
-        checkTakeDamageAA.Add(checkRengarBattleRoar);
-        checkTakeDamageAbility.Add(checkRengarBattleRoar);
+        checkTakeDamage.Add(checkRengarBattleRoar);
+        checkTakeDamage.Add(checkRengarBattleRoar);
 
         qKeys.Add("Bonus Physical Damage");
         qKeys.Add("Empowered Bonus Damage");
@@ -118,7 +118,7 @@ public class Rengar : ChampionCombat
         else
         {
             ferocityStacks = 0;
-            UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1]);
+            UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1]);
         }
     }
 }

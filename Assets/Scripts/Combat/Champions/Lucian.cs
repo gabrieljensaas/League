@@ -56,7 +56,7 @@ public class Lucian : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         AddLightslinger(myStats.qSkill[0].basic.name);
     }
@@ -66,7 +66,7 @@ public class Lucian : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         AddLightslinger(myStats.wSkill[0].basic.name);
     }
@@ -118,7 +118,7 @@ public class Lucian : ChampionCombat
     {
         if (waveCount == 0) yield break;
         yield return new WaitForSeconds(interval);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         StartCoroutine(TheCulling(waveCount--, interval));
         AddLightslinger(myStats.qSkill[0].basic.name);
     }

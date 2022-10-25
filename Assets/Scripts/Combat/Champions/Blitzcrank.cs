@@ -56,7 +56,7 @@ public class Blitzcrank : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         TargetBuffManager.Add("Stun", new StunBuff(0.65f, TargetBuffManager, QSkill().basic.name));
         TargetBuffManager.Add("Airborne", new AirborneBuff(0.1f, TargetBuffManager, QSkill().basic.name));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable | SkillComponentTypes.Blockable, buffNames: new string[] { "Stun", "Airborne"});
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable | SkillComponentTypes.Blockable, buffNames: new string[] { "Stun", "Airborne"});
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
     }
 
@@ -85,7 +85,7 @@ public class Blitzcrank : ChampionCombat
         if (!CheckForAbilityControl(checksR) || myStats.rLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
         if (TargetBuffManager.buffs.TryGetValue("Shield", out Buff value))
         {
             value.Kill();
@@ -112,7 +112,7 @@ public class Blitzcrank : ChampionCombat
         if(hasStaticFieldPassive)
 		{
             yield return new WaitForSeconds(1f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats), SkillDamageType.Spell), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats), SkillDamageType.Spell), RSkill().basic.name);
 		}
 
     }

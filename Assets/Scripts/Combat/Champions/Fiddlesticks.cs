@@ -64,7 +64,7 @@ public class FiddleSticks : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
 
         float damage = (QSkill().UseSkill(4, qKeys[1], myStats, targetStats) > QSkill().UseSkill(4, qKeys[2], myStats, targetStats)) ? QSkill().UseSkill(4, qKeys[1], myStats, targetStats) : QSkill().UseSkill(4, qKeys[2], myStats, targetStats);
-        UpdateAbilityTotalDamage(ref qSum, 0, new Damage(damage, SkillDamageType.Spell), QSkill().name);
+        UpdateTotalDamage(ref qSum, 0, new Damage(damage, SkillDamageType.Spell), QSkill().name);
         TargetBuffManager.Add("Flee", new FleeBuff(QSkill().UseSkill(4, qKeys[0], myStats, targetStats), TargetBuffManager, QSkill().basic.name));
         myStats.qCD = QSkill().basic.coolDown[4];
     }
@@ -111,17 +111,17 @@ public class FiddleSticks : ChampionCombat
     {
         for (int i = 0; i < 7; i++)
         {
-            bountifulHarvestDamage += UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[0]);
+            bountifulHarvestDamage += UpdateTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[0]);
             yield return new WaitForSeconds(0.25f);
         }
-        bountifulHarvestDamage += UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[1]);
+        bountifulHarvestDamage += UpdateTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[1]);
     }
 
     private IEnumerator Crowstorm()
     {
         for (int i = 0; i < 20; i++)
         {
-            UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[0]);
+            UpdateTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[0]);
             yield return new WaitForSeconds(0.25f);
         }
     }

@@ -27,7 +27,7 @@ public class Sivir : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
 
         autoattackcheck = new SivirAACheck(this);
-        checkTakeDamageAbility.Add(new CheckSpellShield(this));
+        checkTakeDamage.Add(new CheckSpellShield(this));
 
         qKeys.Add("Champion Maximum Damage");
         wKeys.Add("Bonus Attack Speed");

@@ -43,8 +43,8 @@ public class Nautilus : ChampionCombat
         targetCombat.checksE.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksR.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksA.Add(new CheckIfEnemyTargetable(targetCombat));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Magic Damage");
 
@@ -69,7 +69,7 @@ public class Nautilus : ChampionCombat
         if (!CheckForAbilityControl(checksQ) || myStats.qLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.Spell), QSkill().basic.name);
+        UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.Spell), QSkill().basic.name);
         TargetBuffManager.Add("AirBorneBuff", new AirborneBuff(0.2f, TargetBuffManager, QSkill().basic.name));
         TargetBuffManager.Add("RootBuff", new RootBuff(0.1f, TargetBuffManager,QSkill().basic.name));
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
@@ -91,7 +91,7 @@ public class Nautilus : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         yield return new WaitForSeconds(1.5f);
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
     }
 
@@ -100,7 +100,7 @@ public class Nautilus : ChampionCombat
         if (!CheckForAbilityControl(checksR) || myStats.rLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         TargetBuffManager.Add("AirborneBuff", new AirborneBuff(1f, TargetBuffManager, RSkill().basic.name));
         TargetBuffManager.Add("StunBuff", new StunBuff(RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats), TargetBuffManager, RSkill().basic.name));
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];

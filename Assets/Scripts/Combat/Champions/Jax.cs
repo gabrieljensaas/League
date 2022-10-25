@@ -43,7 +43,7 @@ public class Jax : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
 
         autoattackcheck = new JaxAACheck(this);
-        checkTakeDamageAA.Add(new CheckCounterStrike(this));
+        checkTakeDamage.Add(new CheckCounterStrike(this));
 
         qKeys.Add("Physical Damage");
         wKeys.Add("Bonus Magic Damage");
@@ -73,7 +73,7 @@ public class Jax : ChampionCombat
         else
         {
             rStack = 0;
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         }
     }
 

@@ -29,10 +29,10 @@ public class Ekko : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
         checksE.Add(new CheckIfImmobilize(this));
         checksR.Add(new CheckIfImmobilize(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckForLostHealth(this, this));
-        checkTakeDamageAAPostMitigation.Add(new CheckIfTargetable(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckForLostHealth(this, this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckIfTargetable(this));
+        checkTakeDamagePostMitigation.Add(new CheckForLostHealth(this, this));
+        checkTakeDamagePostMitigation.Add(new CheckIfTargetable(this));
+        checkTakeDamagePostMitigation.Add(new CheckForLostHealth(this, this));
+        checkTakeDamagePostMitigation.Add(new CheckIfTargetable(this));
         targetCombat.checksQ.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksW.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksE.Add(new CheckIfEnemyTargetable(targetCombat));
@@ -56,10 +56,10 @@ public class Ekko : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
-        if (UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile) == float.MinValue) yield break;
+        if (UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile) == float.MinValue) yield break;
         AddZDriveResonance();
         yield return new WaitForSeconds(1.75f);
-        if (UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile) != float.MinValue) AddZDriveResonance();
+        if (UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile) != float.MinValue) AddZDriveResonance();
     }
 
     public override IEnumerator ExecuteW()
@@ -70,7 +70,7 @@ public class Ekko : ChampionCombat
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         yield return new WaitForSeconds(3f);
         TargetBuffManager.Add("Stun", new StunBuff(2.25f, TargetBuffManager, WSkill().basic.name));
-        UpdateAbilityTotalDamage(ref wSum, 1, new Damage(0, SkillDamageType.Phyiscal, buffNames: new string[] { "Stun" }), WSkill().basic.name);
+        UpdateTotalDamage(ref wSum, 1, new Damage(0, SkillDamageType.Phyiscal, buffNames: new string[] { "Stun" }), WSkill().basic.name);
         MyBuffManager.shields.Add(WSkill().basic.name, new ShieldBuff(2f, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), WSkill().basic.name));
     }
 
@@ -79,7 +79,7 @@ public class Ekko : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, SkillComponentTypes.Dash), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, SkillComponentTypes.Dash), ESkill().basic.name);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         attackCooldown = 0;
     }
@@ -92,7 +92,7 @@ public class Ekko : ChampionCombat
         MyBuffManager.Add("Stasis", new StasisBuff(0.5f, MyBuffManager, RSkill().basic.name));
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         UpdateTotalHeal(ref hSum, RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats), RSkill().basic.name); //add health lost
-        if (UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Dash) != float.MinValue) AddZDriveResonance();
+        if (UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Dash) != float.MinValue) AddZDriveResonance();
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
@@ -109,10 +109,10 @@ public class Ekko : ChampionCombat
                 if (myStats.wLevel > 0 && targetStats.PercentMissingHealth <= 0.3f)
                 {
                     float damage = (targetStats.maxHealth - targetStats.currentHealth) * (0.03f + (myStats.AP * 0.0003f));
-                    UpdateAbilityTotalDamage(ref wSum, 1, new Damage(damage < 15 ? 15 : damage, SkillDamageType.Spell, SkillComponentTypes.ProcDamage), WSkill().basic.name);
+                    UpdateTotalDamage(ref wSum, 1, new Damage(damage < 15 ? 15 : damage, SkillDamageType.Spell, SkillComponentTypes.ProcDamage), WSkill().basic.name);
                 }
 
-                UpdateAbilityTotalDamage(ref eSum, 2, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.Spell), ESkill().basic.name);
+                UpdateTotalDamage(ref eSum, 2, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.Spell), ESkill().basic.name);
                 AddZDriveResonance();
             }
         }
@@ -123,7 +123,7 @@ public class Ekko : ChampionCombat
             {
 
                 float damage = (targetStats.maxHealth - targetStats.currentHealth) * (0.03f + (myStats.AP * 0.0003f));
-                UpdateAbilityTotalDamage(ref wSum, 1, new Damage(damage < 15 ? 15 : damage, SkillDamageType.Spell, SkillComponentTypes.ProcDamage), WSkill().basic.name);
+                UpdateTotalDamage(ref wSum, 1, new Damage(damage < 15 ? 15 : damage, SkillDamageType.Spell, SkillComponentTypes.ProcDamage), WSkill().basic.name);
                 AddZDriveResonance();
             }
         }

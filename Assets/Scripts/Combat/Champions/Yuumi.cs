@@ -29,8 +29,8 @@ public class Yuumi : ChampionCombat
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         targetCombat.checksQ.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksW.Add(new CheckIfEnemyTargetable(targetCombat));
@@ -60,7 +60,7 @@ public class Yuumi : ChampionCombat
         if (!CheckForAbilityControl(checksQ) || myStats.qLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable | SkillComponentTypes.Blockable);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable | SkillComponentTypes.Blockable);
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
     }
 
@@ -79,20 +79,20 @@ public class Yuumi : ChampionCombat
         if (!CheckForAbilityControl(checksR) || myStats.rLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes:SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes:SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
         yield return new WaitForSeconds(0.5f);
         TargetBuffManager.Add("Root", new RootBuff(1.75f, TargetBuffManager, RSkill().basic.name));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
         yield return new WaitForSeconds(0.5f);
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
     }

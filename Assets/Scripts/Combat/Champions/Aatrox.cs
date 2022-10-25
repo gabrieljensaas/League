@@ -28,9 +28,9 @@ public class Aatrox : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
         checksE.Add(new CheckIfImmobilize(this));
-        targetCombat.checkTakeDamageAAPostMitigation.Add(new CheckIfEnemyHasDeathBringerStance(targetCombat, this));
-        targetCombat.checkTakeDamageAAPostMitigation.Add(new CheckForAatroxEHeal(targetCombat, this));
-        targetCombat.checkTakeDamageAbilityPostMitigation.Add(new CheckForAatroxEHeal(targetCombat, this));
+        targetCombat.checkTakeDamagePostMitigation.Add(new CheckIfEnemyHasDeathBringerStance(targetCombat, this));
+        targetCombat.checkTakeDamagePostMitigation.Add(new CheckForAatroxEHeal(targetCombat, this));
+        targetCombat.checkTakeDamagePostMitigation.Add(new CheckForAatroxEHeal(targetCombat, this));
 
         qKeys.Add("First Sweetspot Damage");
         qKeys.Add("Second Sweetspot Damage");
@@ -67,21 +67,21 @@ public class Aatrox : ChampionCombat
             timeSinceLastQ = 0f;
             qCounter++;
             targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.25f, targetStats.buffManager, QSkill().basic.name));
-            UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], buffNames: new string[] { "Airborne" }, skillComponentTypes: SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], buffNames: new string[] { "Airborne" }, skillComponentTypes: SkillComponentTypes.Spellblockable);
         }
         else if (qCounter == 2)
         {
             timeSinceLastQ = 0f;
             qCounter = 0;
             targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.25f, targetStats.buffManager, QSkill().basic.name));
-            UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[2], buffNames: new string[] { "Airborne" }, skillComponentTypes: SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[2], buffNames: new string[] { "Airborne" }, skillComponentTypes: SkillComponentTypes.Spellblockable);
         }
         else
         {
             timeSinceLastQ = 0f;
             qCounter++;
             targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.25f, targetStats.buffManager, QSkill().basic.name));
-            UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1], buffNames: new string[] { "Airborne" }, skillComponentTypes: SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1], buffNames: new string[] { "Airborne" }, skillComponentTypes: SkillComponentTypes.Spellblockable);
         }
         pCD -= 4;
     }
@@ -93,11 +93,11 @@ public class Aatrox : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
-        if (UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable) > 0)
+        if (UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable) > 0)
         {
             yield return new WaitForSeconds(1.5f);
             targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.1f, targetStats.buffManager, myStats.qSkill[0].basic.name));  //pulled airborne needs research
-            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.OnHit, buffNames: new string[] { "Airborne" });
+            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.OnHit, buffNames: new string[] { "Airborne" });
             pCD -= 2;
         }
     }
@@ -108,7 +108,7 @@ public class Aatrox : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, SkillComponentTypes.Dash), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, SkillComponentTypes.Dash), ESkill().basic.name);
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
         attackCooldown = 0;
     }
@@ -139,7 +139,7 @@ public class Aatrox : ChampionCombat
         {
             if (MyBuffManager.buffs.ContainsKey("DeathbringerStance"))
             {
-                UpdateAbilityTotalDamage(ref pSum, 5, new Damage(targetStats.maxHealth * (5 + (7 / 17 * (myStats.level - 1))), SkillDamageType.Phyiscal, SkillComponentTypes.ProcDamage | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable), "Deathbringer Stance");
+                UpdateTotalDamage(ref pSum, 5, new Damage(targetStats.maxHealth * (5 + (7 / 17 * (myStats.level - 1))), SkillDamageType.Phyiscal, SkillComponentTypes.ProcDamage | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable), "Deathbringer Stance");
             }
             else pCD -= 2;
         }

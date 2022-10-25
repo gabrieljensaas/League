@@ -76,7 +76,7 @@ public class Irelia : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         yield return new WaitForSeconds(0.15f); //second E cast
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
 
         targetStats.buffManager.buffs.Add("Stun", new StunBuff(0.75f, targetStats.buffManager, myStats.eSkill[0].name));
@@ -89,7 +89,7 @@ public class Irelia : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
 
         UnsteadyMark(myStats.rSkill[0].name);

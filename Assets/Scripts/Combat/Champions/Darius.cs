@@ -71,7 +71,7 @@ public class Darius : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         UpdateTotalHeal(ref hSum, (myStats.maxHealth - myStats.currentHealth) * 0.13f, myStats.qSkill[0].basic.name);
         CheckDariusPassiveHemorrhage(myStats.qSkill[0].basic.name);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
@@ -102,7 +102,7 @@ public class Darius : ChampionCombat
         if (!dariusP.Control()) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats) * (1 + (0.2f * (int)targetStats.buffManager.buffs["Hemorrhage"]?.value)), SkillDamageType.True), "Noxian Guillotine");
+        UpdateTotalDamage(ref rSum, 3, new Damage(myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats) * (1 + (0.2f * (int)targetStats.buffManager.buffs["Hemorrhage"]?.value)), SkillDamageType.True), "Noxian Guillotine");
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 

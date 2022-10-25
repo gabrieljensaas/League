@@ -84,7 +84,7 @@ public class Jhin : ChampionCombat
 
             if (autoattackcheck != null) damage = autoattackcheck.Control(new Damage(damage, SkillDamageType.Phyiscal)).value;
 
-            aSum += targetCombat.TakeDamage(new Damage(damage, SkillDamageType.Phyiscal), $"{myStats.name}'s Auto Attack", true);
+            aSum += targetCombat.TakeDamage(new Damage(damage, SkillDamageType.Phyiscal), $"{myStats.name}'s Auto Attack");
             hSum += HealHealth(damage * myStats.lifesteal, "Lifesteal");
             myUI.aaSum.text = aSum.ToString();
             myUI.healSum.text = hSum.ToString();
@@ -103,7 +103,7 @@ public class Jhin : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         ApplyDeadlyFlourishMark(myStats.qSkill[0].basic.name);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
@@ -168,9 +168,9 @@ public class Jhin : ChampionCombat
         while (shots > 0)
         {
             if (shots == 1)
-                UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]); //TODO: change to crit when Recep pushes new stuff
+                UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]); //TODO: change to crit when Recep pushes new stuff
             else
-                UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+                UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
 
             shots--;
             yield return new WaitForSeconds(0.25f);

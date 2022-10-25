@@ -70,10 +70,10 @@ public class Cassiopeia : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         if (isPoisoned)
         {
-            UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
+            UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
             UpdateTotalHeal(ref eSum, ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), ESkill().basic.name);
         }
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage(48 + 4 * myStats.level, SkillDamageType.Spell), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage(48 + 4 * myStats.level, SkillDamageType.Spell), ESkill().basic.name);
         myStats.eCD = ESkill().basic.coolDown[4];
     }
 
@@ -82,7 +82,7 @@ public class Cassiopeia : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         if (isPoisoned)
             TargetBuffManager.Add("PetrifyingGaze", new StunBuff(2, TargetBuffManager, "PetrifyingGaze"));
         myStats.rCD = RSkill().basic.coolDown[2];
@@ -91,24 +91,24 @@ public class Cassiopeia : ChampionCombat
     public IEnumerator NoxiousBlast()
     {
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
     }
 
     public IEnumerator Miasma()
     {
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
     }
 }

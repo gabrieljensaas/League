@@ -32,6 +32,8 @@ public class SimManager : MonoBehaviour
     public List<DamageLog> damagelogs = new List<DamageLog>();
     public List<HealLog> heallogs = new List<HealLog>();
     public List<BuffLog> bufflogs = new List<BuffLog>();
+    public CastLog castlog1;
+    public CastLog castlog2;
 
     #region Singleton
     private static SimManager _instance;
@@ -194,11 +196,16 @@ public class SimManager : MonoBehaviour
         champ.baseHealth = (float)stats.health.flat + ((float)(stats.health.perLevel * mFactor[champ.level - 1]));
         champ.baseAttackSpeed = (float)stats.attackSpeed.flat;
         champ.bonusAS = (champ.level - 1) * (float)stats.attackSpeed.perLevel * 0.01f * champ.baseAttackSpeed;
-        champ.attackSpeed = champ.bonusAS + champ.baseAttackSpeed;
         champ.baseArmor = (float)stats.armor.flat + ((float)(stats.armor.perLevel * mFactor[champ.level - 1]));
         champ.baseAD = (float)stats.attackDamage.flat + ((float)(stats.attackDamage.perLevel * mFactor[champ.level - 1]));
         champ.baseSpellBlock = (float)stats.magicResistance.flat + ((float)(stats.magicResistance.perLevel * mFactor[champ.level - 1]));
         champ.hpRegen = (float)stats.healthRegen.flat + ((float)(stats.healthRegen.perLevel * mFactor[champ.level - 1]));
+        champ.maxHealth = champ.baseHealth;
+        champ.currentHealth = champ.maxHealth;
+        champ.attackSpeed = champ.bonusAS + champ.baseAttackSpeed;
+        champ.armor = champ.baseArmor;
+        champ.AD = champ.baseAD;
+        champ.spellBlock = champ.baseSpellBlock;
     }
 
     public void ShowText(string text)
@@ -252,7 +259,7 @@ public class SimManager : MonoBehaviour
         stats1.name = champName1;
         stats1.level = response.APIMatchInfo.championInfo[0].champLevel;
         stats1.qLevel = response.APIMatchInfo.championInfo[0].ability[0] - 1;
-        stats1.wLevel = response.APIMatchInfo.championInfo[0].ability[1]-1;
+        stats1.wLevel = response.APIMatchInfo.championInfo[0].ability[1] - 1;
         stats1.eLevel = response.APIMatchInfo.championInfo[0].ability[2] - 1;
         stats1.rLevel = response.APIMatchInfo.championInfo[0].ability[3] - 1;
         stats2.name = champName2;
@@ -263,11 +270,12 @@ public class SimManager : MonoBehaviour
         stats2.rLevel = response.APIMatchInfo.championInfo[1].ability[3] - 1;
 
         GetStatsByLevel(stats1, so1);
-        stats1.maxHealth = stats1.baseHealth + stats1.bonusHP;
-        stats1.currentHealth = stats1.maxHealth;
         GetStatsByLevel(stats2, so2);
-        stats2.maxHealth = stats2.baseHealth + stats2.bonusHP;
-        stats2.currentHealth = stats2.maxHealth;
+
+        castlog1 = new CastLog(champName1);
+        castlog2 = new CastLog(champName2);
+        stats1.MyCombat.myCastLog = castlog1;
+        stats2.MyCombat.myCastLog = castlog2;
 
         stats1.StaticUIUpdate();
         stats2.StaticUIUpdate();
@@ -558,7 +566,7 @@ public class SimManager : MonoBehaviour
     public IEnumerator TakeSnapShot()
     {
         yield return new WaitForSeconds(0.5f);
-        snaps.Add(new SnapShot("", new ChampionSnap(champStats[0].name, champStats[0].PercentCurrentHealth * 100), new ChampionSnap(champStats[1].name, champStats[1].PercentCurrentHealth * 100), timer));
+        snaps.Add(new SnapShot("", new ChampionSnap(champStats[0].name, champStats[0].PercentCurrentHealth * 100f), new ChampionSnap(champStats[1].name, champStats[1].PercentCurrentHealth * 100f), timer));
         StartCoroutine(TakeSnapShot());
     }
 
@@ -575,5 +583,32 @@ public class SimManager : MonoBehaviour
     public void AddBuffLog(BuffLog log)
     {
         bufflogs.Add(log);
+    }
+
+    public void AddCastLog(CastLog castLog, int skillIndex)
+    {
+        switch (skillIndex)
+        {
+            case 5:
+                castLog.ACast++;
+                break;
+            case 4:
+                castLog.PCast++;
+                break;
+            case 0:
+                castLog.QCast++;
+                break;
+            case 1:
+                castLog.WCast++;
+                break;
+            case 2:
+                castLog.ECast++;
+                break;
+            case 3:
+                castLog.RCast++;
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -34,7 +34,7 @@ public class WarriorTrickster : Pet
 
     public void AutoAttack()
     {
-        owner.targetCombat.TakeDamage(new Damage(aaDamage * damageMultiplier, SkillDamageType.Phyiscal), "Clone Auto Attack", true);
+        owner.targetCombat.TakeDamage(new Damage(aaDamage * damageMultiplier, SkillDamageType.Phyiscal), "Clone Auto Attack");
         wukong.pStack++;
         aaTimer = 1f / attackSpeed;
     }

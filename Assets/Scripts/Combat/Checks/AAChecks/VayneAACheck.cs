@@ -21,7 +21,7 @@ public class VayneAACheck : Check
                 val.Kill();
                 float percentDamage = combat.myStats.wSkill[0].UseSkill(4, combat.wKeys[0], combat.myStats, combat.targetStats);
                 float minDamage = combat.myStats.wSkill[0].UseSkill(4, combat.wKeys[1], combat.myStats, combat.targetStats);
-                combat.UpdateAbilityTotalDamage(ref combat.wSum, 1, new Damage(percentDamage > minDamage ? percentDamage : minDamage, SkillDamageType.True), combat.myStats.wSkill[0].basic.name);
+                combat.UpdateTotalDamage(ref combat.wSum, 1, new Damage(percentDamage > minDamage ? percentDamage : minDamage, SkillDamageType.True), combat.myStats.wSkill[0].basic.name);
             }
             else
             {

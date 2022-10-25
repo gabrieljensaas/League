@@ -78,7 +78,7 @@ public class Fiora : ChampionCombat
 
         myStats.buffManager.buffs.Add("Riposte", new RiposteBuff(0.75f, myStats.buffManager, myStats.wSkill[0].name));
 
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
 
         yield return null;
@@ -137,7 +137,7 @@ public class Fiora : ChampionCombat
             VitalsBuff vitalsBuff = (VitalsBuff)vitals;
             if (vitalsBuff.isActive)
             {
-                UpdateAbilityTotalDamage(ref pSum, 4, new Damage(targetStats.maxHealth * 0.03f, SkillDamageType.True), "Vitals");
+                UpdateTotalDamage(ref pSum, 4, new Damage(targetStats.maxHealth * 0.03f, SkillDamageType.True), "Vitals");
                 vitalsBuff.Kill();
             }
         }
@@ -146,7 +146,7 @@ public class Fiora : ChampionCombat
             VitalsBuff vitalsBuff = (VitalsBuff)vitalsUlt;
             if (vitalsBuff.isActive)
             {
-                UpdateAbilityTotalDamage(ref rSum, 3, new Damage(targetStats.maxHealth * 0.03f, SkillDamageType.True), "Vitals Grand Challenge");
+                UpdateTotalDamage(ref rSum, 3, new Damage(targetStats.maxHealth * 0.03f, SkillDamageType.True), "Vitals Grand Challenge");
                 vitalsBuff.value--;
 
                 if (vitalsBuff.value <= 0)

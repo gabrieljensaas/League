@@ -73,18 +73,18 @@ public class Nidalee : ChampionCombat
 
             if (MyBuffManager.buffs.TryGetValue("HuntMarkBuff", out Buff buff))
             {
-                UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill(1).UseSkill(3, qKeys[2], myStats, targetStats) * (QSkill(1).UseSkill(3, qKeys[4], myStats, targetStats) + 1) * 1.4f, SkillDamageType.Spell), QSkill(1).name);
+                UpdateTotalDamage(ref qSum, 0, new Damage(QSkill(1).UseSkill(3, qKeys[2], myStats, targetStats) * (QSkill(1).UseSkill(3, qKeys[4], myStats, targetStats) + 1) * 1.4f, SkillDamageType.Spell), QSkill(1).name);
                 buff.Kill();
             }
             else
-                UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill(1).UseSkill(3, qKeys[2], myStats, targetStats) * (QSkill(1).UseSkill(3, qKeys[4], myStats, targetStats) + 1), SkillDamageType.Spell), QSkill(1).name);
+                UpdateTotalDamage(ref qSum, 0, new Damage(QSkill(1).UseSkill(3, qKeys[2], myStats, targetStats) * (QSkill(1).UseSkill(3, qKeys[4], myStats, targetStats) + 1), SkillDamageType.Spell), QSkill(1).name);
 
             StartCoroutine(CougarQCD());
         }
         else
         {
             yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-            UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1]);
+            UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1]);
             myStats.qCD = QSkill().basic.coolDown[4];
         }
     }
@@ -97,7 +97,7 @@ public class Nidalee : ChampionCombat
         {
             if (!cougarWReady) yield break;
             yield return StartCoroutine(StartCastingAbility(WSkill(1).basic.castTime));
-            UpdateAbilityTotalDamage(ref wSum, 1, WSkill(1), myStats.wLevel, wKeys[0]);
+            UpdateTotalDamage(ref wSum, 1, WSkill(1), myStats.wLevel, wKeys[0]);
 
             if (MyBuffManager.buffs.ContainsKey("HuntMarkBuff"))
                 StartCoroutine(CougarWCD(WSkill(1).UseSkill(3, wKeys[2], myStats, targetStats)));
@@ -123,11 +123,11 @@ public class Nidalee : ChampionCombat
 
             if (MyBuffManager.buffs.TryGetValue("HuntMarkBuff", out Buff buff))
             {
-                UpdateAbilityTotalDamage(ref eSum, 2, new Damage(ESkill(1).UseSkill(3, eKeys[3], myStats, targetStats) * 1.4f, SkillDamageType.Spell), ESkill(1).name);
+                UpdateTotalDamage(ref eSum, 2, new Damage(ESkill(1).UseSkill(3, eKeys[3], myStats, targetStats) * 1.4f, SkillDamageType.Spell), ESkill(1).name);
                 buff.Kill();
             }
             else
-                UpdateAbilityTotalDamage(ref eSum, 2, new Damage(ESkill(1).UseSkill(3, eKeys[3], myStats, targetStats), SkillDamageType.Spell), ESkill(1).name);
+                UpdateTotalDamage(ref eSum, 2, new Damage(ESkill(1).UseSkill(3, eKeys[3], myStats, targetStats), SkillDamageType.Spell), ESkill(1).name);
 
             StartCoroutine(CougarECD());
         }
@@ -231,7 +231,7 @@ public class Nidalee : ChampionCombat
             tickTimer += Time.fixedDeltaTime;
             if (tickTimer >= 1 && isActive)
             {
-                manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.wSum, 1, manager.combat.WSkill(), manager.combat.myStats.wLevel, manager.combat.wKeys[0]);
+                manager.combat.targetCombat.UpdateTotalDamage(ref manager.combat.wSum, 1, manager.combat.WSkill(), manager.combat.myStats.wLevel, manager.combat.wKeys[0]);
                 tickTimer = 0;
             }
         }

@@ -74,8 +74,8 @@ public class XinZhao : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[1]); // need to apply crits
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[1]); // need to apply crits
         pStacks++;
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
     }
@@ -85,7 +85,7 @@ public class XinZhao : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
         MyBuffManager.Add("AttackSpeedBuff", new AttackSpeedBuff(5f, MyBuffManager, ESkill().basic.name, ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), "AudaciousCharge"));
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
     }
@@ -95,7 +95,7 @@ public class XinZhao : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
     }
 
@@ -108,12 +108,12 @@ public class XinZhao : ChampionCombat
         pStacks++;
         if (pStacks == 3)
         {
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage(DeterminationDamageByLevel(myStats.level), SkillDamageType.Phyiscal, SkillComponentTypes.ProcDamage), myStats.passiveSkill.skillName);
+            UpdateTotalDamage(ref pSum, 4, new Damage(DeterminationDamageByLevel(myStats.level), SkillDamageType.Phyiscal, SkillComponentTypes.ProcDamage), myStats.passiveSkill.skillName);
             UpdateTotalHeal(ref pSum, 2 + 4 * myStats.level, myStats.passiveSkill.skillName);
         }
         if (talonStrikeAuto > 0)
         {
-            UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.Phyiscal, SkillComponentTypes.ProcDamage), myStats.passiveSkill.skillName);
+            UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.Phyiscal, SkillComponentTypes.ProcDamage), myStats.passiveSkill.skillName);
             myStats.wCD--;
             myStats.eCD--;
             myStats.rCD--;

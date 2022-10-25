@@ -51,8 +51,8 @@ public class Diana : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
 
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Magic Damage");
         wKeys.Add("Shield Strength");
@@ -110,7 +110,7 @@ public class Diana : ChampionCombat
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
 
         yield return new WaitForSeconds(1);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[1], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[1], 2, rKeys[0]);
         MoonsilverBladeBonusAS();
     }
 
@@ -121,7 +121,7 @@ public class Diana : ChampionCombat
             if (++buff.value == 2)
             {
                 buff.Kill();
-                UpdateAbilityTotalDamage(ref pSum, 4, new Damage(MoonsilverBladeCleave(myStats.level) + (myStats.AP * 0.5f), SkillDamageType.Spell), myStats.passiveSkill.skillName);
+                UpdateTotalDamage(ref pSum, 4, new Damage(MoonsilverBladeCleave(myStats.level) + (myStats.AP * 0.5f), SkillDamageType.Spell), myStats.passiveSkill.skillName);
             }
         }
         else

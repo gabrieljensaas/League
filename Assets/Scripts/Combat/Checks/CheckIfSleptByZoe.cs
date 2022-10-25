@@ -11,7 +11,7 @@ public class CheckIfSleptByZoe : Check
         if (combat.myStats.buffManager.buffs.TryGetValue("Sleep", out Buff value))
         {
             damage.damageType = SkillDamageType.True;
-            combat.targetCombat.UpdateAbilityTotalDamage(ref combat.targetCombat.eSum, 2, damage, "Sleepy Trouble Bubble");
+            combat.targetCombat.UpdateTotalDamage(ref combat.targetCombat.eSum, 2, damage, "Sleepy Trouble Bubble");
             value.Kill();
         }
         return damage;

@@ -1,53 +1,51 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Simulator.API
+public class APIRequestManager : MonoBehaviour
 {
-    public class APIRequestManager : MonoBehaviour
+    //private RiotAPIResponse _riotAPIResponse;
+    //public RiotAPIResponse RiotAPIResponse => _riotAPIResponse;
+
+    private SimManager simManager;
+    private ExternalJS externalJS;
+
+    #region Singleton
+    private static APIRequestManager _instance;
+    public static APIRequestManager Instance { get { return _instance; } }
+    private void Awake()
     {
-        private RiotAPIResponse _riotAPIResponse;
-        public RiotAPIResponse RiotAPIResponse => _riotAPIResponse;
-
-        private SimManager simManager;
-        private ExternalJS externalJS;
-
-        #region Singleton
-        private static APIRequestManager _instance;
-        public static APIRequestManager Instance { get { return _instance; } }
-        private void Awake()
+        if (_instance != null && _instance != this)
         {
-            if (_instance != null && _instance != this)
-            {
-                Destroy(this.gameObject);
-            }
-            else
-            {
-                _instance = this;
-            }
+            Destroy(this.gameObject);
         }
-        #endregion
-
-        private void Start()
+        else
         {
-            simManager = SimManager.Instance;
-            externalJS = GetComponent<ExternalJS>();
+            _instance = this;
         }
+    }
+    #endregion
 
-        public void SendOutputToJS(WebData data)
-        {
-            externalJS.SendData(data);
-        }
+    private void Start()
+    {
+        simManager = SimManager.Instance;
+        externalJS = GetComponent<ExternalJS>();
+        externalJS.SendReady();
+    }
 
-        public void LoadChampionData(string response)
-        {
-            simManager.LoadStats(JsonUtility.FromJson<LSSAPIResponse>(response));
-            StartCoroutine(StartBattle());
-        }
+    public void SendOutputToJS(WebData data)
+    {
+        externalJS.SendData(data);
+    }
 
-        public IEnumerator StartBattle()
-        {
-            yield return new WaitForSeconds(3f);
-            simManager.StartBattle();
-        }
+    public void LoadChampionData(string response)
+    {
+        simManager.LoadStats(JsonUtility.FromJson<LSSAPIResponse>(response));
+        StartCoroutine(StartBattle());
+    }
+
+    public IEnumerator StartBattle()
+    {
+        yield return new WaitForSeconds(3f);
+        simManager.StartBattle();
     }
 }

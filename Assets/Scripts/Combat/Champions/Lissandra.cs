@@ -40,7 +40,7 @@ public class Lissandra : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), 4, qKeys[0]);
         myStats.qCD = QSkill().basic.coolDown[4];
     }
 
@@ -49,7 +49,7 @@ public class Lissandra : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[0]);
         MyBuffManager.Add("RootBuff", new RootBuff(WSkill().UseSkill(4, wKeys[1], myStats, targetStats), TargetBuffManager, "RootBuff"));
         myStats.wCD = WSkill().basic.coolDown[4];
     }
@@ -59,7 +59,7 @@ public class Lissandra : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), 4, eKeys[0]);
         myStats.eCD = ESkill().basic.coolDown[4];
     }
 
@@ -72,11 +72,11 @@ public class Lissandra : ChampionCombat
         {
             MyBuffManager.Add("StasisBuff", new StasisBuff(2.5f, MyBuffManager, RSkill().basic.name));
             UpdateTotalHeal(ref rSum, RSkill().UseSkill(2, rKeys[1], myStats, targetStats) + (RSkill().UseSkill(2, rKeys[1], myStats, targetStats) * myStats.PercentMissingHealth), RSkill().basic.name);
-            UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[0]);
+            UpdateTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[0]);
         }
         else
         {
-            UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[0]);
+            UpdateTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[0]);
             MyBuffManager.Add("KnockDownBuff", new KnockdownBuff(0.1f, TargetBuffManager, RSkill().basic.name));
             MyBuffManager.Add("StunBuff", new StunBuff(1.5f, TargetBuffManager, RSkill().basic.name));
         }

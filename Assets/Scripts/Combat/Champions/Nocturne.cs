@@ -27,7 +27,7 @@ public class Nocturne : ChampionCombat
         checksR.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
 
-        checkTakeDamageAbility.Add(new CheckSpellShield(this));
+        checkTakeDamage.Add(new CheckSpellShield(this));
 
         qKeys.Add("Physical damage");
         qKeys.Add("Bonus Attack Damage");
@@ -52,7 +52,7 @@ public class Nocturne : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.buffManager.buffs.Add("BonusAD", new AttackDamageBuff(5, myStats.buffManager, myStats.qSkill[0].basic.name, (int)myStats.qSkill[0].UseSkill(4, qKeys[2], myStats, targetStats), "BonusAD"));
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
@@ -74,13 +74,13 @@ public class Nocturne : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         myStats.buffManager.buffs.Add("FearBuff", new FleeBuff(myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats), targetStats.buffManager, "FearBuff"));
     }
 
@@ -89,7 +89,7 @@ public class Nocturne : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
         myStats.buffManager.buffs.Add("NearSight", new NearsightBuff(6, targetStats.buffManager, "NearSight"));
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime + 0.25f));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 

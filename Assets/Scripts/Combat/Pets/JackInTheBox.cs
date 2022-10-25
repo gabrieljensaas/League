@@ -39,7 +39,7 @@ public class JackInTheBox : Pet
 
     public void AutoAttack()
     {
-        owner.targetCombat.TakeDamage(new Damage(aaDamage, SkillDamageType.Spell), "Jack In The Box Attack", true);
+        owner.targetCombat.TakeDamage(new Damage(aaDamage, SkillDamageType.Spell), "Jack In The Box Attack");
         aaTimer = 1f / attackSpeed;
     }
 

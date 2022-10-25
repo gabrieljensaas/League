@@ -66,7 +66,7 @@ public class Katarina : ChampionCombat
     public IEnumerator Voracity(float landingTime)
     {
         yield return new WaitForSeconds(landingTime);
-        UpdateAbilityTotalDamage(ref pSum, 0, new Damage(KatarinaPassiveFlatDamageByLevel[myStats.level] + (myStats.bonusAD * 0.6f) + (GetKatPassiveAPPercentByLevel(myStats.level) * 0.01f * myStats.AP), SkillDamageType.Spell), myStats.passiveSkill.skillName);
+        UpdateTotalDamage(ref pSum, 0, new Damage(KatarinaPassiveFlatDamageByLevel[myStats.level] + (myStats.bonusAD * 0.6f) + (GetKatPassiveAPPercentByLevel(myStats.level) * 0.01f * myStats.AP), SkillDamageType.Spell), myStats.passiveSkill.skillName);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[0] - (GetKatPassiveECooldownReduction(myStats.level) * 0.01f * myStats.eSkill[0].basic.coolDown[0]);
     }
 
@@ -112,8 +112,8 @@ public class Katarina : ChampionCombat
     {
         yield return new WaitForSeconds(0.166f);
         time += 0.166f;
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
         if (targetStats.buffManager.buffs.TryGetValue(myStats.rSkill[0].basic.name, out Buff value))
         {
             value.duration = 3f;

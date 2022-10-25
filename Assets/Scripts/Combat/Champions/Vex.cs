@@ -36,8 +36,8 @@ public class Vex : ChampionCombat
 
         checksR.Add(new CheckIfImmobilize(this));
 
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Magic Damage");
         wKeys.Add("Shield Strength");
@@ -73,10 +73,10 @@ public class Vex : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         Gloom(myStats.rSkill[0].name);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
         Gloom(myStats.rSkill[0].name);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[4];
     }
@@ -86,7 +86,7 @@ public class Vex : ChampionCombat
         yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
         UpdateAbilityTotalDamageSylas(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[0]);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[1]);
+        UpdateTotalDamage(ref targetCombat.rSum, 3, myStats.rSkill[0], skillLevel, rKeys[1]);
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[4] * 2;
     }
 

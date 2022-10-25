@@ -57,8 +57,8 @@ public class Gnar : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
         checksE.Add(new CheckIfImmobilize(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckForGnarRage(this, this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckForGnarRage(this, this));
+        checkTakeDamagePostMitigation.Add(new CheckForGnarRage(this, this));
+        checkTakeDamagePostMitigation.Add(new CheckForGnarRage(this, this));
 
         qKeys.Add("Physical Damage");
         qKeys.Add("Physical Damage");
@@ -95,14 +95,14 @@ public class Gnar : ChampionCombat
         if (IsMini)
         {
             yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+            UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
             StopCoroutine(GenerateRage());
             StartCoroutine(GenerateRage());
             if (!CantRage) RageBar = RageBar + GetQGeneratedRageByLevel(myStats.level) > 100 ? 100 : RageBar + GetQGeneratedRageByLevel(myStats.level);
             if (IsMini) HyperCount++;
             if (HyperCount == 3)
             {
-                UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+                UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
                 StopCoroutine(GenerateRage());
                 StartCoroutine(GenerateRage());
                 HyperCount = 0;
@@ -123,7 +123,7 @@ public class Gnar : ChampionCombat
                 TurnToMega();
             }
             yield return StartCoroutine(StartCastingAbility(myStats.qSkill[1].basic.castTime));
-            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[1], 4, qKeys[1]);
+            UpdateTotalDamage(ref qSum, 0, myStats.qSkill[1], 4, qKeys[1]);
             myStats.qCD = myStats.qSkill[1].basic.coolDown[4] * 0.3f;
         }
     }
@@ -138,7 +138,7 @@ public class Gnar : ChampionCombat
             TurnToMega();
         }
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[1].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[1], 4, wKeys[1]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[1], 4, wKeys[1]);
         myStats.wCD = myStats.wSkill[1].basic.coolDown[4];
         targetStats.buffManager.buffs.Add("Stun", new StunBuff(1.25f, targetStats.buffManager, myStats.wSkill[1].basic.name));
     }
@@ -151,13 +151,13 @@ public class Gnar : ChampionCombat
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
             myStats.buffManager.buffs.Add(myStats.eSkill[0].basic.name, new AttackSpeedBuff(6, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats), myStats.eSkill[0].basic.name));
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
             StopCoroutine(GenerateRage());
             StartCoroutine(GenerateRage());
             if (IsMini) HyperCount++;
             if (HyperCount == 3)
             {
-                UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+                UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
                 StopCoroutine(GenerateRage());
                 StartCoroutine(GenerateRage());
                 HyperCount = 0;
@@ -173,7 +173,7 @@ public class Gnar : ChampionCombat
                 TurnToMega();
             }
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[1].basic.castTime));
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[1], 4, eKeys[2]);
+            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[1], 4, eKeys[2]);
             myStats.eCD = myStats.eSkill[1].basic.coolDown[4];
         }
     }
@@ -189,7 +189,7 @@ public class Gnar : ChampionCombat
         }
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.4f, targetStats.buffManager, myStats.rSkill[0].basic.name));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         yield return new WaitForSeconds(0.4f);
         targetStats.buffManager.buffs.Add("Stun", new StunBuff(myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats), targetStats.buffManager, myStats.rSkill[0].basic.name));
@@ -207,7 +207,7 @@ public class Gnar : ChampionCombat
         if (!CantRage) RageBar = RageBar + (2 * GetQGeneratedRageByLevel(myStats.level)) > 100 ? 100 : RageBar + (GetQGeneratedRageByLevel(myStats.level) * 2);
         if (HyperCount == 3)
         {
-            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
             StopCoroutine(GenerateRage());
             StartCoroutine(GenerateRage());
             HyperCount = 0;

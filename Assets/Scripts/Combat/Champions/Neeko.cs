@@ -28,8 +28,8 @@ public class Neeko : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
         autoattackcheck = new NeekoAACheck(this, this);
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Total Maximum Magic Damage");
         wKeys.Add("Bonus Magic Damage");
@@ -47,7 +47,7 @@ public class Neeko : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
         myStats.qCD = QSkill().basic.coolDown[4];
     }
 
@@ -66,7 +66,7 @@ public class Neeko : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         TargetBuffManager.Add("Root", new RootBuff(ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), TargetBuffManager, "Root"));
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
         myStats.eCD = ESkill().basic.coolDown[4];
     }
 
@@ -75,11 +75,11 @@ public class Neeko : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[2]);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[2]);
         float totalShieldBuff = RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats) + RSkill().UseSkill(myStats.rLevel, rKeys[2], myStats, targetStats);
         MyBuffManager.Add("ShieldBuff", new ShieldBuff(2, MyBuffManager, RSkill().basic.name, totalShieldBuff, "ShieldBuff", shieldType: ShieldBuff.ShieldType.Normal));
         TargetBuffManager.Add("Stun", new StunBuff(1.25f, TargetBuffManager, "Stun"));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[2]);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[2]);
         myStats.rCD = RSkill().basic.coolDown[2];
     }
 

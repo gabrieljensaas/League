@@ -66,10 +66,10 @@ public class Graves : ChampionCombat
         timeSinceLastAA = 0;
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         timeSinceLastAA = 0;
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         yield return new WaitForSeconds(2f);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
     }
 
     public override IEnumerator ExecuteW()
@@ -78,7 +78,7 @@ public class Graves : ChampionCombat
         timeSinceLastAA = 0;
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         timeSinceLastAA = 0;
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
@@ -89,7 +89,7 @@ public class Graves : ChampionCombat
         timeSinceLastAA = 0;
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         timeSinceLastAA = 0;
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
@@ -99,7 +99,7 @@ public class Graves : ChampionCombat
         timeSinceLastAA = 0;
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         timeSinceLastAA = 0;
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 

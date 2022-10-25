@@ -63,10 +63,10 @@ public class Nami : ChampionCombat
         yield return new WaitForSeconds(0.726f);
         if (blessing > 0 && timeSinceBlessing < 6)
 		{
-            UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.ProcDamage | SkillComponentTypes.Blockable);
+            UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.ProcDamage | SkillComponentTypes.Blockable);
             blessing--;
         }
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable, buffNames: new string[] {"Suspension"});
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable, buffNames: new string[] {"Suspension"});
         TargetBuffManager.Add("Suspension", new SuspensionBuff(1.5f, TargetBuffManager, QSkill().basic.name));
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
     }
@@ -79,16 +79,16 @@ public class Nami : ChampionCombat
         if (myStats.PercentCurrentHealth < 0.3)
 		{
             UpdateTotalHeal(ref wSum, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), WSkill().basic.name);
-            UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[3], skillComponentTypes:SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[3], skillComponentTypes:SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
         }
         else
 		{
-            UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[2], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[2], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
             UpdateTotalHeal(ref wSum, WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), WSkill().basic.name);
         }
         if (blessing > 0 && timeSinceBlessing < 6)
         {
-            UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.ProcDamage | SkillComponentTypes.Blockable);
+            UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.ProcDamage | SkillComponentTypes.Blockable);
             blessing--;
         }
 
@@ -111,7 +111,7 @@ public class Nami : ChampionCombat
         if (!CheckForAbilityControl(checksR) || myStats.rLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] { "Airborne"});
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] { "Airborne"});
         TargetBuffManager.Add("Airborne", new AirborneBuff(0.5f, TargetBuffManager, RSkill().basic.name));
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
     }

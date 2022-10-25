@@ -76,7 +76,7 @@ public class Shaco : ChampionCombat
         yield return base.ExecuteA();
         if (myStats.buffManager.buffs.TryGetValue("Untargetable", out Buff buff))
         {
-            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
+            UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
             buff.Kill();
         }
     }
@@ -109,9 +109,9 @@ public class Shaco : ChampionCombat
             buff.Kill();
 
         if (targetStats.PercentCurrentHealth > 0.3f)
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
         else
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[2]);
+            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[2]);
 
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }

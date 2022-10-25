@@ -30,8 +30,8 @@ public class Sejuani : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksQ.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckFrostArmor(this, this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckFrostArmor(this, this));
+        checkTakeDamagePostMitigation.Add(new CheckFrostArmor(this, this));
+        checkTakeDamagePostMitigation.Add(new CheckFrostArmor(this, this));
 
         qKeys.Add("Magic Damage");
         wKeys.Add("Physical Damage");
@@ -65,7 +65,7 @@ public class Sejuani : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         passiveTimer = 0;
         CheckIfFrozen();
         targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.5f, targetStats.buffManager, myStats.qSkill[0].basic.name));
@@ -77,12 +77,12 @@ public class Sejuani : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.25f));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         passiveTimer = 0;
         CheckIfFrozen();
         if (timeSinceEPassive > 10 && !targetStats.buffManager.buffs.ContainsKey("Frozen")) frost++;
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime - 0.25f));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[1]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[1]);
         passiveTimer = 0;
         CheckIfFrozen();
         if (timeSinceEPassive > 10 && !targetStats.buffManager.buffs.ContainsKey("Frozen")) frost++;
@@ -94,7 +94,7 @@ public class Sejuani : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
         if (frost < 4) yield break;
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         passiveTimer = 0;
         CheckIfFrozen();
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
@@ -110,13 +110,13 @@ public class Sejuani : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         passiveTimer = 0;
         CheckIfFrozen();
         targetStats.buffManager.buffs.Add("Stun", new StunBuff(1f, targetStats.buffManager, myStats.rSkill[0].basic.name));
         if (timeSinceEPassive > 10) targetStats.buffManager.buffs.Add("Frozen", new FrozenBuff(1f, targetStats.buffManager, myStats.rSkill[0].basic.name));
         passiveTimer = 0;
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }
 
@@ -134,7 +134,7 @@ public class Sejuani : ChampionCombat
     {
         if (targetStats.buffManager.buffs.TryGetValue("Frozen", out Buff frozen))
         {
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage(targetStats.maxHealth * 0.1f, SkillDamageType.Spell), "Frozen");
+            UpdateTotalDamage(ref pSum, 4, new Damage(targetStats.maxHealth * 0.1f, SkillDamageType.Spell), "Frozen");
             passiveTimer = 0;
             frozen.Kill();
         }

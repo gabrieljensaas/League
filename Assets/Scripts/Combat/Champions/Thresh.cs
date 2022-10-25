@@ -49,7 +49,7 @@ public class Thresh : ChampionCombat
         if (!CheckForAbilityControl(checksQ) || myStats.qLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes:SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable, buffNames: new string[] { "Stun" });
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes:SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable, buffNames: new string[] { "Stun" });
         TargetBuffManager.Add("Stun", new StunBuff(1.5f, TargetBuffManager, QSkill().basic.name));
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
     }
@@ -68,7 +68,7 @@ public class Thresh : ChampionCombat
         if (!CheckForAbilityControl(checksE) || myStats.eLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] { "Airborne" });
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] { "Airborne" });
         TargetBuffManager.Add("Airborne", new AirborneBuff(0.2f, TargetBuffManager, ESkill().basic.name));
 
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
@@ -79,7 +79,7 @@ public class Thresh : ChampionCombat
         if (!CheckForAbilityControl(checksR) || myStats.rLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
     }
 

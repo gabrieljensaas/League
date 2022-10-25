@@ -28,10 +28,10 @@ public class Garen : ChampionCombat
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
         autoattackcheck = new GarenAACheck(this);
-        checkTakeDamageAbility.Add(new CheckDamageReductionPercent(this));
-        checkTakeDamageAA.Add(new CheckDamageReductionPercent(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamage.Add(new CheckDamageReductionPercent(this));
+        checkTakeDamage.Add(new CheckDamageReductionPercent(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
         checksR.Add(new CheckIfExecutes(this, "R"));
 
         qKeys.Add("Bonus Physical Damage");
@@ -79,7 +79,7 @@ public class Garen : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref qSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
 
         StopCoroutine("GarenE");          //if 2 GarenE coroutine exists this could leat to some bugs
@@ -92,7 +92,7 @@ public class Garen : ChampionCombat
     private IEnumerator GarenE(float seconds, int spinCount)
     {
         yield return new WaitForSeconds(seconds);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         spinCount++;
         if (spinCount >= 6 && targetStats.buffManager.buffs.ContainsKey("Judgment"))
         {

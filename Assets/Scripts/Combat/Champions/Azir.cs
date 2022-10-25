@@ -30,8 +30,8 @@ public class Azir : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
         checksE.Add(new CheckIfImmobilize(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Magic Damage");
         wKeys.Add("Bonus Attack Speed");
@@ -65,7 +65,7 @@ public class Azir : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[myStats.qLevel];
     }
 
@@ -87,7 +87,7 @@ public class Azir : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         myStats.buffManager.shields.Add(myStats.eSkill[0].basic.name, new ShieldBuff(1.5f, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), myStats.eSkill[0].basic.name));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
     }
 
@@ -97,7 +97,7 @@ public class Azir : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        if(UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable) != float.MinValue)
+        if(UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable) != float.MinValue)
         {
             targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(1f, targetStats.buffManager, myStats.rSkill[0].basic.name));
         }
@@ -123,7 +123,7 @@ public class Azir : ChampionCombat
         else
         {
             float damage = SandSoldierFlatDamageByLevel[myStats.level] + (myStats.AP * 0.55f);
-            UpdateAbilityTotalDamage(ref wSum, 1, new Damage(damage + ((SoldierCount - 1) * damage * 0.25f), SkillDamageType.Spell), "Arise!");
+            UpdateTotalDamage(ref wSum, 1, new Damage(damage + ((SoldierCount - 1) * damage * 0.25f), SkillDamageType.Spell), "Arise!");
         }
     }
 

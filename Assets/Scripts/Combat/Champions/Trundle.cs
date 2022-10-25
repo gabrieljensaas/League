@@ -71,7 +71,7 @@ public class Trundle : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);        //need to split half of the damage to time
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);        //need to split half of the damage to time
         UpdateTotalHeal(ref rSum, myStats.rSkill[0], 2, rKeys[0]);
         myStats.buffManager.buffs.Add("BonusArmor", new ArmorBuff(8, myStats.buffManager, myStats.rSkill[0].basic.name, (float)0.4 * targetStats.armor, "BonusArmor"));
         myStats.buffManager.buffs.Add("ArmorReduction", new ArmorReductionBuff(8, targetStats.buffManager, myStats.qSkill[0].basic.name, (float)0.4 * targetStats.armor, "ArmorReduction"));

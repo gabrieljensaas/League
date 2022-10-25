@@ -44,7 +44,7 @@ public class Talon : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         passiveStack++;
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]); //need to apply crits
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]); //need to apply crits
         attackCooldown = 0;
         myStats.qCD = QSkill().basic.coolDown[4];
     }
@@ -55,7 +55,7 @@ public class Talon : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
         passiveStack += 2;
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
         myStats.wCD = WSkill().basic.coolDown[4];
     }
 
@@ -66,11 +66,11 @@ public class Talon : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         passiveStack++;
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         MyBuffManager.Add(RSkill().basic.name, new UntargetableBuff(2.5f, MyBuffManager, RSkill().basic.name));
         yield return new WaitForSeconds(2.5f);
         passiveStack++;
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         myStats.rCD = RSkill().basic.coolDown[2];
     }
 
@@ -89,7 +89,7 @@ public class Talon : ChampionCombat
         {
             if (passiveStack == 3)
             {
-                UpdateAbilityTotalDamage(ref pSum, 4, new Damage((65 + 10 * myStats.level), SkillDamageType.Phyiscal), myStats.passiveSkill.name);
+                UpdateTotalDamage(ref pSum, 4, new Damage((65 + 10 * myStats.level), SkillDamageType.Phyiscal), myStats.passiveSkill.name);
                 myStats.buffManager.buffs.Remove("BladeEnd");
             }
         }

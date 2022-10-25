@@ -50,14 +50,14 @@ public class Ornn : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         yield return new WaitForSeconds(1.125f);
         targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.1f, targetStats.buffManager, myStats.qSkill[0].basic.name));  //needs research for actual airborne duration
         if (targetStats.buffManager.buffs.TryGetValue("Brittle", out Buff value))
         {
             value.Kill();
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage((10 + (8 / 17 * (myStats.level - 1))) * 0.01f * targetStats.maxHealth, SkillDamageType.Spell), "Living Forge");
+            UpdateTotalDamage(ref pSum, 4, new Damage((10 + (8 / 17 * (myStats.level - 1))) * 0.01f * targetStats.maxHealth, SkillDamageType.Spell), "Living Forge");
         }
     }
 
@@ -77,13 +77,13 @@ public class Ornn : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(1.5f, targetStats.buffManager, myStats.qSkill[0].basic.name));  //needs research for actual airborne duration
         targetStats.buffManager.buffs.Add("Stun", new StunBuff(1.5f, targetStats.buffManager, myStats.qSkill[0].basic.name));
         if (targetStats.buffManager.buffs.TryGetValue("Brittle", out Buff value))
         {
             value.Kill();
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage((10 + (8 / 17 * (myStats.level - 1))) * 0.01f * targetStats.maxHealth, SkillDamageType.Spell), "Living Forge");
+            UpdateTotalDamage(ref pSum, 4, new Damage((10 + (8 / 17 * (myStats.level - 1))) * 0.01f * targetStats.maxHealth, SkillDamageType.Spell), "Living Forge");
         }
 
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
@@ -97,7 +97,7 @@ public class Ornn : ChampionCombat
 
             yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
             if (!targetStats.buffManager.buffs.TryAdd("Brittle", new BrittleBuff(3f, targetStats.buffManager, myStats.wSkill[0].basic.name))) targetStats.buffManager.buffs["Brittle"].duration = 3f;
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
             myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
 
         }
@@ -111,10 +111,10 @@ public class Ornn : ChampionCombat
             if (targetStats.buffManager.buffs.TryGetValue("Brittle", out Buff value))
             {
                 value.Kill();
-                UpdateAbilityTotalDamage(ref pSum, 4, new Damage((10 + (8 / 17 * (myStats.level - 1))) * 0.01f * targetStats.maxHealth, SkillDamageType.Spell), "Living Forge");
+                UpdateTotalDamage(ref pSum, 4, new Damage((10 + (8 / 17 * (myStats.level - 1))) * 0.01f * targetStats.maxHealth, SkillDamageType.Spell), "Living Forge");
             }
 
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
             rRecast = false;
         }
     }
@@ -128,7 +128,7 @@ public class Ornn : ChampionCombat
         {
             value.Kill();
             targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.1f, targetStats.buffManager, "Ornn's Auto Attack"));
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage((10 + (8 / 17 * (myStats.level - 1))) * 0.01f * targetStats.maxHealth, SkillDamageType.Spell), "Living Forge");
+            UpdateTotalDamage(ref pSum, 4, new Damage((10 + (8 / 17 * (myStats.level - 1))) * 0.01f * targetStats.maxHealth, SkillDamageType.Spell), "Living Forge");
         }
         AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
     }
@@ -136,15 +136,15 @@ public class Ornn : ChampionCombat
     public IEnumerator BellowsBreath()
     {
         yield return new WaitForSeconds(0.15f);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         yield return new WaitForSeconds(0.15f);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         yield return new WaitForSeconds(0.15f);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         yield return new WaitForSeconds(0.15f);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         yield return new WaitForSeconds(0.15f);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         if (!targetStats.buffManager.buffs.TryAdd("Brittle", new BrittleBuff(3f, targetStats.buffManager, myStats.wSkill[0].basic.name))) targetStats.buffManager.buffs["Brittle"].duration = 3f;
     }
 

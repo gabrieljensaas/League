@@ -51,7 +51,7 @@ public class Rakan : ChampionCombat
         if (!CheckForAbilityControl(checksQ) || myStats.qLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
         yield return new WaitForSeconds(3f);
 		UpdateTotalHeal(ref qSum, 25+ 5 * myStats.level, QSkill().basic.name);
 		myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
@@ -64,7 +64,7 @@ public class Rakan : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
         yield return new WaitForSeconds(0.35f);
         TargetBuffManager.Add("Airborne", new AirborneBuff(1f, TargetBuffManager, WSkill().basic.name));
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] { "Airborne"});
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] { "Airborne"});
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
     }
 
@@ -74,7 +74,7 @@ public class Rakan : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         TargetBuffManager.Add("Charm", new CharmBuff(RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats), TargetBuffManager, RSkill().basic.name));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] {"Charm"});
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] {"Charm"});
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
     }
 

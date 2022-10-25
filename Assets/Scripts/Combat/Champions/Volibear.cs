@@ -40,8 +40,8 @@ public class Volibear : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
         checksR.Add(new CheckIfImmobilize(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
         autoattackcheck = new VolibearAACheck(this);
 
         targetCombat.checksQ.Add(new CheckIfEnemyTargetable(targetCombat));
@@ -87,11 +87,11 @@ public class Volibear : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
         if (timeSinceWounded > 8)
         {
-            UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
         }
         else
         {
-            UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable);
             UpdateTotalHeal(ref wSum, WSkill().UseSkill(myStats.wLevel, wKeys[2], myStats, targetStats), WSkill().basic.name);
         }
         timeSinceWounded = 0;
@@ -105,7 +105,7 @@ public class Volibear : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         yield return new WaitForSeconds(2f);
         MyBuffManager.Add("ShieldBuff", new ShieldBuff(3f, MyBuffManager, ESkill().basic.name, 0.14f * myStats.maxHealth, "SkySplitter"));
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
         myStats.eCD = ESkill().basic.coolDown[4];
     }
 
@@ -117,7 +117,7 @@ public class Volibear : ChampionCombat
         MyBuffManager.Add("ImmunetoCC", new ImmuneToCCBuff(0.2f, MyBuffManager, RSkill().basic.name, "Stormbringer"));
         MyBuffManager.Add("StormbringerBuff", new StormbringerBuff(12, MyBuffManager, RSkill().basic.name, (int)RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats)));
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1]);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1]);
         myStats.rCD = RSkill().basic.coolDown[2];
     }
 

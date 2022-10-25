@@ -29,8 +29,8 @@ public class Tryndamere : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
 
-        checkTakeDamageAAPostMitigation.Add(new CheckTryndamereUndyingRage(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckTryndamereUndyingRage(this));
+        checkTakeDamagePostMitigation.Add(new CheckTryndamereUndyingRage(this));
+        checkTakeDamagePostMitigation.Add(new CheckTryndamereUndyingRage(this));
 
         qKeys.Add("Bonus Attack Damage");
         qKeys.Add("Additional Bonus AD");

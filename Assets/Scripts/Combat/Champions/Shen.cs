@@ -61,8 +61,8 @@ public class Shen : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
         checksE.Add(new CheckIfImmobilize(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Increased Bonus Damage");
         wKeys.Add("");
@@ -95,7 +95,7 @@ public class Shen : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
         GetPassiveShield();
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         targetStats.buffManager.buffs.Add("Taunt", new TauntBuff(1.5f, targetStats.buffManager, myStats.eSkill[0].basic.name));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }

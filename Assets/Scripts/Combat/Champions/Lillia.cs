@@ -53,7 +53,7 @@ public class Lillia : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), 4, qKeys[1]);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), 4, qKeys[1]);
         myStats.qCD = QSkill().basic.coolDown[4];
         DreamDust();
         LiltingLullabyProc();
@@ -64,7 +64,7 @@ public class Lillia : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[1]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[1]);
         myStats.wCD = WSkill().basic.coolDown[4];
         DreamDust();
         LiltingLullabyProc();
@@ -102,7 +102,7 @@ public class Lillia : ChampionCombat
         if (TargetBuffManager.buffs.TryGetValue("Sleep", out Buff buff))
         {
             buff.Kill();
-            UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[1]);
+            UpdateTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[1]);
         }
     }
 }

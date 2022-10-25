@@ -26,8 +26,8 @@ public class Fizz : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
         checksQ.Add(new CheckIfImmobilize(this));
         checksE.Add(new CheckIfImmobilize(this));
-        checkTakeDamageAA.Add(new CheckForNimbleFighter(this));
-        checkTakeDamageAbility.Add(new CheckForNimbleFighter(this));
+        checkTakeDamage.Add(new CheckForNimbleFighter(this));
+        checkTakeDamage.Add(new CheckForNimbleFighter(this));
         checksQ.Add(new CheckIfUnableToAct(this));
         checksW.Add(new CheckIfUnableToAct(this));
         checksE.Add(new CheckIfUnableToAct(this));
@@ -54,9 +54,9 @@ public class Fizz : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        if (UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Dash) != float.MinValue)  //needs to be countered by parry too but could not find a way to implement that
+        if (UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Dash) != float.MinValue)  //needs to be countered by parry too but could not find a way to implement that
         {
-            UpdateAbilityTotalDamage(ref qSum, 0, new Damage(myStats.AD, SkillDamageType.Phyiscal), QSkill().basic.name);   // will apply on hit effects but since it can be countered by spell shield didnt add that as skillcomponenttype
+            UpdateTotalDamage(ref qSum, 0, new Damage(myStats.AD, SkillDamageType.Phyiscal), QSkill().basic.name);   // will apply on hit effects but since it can be countered by spell shield didnt add that as skillcomponenttype
         }
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
@@ -78,10 +78,10 @@ public class Fizz : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         MyBuffManager.Add("Untargetable", new UntargetableBuff(0.65f, MyBuffManager, ESkill().basic.name));
         MyBuffManager.Add("UnableToAct", new UnableToActBuff(0.65f, MyBuffManager, ESkill().basic.name));
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Spell, SkillComponentTypes.Dash), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Spell, SkillComponentTypes.Dash), ESkill().basic.name);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         yield return new WaitForSeconds(0.65f);
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
     }
 
     public override IEnumerator ExecuteR()                               //min range for now
@@ -109,11 +109,11 @@ public class Fizz : ChampionCombat
                 {
                     buff.duration = 5f;
                     buff.value = 0;
-                    UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[1]);
+                    UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[1]);
                 }
                 else
                 {
-                    UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[2], skillComponentTypes: SkillComponentTypes.ProcDamage);
+                    UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[2], skillComponentTypes: SkillComponentTypes.ProcDamage);
                 }
             }
         }
@@ -122,7 +122,7 @@ public class Fizz : ChampionCombat
     public IEnumerator SeastoneTridentPassive(float timeRemaning)
     {
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.PersistentDamage);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.PersistentDamage);
         if (timeRemaning - 0.5f > 0) StartCoroutine(SeastoneTridentPassive(timeRemaning - 0.5f));
     }
 
@@ -130,6 +130,6 @@ public class Fizz : ChampionCombat
     {
         yield return new WaitForSeconds(2f);
         TargetBuffManager.Add("Airborne", new AirborneBuff(1f, TargetBuffManager, RSkill().basic.name));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], buffNames: new string[] { "Airborne" });
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], buffNames: new string[] { "Airborne" });
     }
 }

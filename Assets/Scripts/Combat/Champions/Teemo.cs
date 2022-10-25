@@ -31,7 +31,7 @@ public class Teemo : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
 
-        checkTakeDamageAA.Add(new CheckIfBlind(this));
+        checkTakeDamage.Add(new CheckIfBlind(this));
 
         qKeys.Add("Magic Damage");
         qKeys.Add("Blind Duration");
@@ -63,7 +63,7 @@ public class Teemo : ChampionCombat
     {
         yield return base.ExecuteA();
 
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         if (targetStats.buffManager.buffs.TryGetValue("ToxicShot", out Buff buff))
             buff.duration = 4;
         else

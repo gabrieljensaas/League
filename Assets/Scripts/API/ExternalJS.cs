@@ -5,13 +5,24 @@ public class ExternalJS : MonoBehaviour
 {
     [DllImport("__Internal")]
     private static extern void HelloString(string str);
-    //[DllImport("__Internal")]
+    [DllImport("__Internal")]
+    private static extern void UnityReady();
 
     public void SendData(WebData data)
     {
+        #if !UNITY_EDITOR
         HelloString(JsonUtility.ToJson(data));
-        //Debug.Log(JsonUtility.ToJson(data));      // for test comment out the line in the up and use this
         SimManager.Instance.Reset();
+        #else
+        Debug.Log(JsonUtility.ToJson(data));
+        #endif
+    }
+
+    public void SendReady()
+    {
+        #if !UNITY_EDITOR
+        UnityReady();
+        #endif
     }
 }
 [System.Serializable]
@@ -23,14 +34,16 @@ public class WebData
     public SnapShot[] SnapShots;
     public HealLog[] HealLogs;
     public BuffLog[] BuffLogs;
-    public WebData(SnapShot[] snap, DamageLog[] dmglogs, HealLog[] hlogs, BuffLog[] bufflogs, string winner, float fightDuration)
+    public CastLog[] CastLogs;
+    public WebData(SnapShot[] snap, DamageLog[] dmglogs, HealLog[] hlogs, BuffLog[] bufflogs, string winner, float fightDuration, CastLog[] CastLogs)
     {
-        this.DamageLogs = dmglogs;
-        this.SnapShots = snap;
-        this.HealLogs = hlogs;
+        //this.DamageLogs = dmglogs;
+        //this.SnapShots = snap;
+        //this.HealLogs = hlogs;
         this.BuffLogs = bufflogs;
         this.winner = winner;
         this.fightDuration = fightDuration;
+        this.CastLogs = CastLogs;
     }
 }
 [System.Serializable]
@@ -112,6 +125,24 @@ public class BuffLog
         this.championName = championName;
         this.skillName = skillName;
         this.effect = effect;
+        this.duration = duration;
         this.time = seconds;
+    }
+}
+
+[System.Serializable]
+public class CastLog
+{
+    public string championName;
+    public int ACast = 0;
+    public int PCast = 0;
+    public int QCast = 0;
+    public int WCast = 0;
+    public int ECast = 0;
+    public int RCast = 0;
+
+    public CastLog(string championName)
+    {
+        this.championName = championName;
     }
 }

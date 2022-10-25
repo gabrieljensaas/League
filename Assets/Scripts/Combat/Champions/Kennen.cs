@@ -50,7 +50,7 @@ public class Kennen : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         CheckKennenPassiveStun(myStats.qSkill[0].basic.name);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 
@@ -60,7 +60,7 @@ public class Kennen : ChampionCombat
         if (!targetStats.buffManager.buffs.ContainsKey("MarkOfTheStorm")) yield break;
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         CheckKennenPassiveStun(myStats.wSkill[0].basic.name);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[1]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[1]);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
@@ -91,17 +91,17 @@ public class Kennen : ChampionCombat
     public IEnumerator MaelStorm()
     {
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0]);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0], 1.1f);
+        UpdateTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0], 1.1f);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0], 1.2f);
+        UpdateTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0], 1.2f);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0], 1.3f);
+        UpdateTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0], 1.3f);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0], 1.4f);
+        UpdateTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0], 1.4f);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0], 1.5f);
+        UpdateTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[0], 1.5f);
     }
 
     private void CheckKennenPassiveStun(string skillName)
@@ -140,7 +140,7 @@ public class Kennen : ChampionCombat
         ePassive++;
         if (ePassive == 4)
         {
-            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
             ePassive = 0;
         }
     }

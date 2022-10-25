@@ -65,7 +65,7 @@ public class Nasus : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         targetStats.buffManager.buffs.Add("ArmorReduction", new ArmorReductionBuff(6f, targetStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(4, eKeys[2], myStats, targetStats), "ArmorReduction"));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         StartCoroutine(SpiritFire());
@@ -85,17 +85,17 @@ public class Nasus : ChampionCombat
     public IEnumerator SpiritFire()
     {
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
     }
 
     public IEnumerator FuryOfTheSands(float time)
@@ -110,7 +110,7 @@ public class Nasus : ChampionCombat
         }
         else
         {
-            UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 4, rKeys[2]);
+            UpdateTotalDamage(ref rSum, 2, myStats.rSkill[0], 4, rKeys[2]);
         }
 
         if (time != 15f)

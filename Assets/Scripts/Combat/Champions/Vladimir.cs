@@ -41,8 +41,8 @@ public class Vladimir : ChampionCombat
         checksE.Add(new CheckIfChanneling(this));
         checksR.Add(new CheckIfChanneling(this));
         checksA.Add(new CheckIfChanneling(this));
-        targetCombat.checkTakeDamageAA.Add(new CheckIfHemoplague(targetCombat));
-        targetCombat.checkTakeDamageAbility.Add(new CheckIfHemoplague(targetCombat));
+        targetCombat.checkTakeDamage.Add(new CheckIfHemoplague(targetCombat));
+        targetCombat.checkTakeDamage.Add(new CheckIfHemoplague(targetCombat));
 
         float extraAP = myStats.bonusHP * 0.033f;           //passive
         myStats.maxHealth += myStats.AP * 1.6f;
@@ -74,14 +74,14 @@ public class Vladimir : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         if (bloodthirstCD > 0)
         {
-            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[2]);
+            UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[2]);
             UpdateTotalHeal(ref hSum, myStats.qSkill[0].UseSkill(4, qKeys[1], myStats, targetStats) + 20 + (10 * myStats.level) + ((myStats.maxHealth - myStats.currentHealth) * (5 + (4 * (myStats.AP % 100))) * 0.01f), myStats.qSkill[0].basic.name);
             bloodthirstCD = 0;
             bloodthirstStack = 0;
         }
         else
         {
-            UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+            UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
             UpdateTotalHeal(ref hSum, myStats.qSkill[0], 4, qKeys[1]);
         }
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
@@ -143,16 +143,16 @@ public class Vladimir : ChampionCombat
     public IEnumerator SanguinePool()
     {
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         UpdateTotalHeal(ref hSum, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats) * 0.15f, myStats.wSkill[0].basic.name);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         UpdateTotalHeal(ref hSum, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats) * 0.15f, myStats.wSkill[0].basic.name);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         UpdateTotalHeal(ref hSum, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats) * 0.15f, myStats.wSkill[0].basic.name);
         yield return new WaitForSeconds(0.5f);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         UpdateTotalHeal(ref hSum, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats) * 0.15f, myStats.wSkill[0].basic.name);
         isStasis = false;
     }
@@ -160,14 +160,14 @@ public class Vladimir : ChampionCombat
     public IEnumerator TidesOfBlood()
     {
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         isStasis = false;
     }
 
     public IEnumerator Hemoplague()
     {
         yield return new WaitForSeconds(4f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         yield return new WaitForSeconds(0.4f);
         UpdateTotalHeal(ref hSum, myStats.rSkill[0], 2, rKeys[1]);
     }

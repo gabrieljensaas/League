@@ -23,16 +23,16 @@ public class Olaf : ChampionCombat
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
         autoattackcheck = new OlafAACheck(this);
-        checkTakeDamageAbility.Add(new CheckOlafPassive(this));
-        checkTakeDamageAA.Add(new CheckOlafPassive(this));
+        checkTakeDamage.Add(new CheckOlafPassive(this));
+        checkTakeDamage.Add(new CheckOlafPassive(this));
         checksQ.Add(new CheckIfDisrupt(this));
         checksW.Add(new CheckIfDisrupt(this));
         checksE.Add(new CheckIfDisrupt(this));
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Physical Damage");
         wKeys.Add("Bonus Attack Speed");
@@ -49,7 +49,7 @@ public class Olaf : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         targetStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new ArmorReductionBuff(4, targetStats.buffManager, myStats.qSkill[0].basic.name, 20f, myStats.qSkill[0].basic.name));
     }
@@ -70,7 +70,7 @@ public class Olaf : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         TakeDamage(new Damage(75 + (myStats.AD * 0.15f), SkillDamageType.True), myStats.eSkill[0].basic.name); //health cost
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         if (myStats.buffManager.buffs.TryGetValue(myStats.rSkill[0].basic.name, out Buff value))
         {

@@ -43,8 +43,8 @@ public class DrMundo : ChampionCombat
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckForMundosGreyHealth(this, this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckForMundosGreyHealth(this, this));
+        checkTakeDamagePostMitigation.Add(new CheckForMundosGreyHealth(this, this));
+        checkTakeDamagePostMitigation.Add(new CheckForMundosGreyHealth(this, this));
         autoattackcheck = new DrMundoAACheck(this, this);
 
         qKeys.Add("Magic Damage");
@@ -84,7 +84,7 @@ public class DrMundo : ChampionCombat
         CheckDeath();
         var a = myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats);
         var b = myStats.qSkill[0].UseSkill(4, qKeys[1], myStats, targetStats);
-        UpdateAbilityTotalDamage(ref qSum, 0, new Damage(a > b ? a : b, SkillDamageType.Spell), myStats.qSkill[0].basic.name);
+        UpdateTotalDamage(ref qSum, 0, new Damage(a > b ? a : b, SkillDamageType.Spell), myStats.qSkill[0].basic.name);
         UpdateTotalHeal(ref hSum, 50, myStats.qSkill[0].basic.name);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
@@ -170,12 +170,12 @@ public class DrMundo : ChampionCombat
     public IEnumerator HearthZapper(float time)
     {
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         if (time != 4) StartCoroutine(HearthZapper(time + 0.25f));
         else
         {
             WActive = false;
-            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[2]);
+            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[2]);
             UpdateTotalHeal(ref hSum, GreyHealth, myStats.wSkill[0].basic.name);
         }
     }

@@ -36,8 +36,8 @@ public class Sylas : ChampionCombat
         checksE.Add(new CheckIfChanneling(this));
         checksR.Add(new CheckIfChanneling(this));
         checksA.Add(new CheckIfChanneling(this));
-        checkTakeDamageAbility.Add(new CheckShield(this));
-        checkTakeDamageAA.Add(new CheckShield(this));
+        checkTakeDamage.Add(new CheckShield(this));
+        checkTakeDamage.Add(new CheckShield(this));
         checksQ.Add(new CheckIfRagnorok(this));
         checksW.Add(new CheckIfRagnorok(this));
         checksE.Add(new CheckIfRagnorok(this));
@@ -54,8 +54,8 @@ public class Sylas : ChampionCombat
         checksE.Add(new CheckIfUnableToAct(this));
         checksR.Add(new CheckIfUnableToAct(this));
         checksA.Add(new CheckIfUnableToAct(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Magic Damage");
         qKeys.Add("Magic Damage");
@@ -79,11 +79,11 @@ public class Sylas : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         if (empoweredTumbleCheck.Control()) myStats.buffManager.buffs.Add("Untargetable", new UntargetableBuff(1, myStats.buffManager, myStats.qSkill[0].basic.name));
         Passive();
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         CheckBlightStacks();
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         yield return new WaitForSeconds(0.6F);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
         CheckBlightStacks();
     }
 
@@ -93,7 +93,7 @@ public class Sylas : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         Passive();
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         CheckBlightStacks();
         UpdateTotalHeal(ref hSum, (1 + Mathf.Clamp01(((myStats.maxHealth - myStats.currentHealth) / myStats.maxHealth) % 0.006f)) * myStats.wSkill[0].UseSkill(4, wKeys[1], myStats, targetStats), myStats.wSkill[0].basic.name);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
@@ -115,7 +115,7 @@ public class Sylas : ChampionCombat
         else
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[1].basic.castTime));
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
             CheckBlightStacks();
             targetStats.buffManager.buffs.Add("Stun", new StunBuff(0.5f, targetStats.buffManager, myStats.eSkill[1].basic.name));
             targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.5f, targetStats.buffManager, myStats.eSkill[1].basic.name));
@@ -210,7 +210,7 @@ public class Sylas : ChampionCombat
     {
         if (targetStats.buffManager.buffs.TryGetValue("Blight", out Buff value))
         {
-            UpdateAbilityTotalDamage(ref wSum, 1, targetStats.wSkill[0], 4, targetCombat.wKeys[1], multiplier * value.value);           //ability level is sylas's ability level
+            UpdateTotalDamage(ref wSum, 1, targetStats.wSkill[0], 4, targetCombat.wKeys[1], multiplier * value.value);           //ability level is sylas's ability level
             myStats.qCD -= value.value * myStats.qSkill[0].basic.coolDown[4] * 0.12f;
             myStats.wCD -= value.value * myStats.wSkill[0].basic.coolDown[4] * 0.12f;
             myStats.eCD -= value.value * myStats.eSkill[0].basic.coolDown[4] * 0.12f;

@@ -60,7 +60,7 @@ public class Gragas : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         yield return new WaitForSeconds(4f);
-        UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.Spell), QSkill().basic.name);
+        UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.Spell), QSkill().basic.name);
         myStats.qCD = QSkill().basic.coolDown[4];
     }
 
@@ -81,7 +81,7 @@ public class Gragas : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.Dash), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.Dash), ESkill().basic.name);
         TargetBuffManager.Add("KnockOff", new AirborneBuff(0.1f, TargetBuffManager, ESkill().basic.name));
         TargetBuffManager.Add("StunBuff", new StunBuff(1f, TargetBuffManager, ESkill().basic.name));
         myStats.eCD = ESkill().basic.coolDown[4];
@@ -93,7 +93,7 @@ public class Gragas : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         yield return new WaitForSeconds(0.55f);
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         TargetBuffManager.Add("KnockOff", new AirborneBuff(0.1f, TargetBuffManager, ESkill().basic.name));
         myStats.rCD = RSkill().basic.coolDown[2];
     }

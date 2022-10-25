@@ -62,39 +62,39 @@ public class Qiyana : ChampionCombat
         RoyalPrivilege();
         if (hasElement)
         {
-            UpdateAbilityTotalDamage(ref wSum, 1, new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.OnHit), WSkill().basic.name);
+            UpdateTotalDamage(ref wSum, 1, new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.OnHit), WSkill().basic.name);
         }
         if (hasPassive)
         {
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage(11 + 4 * myStats.level, SkillDamageType.Phyiscal), myStats.passiveSkill.name);
+            UpdateTotalDamage(ref pSum, 4, new Damage(11 + 4 * myStats.level, SkillDamageType.Phyiscal), myStats.passiveSkill.name);
             hasPassive = false;
             if (hasTerrain)
             {
-                UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[1], myStats, targetStats), SkillDamageType.Phyiscal), QSkill().basic.name);
+                UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[1], myStats, targetStats), SkillDamageType.Phyiscal), QSkill().basic.name);
                 hasTerrain = false;
                 hasElement = false;
             }
             else if (hasBrush)
             {
                 MyBuffManager.Add("Invisible", new UntargetableBuff(3, MyBuffManager, "Invisible"));
-                UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[0], myStats, targetStats), SkillDamageType.Phyiscal), QSkill().basic.name);
+                UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[0], myStats, targetStats), SkillDamageType.Phyiscal), QSkill().basic.name);
                 hasBrush = false;
                 hasElement = false;
             }
             else if (hasRiver)
             {
                 MyBuffManager.Add("RootBuff", new RootBuff(3, MyBuffManager, "RiverBuff"));
-                UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[0], myStats, targetStats), SkillDamageType.Phyiscal), QSkill().basic.name);
+                UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[0], myStats, targetStats), SkillDamageType.Phyiscal), QSkill().basic.name);
                 hasRiver = false;
                 hasElement = false;
             }
             else
-                UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[0], myStats, targetStats), SkillDamageType.Phyiscal), QSkill().basic.name);
+                UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[0], myStats, targetStats), SkillDamageType.Phyiscal), QSkill().basic.name);
 
         }
         else
         {
-            UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[0], myStats, targetStats), SkillDamageType.Phyiscal), QSkill().basic.name);
+            UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[0], myStats, targetStats), SkillDamageType.Phyiscal), QSkill().basic.name);
         }
         myStats.qCD = QSkill().basic.coolDown[4];
     }
@@ -132,9 +132,9 @@ public class Qiyana : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         if (hasElement)
         {
-            UpdateAbilityTotalDamage(ref wSum, 1, new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.OnHit), WSkill().basic.name);
+            UpdateTotalDamage(ref wSum, 1, new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.OnHit), WSkill().basic.name);
         }
-        UpdateAbilityTotalDamage(ref eSum, 0, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.PhysAndSpell, SkillComponentTypes.Dash), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 0, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.PhysAndSpell, SkillComponentTypes.Dash), ESkill().basic.name);
         myStats.eCD = ESkill().basic.coolDown[4];
     }
 
@@ -145,10 +145,10 @@ public class Qiyana : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         if (hasElement)
         {
-            UpdateAbilityTotalDamage(ref wSum, 1, new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.OnHit), WSkill().basic.name);
+            UpdateTotalDamage(ref wSum, 1, new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.OnHit), WSkill().basic.name);
         }
         TargetBuffManager.Add("Airborne", new AirborneBuff(0.1f, TargetBuffManager, RSkill().basic.name));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         float check = UnityEngine.Random.Range(0.5f, 1); ;
         TargetBuffManager.Add("Stun", new StunBuff(check, TargetBuffManager, RSkill().basic.name));
         myStats.rCD = RSkill().basic.coolDown[2];

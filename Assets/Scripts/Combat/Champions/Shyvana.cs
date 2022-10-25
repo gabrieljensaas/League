@@ -100,28 +100,28 @@ public class Shyvana : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         if (!hasDragonForm)
         {
-            UpdateAbilityTotalDamage(ref eSum, 0, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.Projectile), ESkill().basic.name);
+            UpdateTotalDamage(ref eSum, 0, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.Projectile), ESkill().basic.name);
         }
         else
         {
 
-            UpdateAbilityTotalDamage(ref eSum, 0, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.Projectile), ESkill().basic.name);
+            UpdateTotalDamage(ref eSum, 0, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), SkillDamageType.Spell, SkillComponentTypes.Projectile), ESkill().basic.name);
             yield return new WaitForSeconds(0.5f);
-            UpdateAbilityTotalDamage(ref eSum, 0, new Damage(30 + 2.5f * myStats.level, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage), ESkill().basic.name);
+            UpdateTotalDamage(ref eSum, 0, new Damage(30 + 2.5f * myStats.level, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage), ESkill().basic.name);
             yield return new WaitForSeconds(0.5f);
-            UpdateAbilityTotalDamage(ref eSum, 0, new Damage(30 + 2.5f * myStats.level, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage), ESkill().basic.name);
+            UpdateTotalDamage(ref eSum, 0, new Damage(30 + 2.5f * myStats.level, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage), ESkill().basic.name);
             yield return new WaitForSeconds(0.5f);
-            UpdateAbilityTotalDamage(ref eSum, 0, new Damage(30 + 2.5f * myStats.level, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage), ESkill().basic.name);
+            UpdateTotalDamage(ref eSum, 0, new Damage(30 + 2.5f * myStats.level, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage), ESkill().basic.name);
             yield return new WaitForSeconds(0.5f);
-            UpdateAbilityTotalDamage(ref eSum, 0, new Damage(30 + 2.5f * myStats.level, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage), ESkill().basic.name);
+            UpdateTotalDamage(ref eSum, 0, new Damage(30 + 2.5f * myStats.level, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage), ESkill().basic.name);
             yield return new WaitForSeconds(0.5f);
-            UpdateAbilityTotalDamage(ref eSum, 0, new Damage(30 + 2.5f * myStats.level, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage), ESkill().basic.name);
+            UpdateTotalDamage(ref eSum, 0, new Damage(30 + 2.5f * myStats.level, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage), ESkill().basic.name);
             yield return new WaitForSeconds(0.5f);
-            UpdateAbilityTotalDamage(ref eSum, 0, new Damage(30 + 2.5f * myStats.level, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage), ESkill().basic.name);
+            UpdateTotalDamage(ref eSum, 0, new Damage(30 + 2.5f * myStats.level, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage), ESkill().basic.name);
             yield return new WaitForSeconds(0.5f);
-            UpdateAbilityTotalDamage(ref eSum, 0, new Damage(30 + 2.5f * myStats.level, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage), ESkill().basic.name);
+            UpdateTotalDamage(ref eSum, 0, new Damage(30 + 2.5f * myStats.level, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage), ESkill().basic.name);
             yield return new WaitForSeconds(0.5f);
-            UpdateAbilityTotalDamage(ref eSum, 0, new Damage(30 + 2.5f * myStats.level, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage), ESkill().basic.name);
+            UpdateTotalDamage(ref eSum, 0, new Damage(30 + 2.5f * myStats.level, SkillDamageType.Spell, SkillComponentTypes.PersistentDamage), ESkill().basic.name);
         }
         isMarked = true;
         timeSinceMarked = 0;
@@ -133,7 +133,7 @@ public class Shyvana : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
         if (fury < 100) yield break;
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1]);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1]);
         hasDragonForm = true;
         MyBuffManager.Add("DragonDescent", new DragonDescentBuff(fury, MyBuffManager, RSkill().basic.name, (int)RSkill().UseSkill(myStats.rLevel, rKeys[2], myStats, targetStats)));
         myStats.rCD = RSkill().basic.coolDown[2];
@@ -176,7 +176,7 @@ public class Shyvana : ChampionCombat
         while (MyBuffManager.buffs["Burnout"].duration >= 0.5f && durationTimesIncreased <= 4)
         {
             yield return new WaitForSeconds(0.5f);
-            UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+            UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
         }
     }
 }

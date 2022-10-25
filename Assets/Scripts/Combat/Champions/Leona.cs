@@ -73,7 +73,7 @@ public class Leona : ChampionCombat
         //Add flat damage reduction
         MyBuffManager.Add("BonusArmor", new ArmorBuff(3f, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), "Eclipse"));
         MyBuffManager.Add("BonusMR", new MagicResistanceBuff(3f, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[2], myStats, targetStats), "Eclipse"));
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[3], skillComponentTypes: SkillComponentTypes.Spellblockable);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[3], skillComponentTypes: SkillComponentTypes.Spellblockable);
         MyBuffManager.Add("BonusArmor", new ArmorBuff(3f, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), "Eclipse"));
         MyBuffManager.Add("BonusMR", new MagicResistanceBuff(3f, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[2], myStats, targetStats), "Eclipse"));
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
@@ -85,7 +85,7 @@ public class Leona : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         TargetBuffManager.Add("Root", new RootBuff(0.5f, TargetBuffManager, ESkill().basic.name));
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes:SkillComponentTypes.Dash | SkillComponentTypes.Spellblockable, buffNames: new string[] { "Root" });
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes:SkillComponentTypes.Dash | SkillComponentTypes.Spellblockable, buffNames: new string[] { "Root" });
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
     }
 
@@ -96,7 +96,7 @@ public class Leona : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         yield return new WaitForSeconds(3.5f);
         TargetBuffManager.Add("Stun", new StunBuff(1.75f, TargetBuffManager, RSkill().basic.name));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] { "Stun" });
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] { "Stun" });
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
     }
 

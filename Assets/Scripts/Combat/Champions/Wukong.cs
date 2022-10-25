@@ -93,11 +93,11 @@ public class Wukong : ChampionCombat
         if (!CheckForAbilityControl(checksE) || myStats.eLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.Spell), ESkill().basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.Spell), ESkill().basic.name);
         MyBuffManager.Add("AttackSpeed", new AttackSpeedBuff(5f, MyBuffManager, ESkill().basic.name, ESkill().UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), "NimbusStrike"));
         if (hasClone)
         {
-            UpdateAbilityTotalDamage(ref eSum, 2, new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats) * ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.Spell), ESkill().basic.name);
+            UpdateTotalDamage(ref eSum, 2, new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats) * ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.Spell), ESkill().basic.name);
             //need a way to add buff to pet
         }
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
@@ -115,42 +115,42 @@ public class Wukong : ChampionCombat
             timeSinceR = 0;
             //need to apply damage from clone and only make sure the only one knock off hits
 
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
             yield return WaitForSeconds(0.25f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
             yield return WaitForSeconds(0.25f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
             yield return WaitForSeconds(0.25f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
             yield return WaitForSeconds(0.25f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
             yield return WaitForSeconds(0.25f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
             yield return WaitForSeconds(0.25f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
             yield return WaitForSeconds(0.25f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
             yield return WaitForSeconds(0.25f);
         }
         else
         {
             yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
             StopCoroutine(Cyclone());
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
             yield return WaitForSeconds(0.25f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
             yield return WaitForSeconds(0.25f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
             yield return WaitForSeconds(0.25f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
             yield return WaitForSeconds(0.25f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
             yield return WaitForSeconds(0.25f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
             yield return WaitForSeconds(0.25f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
             yield return WaitForSeconds(0.25f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().basic.name);
             yield return WaitForSeconds(0.25f);
             rCast = false;
             myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel] - timeSinceR;

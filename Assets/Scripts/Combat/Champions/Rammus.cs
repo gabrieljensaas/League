@@ -66,7 +66,7 @@ public class Rammus : ChampionCombat
         }
         MyBuffManager.Add(QSkill().basic.name, new ChannelingBuff(1f, MyBuffManager, QSkill().basic.name, "Channeling"));
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
         TargetBuffManager.Add(QSkill().basic.name, new AirborneBuff(0.1f, TargetBuffManager, QSkill().basic.name));
         TargetBuffManager.Add(QSkill().basic.name, new StunBuff(0.4f, TargetBuffManager, QSkill().basic.name));
         myStats.qCD = QSkill().basic.coolDown[4];
@@ -106,14 +106,14 @@ public class Rammus : ChampionCombat
         {
             value.duration = ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats);
         }
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         TargetBuffManager.Add("KnockOff", new AirborneBuff(0.75f, TargetBuffManager, RSkill().basic.name));
         yield return new WaitForSeconds(1.155f);
-        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats), SkillDamageType.Spell), ESkill().basic.name);
+        UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats), SkillDamageType.Spell), ESkill().basic.name);
         yield return new WaitForSeconds(1.155f);
-        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats), SkillDamageType.Spell), ESkill().basic.name);
+        UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats), SkillDamageType.Spell), ESkill().basic.name);
         yield return new WaitForSeconds(1.155f);
-        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats), SkillDamageType.Spell), ESkill().basic.name);
+        UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats), SkillDamageType.Spell), ESkill().basic.name);
 
         myStats.rCD = RSkill().basic.coolDown[2];
     }

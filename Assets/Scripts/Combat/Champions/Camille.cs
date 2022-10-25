@@ -53,8 +53,8 @@ public class Camille : ChampionCombat
         checksE.Add(new CheckIfUnableToAct(this));
         checksR.Add(new CheckIfUnableToAct(this));
         checksA.Add(new CheckIfUnableToAct(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Bonus Physical Damage");
         wKeys.Add("Physical Damage");
@@ -111,7 +111,7 @@ public class Camille : ChampionCombat
         myStats.buffManager.buffs.Add("CantAA", new CantAABuff(1.1f, myStats.buffManager, "CantAA"));
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         yield return new WaitForSeconds(1.1f);
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]); //Ignored OuterCore Bonus damage (Considering champion doesn't move)
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]); //Ignored OuterCore Bonus damage (Considering champion doesn't move)
     }
 
     public override IEnumerator ExecuteE()
@@ -119,7 +119,7 @@ public class Camille : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[1], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[1], 4, eKeys[0]);
         targetStats.buffManager.buffs.Add("StunBuff", new StunBuff(0.75f, targetStats.buffManager, myStats.eSkill[1].basic.name));
         myStats.buffManager.buffs.Add(myStats.eSkill[1].basic.name, new AttackSpeedBuff(5f, myStats.buffManager, myStats.eSkill[1].basic.name, myStats.eSkill[1].UseSkill(4, qKeys[1], myStats, targetStats), myStats.eSkill[1].basic.name));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
@@ -160,7 +160,7 @@ public class Camille : ChampionCombat
         else if (qCast == 3)
         {
             StopCoroutine(PrecisionProtocol());
-            UpdateAbilityTotalDamage(ref qSum, 0, new Damage((myStats.AD + (2 * myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats))) * QTrueDamageMultiplier[myStats.level], SkillDamageType.True), myStats.qSkill[0].basic.name);
+            UpdateTotalDamage(ref qSum, 0, new Damage((myStats.AD + (2 * myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats))) * QTrueDamageMultiplier[myStats.level], SkillDamageType.True), myStats.qSkill[0].basic.name);
             AutoAttack(new Damage(myStats.AD * (1 - QTrueDamageMultiplier[myStats.level]) * (1 + (myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) * 2)), SkillDamageType.True));
             qCast = 0;
         }
@@ -169,7 +169,7 @@ public class Camille : ChampionCombat
         if (timeInsideR > 0)
         {
             float damage = myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(damage, SkillDamageType.Spell), myStats.rSkill[0].basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(damage, SkillDamageType.Spell), myStats.rSkill[0].basic.name);
         }
     }
 

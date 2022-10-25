@@ -43,7 +43,7 @@ public class Zac : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;                                             //requires extra research
         myStats.currentHealth *= 0.92f;
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         Invoke(nameof(GetChunk), 0.5f);
     }
@@ -53,7 +53,7 @@ public class Zac : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
         myStats.currentHealth *= 0.96f;
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         Invoke(nameof(GetChunk), 0.5f);
     }
@@ -65,7 +65,7 @@ public class Zac : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.5f, targetStats.buffManager, myStats.eSkill[0].basic.name));
         targetStats.buffManager.buffs.Add("Stun", new StunBuff(0.5f, targetStats.buffManager, myStats.eSkill[0].basic.name));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         Invoke(nameof(GetChunk), 0.5f);
     }
@@ -77,17 +77,17 @@ public class Zac : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("UnableToAct", new UnableToActBuff(3f, myStats.buffManager, myStats.rSkill[0].basic.name));
         targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(1f, targetStats.buffManager, myStats.eSkill[0].basic.name));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         Invoke(nameof(GetChunk), 0.5f);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
         Invoke(nameof(GetChunk), 0.5f);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
         Invoke(nameof(GetChunk), 0.5f);
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
         Invoke(nameof(GetChunk), 0.5f);
     }
 

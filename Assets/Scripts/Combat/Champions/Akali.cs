@@ -75,7 +75,7 @@ public class Akali : ChampionCombat
         bannedFromShroud = 1f;                                 //changes with game time
         if (MyBuffManager.buffs.TryGetValue("Untargetable", out Buff value)) value.Kill();
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
         //AssassinsMark();
     }
@@ -101,7 +101,7 @@ public class Akali : ChampionCombat
             bannedFromShroud = 1f;
             if (MyBuffManager.buffs.TryGetValue("Untargetable", out Buff value)) value.Kill();
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            if (UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile) != float.MinValue)
+            if (UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile) != float.MinValue)
             {
                 StartCoroutine(ShurikenFlip());
                 myStats.eCD = 0.4f;
@@ -118,7 +118,7 @@ public class Akali : ChampionCombat
             bannedFromShroud = 1f;
             if (MyBuffManager.buffs.TryGetValue("Untargetable", out Buff value)) value.Kill();
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable);
             StopCoroutine(ShurikenFlip());
             eCast = false;
             myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel] - timeSinceE;
@@ -136,7 +136,7 @@ public class Akali : ChampionCombat
             if (MyBuffManager.buffs.TryGetValue("Untargetable", out Buff value)) value.Kill();
             yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
             StartCoroutine(PerfectExecution());
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
             myStats.rCD = 2.5f;
             timeSinceR = 0;
             //AssassinsMark();
@@ -147,7 +147,7 @@ public class Akali : ChampionCombat
             if (MyBuffManager.buffs.TryGetValue("Untargetable", out Buff value)) value.Kill();
             yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
             float multiplier = (targetStats.maxHealth - targetStats.currentHealth) / targetStats.maxHealth > 0.7f ? 0.7f : targetStats.PercentMissingHealth * 0.0286f;
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(myStats.rSkill[0].UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats) * (1 + multiplier), SkillDamageType.Spell, SkillComponentTypes.Spellblockable), myStats.rSkill[0].basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(myStats.rSkill[0].UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats) * (1 + multiplier), SkillDamageType.Spell, SkillComponentTypes.Spellblockable), myStats.rSkill[0].basic.name);
             StopCoroutine(PerfectExecution());
             rCast = false;
             myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel] - timeSinceR;

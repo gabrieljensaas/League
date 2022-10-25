@@ -63,7 +63,7 @@ public class Jinx : ChampionCombat
         myStats.wSkill[0].basic.castTime = GetJinxWCastTime(myStats.bonusAS);
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0]);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
     }
 
@@ -75,7 +75,7 @@ public class Jinx : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         yield return new WaitForSeconds(0.9f); // chompers landing and arming time
         targetStats.buffManager.buffs.TryAdd("Root", new RootBuff(1.5f, targetStats.buffManager, myStats.eSkill[0].basic.name));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0]);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
     }
 

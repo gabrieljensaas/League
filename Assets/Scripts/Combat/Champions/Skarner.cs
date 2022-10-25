@@ -29,8 +29,8 @@ public class Skarner : ChampionCombat
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         targetCombat.checksQ.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksW.Add(new CheckIfEnemyTargetable(targetCombat));
@@ -53,8 +53,8 @@ public class Skarner : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
-        if (isCharged) UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1]);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
+        if (isCharged) UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1]);
         isCharged = true;
         myStats.qCD = QSkill().basic.coolDown[4];
     }
@@ -73,7 +73,7 @@ public class Skarner : ChampionCombat
         if (!CheckForAbilityControl(checksE) || hasImpale) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
         TargetBuffManager.Add("CrystalVenom", new CrystalVenomBuff(5, TargetBuffManager, ESkill().basic.name));
         myStats.eCD = ESkill().basic.coolDown[4];
     }
@@ -85,7 +85,7 @@ public class Skarner : ChampionCombat
         TargetBuffManager.Add("RootBuff", new RootBuff(RSkill().basic.castTime, TargetBuffManager, ESkill().basic.name));
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         TargetBuffManager.Add("ImpaleVenom", new ImpaleBuff(5, TargetBuffManager, ESkill().basic.name));
-        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats), SkillDamageType.PhysAndSpell), RSkill().basic.name);
+        UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats), SkillDamageType.PhysAndSpell), RSkill().basic.name);
         TargetBuffManager.Add("SuppressionBuff", new SuppressionBuff(1.75f, TargetBuffManager, ESkill().basic.name));
         MyBuffManager.Add("CantAA", new CantAABuff(2f, MyBuffManager, RSkill().basic.name));
         myStats.rCD = RSkill().basic.coolDown[2];
@@ -100,7 +100,7 @@ public class Skarner : ChampionCombat
         AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
         if (hasCrystalVenom)
         {
-            UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[1]);
+            UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[1]);
             TargetBuffManager.Add("StunBuff", new StunBuff(1.25f, TargetBuffManager, ESkill().basic.name));
             myStats.eCD -= 1.25f;
         }

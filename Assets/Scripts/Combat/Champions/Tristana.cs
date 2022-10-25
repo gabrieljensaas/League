@@ -10,7 +10,7 @@ public class Tristana : ChampionCombat
 
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "W", "E", "Q", "A", "R" };
+        combatPrio = new string[] { "R", "E", "Q", "W", "A" };
 
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
@@ -43,21 +43,37 @@ public class Tristana : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
+        if(myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("AmbushAS", new AttackSpeedBuff(5, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), "AmbushAS"));
+        myStats.buffManager.buffs.Add("AmbushAS", new AttackSpeedBuff(7, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), "AmbushAS"));
+        UpdateTotalDamage(ref qSum, 0, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), QSkill().basic.name);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[myStats.qLevel];
+        simulationManager.AddCastLog(myCastLog, 0);
+    }
+    public override IEnumerator ExecuteW()
+    {
+        if (myStats.wLevel == -1) yield break;
+        if (!CheckForAbilityControl(checksW)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0],skillComponentTypes: (SkillComponentTypes)18562);
+        myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
         CheckExplosiveCharge();
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(1f / myStats.attackSpeed));
-        targetStats.buffManager.buffs.Add("Explosive Charge", new ExplosiveChargeBuff(4, targetStats.buffManager, myStats.eSkill[0].basic.name));
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        if(UpdateTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2052), ESkill().basic.name) != float.MinValue)
+            targetStats.buffManager.buffs.Add("Explosive Charge", new ExplosiveChargeBuff(4, targetStats.buffManager, myStats.eSkill[0].basic.name));
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
@@ -66,16 +82,20 @@ public class Tristana : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+        if(UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)34948) != float.MinValue)
+        {
+            targetStats.buffManager.buffs.Add("Stun", new StunBuff(0.75f, targetStats.buffManager, myStats.rSkill[0].basic.name));
+            CheckExplosiveCharge();
+        }
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
-        targetStats.buffManager.buffs.Add("Stun", new StunBuff(0.75f, targetStats.buffManager, myStats.rSkill[0].basic.name));
-        CheckExplosiveCharge();
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     public override IEnumerator HijackedR(int skillLevel)
     {
         yield return StartCoroutine(base.HijackedR(skillLevel));
         myStats.buffManager.buffs.Add("Stun", new StunBuff(0.75f, myStats.buffManager, myStats.rSkill[0].basic.name));
+        simulationManager.AddCastLog(targetCombat.myCastLog, 3);
     }
 
     public override IEnumerator ExecuteA()
@@ -83,8 +103,12 @@ public class Tristana : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
-        CheckExplosiveCharge();
+        if(UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5916), "Tristana's Auto Attack") != float.MinValue)
+        {
+            CheckExplosiveCharge();
+        }
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     private void CheckExplosiveCharge()

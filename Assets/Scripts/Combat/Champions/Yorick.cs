@@ -61,7 +61,7 @@ public class Yorick : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         TouchOfTheMaidenProc();
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
@@ -82,7 +82,7 @@ public class Yorick : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         float damage = (targetStats.maxHealth * 0.15f > myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats)) ? targetStats.maxHealth : myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats);
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage(damage, SkillDamageType.Spell), myStats.eSkill[0].name);
+        UpdateTotalDamage(ref eSum, 2, new Damage(damage, SkillDamageType.Spell), myStats.eSkill[0].name);
         targetStats.buffManager.buffs.Add("MourningMistCurse", new MourningMistCursedBuff(4, targetStats.buffManager, myStats.eSkill[0].name));
 
         foreach (Pet pet in pets.Where(pet => pet is MistWalker))
@@ -110,7 +110,7 @@ public class Yorick : ChampionCombat
     {
         if (targetStats.buffManager.buffs.TryGetValue("TouchOfTheMaiden", out Buff buff))
         {
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(targetStats.maxHealth * 0.9f, SkillDamageType.Spell), myStats.rSkill[0].name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(targetStats.maxHealth * 0.9f, SkillDamageType.Spell), myStats.rSkill[0].name);
             buff.Kill();
         }
     }

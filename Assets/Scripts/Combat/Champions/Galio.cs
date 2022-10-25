@@ -64,10 +64,10 @@ public class Galio : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
         checksR.Add(new CheckIfImmobilize(this));
-        checkTakeDamageAA.Add(new CheckForKassadinPassive(this));
-        checkTakeDamageAbility.Add(new CheckForKassadinPassive(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
+        checkTakeDamage.Add(new CheckForKassadinPassive(this));
+        checkTakeDamage.Add(new CheckForKassadinPassive(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Magic Damage");
         qKeys.Add("Total Magic Damage");
@@ -97,9 +97,9 @@ public class Galio : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[0], myStats, targetStats), SkillDamageType.Spell), QSkill().basic.name);
+        UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[0], myStats, targetStats), SkillDamageType.Spell), QSkill().basic.name);
         yield return new WaitForSeconds(2f);
-        UpdateAbilityTotalDamage(ref qSum, 0, new Damage(0.1f * targetStats.maxHealth, SkillDamageType.Spell), QSkill().basic.name);
+        UpdateTotalDamage(ref qSum, 0, new Damage(0.1f * targetStats.maxHealth, SkillDamageType.Spell), QSkill().basic.name);
         myStats.qCD = QSkill().basic.coolDown[4];
     }
 
@@ -118,7 +118,7 @@ public class Galio : ChampionCombat
         else
         {
             yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref wSum, 1, new Damage(DamageWithWChannelTime(timeSinceChannel) * WSkill().UseSkill(myStats.wLevel, wKeys[2], myStats, targetStats), SkillDamageType.Spell), WSkill().basic.name);
+            UpdateTotalDamage(ref wSum, 1, new Damage(DamageWithWChannelTime(timeSinceChannel) * WSkill().UseSkill(myStats.wLevel, wKeys[2], myStats, targetStats), SkillDamageType.Spell), WSkill().basic.name);
             TargetBuffManager.Add("TauntBuff", new TauntBuff(TauntWithWChannelTime(timeSinceChannel), TargetBuffManager, WSkill().basic.name));
             myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
         }
@@ -129,7 +129,7 @@ public class Galio : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Dash);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Dash);
         TargetBuffManager.Add(ESkill().basic.name, new AirborneBuff(0.75f, TargetBuffManager, ESkill().basic.name));
         myStats.eCD = ESkill().basic.coolDown[4];
     }
@@ -143,7 +143,7 @@ public class Galio : ChampionCombat
         yield return new WaitForSeconds(1.75f);
         MyBuffManager.Add(RSkill().basic.name, new UntargetableBuff(1f, MyBuffManager, RSkill().basic.name));
         yield return new WaitForSeconds(1);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Dash);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Dash);
         TargetBuffManager.Add(RSkill().basic.name, new AirborneBuff(0.75f, TargetBuffManager, RSkill().basic.name));
         hasShieldOfDurandPassive = true;
         myStats.rCD = RSkill().basic.coolDown[2];

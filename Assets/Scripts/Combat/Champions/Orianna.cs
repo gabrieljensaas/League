@@ -56,8 +56,8 @@ public class Orianna : ChampionCombat
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Magic Damage");
         wKeys.Add("Magic Damage");
@@ -80,7 +80,7 @@ public class Orianna : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
         hasBall = false;
         myStats.qCD = QSkill().basic.coolDown[4];
     }
@@ -90,7 +90,7 @@ public class Orianna : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
         myStats.wCD = WSkill().basic.coolDown[4];
     }
 
@@ -99,7 +99,7 @@ public class Orianna : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[1]);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[1]);
         hasBall = true;
         MyBuffManager.Add(ESkill().basic.name, new ShieldBuff(2.5f, MyBuffManager, ESkill().basic.name, ESkill().UseSkill(myStats.eLevel, eKeys[2], myStats, targetStats), ESkill().basic.name));
         myStats.eCD = ESkill().basic.coolDown[4];
@@ -110,7 +110,7 @@ public class Orianna : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         MyBuffManager.Add(RSkill().basic.name, new StunBuff(0.75f, TargetBuffManager, RSkill().basic.name));
         MyBuffManager.Add("KnockOff", new AirborneBuff(0.1f, TargetBuffManager, RSkill().basic.name));
         myStats.rCD = RSkill().basic.coolDown[2];
@@ -125,13 +125,13 @@ public class Orianna : ChampionCombat
         if (passiveStack == 1)
         {
             AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage(ClockworkWindUpDamageByLevel(myStats.level, passiveStack), SkillDamageType.Spell), myStats.passiveSkill.name);
+            UpdateTotalDamage(ref pSum, 4, new Damage(ClockworkWindUpDamageByLevel(myStats.level, passiveStack), SkillDamageType.Spell), myStats.passiveSkill.name);
             passiveStack++;
         }
         else if (passiveStack == 2)
         {
             AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage(ClockworkWindUpDamageByLevel(myStats.level, passiveStack), SkillDamageType.Spell), myStats.passiveSkill.name);
+            UpdateTotalDamage(ref pSum, 4, new Damage(ClockworkWindUpDamageByLevel(myStats.level, passiveStack), SkillDamageType.Spell), myStats.passiveSkill.name);
         }
         StartCoroutine(PStackExpired());
     }

@@ -57,7 +57,7 @@ public class LeeSin : ChampionCombat
         if (!qCast)
         {
             yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref qSum, 2, myStats.qSkill[0], 4, qKeys[0]);
+            UpdateTotalDamage(ref qSum, 2, myStats.qSkill[0], 4, qKeys[0]);
             StartCoroutine(SonicWave());
             myStats.qCD = 0.4f;
             timeSinceQ = 0;
@@ -68,7 +68,7 @@ public class LeeSin : ChampionCombat
             yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
             if (myStats.buffManager.HasImmobilize) yield break;
             float extraDamage = myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) * (1 + ((targetStats.maxHealth - targetStats.currentHealth) / targetStats.maxHealth));
-            UpdateAbilityTotalDamage(ref qSum, 4, new Damage(extraDamage, SkillDamageType.Spell), myStats.qSkill[0].basic.name);
+            UpdateTotalDamage(ref qSum, 4, new Damage(extraDamage, SkillDamageType.Spell), myStats.qSkill[0].basic.name);
             StopCoroutine(SonicWave());
             Flurry();
             myStats.qCD = myStats.qSkill[0].basic.coolDown[4] - timeSinceQ;
@@ -108,7 +108,7 @@ public class LeeSin : ChampionCombat
         if (!eCast)
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
             StartCoroutine(Tempest());
             myStats.eCD = 0.4f;
             timeSinceE = 0;
@@ -129,7 +129,7 @@ public class LeeSin : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         myStats.buffManager.buffs.Add("AirBorneBuff", new AirborneBuff(1f, targetStats.buffManager, "AirBorneBuff"));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }

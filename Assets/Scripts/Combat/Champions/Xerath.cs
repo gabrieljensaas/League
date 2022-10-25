@@ -63,7 +63,7 @@ public class Xerath : ChampionCombat
         else
         {
             yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-            UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
+            UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
             myStats.qCD = QSkill().basic.coolDown[4] - timeSinceQ;
         }
     }
@@ -73,7 +73,7 @@ public class Xerath : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
         myStats.wCD = WSkill().basic.coolDown[4];
     }
 
@@ -82,7 +82,7 @@ public class Xerath : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
         TargetBuffManager.Add("StunBuff", new StunBuff(0.75f, TargetBuffManager, "StunBuff"));
         myStats.eCD = ESkill().basic.coolDown[4];
     }
@@ -103,7 +103,7 @@ public class Xerath : ChampionCombat
         int reCast = (int)RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats);
         while (reCast > 0)
         {
-            UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]); ;
+            UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]); ;
 
             reCast--;
             yield return new WaitForSeconds(0.25f);

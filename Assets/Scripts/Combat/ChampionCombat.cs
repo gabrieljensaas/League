@@ -1,7 +1,5 @@
-using Simulator.API;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public struct AutoAttackReturn
@@ -14,7 +12,7 @@ namespace Simulator.Combat
 {
     public class ChampionCombat : MonoBehaviour, IExecuteQ, IExecuteW, IExecuteE, IExecuteR, IExecuteA
     {
-        public static string[] indexSkillMap = { "Q", "W", "E", "R", "P" };
+        public static string[] indexSkillMap = { "Q", "W", "E", "R", "P", "A" };
 
         [SerializeField] public ChampionStats myStats;
         [SerializeField] public ChampionStats targetStats;
@@ -28,12 +26,8 @@ namespace Simulator.Combat
         [HideInInspector] public List<Check> checksE = new();
         [HideInInspector] public List<Check> checksR = new();
         [HideInInspector] public List<Check> checksA = new();
-        [HideInInspector] public List<Check> checkTakeDamageAA = new();
-        [HideInInspector] public List<Check> checkTakeDamageAbility = new();
-        [HideInInspector] public List<Check> checkTakeDamageAAPostMitigation = new();
-        [HideInInspector] public List<Check> checkTakeDamageAbilityPostMitigation = new();
-        [HideInInspector] public List<Check> checkPostMitigationDamageAA = new();
-        [HideInInspector] public List<Check> checkPostMitigationDamageAbility = new();
+        [HideInInspector] public List<Check> checkTakeDamage = new();
+        [HideInInspector] public List<Check> checkTakeDamagePostMitigation = new();
         [HideInInspector] public List<Check> castingCheck = new();
         [HideInInspector] public Check autoattackcheck;
         [HideInInspector] public List<string> qKeys = new();
@@ -41,6 +35,7 @@ namespace Simulator.Combat
         [HideInInspector] public List<string> eKeys = new();
         [HideInInspector] public List<string> rKeys = new();
         public List<Pet> pets = new();
+        public CastLog myCastLog;
 
         public float aSum, hSum, qSum, wSum, eSum, rSum, pSum;
         protected string[] combatPrio;
@@ -100,7 +95,7 @@ namespace Simulator.Combat
             isCasting = false;
         }
 
-        public float UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1, SkillComponentTypes skillComponentTypes = SkillComponentTypes.None, string[] buffNames = null)
+        public float UpdateTotalDamage(ref float totalDamage, int totalDamageTextIndex, SkillList skill, int level, string skillKey, float damageModifier = 1, SkillComponentTypes skillComponentTypes = SkillComponentTypes.None, string[] buffNames = null)
         {
             float damageGiven = targetCombat.TakeDamage(new Damage(damageModifier * skill.UseSkill(level, skillKey, myStats, targetStats), skill.skillDamageType, skillComponentTypes, buffNames), skill.basic.name);
             if (damageGiven <= 0) return damageGiven;
@@ -120,7 +115,7 @@ namespace Simulator.Combat
             return damageGiven;
         }
 
-        public float UpdateAbilityTotalDamage(ref float totalDamage, int totalDamageTextIndex, Damage damage, string skillName)
+        public float UpdateTotalDamage(ref float totalDamage, int totalDamageTextIndex, Damage damage, string skillName)
         {
             float damageGiven = targetCombat.TakeDamage(damage, skillName);
             if (damageGiven <= 0) return 0;
@@ -180,7 +175,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksQ)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-            UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
+            UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]);
             myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
         }
 
@@ -190,7 +185,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksW)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-            UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+            UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
             myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
         }
 
@@ -200,7 +195,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksE)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-            UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
+            UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
             myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
         }
 
@@ -210,7 +205,7 @@ namespace Simulator.Combat
             if (!CheckForAbilityControl(checksR)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-            UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+            UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
             myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
         }
 
@@ -273,7 +268,7 @@ namespace Simulator.Combat
 
             if (autoattackcheck != null) damage = autoattackcheck.Control(damage);
 
-            float damageGiven = targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack", true);
+            float damageGiven = targetCombat.TakeDamage(damage, $"{myStats.name}'s Auto Attack");
             aSum += damageGiven;
             hSum += HealHealth(damageGiven * myStats.lifesteal, "Lifesteal");
             autoAttackReturn.damage = damageGiven;
@@ -287,28 +282,17 @@ namespace Simulator.Combat
             return autoAttackReturn;
         }
 
-        public float TakeDamage(Damage damage, string source, bool isAutoAttack = false)
+        public float TakeDamage(Damage damage, string source)
         {
-            if (!isAutoAttack)
-                damage = CheckForDamageControl(checkTakeDamageAbility, damage);
-            else
-                damage = CheckForDamageControl(checkTakeDamageAA, damage);
+            damage = CheckForDamageControl(checkTakeDamage, damage);
 
             if (damage.damageType == SkillDamageType.Phyiscal) damage.value = (int)(damage.value * 100 / (100 + myStats.armor));
             else if (damage.damageType == SkillDamageType.Spell) damage.value = (int)(damage.value * 100 / (100 + myStats.spellBlock));
             else if (damage.damageType == SkillDamageType.True) damage.value = (int)damage.value;
 
-            if (!isAutoAttack)
-                damage.value = (int)CheckForDamageControl(checkTakeDamageAbilityPostMitigation, damage).value;
-            else
-                damage.value = (int)CheckForDamageControl(checkTakeDamageAAPostMitigation, damage).value;
+            damage.value = (int)CheckForDamageControl(checkTakeDamagePostMitigation, damage).value;
 
             if (damage.value <= 0) return 0;
-
-            if (!isAutoAttack)
-                CheckForDamageControl(checkPostMitigationDamageAbility, damage);
-            else
-                CheckForDamageControl(checkPostMitigationDamageAA, damage);
 
             myStats.currentHealth -= damage.value;
             simulationManager.ShowText($"{myStats.name} Took {damage.value} Damage From {source}!");
@@ -348,7 +332,7 @@ namespace Simulator.Combat
             targetCombat.StopAllCoroutines();
             simulationManager.StopCoroutine(simulationManager.TakeSnapShot());
             simulationManager.snaps.Add(new SnapShot("", new ChampionSnap(simulationManager.champStats[0].name, simulationManager.champStats[0].PercentCurrentHealth * 100), new ChampionSnap(simulationManager.champStats[1].name, simulationManager.champStats[1].PercentCurrentHealth * 100), simulationManager.timer));
-            APIRequestManager.Instance.SendOutputToJS(new WebData(simulationManager.snaps.ToArray(), simulationManager.damagelogs.ToArray(), simulationManager.heallogs.ToArray(), simulationManager.bufflogs.ToArray(), winner, simulationManager.timer));
+            APIRequestManager.Instance.SendOutputToJS(new WebData(simulationManager.snaps.ToArray(), simulationManager.damagelogs.ToArray(), simulationManager.heallogs.ToArray(), simulationManager.bufflogs.ToArray(), winner, simulationManager.timer, new CastLog[] {simulationManager.castlog1, simulationManager.castlog2}));
         }
 
         public void UpdateTarget(int index)

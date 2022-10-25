@@ -32,7 +32,7 @@ public class Hallucination : Pet
 
     public void AutoAttack()
     {
-        owner.targetCombat.TakeDamage(new Damage(aaDamage, SkillDamageType.Phyiscal), "Shaco Clone Auto Attack", true);
+        owner.targetCombat.TakeDamage(new Damage(aaDamage, SkillDamageType.Phyiscal), "Shaco Clone Auto Attack");
         aaTimer = 1f / attackSpeed;
     }
 

@@ -45,7 +45,7 @@ public class Kayn : ChampionCombat
         targetCombat.checksR.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksA.Add(new CheckIfEnemyTargetable(targetCombat));
 
-        checkPostMitigationDamageAbility.Add(new CheckKaynFormBonus(this, this));
+        checkTakeDamagePostMitigation.Add(new CheckKaynFormBonus(this, this));
 
         qKeys.Add("Physical Damage");
         qKeys.Add("Total Physical Damage");
@@ -67,10 +67,10 @@ public class Kayn : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         if (kaynForm == KaynForm.Darkin)
         {
-            UpdateAbilityTotalDamage(ref qSum, 0, new Damage((myStats.AD * 0.65f) + ((0.05f + (0.035f * (int)(myStats.AD / 100))) * targetStats.maxHealth), SkillDamageType.Phyiscal), QSkill().name);
+            UpdateTotalDamage(ref qSum, 0, new Damage((myStats.AD * 0.65f) + ((0.05f + (0.035f * (int)(myStats.AD / 100))) * targetStats.maxHealth), SkillDamageType.Phyiscal), QSkill().name);
         }
         else
-            UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1]);
+            UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1]);
         myStats.qCD = QSkill().basic.coolDown[4];
     }
 
@@ -87,7 +87,7 @@ public class Kayn : ChampionCombat
         }
         else
             yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
 
         myStats.wCD = WSkill().basic.coolDown[4];
     }
@@ -110,11 +110,11 @@ public class Kayn : ChampionCombat
 
         if (kaynForm == KaynForm.Darkin)
         {
-            UpdateAbilityTotalDamage(ref rSum, 0, new Damage((0.15f + (0.13f * (int)(myStats.AD / 100))) * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().name);
+            UpdateTotalDamage(ref rSum, 0, new Damage((0.15f + (0.13f * (int)(myStats.AD / 100))) * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().name);
             UpdateTotalHeal(ref hSum, 0.0975f + (0.0845f * (int)(myStats.AD / 100)), RSkill().name);
         }
         else
-            UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+            UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         myStats.buffManager.buffs.Add("Untargetable", new UntargetableBuff(2.5f, myStats.buffManager, RSkill().name));
 
         myStats.rCD = RSkill().basic.coolDown[2];
@@ -139,7 +139,7 @@ public class Kayn : ChampionCombat
             if (kayn.kaynForm == KaynForm.Darkin)
                 kayn.UpdateTotalHeal(ref kayn.hSum, damage.value * DarkinBonus(kayn.myStats.level), kayn.myStats.passiveSkill.skillName);
             else if (kayn.kaynForm == KaynForm.ShadowAssassin)
-                kayn.UpdateAbilityTotalDamage(ref kayn.pSum, 4, new Damage(damage.value * ShadowAssassinBonus(kayn.myStats.level), SkillDamageType.Spell), kayn.myStats.passiveSkill.skillName);
+                kayn.UpdateTotalDamage(ref kayn.pSum, 4, new Damage(damage.value * ShadowAssassinBonus(kayn.myStats.level), SkillDamageType.Spell), kayn.myStats.passiveSkill.skillName);
 
             return damage;
         }

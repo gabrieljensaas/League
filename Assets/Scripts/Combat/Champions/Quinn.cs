@@ -67,7 +67,7 @@ public class Quinn : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         TargetBuffManager.Add("HarrierVulnerable", new HarrierVulnerableBuff(4, TargetBuffManager, QSkill().basic.name));
         HarrierVulnerable(QSkill().basic.name);
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]); UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.True), QSkill().basic.name);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0]); UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.True), QSkill().basic.name);
         myStats.qCD = QSkill().basic.coolDown[4];
     }
 
@@ -86,7 +86,7 @@ public class Quinn : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0]);
         TargetBuffManager.Add("KnockBackBuff", new AirborneBuff(0.1f, TargetBuffManager, ESkill().basic.name));
         TargetBuffManager.Add("HarrierVulnerable", new HarrierVulnerableBuff(4, TargetBuffManager, ESkill().basic.name));
         HarrierVulnerable(ESkill().basic.name);
@@ -117,7 +117,7 @@ public class Quinn : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(0.1f));
         if (targetStats.buffManager.buffs.TryGetValue("HarrierVulnerable", out Buff buff))
         {
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage(5 + 5 * myStats.level, SkillDamageType.Phyiscal), myStats.passiveSkill.skillName);
+            UpdateTotalDamage(ref pSum, 4, new Damage(5 + 5 * myStats.level, SkillDamageType.Phyiscal), myStats.passiveSkill.skillName);
             MyBuffManager.Add("AttackSpeedBuff", new AttackSpeedBuff(2f, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), "AttackSppedBuff"));
             buff.Kill();
             myStats.pCD = HarrierCooldownByCrit(myStats.critStrikeChance);
@@ -139,7 +139,7 @@ public class Quinn : ChampionCombat
     {
         if (hasSkyStrike)
         {
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(0.7f * myStats.AD, SkillDamageType.Phyiscal), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(0.7f * myStats.AD, SkillDamageType.Phyiscal), RSkill().basic.name);
             hasSkyStrike = false;
         }
     }

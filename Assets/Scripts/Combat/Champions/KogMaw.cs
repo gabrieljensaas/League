@@ -44,7 +44,7 @@ public class KogMaw : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         targetStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new ArmorReductionBuff(4, targetStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[1], myStats, targetStats), myStats.qSkill[0].basic.name));
         targetStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new MagicResistanceReductionBuff(4, targetStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[1], myStats, targetStats), myStats.qSkill[0].basic.name));
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
@@ -69,7 +69,7 @@ public class KogMaw : ChampionCombat
         else if ((targetStats.maxHealth - targetStats.currentHealth) / targetStats.maxHealth > 0.4f) multiplier = 1.5f;
         else multiplier = 2f;
         yield return new WaitForSeconds(0.6f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], multiplier);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], multiplier);
     }
 
     public override IEnumerator HijackedR(int skillLevel)

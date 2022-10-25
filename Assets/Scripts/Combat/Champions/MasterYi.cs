@@ -35,10 +35,10 @@ public class MasterYi : ChampionCombat
         targetCombat.checksE.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksR.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksA.Add(new CheckIfEnemyTargetable(targetCombat));
-        checkTakeDamageAbility.Add(new CheckIfTargetable(this));
-        checkTakeDamageAbility.Add(new CheckDamageReductionPercent(this));
-        checkTakeDamageAA.Add(new CheckIfTargetable(this));
-        checkTakeDamageAA.Add(new CheckDamageReductionPercent(this));
+        checkTakeDamage.Add(new CheckIfTargetable(this));
+        checkTakeDamage.Add(new CheckDamageReductionPercent(this));
+        checkTakeDamage.Add(new CheckIfTargetable(this));
+        checkTakeDamage.Add(new CheckDamageReductionPercent(this));
         checksQ.Add(new CheckIfDisrupt(this));
         checksW.Add(new CheckIfDisrupt(this));
         checksE.Add(new CheckIfDisrupt(this));
@@ -69,16 +69,16 @@ public class MasterYi : ChampionCombat
         if (myStats.buffManager.buffs.TryGetValue("WujuStyle", out Buff value)) value.paused = true;
         if (myStats.buffManager.buffs.TryGetValue("Highlander", out Buff highlander)) highlander.paused = true;
         yield return new WaitForSeconds(0.231f);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
 
         yield return new WaitForSeconds(0.231f);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
 
         yield return new WaitForSeconds(0.231f);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
 
         yield return new WaitForSeconds(0.165f);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
         if (myStats.buffManager.buffs.TryGetValue("WujuStyle", out Buff wuju)) wuju.paused = false;
         if (myStats.buffManager.buffs.TryGetValue("Highlander", out Buff highland)) highland.paused = false;
     }

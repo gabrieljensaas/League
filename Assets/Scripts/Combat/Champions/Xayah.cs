@@ -62,7 +62,7 @@ public class Xayah : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         StartCoroutine(FeatherInGround());
         StartCoroutine(FeatherInGround());
@@ -84,7 +84,7 @@ public class Xayah : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage(myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats) * (feathersInGround - (FindMultiplier(feathersInGround - 1) * 0.05f)), SkillDamageType.Phyiscal), myStats.eSkill[0].basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage(myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats) * (feathersInGround - (FindMultiplier(feathersInGround - 1) * 0.05f)), SkillDamageType.Phyiscal), myStats.eSkill[0].basic.name);
         StartCoroutine(PulledFeathers());
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
@@ -98,7 +98,7 @@ public class Xayah : ChampionCombat
         myStats.buffManager.buffs.Add("Untargetable", new UntargetableBuff(1.5f, myStats.buffManager, myStats.rSkill[0].basic.name));
         myStats.buffManager.buffs.Add("UnableToActBuff", new UnableToActBuff(1.5f, myStats.buffManager, myStats.rSkill[0].basic.name));
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         StartCoroutine(FeatherInGround());
         StartCoroutine(FeatherInGround());
         StartCoroutine(FeatherInGround());

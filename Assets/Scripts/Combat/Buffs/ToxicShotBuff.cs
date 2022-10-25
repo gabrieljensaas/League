@@ -19,7 +19,7 @@ public class ToxicShotBuff : Buff
         tickTimer += Time.fixedDeltaTime;
         if (tickTimer >= 1)
         {
-            manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.targetCombat.eSum, 2, manager.combat.targetStats.eSkill[1], 4, manager.combat.targetCombat.eKeys[0]);
+            manager.combat.targetCombat.UpdateTotalDamage(ref manager.combat.targetCombat.eSum, 2, manager.combat.targetStats.eSkill[1], 4, manager.combat.targetCombat.eKeys[0]);
             tickTimer = 0;
         }
     }

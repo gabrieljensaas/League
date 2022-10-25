@@ -31,8 +31,8 @@ public class Kindred : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksQ.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
-        checkTakeDamageAA.Add(new CheckKindredR(this));
-        checkTakeDamageAbility.Add(new CheckKindredR(this));
+        checkTakeDamage.Add(new CheckKindredR(this));
+        checkTakeDamage.Add(new CheckKindredR(this));
 
         qKeys.Add("Physical Damage");
         qKeys.Add("Static Cooldown");
@@ -50,7 +50,7 @@ public class Kindred : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         WolfFrenzy();
         myStats.buffManager.buffs.Add("AttackSpeedBuff", new AttackSpeedBuff(4, myStats.buffManager, myStats.qSkill[0].basic.name, 0.25f + (0.5f * currentMark), "AttackSpeedBuff"));
         myStats.qCD = wolfFrenzy ? myStats.qSkill[0].UseSkill(4, qKeys[1], myStats, targetStats) : myStats.qSkill[0].basic.coolDown[4];   //shorter if block
@@ -63,7 +63,7 @@ public class Kindred : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         StartCoroutine(WolfsFrenzy());
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
@@ -122,7 +122,7 @@ public class Kindred : ChampionCombat
         if (moundingDreadCheck.Control())
         {
             //Apply's Crit as well so not sure about damage calculated
-            UpdateAbilityTotalDamage(ref eSum, 2, new Damage(myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats), SkillDamageType.Phyiscal), myStats.eSkill[0].basic.name);
+            UpdateTotalDamage(ref eSum, 2, new Damage(myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats), SkillDamageType.Phyiscal), myStats.eSkill[0].basic.name);
             targetStats.buffManager.buffs["MoundingDread"].Kill();
         }
         else if (myStats.buffManager.buffs.TryGetValue("MoundingDread", out Buff moundingDread))

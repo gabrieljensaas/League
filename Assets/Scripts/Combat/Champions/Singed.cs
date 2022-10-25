@@ -51,7 +51,7 @@ public class Singed : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.25f, targetStats.buffManager, myStats.wSkill[0].basic.name));  //duration is a guess needs research
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         yield return new WaitForSeconds(0.25f);
         if (targetStats.buffManager.buffs.ContainsKey("Ground"))

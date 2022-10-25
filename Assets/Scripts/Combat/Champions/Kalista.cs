@@ -33,7 +33,7 @@ public class Kalista : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         if (targetStats.buffManager.buffs.TryGetValue("Rend", out Buff value))
         {
@@ -52,7 +52,7 @@ public class Kalista : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         targetStats.buffManager.buffs.TryGetValue("Rend", out Buff value);
-        UpdateAbilityTotalDamage(ref eSum, 2, new Damage(myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats) + ((value.value - 1) * myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats)), SkillDamageType.Phyiscal), myStats.eSkill[0].basic.name);
+        UpdateTotalDamage(ref eSum, 2, new Damage(myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats) + ((value.value - 1) * myStats.eSkill[0].UseSkill(4, eKeys[1], myStats, targetStats)), SkillDamageType.Phyiscal), myStats.eSkill[0].basic.name);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         value.Kill();
     }

@@ -31,10 +31,10 @@ public class Sett : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
         checksR.Add(new CheckIfImmobilize(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckForGrit(this, this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckForGrit(this, this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckForGrit(this, this));
+        checkTakeDamagePostMitigation.Add(new CheckForGrit(this, this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Bonus Physical Damage");
         wKeys.Add("Damage");
@@ -68,7 +68,7 @@ public class Sett : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
         StartCoroutine(HaymakerShield());
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref wSum, 1, new Damage(myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats, grit), SkillDamageType.True), myStats.wSkill[0].basic.name);
+        UpdateTotalDamage(ref wSum, 1, new Damage(myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats, grit), SkillDamageType.True), myStats.wSkill[0].basic.name);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
@@ -78,7 +78,7 @@ public class Sett : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.1f, targetStats.buffManager, myStats.eSkill[0].basic.name));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         yield return StartCoroutine(StartCastingAbility(0.25f));
     }
@@ -89,7 +89,7 @@ public class Sett : ChampionCombat
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         targetStats.buffManager.buffs.Add("Suppression", new SuppressionBuff(1.5f, targetStats.buffManager, myStats.rSkill[0].basic.name));
         yield return StartCoroutine(StartCastingAbility(1.23f));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         yield return StartCoroutine(StartCastingAbility(0.27f));
     }
 
@@ -99,7 +99,7 @@ public class Sett : ChampionCombat
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel] * 2;
         myStats.buffManager.buffs.Add("Suppression", new SuppressionBuff(1.5f, myStats.buffManager, myStats.rSkill[0].basic.name));
         yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(1.23f));
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(0.27f));
     }
 

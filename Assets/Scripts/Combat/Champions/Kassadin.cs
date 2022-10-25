@@ -27,10 +27,10 @@ public class Kassadin : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
         checksR.Add(new CheckIfImmobilize(this));
-        checkTakeDamageAA.Add(new CheckForKassadinPassive(this));
-        checkTakeDamageAbility.Add(new CheckForKassadinPassive(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
+        checkTakeDamage.Add(new CheckForKassadinPassive(this));
+        checkTakeDamage.Add(new CheckForKassadinPassive(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
         autoattackcheck = new KassadinAACheck(this);
         targetCombat.castingCheck.Add(new CheckKassadinEPassive(targetCombat, this));
 
@@ -51,7 +51,7 @@ public class Kassadin : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         TargetBuffManager.Add("Disrupt", new DisruptBuff(0.1f, TargetBuffManager, QSkill().basic.name));
         MyBuffManager.Add(QSkill().basic.name, new ShieldBuff(1.5f, MyBuffManager, QSkill().basic.name, QSkill().UseSkill(myStats.qLevel, qKeys[1], myStats, targetStats), QSkill().basic.name, shieldType: ShieldBuff.ShieldType.Magic));
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 
@@ -70,7 +70,7 @@ public class Kassadin : ChampionCombat
         if (eStack < 6) yield break;
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         eStack = 0;
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0]);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
@@ -79,7 +79,7 @@ public class Kassadin : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) + (rStack * RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats)), SkillDamageType.Spell, SkillComponentTypes.Blink), RSkill().basic.name);
+        UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) + (rStack * RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats)), SkillDamageType.Spell, SkillComponentTypes.Blink), RSkill().basic.name);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
         StopCoroutine(RStacks());
         StartCoroutine(RStacks());

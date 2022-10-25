@@ -52,7 +52,7 @@ public class Morgana : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         TargetBuffManager.Add("Root", new RootBuff(QSkill().UseSkill(myStats.qLevel, qKeys[1], myStats, targetStats), TargetBuffManager, QSkill().basic.name));
-        UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes:SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile | SkillComponentTypes.Blockable, buffNames: new string[] { "Root" });
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes:SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile | SkillComponentTypes.Blockable, buffNames: new string[] { "Root" });
         //SoulSiphon heal
         UpdateTotalHeal(ref pSum, QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * 0.18f, myStats.passiveSkill.skillName);
         myStats.wCD -= 0.05f * WSkill().basic.coolDown[myStats.wLevel];
@@ -84,14 +84,14 @@ public class Morgana : ChampionCombat
         if (!CheckForAbilityControl(checksR) || myStats.rLevel == 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         //SoulSiphon heal
         UpdateTotalHeal(ref pSum, RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats)* 0.18f, myStats.passiveSkill.skillName);
         myStats.wCD -= 0.05f * WSkill().basic.coolDown[myStats.wLevel];
 
         yield return new WaitForSeconds(3f);
 
-        UpdateAbilityTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
         //SoulSiphon heal
         UpdateTotalHeal(ref pSum, RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats)* 0.18f, myStats.passiveSkill.skillName);
         myStats.wCD -= 0.05f * WSkill().basic.coolDown[myStats.wLevel];
@@ -112,7 +112,7 @@ public class Morgana : ChampionCombat
         if(timesProcW <= 10)
 		{
             yield return new WaitForSeconds(0.5f);
-            UpdateAbilityTotalDamage(ref wSum, 1, new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats) * targetStats.PercentMissingHealth * 0.017f, SkillDamageType.Spell), WSkill().basic.name);
+            UpdateTotalDamage(ref wSum, 1, new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats) * targetStats.PercentMissingHealth * 0.017f, SkillDamageType.Spell), WSkill().basic.name);
             //SoulSiphon heal
             UpdateTotalHeal(ref pSum, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats) * targetStats.PercentMissingHealth * 0.017f * 0.18f, myStats.passiveSkill.skillName);
             myStats.wCD -= 0.05f * WSkill().basic.coolDown[myStats.wLevel];

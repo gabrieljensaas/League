@@ -95,7 +95,7 @@ public class Caitlyn : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("NetHeadshot", new NetHeadshotBuff(1.8f, myStats.buffManager, myStats.eSkill[0].basic.name));
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
@@ -120,7 +120,7 @@ public class Caitlyn : ChampionCombat
     private IEnumerator AceInTheHole()
     {
         yield return new WaitForSeconds(1f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], 1 + 0);              //0 is critical chance fix it when items are added
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], 1 + 0);              //0 is critical chance fix it when items are added
     }
 
     private IEnumerator HAceInTheHole(int skillLevel)

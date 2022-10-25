@@ -29,8 +29,8 @@ public class LeBlanc : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
         checksW.Add(new CheckIfImmobilize(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckLeBlancPassive(this, this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckLeBlancPassive(this, this));
+        checkTakeDamagePostMitigation.Add(new CheckLeBlancPassive(this, this));
+        checkTakeDamagePostMitigation.Add(new CheckLeBlancPassive(this, this));
         targetCombat.checksQ.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksW.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksE.Add(new CheckIfEnemyTargetable(targetCombat));
@@ -57,7 +57,7 @@ public class LeBlanc : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         if (enemyMarked) ExplodeMark();
         if (enemyMarkedR) ExplodeMarkR();
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         StartCoroutine(MarkEnemy());
     }
@@ -69,7 +69,7 @@ public class LeBlanc : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         if (enemyMarked) ExplodeMark();
         if (enemyMarkedR) ExplodeMarkR();
-        UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
     }
 
@@ -80,12 +80,12 @@ public class LeBlanc : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         if (enemyMarked) ExplodeMark();
         if (enemyMarkedR) ExplodeMarkR();
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
         yield return new WaitForSeconds(1.5f);
         if (enemyMarked) ExplodeMark();
         if (enemyMarkedR) ExplodeMarkR();
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
         targetStats.buffManager.buffs.Add("Root", new RootBuff(1.5f, targetStats.buffManager, myStats.eSkill[0].basic.name));
     }
 
@@ -98,7 +98,7 @@ public class LeBlanc : ChampionCombat
                 yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
                 if (enemyMarked) ExplodeMark();
                 if (enemyMarkedR) ExplodeMarkR();
-                UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+                UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
                 myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
                 StartCoroutine(MarkEnemyR());
                 break;
@@ -107,7 +107,7 @@ public class LeBlanc : ChampionCombat
                 yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
                 if (enemyMarked) ExplodeMark();
                 if (enemyMarkedR) ExplodeMarkR();
-                UpdateAbilityTotalDamage(ref rSum, 1, myStats.rSkill[0], 2, rKeys[2]);
+                UpdateTotalDamage(ref rSum, 1, myStats.rSkill[0], 2, rKeys[2]);
                 myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
                 break;
             case "E":
@@ -115,12 +115,12 @@ public class LeBlanc : ChampionCombat
                 yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
                 if (enemyMarked) ExplodeMark();
                 if (enemyMarkedR) ExplodeMarkR();
-                UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[3]);
+                UpdateTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[3]);
                 myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
                 yield return new WaitForSeconds(1.5f);
                 if (enemyMarked) ExplodeMark();
                 if (enemyMarkedR) ExplodeMarkR();
-                UpdateAbilityTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[4]);
+                UpdateTotalDamage(ref rSum, 2, myStats.rSkill[0], 2, rKeys[4]);
                 targetStats.buffManager.buffs.Add("Root", new RootBuff(1.5f, targetStats.buffManager, myStats.rSkill[0].basic.name));
                 break;
             default:
@@ -179,11 +179,11 @@ public class LeBlanc : ChampionCombat
 
     public void ExplodeMark()
     {
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
     }
 
     public void ExplodeMarkR()
     {
-        UpdateAbilityTotalDamage(ref rSum, 0, myStats.rSkill[0], 2, rKeys[1]);
+        UpdateTotalDamage(ref rSum, 0, myStats.rSkill[0], 2, rKeys[1]);
     }
 }

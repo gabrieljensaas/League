@@ -34,8 +34,8 @@ public class Zilean : ChampionCombat
         targetCombat.checksR.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksA.Add(new CheckIfEnemyTargetable(targetCombat));
 
-        checkTakeDamageAA.Add(new CheckForChronoshift(this));
-        checkTakeDamageAbility.Add(new CheckForChronoshift(this));
+        checkTakeDamage.Add(new CheckForChronoshift(this));
+        checkTakeDamage.Add(new CheckForChronoshift(this));
 
         qKeys.Add("Magic Damage");
         qKeys.Add("Stun Duration");
@@ -52,12 +52,12 @@ public class Zilean : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         if(usedRewind)
 		{
-            UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);   
+            UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);   
 		}
         else
 		{
             yield return new WaitForSeconds(3f);
-            UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
         }
 
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];

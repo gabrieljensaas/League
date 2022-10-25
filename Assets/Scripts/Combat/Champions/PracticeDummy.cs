@@ -34,7 +34,7 @@ public class PracticeDummy : ChampionCombat
 
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "", "", "", "", "" };
+        combatPrio = new string[] { "R", "Q", "W", "E", "A" };
     }
 
     protected override void CheckPassive() { }

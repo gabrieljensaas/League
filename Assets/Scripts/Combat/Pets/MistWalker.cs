@@ -34,7 +34,7 @@ public class MistWalker : Pet
             damage += aaDamage * 0.4f;
         }
 
-        owner.targetCombat.TakeDamage(new Damage(damage, SkillDamageType.Phyiscal), "Mist Walker Auto Attack", true);
+        owner.targetCombat.TakeDamage(new Damage(damage, SkillDamageType.Phyiscal), "Mist Walker Auto Attack");
         aaTimer = 1f / attackSpeed;
     }
 }

@@ -27,11 +27,11 @@ public class Malphite : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
 
         autoattackcheck = new MalphiteAACheck(this);
-        checkTakeDamageAbility.Add(new CheckShield(this));
-        checkTakeDamageAA.Add(new CheckShield(this));
+        checkTakeDamage.Add(new CheckShield(this));
+        checkTakeDamage.Add(new CheckShield(this));
 
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Magic Damage");
         qKeys.Add("Slow");

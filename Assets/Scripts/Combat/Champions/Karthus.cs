@@ -45,7 +45,7 @@ public class Karthus : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         yield return new WaitForSeconds(0.6f);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
     }
 
     public override IEnumerator ExecuteW()
@@ -81,14 +81,14 @@ public class Karthus : ChampionCombat
     {
 
         yield return new WaitForSeconds(0.25f);
-        UpdateAbilityTotalDamage(ref eSum, 2, ESkill(0), 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, ESkill(0), 4, eKeys[0]);
         StartCoroutine(Defile());
     }
 
     public IEnumerator Requiem()
     {
         yield return new WaitForSeconds(3f);
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
     }
 
     public override void StopChanneling(string uniqueKey)

@@ -61,7 +61,7 @@ public class Hecarim : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         StopCoroutine(LoseRampageStacks());
-        SpiritOfTheDread(UpdateAbilityTotalDamage(ref qSum, 0, new Damage(myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) + (rampageStacks * 0.04f * myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats)), SkillDamageType.Phyiscal), myStats.qSkill[0].name)); //no bonus AD for now
+        SpiritOfTheDread(UpdateTotalDamage(ref qSum, 0, new Damage(myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) + (rampageStacks * 0.04f * myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats)), SkillDamageType.Phyiscal), myStats.qSkill[0].name)); //no bonus AD for now
         if (rampageStacks < 3) rampageStacks++;
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
         myStats.qCD -= rampageStacks * 0.75f;
@@ -84,7 +84,7 @@ public class Hecarim : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        SpiritOfTheDread(UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0])); //does not account for movement as of the moment
+        SpiritOfTheDread(UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0])); //does not account for movement as of the moment
         targetStats.buffManager.buffs.Add("Stun", new StunBuff(0.25f, targetStats.buffManager, myStats.eSkill[0].name));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
@@ -94,7 +94,7 @@ public class Hecarim : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        SpiritOfTheDread(UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]));
+        SpiritOfTheDread(UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]));
         targetStats.buffManager.buffs.Add("Flee", new FleeBuff(0.75f, targetStats.buffManager, myStats.eSkill[0].name));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }

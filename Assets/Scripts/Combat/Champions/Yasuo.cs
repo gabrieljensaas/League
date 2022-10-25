@@ -62,16 +62,16 @@ public class Yasuo : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
         checksE.Add(new CheckIfImmobilize(this));
         checksR.Add(new CheckIfImmobilize(this));
-        checkTakeDamageAA.Add(new CheckYasuoPassive(this, this));
-        checkTakeDamageAbility.Add(new CheckYasuoPassive(this, this));
+        checkTakeDamage.Add(new CheckYasuoPassive(this, this));
+        checkTakeDamage.Add(new CheckYasuoPassive(this, this));
         checksR.Add(new CheckIfEnemyAirborne(this));
         checksQ.Add(new CheckIfUnableToAct(this));
         checksW.Add(new CheckIfUnableToAct(this));
         checksE.Add(new CheckIfUnableToAct(this));
         checksR.Add(new CheckIfUnableToAct(this));
         checksA.Add(new CheckIfUnableToAct(this));
-        checkTakeDamageAbilityPostMitigation.Add(new CheckShield(this));
-        checkTakeDamageAAPostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         myStats.qSkill[0].basic.castTime = GetYasuoQCastTime(myStats.bonusAS);
         myStats.qSkill[0].basic.coolDown[0] = GetYasuoQCooldown(myStats.bonusAS);
@@ -109,7 +109,7 @@ public class Yasuo : ChampionCombat
             StopCoroutine(QStack());
             StopCoroutine(QStack());
         }
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
     }
 
@@ -128,7 +128,7 @@ public class Yasuo : ChampionCombat
         if (OnTheE) yield break;
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         StartCoroutine(RidingE());
-        UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
     }
 
@@ -143,7 +143,7 @@ public class Yasuo : ChampionCombat
         StopCoroutine(QStack());
         StopCoroutine(QStack());
         targetStats.buffManager.buffs["Airborne"].duration = 1;
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
         //critics gain armor pen %50 percent
         myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
     }

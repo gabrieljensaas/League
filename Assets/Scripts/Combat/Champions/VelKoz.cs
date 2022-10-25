@@ -57,11 +57,11 @@ public class VelKoz : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         if (isResearched)
         {
-            UpdateAbilityTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[0], myStats, targetStats), SkillDamageType.True), QSkill().basic.name);
+            UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(4, qKeys[0], myStats, targetStats), SkillDamageType.True), QSkill().basic.name);
         }
         else
         {
-            UpdateAbilityTotalDamage(ref qSum, 0, QSkill(), 4, qKeys[0]);
+            UpdateTotalDamage(ref qSum, 0, QSkill(), 4, qKeys[0]);
         }
         CheckVelKozPassiveDamage(QSkill().basic.name);
         myStats.qCD = QSkill().basic.coolDown[4];
@@ -76,11 +76,11 @@ public class VelKoz : ChampionCombat
             yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
             if (isResearched)
             {
-                UpdateAbilityTotalDamage(ref wSum, 1, new Damage(QSkill().UseSkill(4, wKeys[0], myStats, targetStats), SkillDamageType.True), WSkill().basic.name);
+                UpdateTotalDamage(ref wSum, 1, new Damage(QSkill().UseSkill(4, wKeys[0], myStats, targetStats), SkillDamageType.True), WSkill().basic.name);
             }
             else
             {
-                UpdateAbilityTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[0]);
+                UpdateTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[0]);
             }
             voidRiftCharge--;
             myStats.wCD = WSkill().basic.coolDown[4];
@@ -95,11 +95,11 @@ public class VelKoz : ChampionCombat
         yield return new WaitForSeconds(0.75f);
         if (isResearched)
         {
-            UpdateAbilityTotalDamage(ref eSum, 2, new Damage(ESkill().UseSkill(4, eKeys[0], myStats, targetStats), SkillDamageType.True), ESkill().basic.name);
+            UpdateTotalDamage(ref eSum, 2, new Damage(ESkill().UseSkill(4, eKeys[0], myStats, targetStats), SkillDamageType.True), ESkill().basic.name);
         }
         else
         {
-            UpdateAbilityTotalDamage(ref eSum, 2, ESkill(), 4, eKeys[0]);
+            UpdateTotalDamage(ref eSum, 2, ESkill(), 4, eKeys[0]);
         }
         MyBuffManager.Add("KnockOff", new AirborneBuff(0.1f, TargetBuffManager, "KnockOff"));
         MyBuffManager.Add("StunBuff", new StunBuff(0.75f, TargetBuffManager, "StunBuff"));
@@ -119,7 +119,7 @@ public class VelKoz : ChampionCombat
     {
         if (velKozP.Control())
         {
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
+            UpdateTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
             isResearched = true;
             myStats.buffManager.buffs.Remove("OrganicDestruction");
         }
@@ -139,64 +139,64 @@ public class VelKoz : ChampionCombat
         if (isResearched)
         {
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
+            UpdateTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
+            UpdateTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
+            UpdateTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
+            UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(2, rKeys[0], myStats, targetStats), SkillDamageType.True), RSkill().basic.name);
+            UpdateTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
         }
         else
         {
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+            UpdateTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+            UpdateTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+            UpdateTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
             yield return new WaitForSeconds(0.2f);
-            UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
-            UpdateAbilityTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
+            UpdateTotalDamage(ref pSum, 4, new Damage((25 + 8 * myStats.level), SkillDamageType.True), myStats.passiveSkill.name);
         }
     }
 

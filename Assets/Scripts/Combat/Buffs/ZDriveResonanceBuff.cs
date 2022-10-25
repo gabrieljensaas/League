@@ -15,7 +15,7 @@ public class ZDriveResonanceBuff : Buff
         duration -= Time.fixedDeltaTime;
         if (value >= 3)
         {
-            manager.combat.targetCombat.UpdateAbilityTotalDamage(ref manager.combat.targetCombat.pSum, 5, new Damage(Ekko.passiveDamageFlat[manager.combat.targetStats.level] + (manager.combat.targetStats.AP * 0.9f), SkillDamageType.Spell), "Z-Drive Resonance");
+            manager.combat.targetCombat.UpdateTotalDamage(ref manager.combat.targetCombat.pSum, 5, new Damage(Ekko.passiveDamageFlat[manager.combat.targetStats.level] + (manager.combat.targetStats.AP * 0.9f), SkillDamageType.Spell), "Z-Drive Resonance");
             value = 0;
             duration = 5f;
         }

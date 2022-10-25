@@ -94,7 +94,7 @@ public class Vi : ChampionCombat
         targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(1.3f, targetStats.buffManager, myStats.rSkill[0].basic.name));
         yield return new WaitForSeconds(0.75f);
         if (passiveCD <= 0) BlastShield();
-        UpdateAbilityTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
     }
 
     public override IEnumerator ExecuteA()
@@ -105,7 +105,7 @@ public class Vi : ChampionCombat
         if (eCast)
         {
             if (passiveCD <= 0) BlastShield();
-            UpdateAbilityTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
             eCast = false;
             StopCoroutine(RelentlessForce());
             myStats.eCD = 1;
@@ -128,7 +128,7 @@ public class Vi : ChampionCombat
     public IEnumerator VaultBreaker()
     {
         yield return new WaitForSeconds(1.25f);
-        UpdateAbilityTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
         targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.75f, targetStats.buffManager, myStats.qSkill[0].basic.name));
         if (passiveCD <= 0) BlastShield();
         StopCoroutine(DentingBlows());
@@ -140,7 +140,7 @@ public class Vi : ChampionCombat
         wStack++;
         if (wStack == 3)
         {
-            UpdateAbilityTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
             targetStats.buffManager.buffs.Add(myStats.wSkill[0].basic.name, new ArmorReductionBuff(4, targetStats.buffManager, myStats.wSkill[0].basic.name, 20, myStats.wSkill[0].basic.name));
             myStats.buffManager.buffs.Add(myStats.wSkill[0].basic.name, new AttackSpeedBuff(4, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, wKeys[1], myStats, targetStats) * myStats.baseAttackSpeed, myStats.wSkill[0].basic.name));
             wStack = 0;
