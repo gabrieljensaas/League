@@ -32,7 +32,7 @@ public class Annie : ChampionCombat
         checksE.Add(new CheckCD(this, "E"));
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
-        checkTakeDamagePostMitigation.Add(new CheckShield(this))
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
         checkTakeDamagePostMitigation.Add(new CheckMoltenShield(this));
 
         qKeys.Add("Magic damage");
