@@ -32,8 +32,7 @@ public class Annie : ChampionCombat
         checksE.Add(new CheckCD(this, "E"));
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
-        checkTakeDamagePostMitigation.Add(new CheckShield(this));
-        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this))
         checkTakeDamagePostMitigation.Add(new CheckMoltenShield(this));
 
         qKeys.Add("Magic damage");
@@ -64,7 +63,7 @@ public class Annie : ChampionCombat
         if (CheckAnniePassiveStun(myStats.qSkill[0].basic.name))
             UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable, buffNames: new string[] { "Stun"});
         else 
-            UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[myStats.qLevel];
     }
 
