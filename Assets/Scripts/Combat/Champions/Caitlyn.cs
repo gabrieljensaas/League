@@ -45,6 +45,7 @@ public class Caitlyn : ChampionCombat
         checksE.Add(new CheckIfChanneling(this));
         checksR.Add(new CheckIfChanneling(this));
         checksA.Add(new CheckIfChanneling(this));
+        checksR.Add(new CheckIfExecutes(this, "R"));
 
         qKeys.Add("Physical Damage");
         wKeys.Add("Maximum Traps");

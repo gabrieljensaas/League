@@ -37,9 +37,9 @@ public class WebData
     public CastLog[] CastLogs;
     public WebData(SnapShot[] snap, DamageLog[] dmglogs, HealLog[] hlogs, BuffLog[] bufflogs, string winner, float fightDuration, CastLog[] CastLogs)
     {
-        //this.DamageLogs = dmglogs;
-        //this.SnapShots = snap;
-        //this.HealLogs = hlogs;
+        this.DamageLogs = dmglogs;
+        this.SnapShots = snap;
+        this.HealLogs = hlogs;
         this.BuffLogs = bufflogs;
         this.winner = winner;
         this.fightDuration = fightDuration;
