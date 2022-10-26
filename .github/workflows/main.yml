@@ -3,7 +3,7 @@ name: Push to another repo
 on:
   push:
     branches:
-    - develop
+    - release/develop
 
 jobs:
   build:
