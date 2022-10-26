@@ -6054,7 +6054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _simulatorTargetedFPS: 60
-  _simulatorTimeScale: 5
+  _simulatorTimeScale: 6
   _simulatorFixedTimeStep: 0.033
   championsDropdowns:
   - {fileID: 884130053}
@@ -6077,6 +6077,22 @@ MonoBehaviour:
   damagelogs: []
   heallogs: []
   bufflogs: []
+  castlog1:
+    championName: 
+    ACast: 0
+    PCast: 0
+    QCast: 0
+    WCast: 0
+    ECast: 0
+    RCast: 0
+  castlog2:
+    championName: 
+    ACast: 0
+    PCast: 0
+    QCast: 0
+    WCast: 0
+    ECast: 0
+    RCast: 0
 --- !u!4 &488965731
 Transform:
   m_ObjectHideFlags: 0
