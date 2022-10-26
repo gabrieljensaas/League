@@ -6054,7 +6054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _simulatorTargetedFPS: 60
-  _simulatorTimeScale: 6
+  _simulatorTimeScale: 5
   _simulatorFixedTimeStep: 0.033
   championsDropdowns:
   - {fileID: 884130053}
