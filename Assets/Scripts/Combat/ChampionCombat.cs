@@ -55,6 +55,9 @@ namespace Simulator.Combat
         public delegate void HealEvent(float heal);
         public event HealEvent OnHeal;
 
+        public delegate void PreDamageEvent(float damage);
+        public event PreDamageEvent OnPreDamage;
+
         protected virtual void Start()
         {
             simulationManager = SimManager.Instance;

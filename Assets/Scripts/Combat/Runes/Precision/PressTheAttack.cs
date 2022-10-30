@@ -5,10 +5,13 @@ public class PressTheAttack : Rune
     private int stack;
     private float timer;
     private float cooldownTimer = 6;
+    private int level;
 
     public PressTheAttack(RuneManager manager) : base(manager)
     {
         manager.combat.OnAutoAttack += AddStack;
+
+        level = manager.stats.level;
     }
 
     public override void Update()
@@ -34,5 +37,5 @@ public class PressTheAttack : Rune
         manager.combat.OnAutoAttack -= AddStack;
     }
     private bool OnCooldown() => timer >= 0;
-    private float ExposedDamageBonus(int level) => 0.08f + (0.04f / 17 * (level - 1));
+    private float ExposedDamageBonus() => 0.08f + (0.04f / 17 * (level - 1));
 }

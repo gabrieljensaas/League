@@ -8,10 +8,10 @@ public class Conqueror : Rune
 
     public Conqueror(RuneManager manager, bool isMelee) : base(manager)
     {
-        this.isMelee = isMelee;
-
         manager.combat.OnAutoAttack += AddStackAA;
         manager.combat.OnAbilityHit += AddStackAbility;
+
+        this.isMelee = isMelee;
     }
 
     public override void Update()

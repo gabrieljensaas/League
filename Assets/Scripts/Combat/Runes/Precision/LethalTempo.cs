@@ -9,9 +9,9 @@ public class LethalTempo : Rune
 
     public LethalTempo(RuneManager manager, bool isMelee) : base(manager)
     {
-        this.isMelee = isMelee;
-
         manager.combat.OnAutoAttack += AddStack;
+
+        this.isMelee = isMelee;
     }
 
     public override void Update()
