@@ -39,7 +39,6 @@ public class Akshan : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
         checkTakeDamagePostMitigation.Add(new CheckShield(this));
-        checkTakeDamagePostMitigation.Add(new CheckShield(this));
         checksQ.Add(new CheckIfChanneling(this));
         checksW.Add(new CheckIfChanneling(this));
         checksE.Add(new CheckIfChanneling(this));
@@ -66,7 +65,7 @@ public class Akshan : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        if (UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable) != float.MinValue)
+        if (UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)18564) != float.MinValue)
         {
             if (MyBuffManager.buffs.TryGetValue("DirtyFighting", out Buff value))
             {
@@ -74,11 +73,12 @@ public class Akshan : ChampionCombat
                 value.value++;
                 if (value.value >= 3)
                 {
-                    UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
+                    UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell, (SkillComponentTypes)32), "Dirty Fighting");
                     value.Kill();
                     if (pCD <= 0)
                     {
-                        MyBuffManager.shields.Add("DirtyFighting", new ShieldBuff(2, MyBuffManager, "Dirty Fighting", 40 + (240 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.35f), "DirtyFighting"));
+                        MyBuffManager.shields.Add("DirtyFighting",
+                            new ShieldBuff(2, MyBuffManager, "Dirty Fighting", 40 + (240 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.35f), "DirtyFighting"));
                         pCD = GetPassiveCD(myStats.level);
                     }
                 }
@@ -89,7 +89,7 @@ public class Akshan : ChampionCombat
             }
         }
         yield return new WaitForSeconds(0.65f);
-        if (UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable) != float.MinValue)
+        if (UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)16516) != float.MinValue)
         {
             if (MyBuffManager.buffs.TryGetValue("DirtyFighting", out Buff value))
             {
@@ -97,11 +97,12 @@ public class Akshan : ChampionCombat
                 value.value++;
                 if (value.value >= 3)
                 {
-                    UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
+                    UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell, (SkillComponentTypes)32), "Dirty Fighting");
                     value.Kill();
                     if (pCD <= 0)
                     {
-                        MyBuffManager.shields.Add("DirtyFighting", new ShieldBuff(2, MyBuffManager, "Dirty Fighting", 40 + (240 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.35f), "DirtyFighting"));
+                        MyBuffManager.shields.Add("DirtyFighting",
+                            new ShieldBuff(2, MyBuffManager, "Dirty Fighting", 40 + (240 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.35f), "DirtyFighting"));
                         pCD = GetPassiveCD(myStats.level);
                     }
                 }
@@ -120,7 +121,7 @@ public class Akshan : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        if (UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Dash | SkillComponentTypes.Projectile | SkillComponentTypes.OnHit | SkillComponentTypes.Spellblockable | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable) != float.MinValue)
+        if (UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: (SkillComponentTypes)8094) != float.MinValue)
         {
             if (MyBuffManager.buffs.TryGetValue("DirtyFighting", out Buff buff))
             {
@@ -128,12 +129,13 @@ public class Akshan : ChampionCombat
                 buff.value++;
                 if (buff.value >= 3)
                 {
-                    UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
+                    UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell, (SkillComponentTypes)32), "Dirty Fighting");
                     buff.Kill();
                     buff.Kill();
                     if (pCD <= 0)
                     {
-                        MyBuffManager.shields.Add("DirtyFighting", new ShieldBuff(2, MyBuffManager, "Dirty Fighting", 40 + (240 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.35f), "DirtyFighting"));
+                        MyBuffManager.shields.Add("DirtyFighting",
+                            new ShieldBuff(2, MyBuffManager, "Dirty Fighting", 40 + (240 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.35f), "DirtyFighting"));
                         pCD = GetPassiveCD(myStats.level);
                     }
                 }
@@ -155,6 +157,7 @@ public class Akshan : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         StartCoroutine(Comeuppance(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats)));
+        UpdateTotalDamage(ref qSum, 0, new Damage(0, SkillDamageType.Phyiscal, (SkillComponentTypes)2048), "Comeuppance");
         MyBuffManager.Add("Channeling", new ChannelingBuff(2.5f, MyBuffManager, RSkill().basic.name, "Comeuppance"));
     }
 
@@ -173,7 +176,7 @@ public class Akshan : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        if (AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal, SkillComponentTypes.OnHit | SkillComponentTypes.Projectile | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable)).damage != float.MinValue)
+        if (UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5916), "Akshan's Auto Attack") != float.MinValue)
         {
             if (MyBuffManager.buffs.TryGetValue("DirtyFighting", out Buff value))
             {
@@ -181,11 +184,12 @@ public class Akshan : ChampionCombat
                 value.value++;
                 if (value.value >= 3)
                 {
-                    UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
+                    UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell, (SkillComponentTypes)32), "Dirty Fighting");
                     value.Kill();
                     if (pCD <= 0)
                     {
-                        MyBuffManager.shields.Add("DirtyFighting", new ShieldBuff(2, MyBuffManager, "Dirty Fighting", 40 + (240 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.35f), "DirtyFighting"));
+                        MyBuffManager.shields.Add("DirtyFighting",
+                            new ShieldBuff(2, MyBuffManager, "Dirty Fighting", 40 + (240 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.35f), "DirtyFighting"));
                         pCD = GetPassiveCD(myStats.level);
                     }
                 }
@@ -195,7 +199,7 @@ public class Akshan : ChampionCombat
                 MyBuffManager.Add("DirtyFighting", new DirtyFightingBuff(5, MyBuffManager, "Akshan's Auto Attack"));
             }
         }
-        if (AutoAttack(new Damage(myStats.AD * 0.5f, SkillDamageType.Phyiscal, SkillComponentTypes.OnHit | SkillComponentTypes.Projectile | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable)).damage != float.MinValue)
+        if (UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD * 0.5f, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5916), "Akshan's Second Auto Attack") != float.MinValue)
         {
             if (MyBuffManager.buffs.TryGetValue("DirtyFighting", out Buff buff))
             {
@@ -203,12 +207,13 @@ public class Akshan : ChampionCombat
                 buff.value++;
                 if (buff.value >= 3)
                 {
-                    UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
+                    UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell, (SkillComponentTypes)32), "Dirty Fighting");
                     buff.Kill();
                     buff.Kill();
                     if (pCD <= 0)
                     {
-                        MyBuffManager.shields.Add("DirtyFighting", new ShieldBuff(2, MyBuffManager, "Dirty Fighting", 40 + (240 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.35f), "DirtyFighting"));
+                        MyBuffManager.shields.Add("DirtyFighting",
+                            new ShieldBuff(2, MyBuffManager, "Dirty Fighting", 40 + (240 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.35f), "DirtyFighting"));
                         pCD = GetPassiveCD(myStats.level);
                     }
                 }
@@ -225,7 +230,7 @@ public class Akshan : ChampionCombat
         if (shots > 0)
         {
             yield return new WaitForSeconds(0.23f);
-            if (UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Dash | SkillComponentTypes.Projectile | SkillComponentTypes.OnHit | SkillComponentTypes.Spellblockable | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable) != float.MinValue)
+            if (UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: (SkillComponentTypes)6046) != float.MinValue)
             {
                 if (MyBuffManager.buffs.TryGetValue("DirtyFighting", out Buff buff))
                 {
@@ -233,12 +238,13 @@ public class Akshan : ChampionCombat
                     buff.value++;
                     if (buff.value >= 3)
                     {
-                        UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
+                        UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell, (SkillComponentTypes)32), "Dirty Fighting");
                         buff.Kill();
                         buff.Kill();
                         if (pCD <= 0)
                         {
-                            MyBuffManager.shields.Add("DirtyFighting", new ShieldBuff(2, MyBuffManager, "Dirty Fighting", 40 + (240 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.35f), "DirtyFighting"));
+                            MyBuffManager.shields.Add("DirtyFighting",
+                                new ShieldBuff(2, MyBuffManager, "Dirty Fighting", 40 + (240 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.35f), "DirtyFighting"));
                             pCD = GetPassiveCD(myStats.level);
                         }
                     }
@@ -252,7 +258,7 @@ public class Akshan : ChampionCombat
         }
         else
         {
-            if (UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Dash | SkillComponentTypes.Projectile | SkillComponentTypes.OnHit | SkillComponentTypes.Spellblockable | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable) != float.MinValue)
+            if (UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: (SkillComponentTypes)6046) != float.MinValue)
             {
                 if (MyBuffManager.buffs.TryGetValue("DirtyFighting", out Buff buff))
                 {
@@ -260,12 +266,13 @@ public class Akshan : ChampionCombat
                     buff.value++;
                     if (buff.value >= 3)
                     {
-                        UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
+                        UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell, (SkillComponentTypes)32), "Dirty Fighting");
                         buff.Kill();
                         buff.Kill();
                         if (pCD <= 0)
                         {
-                            MyBuffManager.shields.Add("DirtyFighting", new ShieldBuff(2, MyBuffManager, "Dirty Fighting", 40 + (240 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.35f), "DirtyFighting"));
+                            MyBuffManager.shields.Add("DirtyFighting",
+                                new ShieldBuff(2, MyBuffManager, "Dirty Fighting", 40 + (240 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.35f), "DirtyFighting"));
                             pCD = GetPassiveCD(myStats.level);
                         }
                     }
@@ -293,7 +300,7 @@ public class Akshan : ChampionCombat
         while (bullets > 0)
         {
             yield return new WaitForSeconds(0.1f);
-            if (UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], damageModifier: 1 + (targetStats.PercentMissingHealth * 3), skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable) != float.MinValue)
+            if (UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1], damageModifier: 1 + (targetStats.PercentMissingHealth * 3),(SkillComponentTypes)32900) != float.MinValue)
             {
                 if (MyBuffManager.buffs.TryGetValue("DirtyFighting", out Buff value))
                 {
@@ -301,11 +308,12 @@ public class Akshan : ChampionCombat
                     value.value++;
                     if (value.value >= 3)
                     {
-                        UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell), "Dirty Fighting");
+                        UpdateTotalDamage(ref pSum, 5, new Damage(passiveDamage[myStats.level], SkillDamageType.Spell, (SkillComponentTypes)32), "Dirty Fighting");
                         value.Kill();
                         if (pCD <= 0)
                         {
-                            MyBuffManager.shields.Add("DirtyFighting", new ShieldBuff(2, MyBuffManager, "Dirty Fighting", 40 + (240 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.35f), "DirtyFighting"));
+                            MyBuffManager.shields.Add("DirtyFighting",
+                                new ShieldBuff(2, MyBuffManager, "Dirty Fighting", 40 + (240 / 17 * (myStats.level - 1)) + (myStats.bonusAD * 0.35f), "DirtyFighting"));
                             pCD = GetPassiveCD(myStats.level);
                         }
                     }

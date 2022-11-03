@@ -13,7 +13,7 @@ public class CheckTantrumPassive : Check
             var reduction = combat.ESkill().UseSkill(combat.myStats.eLevel, combat.eKeys[0], combat.myStats, combat.targetStats);
             damage.value -= damage.value * 0.5f > reduction ? reduction : damage.value * 0.5f;
         }
-        if (damage.skillComponentType == SkillComponentTypes.OnHit)
+        if (damage.skillComponentType == SkillComponentTypes.OnAttack)
         {
             combat.myStats.eCD -= 0.5f;
         }

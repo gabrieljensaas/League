@@ -33,9 +33,7 @@ public class Amumu : ChampionCombat
         checksQ.Add(new CheckIfImmobilize(this));
 
         targetCombat.checkTakeDamage.Add(new CheckForAmumuCurse(targetCombat));
-        targetCombat.checkTakeDamage.Add(new CheckForAmumuCurse(targetCombat));
 
-        checkTakeDamagePostMitigation.Add(new CheckTantrumPassive(this));
         checkTakeDamagePostMitigation.Add(new CheckTantrumPassive(this)); //need to implement for ability
 
         qKeys.Add("Magic Damage");
@@ -72,7 +70,7 @@ public class Amumu : ChampionCombat
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
             TargetBuffManager.Add("Stun", new StunBuff(1f, TargetBuffManager, QSkill().basic.name));
 
-            UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], buffNames: new string[] { "Stun" }, skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], buffNames: new string[] { "Stun" }, skillComponentTypes: (SkillComponentTypes)34950);
 
             qCharge--;
             myStats.qCD = 3f;
@@ -95,7 +93,7 @@ public class Amumu : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[1], skillComponentTypes: SkillComponentTypes.Spellblockable);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[1], skillComponentTypes: (SkillComponentTypes)18560);
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
     }
 
@@ -106,7 +104,8 @@ public class Amumu : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         TargetBuffManager.Add("Stun", new StunBuff(1.5f, TargetBuffManager, RSkill().basic.name));
-        if (UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] { "Stun" }) != float.MinValue) ApplyCurse();
+        if (UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)18560, buffNames: new string[] { "Stun" }) != float.MinValue)
+            ApplyCurse();
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
     }
 
@@ -115,13 +114,14 @@ public class Amumu : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        if (AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal, SkillComponentTypes.OnHit | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable)).damage != float.MinValue) ApplyCurse();
+        if (UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Amumu's Auto Attack") != float.MinValue)
+            ApplyCurse();
     }
 
     public IEnumerator Despair()
     {
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalDamage(ref wSum, 1, WSkill(0), myStats.wLevel, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(0), myStats.wLevel, wKeys[0],skillComponentTypes: (SkillComponentTypes)8192);
         StartCoroutine(Despair());
     }
 

@@ -14,7 +14,7 @@ public class CheckForAmumuCurse : Check
     {
         if (damage.value > 0 && damage.damageType == SkillDamageType.Spell && combat.MyBuffManager.buffs.ContainsKey("AmumuCurse"))
         {
-            combat.targetCombat.UpdateTotalDamage(ref combat.targetCombat.pSum, 4, new Damage(damage.value * 0.1f, SkillDamageType.True), "Cursed Touch");
+            combat.targetCombat.UpdateTotalDamage(ref combat.targetCombat.pSum, 4, new Damage(damage.value * 0.1f, SkillDamageType.True, (SkillComponentTypes)65536), "Cursed Touch");
         }
         return damage;
     }
