@@ -20,5 +20,6 @@ jobs:
           source-directory: Build
           destination-github-username: 'gabrieljensaas'
           destination-repository-name: 'LSS_Frontend'
+          user-email: 'devrecepsen@gmail.com'
           target-branch: vercel-test
           target-directory: public/assets/unity
