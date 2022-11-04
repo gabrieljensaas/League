@@ -40,7 +40,6 @@ public class Anivia : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
         checksR.Add(new CheckIfChanneling(this));
         //checkTakeDamagePostMitigation.Add(new CheckAniviaP(this, this));
-        //checkTakeDamagePostMitigation.Add(new CheckAniviaP(this, this));
 
 
         qKeys.Add("Magic Damage");
@@ -59,13 +58,13 @@ public class Anivia : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)18564);
         TargetBuffManager.Add("Stun", new StunBuff(QSkill().UseSkill(myStats.qLevel, qKeys[2], myStats, targetStats), TargetBuffManager, QSkill().basic.name));
         if (TargetBuffManager.buffs.TryGetValue("ChilledBuff", out Buff buff))
             buff.duration = 3;
         else
             TargetBuffManager.Add("Chilled", new ChilledBuff(3, TargetBuffManager, "Chilled"));
-        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable, buffNames: new string[] {"Stun", "Chilled"});
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1], skillComponentTypes: (SkillComponentTypes)18564, buffNames: new string[] {"Stun", "Chilled"});
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
     }
 
@@ -86,10 +85,8 @@ public class Anivia : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         if (TargetBuffManager.buffs.ContainsKey("Chilled"))
-        {
-            UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], damageModifier: 2, skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile);
-        }
-        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], damageModifier: 2, skillComponentTypes: (SkillComponentTypes)34948);
+        else UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: (SkillComponentTypes)34948);
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
     }
 
@@ -106,11 +103,11 @@ public class Anivia : ChampionCombat
     public IEnumerator GlacialStorm()
     {
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalDamage(ref rSum, 4, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.PersistentDamage);
+        UpdateTotalDamage(ref rSum, 4, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)8192);
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalDamage(ref rSum, 4, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.PersistentDamage);
+        UpdateTotalDamage(ref rSum, 4, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)8192);
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalDamage(ref rSum, 4, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.PersistentDamage);
+        UpdateTotalDamage(ref rSum, 4, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)8192);
         StartCoroutine(EmpoweredGlacialStorm());
         ((ChannelingBuff)MyBuffManager.buffs["GlacialStorm"]).uniqueKey = "EmpoweredGlacialStorm";
 
@@ -119,7 +116,7 @@ public class Anivia : ChampionCombat
     public IEnumerator EmpoweredGlacialStorm()
     {
         yield return new WaitForSeconds(0.5f);
-        UpdateTotalDamage(ref rSum, 4, RSkill(), myStats.rLevel, rKeys[1], skillComponentTypes: SkillComponentTypes.PersistentDamage);
+        UpdateTotalDamage(ref rSum, 4, RSkill(), myStats.rLevel, rKeys[1], skillComponentTypes: (SkillComponentTypes)8192);
         if (TargetBuffManager.buffs.TryGetValue("ChilledBuff", out Buff buff))
             buff.duration = 3;
         else

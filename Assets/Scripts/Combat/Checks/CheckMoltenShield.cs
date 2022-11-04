@@ -10,7 +10,7 @@ public class CheckMoltenShield : Check
     {
         if (combat.myStats.buffManager.shields.ContainsKey("Molten Shield") && combat.myStats.eLevel > -1)
         {
-            combat.UpdateTotalDamage(ref combat.eSum, 2, combat.myStats.eSkill[0], combat.myStats.eLevel, combat.eKeys[1]);
+            combat.UpdateTotalDamage(ref combat.eSum, 2, combat.myStats.eSkill[0], combat.myStats.eLevel, combat.eKeys[1], skillComponentTypes: (SkillComponentTypes)16384);
         }
         return damage;
     }

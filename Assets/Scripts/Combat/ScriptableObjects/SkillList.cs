@@ -34,6 +34,7 @@ public enum SkillComponentTypes
     AreaDamage = 16384,
     SpellDamage = 32768,
     DefaultDamage = 65536,
+    PetDamage = 131072,
 }
 
 [CreateAssetMenu(fileName = "new Spell", menuName = "ScriptableObjects/SkillList")]

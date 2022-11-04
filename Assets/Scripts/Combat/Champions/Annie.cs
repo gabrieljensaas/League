@@ -61,9 +61,9 @@ public class Annie : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         if (CheckAnniePassiveStun(myStats.qSkill[0].basic.name))
-            UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable, buffNames: new string[] { "Stun"});
+            UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)34948, buffNames: new string[] { "Stun"});
         else 
-            UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: SkillComponentTypes.Projectile | SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)34948);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[myStats.qLevel];
     }
 
@@ -74,9 +74,9 @@ public class Annie : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         if (CheckAnniePassiveStun(myStats.wSkill[0].basic.name))
-            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] {"Stun"});
+            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)18560, buffNames: new string[] {"Stun"});
         else
-            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)18560);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
     }
 
@@ -106,9 +106,9 @@ public class Annie : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         if(CheckAnniePassiveStun(myStats.rSkill[0].basic.name))
-            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable, buffNames: new string[] {"Stun"});
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)18560, buffNames: new string[] {"Stun"});
         else
-            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)18560);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
         pets.Add(new Tibbers(this, 3100, ((myStats.rLevel + 1) / 2 * 50) + (myStats.AP * 15 / 100), 0.625f, 90, 90)); //health, armor and mresist are for max level change when level adjusting of skills done
     }
