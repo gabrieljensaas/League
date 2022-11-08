@@ -50,6 +50,7 @@ public class Ahri : ChampionCombat
         yield return new WaitForSeconds(2f);                // orb return time estimated by playing Ahri
         UpdateTotalDamage(ref qSum, 0, 
             new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.True, (SkillComponentTypes)16516), QSkill().basic.name);
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
@@ -63,6 +64,7 @@ public class Ahri : ChampionCombat
         UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)34948);
         UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[1], skillComponentTypes: (SkillComponentTypes)32900);
         UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[1], skillComponentTypes: (SkillComponentTypes)32900);
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
@@ -75,6 +77,7 @@ public class Ahri : ChampionCombat
             new CharmBuff(myStats.eSkill[0].UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), TargetBuffManager, myStats.eSkill[0].basic.name));
         UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], buffNames: new string[] { "Charm" }, skillComponentTypes: (SkillComponentTypes)34948);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
@@ -87,6 +90,7 @@ public class Ahri : ChampionCombat
         else rStacks--;
         UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], skillComponentTypes: (SkillComponentTypes)18566);
         myStats.rCD = rStacks > 0 ? 1 : myStats.rSkill[0].basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     public override IEnumerator ExecuteA()
@@ -96,6 +100,7 @@ public class Ahri : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(0.1f));
         UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5916), "Ahri's Auto Attack");
         attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     public override IEnumerator HijackedR(int skillLevel)

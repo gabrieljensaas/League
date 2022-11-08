@@ -49,6 +49,7 @@ public class Ashe : ChampionCombat
         attackCooldown = 0;
         StopCoroutine(GainFocus());
         focus = 0;
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
@@ -66,6 +67,7 @@ public class Ashe : ChampionCombat
             }
         }
         myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteR()
@@ -84,6 +86,7 @@ public class Ashe : ChampionCombat
             }
         }
         myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     public override IEnumerator HijackedR(int skillLevel)
@@ -133,6 +136,7 @@ public class Ashe : ChampionCombat
         }
 
         attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     public IEnumerator GainFocus()

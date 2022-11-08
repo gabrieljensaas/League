@@ -84,6 +84,7 @@ public class Aatrox : ChampionCombat
             UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1], buffNames: new string[] { "Airborne" }, skillComponentTypes: (SkillComponentTypes)18560);
         }
         pCD -= 4;
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
@@ -100,6 +101,7 @@ public class Aatrox : ChampionCombat
             UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)32768, buffNames: new string[] { "Airborne" });
             pCD -= 2;
         }
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
@@ -111,6 +113,7 @@ public class Aatrox : ChampionCombat
         UpdateTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, (SkillComponentTypes)2050), ESkill().basic.name);
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
         attackCooldown = 0;
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
@@ -124,6 +127,7 @@ public class Aatrox : ChampionCombat
             myStats.rSkill[0].basic.name));
         UpdateTotalDamage(ref rSum, 3, new Damage(0, SkillDamageType.Phyiscal, (SkillComponentTypes)2048), RSkill().basic.name);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     public override IEnumerator HijackedR(int skillLevel)
@@ -147,5 +151,6 @@ public class Aatrox : ChampionCombat
             else pCD -= 2;
         }
         attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 }

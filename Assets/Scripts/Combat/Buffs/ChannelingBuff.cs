@@ -5,7 +5,7 @@ public class ChannelingBuff : Buff
     public string uniqueKey;
     public ChannelingBuff(float duration, BuffManager manager, string source, string uniqueKey) : base(manager)
     {
-        base.duration = float.MaxValue;
+        base.duration = duration;
         base.source = source;
         manager.simulationManager.ShowText($"{manager.stats.name} Channels {source}");
         this.uniqueKey = uniqueKey;

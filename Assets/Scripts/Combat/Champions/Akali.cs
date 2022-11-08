@@ -78,6 +78,7 @@ public class Akali : ChampionCombat
         UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)18564);
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
         //AssassinsMark();
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
@@ -90,6 +91,7 @@ public class Akali : ChampionCombat
         MyBuffManager.Add("Untargetable", new UntargetableBuff(remainingShroudTime, MyBuffManager, WSkill().basic.name));
         UpdateTotalDamage(ref qSum, 0, new Damage(0, SkillDamageType.Phyiscal, (SkillComponentTypes)2048), WSkill().basic.name);
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
@@ -124,6 +126,7 @@ public class Akali : ChampionCombat
             eCast = false;
             myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel] - timeSinceE;
         }
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
@@ -155,6 +158,7 @@ public class Akali : ChampionCombat
             rCast = false;
             myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel] - timeSinceR;
         }
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     public override IEnumerator HijackedR(int skillLevel)
@@ -188,6 +192,7 @@ public class Akali : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(0.1f));
         UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Akali's Auto Attack");
         attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     /*public void AssassinsMark()

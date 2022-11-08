@@ -65,6 +65,7 @@ public class Annie : ChampionCombat
         else 
             UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)34948);
         myStats.qCD = myStats.qSkill[0].basic.coolDown[myStats.qLevel];
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
@@ -78,6 +79,7 @@ public class Annie : ChampionCombat
         else
             UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)18560);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
@@ -99,6 +101,7 @@ public class Annie : ChampionCombat
             new ShieldBuff(3, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].
             UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), myStats.eSkill[0].basic.name));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
@@ -113,6 +116,7 @@ public class Annie : ChampionCombat
             UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)18560);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
         pets.Add(new Tibbers(this, 3100, ((myStats.rLevel + 1) / 2 * 50) + (myStats.AP * 15 / 100), 0.625f, 90, 90)); //health, armor and mresist are for max level change when level adjusting of skills done
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     public override IEnumerator ExecuteA()
@@ -122,6 +126,7 @@ public class Annie : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(0.1f));
         UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5916), "Annie's Auto Attack");
         attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     public override IEnumerator HijackedR(int skillLevel)

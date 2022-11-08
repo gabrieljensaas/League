@@ -66,6 +66,7 @@ public class Anivia : ChampionCombat
             TargetBuffManager.Add("Chilled", new ChilledBuff(3, TargetBuffManager, "Chilled"));
         UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1], skillComponentTypes: (SkillComponentTypes)18564, buffNames: new string[] {"Stun", "Chilled"});
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
@@ -76,6 +77,7 @@ public class Anivia : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
         TargetBuffManager.Add("Airborne", new AirborneBuff(0.1f, TargetBuffManager, WSkill().basic.name));
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
@@ -88,6 +90,7 @@ public class Anivia : ChampionCombat
             UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], damageModifier: 2, skillComponentTypes: (SkillComponentTypes)34948);
         else UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: (SkillComponentTypes)34948);
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
@@ -98,6 +101,7 @@ public class Anivia : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         StartCoroutine(GlacialStorm());
         MyBuffManager.Add("Channeling", new ChannelingBuff(float.MaxValue, MyBuffManager, RSkill().basic.name, "GlacialStorm"));
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     public override IEnumerator ExecuteA()
@@ -107,6 +111,7 @@ public class Anivia : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(0.1f));
         UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5916), "Anivia's Auto Attack");
         attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     public IEnumerator GlacialStorm()

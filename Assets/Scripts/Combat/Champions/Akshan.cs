@@ -113,6 +113,7 @@ public class Akshan : ChampionCombat
             }
         }
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteE()
@@ -147,6 +148,7 @@ public class Akshan : ChampionCombat
         }
         StartCoroutine(HeroicSwing(13));
         MyBuffManager.Add("Channeling", new ChannelingBuff(3f, MyBuffManager, ESkill().basic.name, "HeroicSwing"));
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
@@ -159,6 +161,7 @@ public class Akshan : ChampionCombat
         StartCoroutine(Comeuppance(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats)));
         UpdateTotalDamage(ref qSum, 0, new Damage(0, SkillDamageType.Phyiscal, (SkillComponentTypes)2048), "Comeuppance");
         MyBuffManager.Add("Channeling", new ChannelingBuff(2.5f, MyBuffManager, RSkill().basic.name, "Comeuppance"));
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     public override IEnumerator HijackedR(int skillLevel)
@@ -224,6 +227,7 @@ public class Akshan : ChampionCombat
             }
         }
         attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     public IEnumerator HeroicSwing(int shots)

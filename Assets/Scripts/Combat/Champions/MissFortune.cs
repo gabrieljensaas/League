@@ -128,7 +128,6 @@ public class MissFortune : ChampionCombat
             new Damage(myStats.AD * GetMissfortunePassiveADMultiplier(myStats.level), SkillDamageType.Phyiscal, (SkillComponentTypes)784), "Love Tap");
         myStats.wCD -= 2;
         loveTapped = true;
-        simulationManager.AddCastLog(myCastLog, 4);
     }
 
     private IEnumerator MakeItRain()
@@ -153,10 +152,11 @@ public class MissFortune : ChampionCombat
 
     private IEnumerator BulletTime(int waveCount)
     {
-        if (waveCount == 0) yield break;
-        yield return new WaitForSeconds(myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats));
-        UpdateTotalDamage(ref rSum, 3, new Damage((myStats.AD * 0.75f) + (myStats.AP * 0.2f), SkillDamageType.Phyiscal, (SkillComponentTypes)12292), "Bullet Time");
-        StartCoroutine(BulletTime(waveCount--));
+        for (int i = 0; i < waveCount + 1; i++)
+        {
+            yield return new WaitForSeconds(myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats));
+            UpdateTotalDamage(ref rSum, 3, new Damage((myStats.AD * 0.75f) + (myStats.AP * 0.2f), SkillDamageType.Phyiscal, (SkillComponentTypes)12292), "Bullet Time");
+        }
     }
 
     private IEnumerator HBulletTime(int waveCount, int skillLevel)

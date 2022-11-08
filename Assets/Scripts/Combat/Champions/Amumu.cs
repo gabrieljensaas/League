@@ -75,6 +75,7 @@ public class Amumu : ChampionCombat
             qCharge--;
             myStats.qCD = 3f;
         }
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
@@ -85,6 +86,7 @@ public class Amumu : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
         wCast = !wCast;
         StartCoroutine(Despair());
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
@@ -95,6 +97,7 @@ public class Amumu : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[1], skillComponentTypes: (SkillComponentTypes)18560);
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
@@ -107,6 +110,7 @@ public class Amumu : ChampionCombat
         if (UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)18560, buffNames: new string[] { "Stun" }) != float.MinValue)
             ApplyCurse();
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     public override IEnumerator ExecuteA()
@@ -117,6 +121,7 @@ public class Amumu : ChampionCombat
         if (UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Amumu's Auto Attack") != float.MinValue)
             ApplyCurse();
         attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     public IEnumerator Despair()
