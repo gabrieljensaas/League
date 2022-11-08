@@ -100,6 +100,15 @@ public class Anivia : ChampionCombat
         MyBuffManager.Add("Channeling", new ChannelingBuff(float.MaxValue, MyBuffManager, RSkill().basic.name, "GlacialStorm"));
     }
 
+    public override IEnumerator ExecuteA()
+    {
+        if (!CheckForAbilityControl(checksA)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(0.1f));
+        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5916), "Anivia's Auto Attack");
+        attackCooldown = 1f / myStats.attackSpeed;
+    }
+
     public IEnumerator GlacialStorm()
     {
         yield return new WaitForSeconds(0.5f);

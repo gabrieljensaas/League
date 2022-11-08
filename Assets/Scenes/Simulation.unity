@@ -22021,16 +22021,16 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: '{     "APIMatchInfo": {         "version": "12.17.1",        
             "minute": "5",         "championInfo": [             {                
-            "champName": "MissFortune",                 "champLevel": 4,                
-            "items": [                     3070,                     1036,                    
-            1036                 ],                 "ability": [                    
-            1,                     1,                     2,                    
-            0                 ]             },             {                 "champName":
-            "Tristana",                 "champLevel": 3,                 "items":
-            [                     1055,                     1001,                    
-            1042,                     1036                 ],                 "ability":
-            [                     1,                     1,                     1,                    
-            0                 ]             }         ]     } }'
+            "champName": "MissFortune",                 "champLevel": 6,                
+            "items": [                     3134,                     1001,                    
+            3133                 ],                 "ability": [                    
+            3,                     1,                     1,                    
+            1                 ]             },             {                 "champName":
+            "Ahri",                 "champLevel": 7,                 "items": [                    
+            3070,                     3802,                     1001                
+            ],                 "ability": [                     4,                    
+            1,                     1,                     1                 ]            
+            }         ]     } }'
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1638351006

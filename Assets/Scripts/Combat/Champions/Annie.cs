@@ -115,6 +115,15 @@ public class Annie : ChampionCombat
         pets.Add(new Tibbers(this, 3100, ((myStats.rLevel + 1) / 2 * 50) + (myStats.AP * 15 / 100), 0.625f, 90, 90)); //health, armor and mresist are for max level change when level adjusting of skills done
     }
 
+    public override IEnumerator ExecuteA()
+    {
+        if (!CheckForAbilityControl(checksA)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(0.1f));
+        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5916), "Annie's Auto Attack");
+        attackCooldown = 1f / myStats.attackSpeed;
+    }
+
     public override IEnumerator HijackedR(int skillLevel)
     {
         yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));

@@ -146,5 +146,6 @@ public class Aatrox : ChampionCombat
                     new Damage(targetStats.maxHealth * (5 + (7 / 17 * (myStats.level - 1))), SkillDamageType.Phyiscal, (SkillComponentTypes)32), "Deathbringer Stance");
             else pCD -= 2;
         }
+        attackCooldown = 1f / myStats.attackSpeed;
     }
 }

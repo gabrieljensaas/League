@@ -124,8 +124,6 @@ public class Ashe : ChampionCombat
                 StopCoroutine(GainFocus());
                 StartCoroutine(GainFocus());
             }
-
-
         }
 
         if (!targetStats.buffManager.buffs.TryAdd("Frosted", new FrostedBuff(2, targetStats.buffManager, "Ashe's Auto Attack")))
@@ -133,6 +131,8 @@ public class Ashe : ChampionCombat
             targetStats.buffManager.buffs["Frosted"].duration = 2;
             targetStats.buffManager.buffs["Frosted"].source = "Ashe's Auto Attack";
         }
+
+        attackCooldown = 1f / myStats.attackSpeed;
     }
 
     public IEnumerator GainFocus()

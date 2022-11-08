@@ -116,6 +116,7 @@ public class Amumu : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(0.1f));
         if (UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Amumu's Auto Attack") != float.MinValue)
             ApplyCurse();
+        attackCooldown = 1f / myStats.attackSpeed;
     }
 
     public IEnumerator Despair()

@@ -223,6 +223,7 @@ public class Akshan : ChampionCombat
                 MyBuffManager.Add("DirtyFighting", new DirtyFightingBuff(5, MyBuffManager, "Akshan's Auto Attack"));
             }
         }
+        attackCooldown = 1f / myStats.attackSpeed;
     }
 
     public IEnumerator HeroicSwing(int shots)

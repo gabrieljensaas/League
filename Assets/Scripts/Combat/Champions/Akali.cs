@@ -187,6 +187,7 @@ public class Akali : ChampionCombat
         if (MyBuffManager.buffs.TryGetValue("Untargetable", out Buff value)) value.Kill();
         yield return StartCoroutine(StartCastingAbility(0.1f));
         UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Akali's Auto Attack");
+        attackCooldown = 1f / myStats.attackSpeed;
     }
 
     /*public void AssassinsMark()
