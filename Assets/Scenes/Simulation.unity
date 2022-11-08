@@ -6054,7 +6054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _simulatorTargetedFPS: 60
-  _simulatorTimeScale: 6
+  _simulatorTimeScale: 5
   _simulatorFixedTimeStep: 0.033
   championsDropdowns:
   - {fileID: 884130053}
@@ -22020,16 +22020,17 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: '{     "APIMatchInfo": {         "version": "12.17.1",        
-            "minute": "4",         "championInfo": [             {                
-            "champName": "MissFortune",                 "champLevel": 3,                
-            "items": [                     3070                 ],                
-            "ability": [                     1,                     1,                    
-            1,                     0                 ]             },            
-            {                 "champName": "Tristana",                 "champLevel":
-            3,                 "items": [                     1055                
-            ],                 "ability": [                     1,                    
-            1,                     1,                     0                 ]            
-            }         ]     } }'
+            "minute": "5",         "championInfo": [             {                
+            "champName": "MissFortune",                 "champLevel": 4,                
+            "items": [                     3070,                     1036,                    
+            1036                 ],                 "ability": [                    
+            1,                     1,                     2,                    
+            0                 ]             },             {                 "champName":
+            "Tristana",                 "champLevel": 3,                 "items":
+            [                     1055,                     1001,                    
+            1042,                     1036                 ],                 "ability":
+            [                     1,                     1,                     1,                    
+            0                 ]             }         ]     } }'
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1638351006

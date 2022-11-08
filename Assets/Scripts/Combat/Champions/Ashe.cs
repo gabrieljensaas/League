@@ -30,7 +30,7 @@ public class Ashe : ChampionCombat
 
 
         qKeys.Add("Bonus Attack Speed");
-        qKeys.Add("Total Damage Per Flurry");
+        qKeys.Add("Physical Damage Per Arrow");
         wKeys.Add("Physical Damage");
         rKeys.Add("Magic Damage");
 
@@ -57,7 +57,7 @@ public class Ashe : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        if (UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes:SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile) != float.MinValue)
+        if (UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)18564) != float.MinValue)
         {
             if (!targetStats.buffManager.buffs.TryAdd("Frosted", new FrostedBuff(2, targetStats.buffManager, myStats.wSkill[0].basic.name)))
             {
@@ -74,7 +74,7 @@ public class Ashe : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        if (UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: SkillComponentTypes.Spellblockable | SkillComponentTypes.Projectile) != float.MinValue)
+        if (UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)18564) != float.MinValue)
         {
             targetStats.buffManager.buffs.Add("Stun", new StunBuff(1, targetStats.buffManager, myStats.rSkill[0].basic.name));
             if (!targetStats.buffManager.buffs.TryAdd("Frosted", new FrostedBuff(2, targetStats.buffManager, myStats.rSkill[0].basic.name)))
@@ -106,7 +106,18 @@ public class Ashe : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        if(AutoAttack(new Damage(MyBuffManager.buffs.ContainsKey(QSkill().basic.name) ? QSkill().UseSkill(4, qKeys[1], myStats, targetStats) : myStats.AD , SkillDamageType.Phyiscal, SkillComponentTypes.OnHit | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable)).damage != float.MinValue)
+
+        if (MyBuffManager.buffs.ContainsKey(QSkill().basic.name))
+        {
+            if(UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[1], myStats, targetStats), SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)1820), QSkill().basic.name) != float.MinValue)
+            {
+                UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[1], myStats, targetStats), SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)3672), QSkill().basic.name);
+                UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[1], myStats, targetStats), SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)3672), QSkill().basic.name);
+                UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[1], myStats, targetStats), SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)3672), QSkill().basic.name);
+                UpdateTotalDamage(ref qSum, 0, new Damage(QSkill().UseSkill(myStats.qLevel, qKeys[1], myStats, targetStats), SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)3672), QSkill().basic.name);
+            }
+        }
+        else if(UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)1820), "Ashe's Auto Attack") != float.MinValue)
         {
             if(!MyBuffManager.buffs.ContainsKey(QSkill().basic.name))
             {
@@ -114,11 +125,13 @@ public class Ashe : ChampionCombat
                 StartCoroutine(GainFocus());
             }
 
-            if (!targetStats.buffManager.buffs.TryAdd("Frosted", new FrostedBuff(2, targetStats.buffManager, "Ashe's Auto Attack")))
-            {
-                targetStats.buffManager.buffs["Frosted"].duration = 2;
-                targetStats.buffManager.buffs["Frosted"].source = "Ashe's Auto Attack";
-            }
+
+        }
+
+        if (!targetStats.buffManager.buffs.TryAdd("Frosted", new FrostedBuff(2, targetStats.buffManager, "Ashe's Auto Attack")))
+        {
+            targetStats.buffManager.buffs["Frosted"].duration = 2;
+            targetStats.buffManager.buffs["Frosted"].source = "Ashe's Auto Attack";
         }
     }
 

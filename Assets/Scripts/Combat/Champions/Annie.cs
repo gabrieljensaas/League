@@ -95,7 +95,9 @@ public class Annie : ChampionCombat
         {
             myStats.buffManager.buffs.Add("Pyromania", new PyromaniaBuff(myStats.buffManager, myStats.eSkill[0].basic.name));
         }
-        myStats.buffManager.buffs.Add(myStats.eSkill[0].basic.name, new ShieldBuff(3, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), myStats.eSkill[0].basic.name));
+        myStats.buffManager.buffs.Add(myStats.eSkill[0].basic.name,
+            new ShieldBuff(3, myStats.buffManager, myStats.eSkill[0].basic.name, myStats.eSkill[0].
+            UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), myStats.eSkill[0].basic.name));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
     }
 

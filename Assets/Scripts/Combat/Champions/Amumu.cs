@@ -34,7 +34,7 @@ public class Amumu : ChampionCombat
 
         targetCombat.checkTakeDamage.Add(new CheckForAmumuCurse(targetCombat));
 
-        checkTakeDamagePostMitigation.Add(new CheckTantrumPassive(this)); //need to implement for ability
+        checkTakeDamagePostMitigation.Add(new CheckTantrumPassive(this));
 
         qKeys.Add("Magic Damage");
         wKeys.Add("Magic Damage Per Tick");
