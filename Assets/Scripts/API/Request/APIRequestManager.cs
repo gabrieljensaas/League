@@ -48,4 +48,9 @@ public class APIRequestManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
         simManager.StartBattle();
     }
+
+    public void Reset()
+    {
+        simManager.Reset();
+    }
 }

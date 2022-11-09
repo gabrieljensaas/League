@@ -6054,7 +6054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _simulatorTargetedFPS: 60
-  _simulatorTimeScale: 1
+  _simulatorTimeScale: 5
   _simulatorFixedTimeStep: 0.033
   championsDropdowns:
   - {fileID: 884130053}
@@ -22020,18 +22020,16 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: '{     "APIMatchInfo": {         "version": "12.17.1",        
-            "minute": "25",         "championInfo": [             {                
-            "champName": "MissFortune",                 "champLevel": 18,                
-            "items": [                     6691,                     6676,                    
-            3006,                     3142,                     6694,                    
-            3153                 ],                 "ability": [                    
-            5,                     5,                     5,                    
-            3                 ]             },             {                 "champName":
-            "Ahri",                 "champLevel": 18,                 "items": [                    
-            6655,                     4645,                     3020,                    
-            3135,                     3089                 ],                 "ability":
-            [                     5,                     5,                     5,                    
-            3                 ]             }         ]     } }'
+            "minute": "5",         "championInfo": [             {                
+            "champName": "Akali",                 "champLevel": 5,                
+            "items": [                     1054,                     1001,                    
+            1082,                     1052                 ],                 "ability":
+            [                     3,                     1,                     1,                    
+            0                 ]             },             {                 "champName":
+            "Aatrox",                 "champLevel": 5,                 "items": [                    
+            1054                 ],                 "ability": [                    
+            3,                     1,                     1,                    
+            0                 ]             }         ]     } }'
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1638351006

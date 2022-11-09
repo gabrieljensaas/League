@@ -66,21 +66,21 @@ public class Aatrox : ChampionCombat
             myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
             timeSinceLastQ = 0f;
             qCounter++;
-            targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.25f, targetStats.buffManager, QSkill().basic.name));
+            TargetBuffManager.Add("Airborne", new AirborneBuff(0.25f, targetStats.buffManager, QSkill().basic.name));
             UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], buffNames: new string[] { "Airborne" }, skillComponentTypes: (SkillComponentTypes)18560);
         }
         else if (qCounter == 2)
         {
             timeSinceLastQ = 0f;
             qCounter = 0;
-            targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.25f, targetStats.buffManager, QSkill().basic.name));
+            TargetBuffManager.Add("Airborne", new AirborneBuff(0.25f, targetStats.buffManager, QSkill().basic.name));
             UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[2], buffNames: new string[] { "Airborne" }, skillComponentTypes: (SkillComponentTypes)18560);
         }
         else
         {
             timeSinceLastQ = 0f;
             qCounter++;
-            targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.25f, targetStats.buffManager, QSkill().basic.name));
+            TargetBuffManager.Add("Airborne", new AirborneBuff(0.25f, targetStats.buffManager, QSkill().basic.name));
             UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1], buffNames: new string[] { "Airborne" }, skillComponentTypes: (SkillComponentTypes)18560);
         }
         pCD -= 4;
@@ -97,7 +97,7 @@ public class Aatrox : ChampionCombat
         if (UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)34948) != float.MinValue)
         {
             yield return new WaitForSeconds(1.5f);
-            targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.1f, targetStats.buffManager, myStats.qSkill[0].basic.name));  //pulled airborne needs research
+            TargetBuffManager.Add("Airborne", new AirborneBuff(0.1f, targetStats.buffManager, myStats.qSkill[0].basic.name));  //pulled airborne needs research
             UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)32768, buffNames: new string[] { "Airborne" });
             pCD -= 2;
         }

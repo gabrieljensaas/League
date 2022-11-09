@@ -25,7 +25,7 @@ public class BuffManager
         if (buffs.TryGetValue(key, out Buff oldBuff) && oldBuff.duration < newBuff.duration)
             oldBuff.duration = newBuff.duration;
         else
-            buffs.Add(key, newBuff);
+            buffs.TryAdd(key, newBuff);
     }
 
     public void Update()                                      //check if any expired
