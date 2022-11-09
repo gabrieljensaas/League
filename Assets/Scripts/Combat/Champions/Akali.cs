@@ -140,7 +140,7 @@ public class Akali : ChampionCombat
             if (MyBuffManager.buffs.TryGetValue("Untargetable", out Buff value)) value.Kill();
             yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
             StartCoroutine(PerfectExecution());
-            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], skillComponentTypes: (SkillComponentTypes)18562);
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)18562);
             myStats.rCD = 2.5f;
             timeSinceR = 0;
             //AssassinsMark();
