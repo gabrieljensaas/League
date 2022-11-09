@@ -73,7 +73,7 @@ public class Ahri : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        targetStats.buffManager.buffs.Add("Charm",
+        TargetBuffManager.Add("Charm",
             new CharmBuff(myStats.eSkill[0].UseSkill(myStats.eLevel, eKeys[1], myStats, targetStats), TargetBuffManager, myStats.eSkill[0].basic.name));
         UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], buffNames: new string[] { "Charm" }, skillComponentTypes: (SkillComponentTypes)34948);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
@@ -88,7 +88,7 @@ public class Ahri : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         if (rStacks == 0) rStacks = 2;
         else rStacks--;
-        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], skillComponentTypes: (SkillComponentTypes)18566);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)18566);
         myStats.rCD = rStacks > 0 ? 1 : myStats.rSkill[0].basic.coolDown[myStats.rLevel];
         simulationManager.AddCastLog(myCastLog, 3);
     }
