@@ -89,12 +89,12 @@ public class Aatrox : ChampionCombat
 
     public override IEnumerator ExecuteW()
     {
-        if (myStats.wLevel == 0) yield break;
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
-        if (UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)34948) > 0)
+        if (UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)34948) != float.MinValue)
         {
             yield return new WaitForSeconds(1.5f);
             targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.1f, targetStats.buffManager, myStats.qSkill[0].basic.name));  //pulled airborne needs research
@@ -106,7 +106,7 @@ public class Aatrox : ChampionCombat
 
     public override IEnumerator ExecuteE()
     {
-        if (myStats.eLevel == 0) yield break;
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
@@ -118,12 +118,12 @@ public class Aatrox : ChampionCombat
 
     public override IEnumerator ExecuteR()
     {
-        if (myStats.rLevel == 0) yield break;
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name,
-            new AttackDamageBuff(10, myStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(2, rKeys[0], myStats, targetStats),
+            new AttackDamageBuff(10, myStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats),
             myStats.rSkill[0].basic.name));
         UpdateTotalDamage(ref rSum, 3, new Damage(0, SkillDamageType.Phyiscal, (SkillComponentTypes)2048), RSkill().basic.name);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
@@ -143,7 +143,7 @@ public class Aatrox : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        if (UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Aatrox's Auto Attack") > float.MinValue)
+        if (UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Aatrox's Auto Attack") != float.MinValue)
         {
             if (MyBuffManager.buffs.ContainsKey("DeathbringerStance"))
                 UpdateTotalDamage(ref pSum, 5,
