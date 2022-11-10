@@ -329,7 +329,7 @@ namespace Simulator.Combat
         protected void EndBattle(string winner)
         {
             Time.timeScale = 0;
-            SimManager.isSimulating = false;
+            SimManager.Instance.isSimulating = false;
             simulationManager.ShowText($"{myStats.name} Has Died! {targetStats.name} Won With {targetStats.currentHealth} Health Remaining!");
             StopAllCoroutines();
             targetCombat.StopAllCoroutines();

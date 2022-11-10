@@ -13,7 +13,7 @@ public class SimManager : MonoBehaviour
     [SerializeField] private float _simulatorTimeScale = 10;
     [SerializeField] private float _simulatorFixedTimeStep = 0.01f; //original time step = 0.02f
 
-    public static bool isSimulating = false;
+    public bool isSimulating = false;
 
     [SerializeField] private TMP_Dropdown[] championsDropdowns;
     [SerializeField] private TMP_InputField[] championsExperienceInput;

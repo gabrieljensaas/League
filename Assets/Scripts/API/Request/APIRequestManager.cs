@@ -30,6 +30,7 @@ public class APIRequestManager : MonoBehaviour
         simManager = SimManager.Instance;
         externalJS = GetComponent<ExternalJS>();
         externalJS.SendReady();
+        Time.timeScale = 1;
     }
 
     public void SendOutputToJS(WebData data)
