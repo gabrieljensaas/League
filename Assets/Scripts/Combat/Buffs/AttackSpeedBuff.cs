@@ -5,8 +5,8 @@ public class AttackSpeedBuff : Buff
     public string uniqueKey;
     public AttackSpeedBuff(float duration, BuffManager manager, string source, float attackSpeed, string uniqueKey) : base(manager)
     {
-        manager.combat.attackCooldown *= manager.stats.attackSpeed / (manager.stats.attackSpeed + (attackSpeed * manager.stats.attackSpeed));
-        manager.stats.attackSpeed += attackSpeed * manager.stats.attackSpeed;
+        manager.combat.attackCooldown *= manager.stats.attackSpeed / (manager.stats.attackSpeed + (attackSpeed * manager.stats.baseAttackSpeed));
+        manager.stats.attackSpeed += attackSpeed * manager.stats.baseAttackSpeed;
         this.value = attackSpeed;
         base.duration = duration;
         base.source = source;
@@ -21,16 +21,16 @@ public class AttackSpeedBuff : Buff
     }
     public override void Kill()
     {
-        manager.simulationManager.ShowText($"{manager.stats.name} Has No Longer {value * manager.stats.attackSpeed} Extra Attack Speed From {source}!");
-        manager.combat.attackCooldown *= manager.stats.attackSpeed / (manager.stats.attackSpeed - (value * manager.stats.attackSpeed));
-        manager.stats.attackSpeed -= value * manager.stats.attackSpeed;
+        manager.simulationManager.ShowText($"{manager.stats.name} Has No Longer {value * manager.stats.baseAttackSpeed} Extra Attack Speed From {source}!");
+        manager.combat.attackCooldown *= manager.stats.attackSpeed / (manager.stats.attackSpeed - (value * manager.stats.baseAttackSpeed));
+        manager.stats.attackSpeed -= value * manager.stats.baseAttackSpeed;
         manager.buffs.Remove(uniqueKey);
     }
 
     public void KillSilent()
     {
-        manager.combat.attackCooldown *= manager.stats.attackSpeed / (manager.stats.attackSpeed - (value * manager.stats.attackSpeed));
-        manager.stats.attackSpeed -= value * manager.stats.attackSpeed;
+        manager.combat.attackCooldown *= manager.stats.attackSpeed / (manager.stats.attackSpeed - (value * manager.stats.baseAttackSpeed));
+        manager.stats.attackSpeed -= value * manager.stats.baseAttackSpeed;
         manager.buffs.Remove(uniqueKey);
     }
 }
