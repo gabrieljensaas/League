@@ -6056,6 +6056,7 @@ MonoBehaviour:
   _simulatorTargetedFPS: 60
   _simulatorTimeScale: 5
   _simulatorFixedTimeStep: 0.033
+  isSimulating: 0
   championsDropdowns:
   - {fileID: 884130053}
   - {fileID: 1652948117}
@@ -22020,16 +22021,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: '{     "APIMatchInfo": {         "version": "12.17.1",        
-            "minute": "5",         "championInfo": [             {                
-            "champName": "Akali",                 "champLevel": 5,                
-            "items": [                     1054,                     1001,                    
-            1082,                     1052                 ],                 "ability":
-            [                     3,                     1,                     1,                    
-            0                 ]             },             {                 "champName":
-            "Aatrox",                 "champLevel": 5,                 "items": [                    
-            1054                 ],                 "ability": [                    
-            3,                     1,                     1,                    
-            0                 ]             }         ]     } }'
+            "minute": "20",         "championInfo": [             {                
+            "champName": "MissFortune",                 "champLevel": 17,                
+            "items": [                     3006,                     6692,                    
+            3042,                     6676,                     6696,                    
+            3072                 ],                 "ability": [                    
+            5,                     5,                     4,                    
+            3                 ]             },             {                 "champName":
+            "Azir",                 "champLevel": 18,                 "items": [                    
+            3006,                     3115,                     6653,                    
+            3116,                     3157                 ],                 "ability":
+            [                     5,                     4,                     5,                    
+            3                 ]             }         ]     } }'
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1638351006
