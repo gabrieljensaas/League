@@ -44,35 +44,50 @@ public class Lillia : ChampionCombat
 
     public override IEnumerator ExecuteA()
     {
-        yield return base.ExecuteA();
+        if (!CheckForAbilityControl(checksA)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(0.1f));
+        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Lilia's Auto Attack");
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
         LiltingLullabyProc();
     }
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateTotalDamage(ref qSum, 0, QSkill(), 4, qKeys[1]);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1], skillComponentTypes: (SkillComponentTypes)51328);
         myStats.qCD = QSkill().basic.coolDown[4];
+        simulationManager.AddCastLog(myCastLog, 0);
         DreamDust();
         LiltingLullabyProc();
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        UpdateTotalDamage(ref wSum, 1, WSkill(), 4, wKeys[1]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[1], skillComponentTypes: (SkillComponentTypes)51330);
         myStats.wCD = WSkill().basic.coolDown[4];
+        simulationManager.AddCastLog(myCastLog, 1);
         DreamDust();
         LiltingLullabyProc();
     }
 
     public override IEnumerator ExecuteE()
     {
-        yield return base.ExecuteE();
+        if (myStats.eLevel == -1) yield break;
+        if (!CheckForAbilityControl(checksE)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: (SkillComponentTypes)51332);
+        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
         DreamDust();
         LiltingLullabyProc();
     }
@@ -81,11 +96,14 @@ public class Lillia : ChampionCombat
     {
         if (TargetBuffManager.buffs.ContainsKey("DreamDust"))
         {
+            if (myStats.rLevel == -1) yield break;
             if (!CheckForAbilityControl(checksR)) yield break;
 
             yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-            TargetBuffManager.Add("Drowsy", new DrowsyBuff(1.5f, TargetBuffManager, RSkill().name, RSkill().UseSkill(4, rKeys[0], myStats, targetStats)));
+            UpdateTotalDamage(ref rSum, 4, new Damage(0, SkillDamageType.Spell, (SkillComponentTypes)34944), "Lilting Lullaby");
+            TargetBuffManager.Add("Drowsy", new DrowsyBuff(1.5f, TargetBuffManager, RSkill().name, RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats)));
             myStats.rCD = RSkill().basic.coolDown[2];
+            simulationManager.AddCastLog(myCastLog, 4);
         }
     }
 
@@ -102,7 +120,7 @@ public class Lillia : ChampionCombat
         if (TargetBuffManager.buffs.TryGetValue("Sleep", out Buff buff))
         {
             buff.Kill();
-            UpdateTotalDamage(ref rSum, 3, RSkill(), 2, rKeys[1]);
+            UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[1]);
         }
     }
 }
