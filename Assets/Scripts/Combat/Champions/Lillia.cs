@@ -59,7 +59,7 @@ public class Lillia : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1], skillComponentTypes: (SkillComponentTypes)51328);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1], skillComponentTypes: (SkillComponentTypes)18560);
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
         simulationManager.AddCastLog(myCastLog, 0);
         DreamDust();
@@ -72,7 +72,7 @@ public class Lillia : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[1], skillComponentTypes: (SkillComponentTypes)51330);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[1], skillComponentTypes: (SkillComponentTypes)18562);
         myStats.wCD = WSkill().basic.coolDown[4];
         simulationManager.AddCastLog(myCastLog, 1);
         DreamDust();
@@ -85,7 +85,7 @@ public class Lillia : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: (SkillComponentTypes)51332);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: (SkillComponentTypes)18564);
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
         simulationManager.AddCastLog(myCastLog, 2);
         DreamDust();
