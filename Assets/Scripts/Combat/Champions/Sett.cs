@@ -12,7 +12,7 @@ public class Sett : ChampionCombat
     public List<GritBuff> gritList = new();
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "R", "W", "E", "Q", "A" };
+        combatPrio = new string[] { "R", "E", "Q", "W", "A" };
 
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
@@ -32,8 +32,7 @@ public class Sett : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
         checksR.Add(new CheckIfImmobilize(this));
         checkTakeDamagePostMitigation.Add(new CheckForGrit(this, this));
-        checkTakeDamagePostMitigation.Add(new CheckForGrit(this, this));
-        checkTakeDamagePostMitigation.Add(new CheckShield(this));
+
         checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Bonus Physical Damage");
@@ -54,43 +53,53 @@ public class Sett : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         pCD = 0;
         leftPunched = false;
         StartCoroutine(KnuckleDown());
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
+
         StartCoroutine(HaymakerShield());
-        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateTotalDamage(ref wSum, 1, new Damage(myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats, grit), SkillDamageType.True), myStats.wSkill[0].basic.name);
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+        UpdateTotalDamage(ref wSum, 1, new Damage(WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats, grit), SkillDamageType.True, (SkillComponentTypes)16512), WSkill().basic.name);
+        myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.1f, targetStats.buffManager, myStats.eSkill[0].basic.name));
-        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
+        TargetBuffManager.Add("Airborne", new AirborneBuff(0.1f, TargetBuffManager, ESkill().basic.name));
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: (SkillComponentTypes)18560);
+        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
         yield return StartCoroutine(StartCastingAbility(0.25f));
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
-        targetStats.buffManager.buffs.Add("Suppression", new SuppressionBuff(1.5f, targetStats.buffManager, myStats.rSkill[0].basic.name));
+
+        myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
+        TargetBuffManager.Add("Suppression", new SuppressionBuff(1.5f, TargetBuffManager, RSkill().basic.name));
         yield return StartCoroutine(StartCastingAbility(1.23f));
-        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes:(SkillComponentTypes)18562);
         yield return StartCoroutine(StartCastingAbility(0.27f));
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     public override IEnumerator HijackedR(int skillLevel)
@@ -110,7 +119,7 @@ public class Sett : ChampionCombat
         if (knuckleDown > 0)
         {
             yield return StartCoroutine(StartCastingAbility(1f));
-            AutoAttack(new Damage(myStats.AD + myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats), SkillDamageType.Phyiscal));
+            UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD + QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Sett Empowered Q Auto Attack");
             pCD = 0;
             leftPunched = false;
             knuckleDown--;
@@ -118,17 +127,19 @@ public class Sett : ChampionCombat
         else if (leftPunched)
         {
             yield return StartCoroutine(StartCastingAbility(0.0125f));
-            AutoAttack(new Damage(myStats.AD + (5 * myStats.level) + (myStats.bonusAD), SkillDamageType.Phyiscal));
+            UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD + (5 * myStats.level) + (myStats.bonusAD), SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "SettEmpowered Auto Attack");
             pCD = 0;
             leftPunched = false;
         }
         else
         {
             yield return StartCoroutine(StartCastingAbility(0.1f));
-            AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
+            UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Sett's Auto Attack");
             leftPunched = true;
             pCD = 0;
         }
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     public IEnumerator KnuckleDown()
@@ -140,9 +151,9 @@ public class Sett : ChampionCombat
 
     public IEnumerator HaymakerShield()
     {
-        myStats.buffManager.shields.Add(myStats.wSkill[0].basic.name, new ShieldBuff(3, myStats.buffManager, myStats.wSkill[0].basic.name, grit, myStats.wSkill[0].basic.name));
+        MyBuffManager.Add(myStats.wSkill[0].basic.name, new ShieldBuff(3, MyBuffManager, myStats.wSkill[0].basic.name, grit, WSkill().basic.name, decaying: true));
         yield return new WaitForSeconds(0.75f);
-        if (myStats.buffManager.shields.TryGetValue(myStats.wSkill[0].basic.name, out ShieldBuff value))
+        if (MyBuffManager.shields.TryGetValue(WSkill().basic.name, out ShieldBuff value))
         {
             value.decaying = true;
         }
