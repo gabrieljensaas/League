@@ -46,17 +46,19 @@ public class Sion : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
         myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(2, myStats.buffManager, myStats.rSkill[0].basic.name, "DecimatingStrike"));
         StartCoroutine(DecimatingStrike());
         simulationManager.AddCastLog(myCastLog, 0);
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+        myStats.qCD = myStats.qSkill[0].basic.coolDown[myStats.qLevel];
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
@@ -69,31 +71,33 @@ public class Sion : ChampionCombat
         {
             MyBuffManager.shields[myStats.wSkill[0].basic.name].Kill();
             UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[1], skillComponentTypes: (SkillComponentTypes)51328);
-            myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+            myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
         }
         simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], skillComponentTypes: (SkillComponentTypes)51332);
         TargetBuffManager.Add(myStats.eSkill[0].basic.name, new ArmorReductionBuff(4, targetStats.buffManager, myStats.eSkill[0].basic.name, 20, myStats.eSkill[0].basic.name));
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
         simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.5f, targetStats.buffManager, myStats.qSkill[0].basic.name));
         targetStats.buffManager.buffs.Add("Stun", new StunBuff(0.25f, targetStats.buffManager, myStats.qSkill[0].basic.name));
         UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)18562);
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
         simulationManager.AddCastLog(myCastLog, 4);
     }
 
