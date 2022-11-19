@@ -36,48 +36,56 @@ public class Ezreal : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)34972);
+        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
         myStats.qCD -= 1.5f;
         myStats.wCD -= 1.5f;
         myStats.eCD -= 1.5f;
         myStats.rCD -= 1.5f;
         CheckEssenceFlux();
         RisingSpellForce();
+        simulationManager.AddCastLog(myCastLog, 0);
     }
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
         targetStats.buffManager.buffs.Add("EssenceFlux", new EssenceFluxBuff(4, targetStats.buffManager, myStats.wSkill[0].basic.name));
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
         RisingSpellForce();
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0],skillComponentTypes:(SkillComponentTypes)34949);
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
         CheckEssenceFlux();
         RisingSpellForce();
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0],skillComponentTypes:(SkillComponentTypes)18564);
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
         CheckEssenceFlux();
         RisingSpellForce();
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     public override IEnumerator ExecuteA()
@@ -85,7 +93,9 @@ public class Ezreal : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
+        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Ezreal's Auto Attack");
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
         CheckEssenceFlux();
     }
 
@@ -94,7 +104,7 @@ public class Ezreal : ChampionCombat
         if (targetStats.buffManager.buffs.TryGetValue("EssenceFlux", out Buff value))
         {
             value.Kill();
-            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0]);
         }
     }
 
