@@ -60,7 +60,7 @@ public class Lillia : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1], skillComponentTypes: (SkillComponentTypes)51328);
-        myStats.qCD = QSkill().basic.coolDown[4];
+        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
         simulationManager.AddCastLog(myCastLog, 0);
         DreamDust();
         LiltingLullabyProc();
@@ -102,7 +102,7 @@ public class Lillia : ChampionCombat
             yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
             UpdateTotalDamage(ref rSum, 4, new Damage(0, SkillDamageType.Spell, (SkillComponentTypes)34944), "Lilting Lullaby");
             TargetBuffManager.Add("Drowsy", new DrowsyBuff(1.5f, TargetBuffManager, RSkill().name, RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats)));
-            myStats.rCD = RSkill().basic.coolDown[2];
+            myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
             simulationManager.AddCastLog(myCastLog, 4);
         }
     }
