@@ -34,6 +34,8 @@ public class SimManager : MonoBehaviour
     public List<BuffLog> bufflogs = new List<BuffLog>();
     public CastLog castlog1;
     public CastLog castlog2;
+    public List<Tooltip> tooltips = new List<Tooltip>();
+    public List<ChampionStatsExternal> championStats = new List<ChampionStatsExternal>();
 
     #region Singleton
     private static SimManager _instance;
@@ -227,10 +229,15 @@ public class SimManager : MonoBehaviour
 
         OutputField.SetActive(true);
         resetButton.interactable = true;
-        isSimulating = true;
+        tooltips.Add(champStats[0].MyCombat.UpdateTooltip());
+        tooltips.Add(champStats[1].MyCombat.UpdateTooltip());
+        championStats.Add(champStats[0].MyCombat.UpdateStatsExternal());
+        championStats.Add(champStats[1].MyCombat.UpdateStatsExternal());
+        
+        StartCoroutine(TakeSnapShot());
         champStats[0].MyCombat.StartCoroutine(champStats[0].MyCombat.StartHPRegeneration());
         champStats[1].MyCombat.StartCoroutine(champStats[1].MyCombat.StartHPRegeneration());
-        StartCoroutine(TakeSnapShot());
+        isSimulating = true;
         timer = 0f;
     }
 

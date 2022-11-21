@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public struct AutoAttackReturn
 {
@@ -335,7 +337,7 @@ namespace Simulator.Combat
             targetCombat.StopAllCoroutines();
             simulationManager.StopCoroutine(simulationManager.TakeSnapShot());
             simulationManager.snaps.Add(new SnapShot("", new ChampionSnap(simulationManager.champStats[0].name, simulationManager.champStats[0].PercentCurrentHealth * 100), new ChampionSnap(simulationManager.champStats[1].name, simulationManager.champStats[1].PercentCurrentHealth * 100), simulationManager.timer));
-            APIRequestManager.Instance.SendOutputToJS(new WebData(simulationManager.snaps.ToArray(), simulationManager.damagelogs.ToArray(), simulationManager.heallogs.ToArray(), simulationManager.bufflogs.ToArray(), winner, simulationManager.timer, new CastLog[] {simulationManager.castlog1, simulationManager.castlog2}));
+            APIRequestManager.Instance.SendOutputToJS(new WebData(simulationManager.snaps.ToArray(), simulationManager.damagelogs.ToArray(), simulationManager.heallogs.ToArray(), simulationManager.bufflogs.ToArray(), winner, simulationManager.timer, new CastLog[] {simulationManager.castlog1, simulationManager.castlog2}, simulationManager.tooltips.ToArray(), simulationManager.championStats.ToArray()));
         }
 
         public void UpdateTarget(int index)
@@ -372,6 +374,16 @@ namespace Simulator.Combat
             yield return new WaitForSeconds(0.5f);
             UpdateTotalHeal(ref hSum, myStats.hpRegen * 0.1f, "Health Regeneration");
             StartCoroutine(StartHPRegeneration());
+        }
+
+        public virtual Tooltip UpdateTooltip()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual ChampionStatsExternal UpdateStatsExternal()
+        {
+            throw new NotImplementedException();
         }
     }
 }

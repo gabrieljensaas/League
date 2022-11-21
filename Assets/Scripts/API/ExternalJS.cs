@@ -35,7 +35,9 @@ public class WebData
     public HealLog[] HealLogs;
     public BuffLog[] BuffLogs;
     public CastLog[] CastLogs;
-    public WebData(SnapShot[] snap, DamageLog[] dmglogs, HealLog[] hlogs, BuffLog[] bufflogs, string winner, float fightDuration, CastLog[] CastLogs)
+    public Tooltip[] Tooltips;
+    public ChampionStatsExternal[] ChampionStats;
+    public WebData(SnapShot[] snap, DamageLog[] dmglogs, HealLog[] hlogs, BuffLog[] bufflogs, string winner, float fightDuration, CastLog[] CastLogs, Tooltip[] tooltips, ChampionStatsExternal[] championStats)
     {
         this.DamageLogs = dmglogs;
         this.SnapShots = snap;
@@ -44,6 +46,8 @@ public class WebData
         this.winner = winner;
         this.fightDuration = fightDuration;
         this.CastLogs = CastLogs;
+        Tooltips = tooltips;
+        ChampionStats = championStats;
     }
 }
 [System.Serializable]
@@ -144,5 +148,93 @@ public class CastLog
     public CastLog(string championName)
     {
         this.championName = championName;
+    }
+}
+
+[System.Serializable]
+public class Tooltip
+{
+    public string championName;
+    public int[] QValues;
+    public int[] WValues;
+    public int[] EValues;
+    public int[] RValues;
+
+    public Tooltip(string championName, int[] qValues, int[] wValues, int[] eValues, int[] rValues)
+    {
+        this.championName = championName;
+        QValues = qValues;
+        WValues = wValues;
+        EValues = eValues;
+        RValues = rValues;
+    }
+}
+
+[System.Serializable]
+public class ChampionStatsExternal
+{
+    public string championName;
+    public int MaxHP;
+    public int AD;
+    public int AP;
+    public int Armor;
+    public int Spellblock;
+    public int AttackSpeed;
+    public int Tenacity;
+    public int Lifesteal;
+    public int BaseHP;
+    public int BaseArmor;
+    public int BaseSpellblock;
+    public int BaseAttackSpeed;
+    public int BaseAD;
+    public int CriticalStrikeChance;
+    public int CriticalStrikeDamage;
+    public int ArmorPenetrationFlat;
+    public int ArmorPenetrationPercent;
+    public int MagicPenetrationFlat;
+    public int MagicPenetrationPercent;
+    public int Omnivamp;
+    public int Spellvamp;
+    public int Physicalvamp;
+    public int HealAndShieldPower;
+    public int AbilityHaste;
+    public int BasicAbilityHaste;
+    public int UltimateAbilityHaste;
+    public int ItemAbilityHaste;
+    public int SummonerSpellAbilityHaste;
+    public int HPRegeneration;
+
+    public ChampionStatsExternal(string championName, int maxHP, int aD, int aP, int armor, int spellblock, int attackSpeed, int tenacity, int lifesteal, int baseHP, int baseArmor, int baseSpellblock, int baseAttackSpeed, int baseAD, int criticalStrikeChance, int criticalStrikeDamage, int armorPenetrationFlat, int armorPenetrationPercent, int magicPenetrationFlat, int magicPenetrationPercent, int omnivamp, int spellvamp, int physicalvamp, int healAndShieldPower, int abilityHaste, int basicAbilityHaste, int ultimateAbilityHaste, int itemAbilityHaste, int summonerSpellAbilityHaste, int hPRegeneration)
+    {
+        this.championName = championName;
+        MaxHP = maxHP;
+        AD = aD;
+        AP = aP;
+        Armor = armor;
+        Spellblock = spellblock;
+        AttackSpeed = attackSpeed;
+        Tenacity = tenacity;
+        Lifesteal = lifesteal;
+        BaseHP = baseHP;
+        BaseArmor = baseArmor;
+        BaseSpellblock = baseSpellblock;
+        BaseAttackSpeed = baseAttackSpeed;
+        BaseAD = baseAD;
+        CriticalStrikeChance = criticalStrikeChance;
+        CriticalStrikeDamage = criticalStrikeDamage;
+        ArmorPenetrationFlat = armorPenetrationFlat;
+        ArmorPenetrationPercent = armorPenetrationPercent;
+        MagicPenetrationFlat = magicPenetrationFlat;
+        MagicPenetrationPercent = magicPenetrationPercent;
+        Omnivamp = omnivamp;
+        Spellvamp = spellvamp;
+        Physicalvamp = physicalvamp;
+        HealAndShieldPower = healAndShieldPower;
+        AbilityHaste = abilityHaste;
+        BasicAbilityHaste = basicAbilityHaste;
+        UltimateAbilityHaste = ultimateAbilityHaste;
+        ItemAbilityHaste = itemAbilityHaste;
+        SummonerSpellAbilityHaste = summonerSpellAbilityHaste;
+        HPRegeneration = hPRegeneration;
     }
 }
