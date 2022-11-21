@@ -73,7 +73,7 @@ public class Lillia : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
         UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[1], skillComponentTypes: (SkillComponentTypes)18562);
-        myStats.wCD = WSkill().basic.coolDown[4];
+        myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
         simulationManager.AddCastLog(myCastLog, 1);
         DreamDust();
         LiltingLullabyProc();

@@ -7,7 +7,7 @@ public class BladeworkBuff : Buff
         base.duration = duration;
         base.source = source;
 
-        manager.buffs.Add("BladeworkAS", new AttackSpeedBuff(duration, manager, source, manager.stats.eSkill[0].UseSkill(4, manager.combat.eKeys[0], manager.stats, manager.combat.targetStats), "BladeworkAS"));
+        manager.buffs.Add("BladeworkAS", new AttackSpeedBuff(duration, manager, source, manager.stats.eSkill[0].UseSkill(manager.combat.myStats.eLevel, manager.combat.eKeys[0], manager.stats, manager.combat.targetStats), "BladeworkAS"));
         manager.simulationManager.ShowText($"{manager.stats.name} has used Bladework for {duration} seconds it will slow and crit!");
     }
 

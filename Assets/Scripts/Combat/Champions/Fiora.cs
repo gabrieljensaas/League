@@ -41,112 +41,121 @@ public class Fiora : ChampionCombat
 
     protected override void CheckPassive()
     {
-        if (!targetStats.buffManager.buffs.TryGetValue("Vitals", out Buff _) && !targetStats.buffManager.buffs.TryGetValue("VitalsGrandChallenge", out Buff _))
+        if (!TargetBuffManager.buffs.TryGetValue("Vitals", out Buff _) && !TargetBuffManager.buffs.TryGetValue("VitalsGrandChallenge", out Buff _))
         {
-            VitalsBuff vitalsBuff = new(15, targetStats.buffManager, "Duelist's Dance")
+            VitalsBuff vitalsBuff = new(15, TargetBuffManager, "Duelist's Dance")
             {
                 activationTime = 13.25f
             };
-            targetStats.buffManager.buffs.Add("Vitals", vitalsBuff);
+            TargetBuffManager.buffs.Add("Vitals", vitalsBuff);
         }
     }
 
     public override IEnumerator ExecuteA()
     {
-        yield return StartCoroutine(base.ExecuteA());
+        if (!CheckForAbilityControl(checksA)) yield break;
 
+        yield return StartCoroutine(StartCastingAbility(0.1f));
+        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Fiora's Auto Attack");
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
         CheckVitals();
-
-        yield return null;
     }
 
     public override IEnumerator ExecuteQ()
     {
-        yield return StartCoroutine(base.ExecuteQ());
+        if (myStats.qLevel == -1) yield break;
+        if (!CheckForAbilityControl(checksQ)) yield break;
 
+        yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1], skillComponentTypes: (SkillComponentTypes)2970);
+        myStats.qCD *= 0.5f;
+        simulationManager.AddCastLog(myCastLog, 0);
         CheckVitals();
 
-        myStats.qCD *= 0.5f;
-        yield return null;
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
 
-        myStats.buffManager.buffs.Add("Riposte", new RiposteBuff(0.75f, myStats.buffManager, myStats.wSkill[0].name));
+        MyBuffManager.Add("Riposte", new RiposteBuff(0.75f, MyBuffManager, myStats.wSkill[0].name));
 
-        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)18560);
+        myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
+        simulationManager.AddCastLog(myCastLog, 1);
 
-        yield return null;
     }
 
     public override IEnumerator ExecuteE()
     {
+
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
 
-        myStats.buffManager.buffs.Add("Bladework", new BladeworkBuff(4, myStats.buffManager, myStats.eSkill[0].name));
+        MyBuffManager.Add("Bladework", new BladeworkBuff(4, MyBuffManager, myStats.eSkill[0].name));
 
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];//2064 we are passing damage on autoattack checks
+        simulationManager.AddCastLog(myCastLog, 2);
 
-        yield return null;
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
 
-        if (targetStats.buffManager.buffs.TryGetValue("Vitals", out Buff vitals))
+        if (TargetBuffManager.buffs.TryGetValue("Vitals", out Buff vitals))
             vitals.Kill();
 
-        VitalsBuff vitalsBuff = new(8, targetStats.buffManager, "Grand Challenge")
+        VitalsBuff vitalsBuff = new(8, TargetBuffManager, "Grand Challenge")
         {
             value = 4,
             activationTime = 7.5f
         };
-        targetStats.buffManager.buffs.Add("VitalsGrandChallenge", vitalsBuff);
-
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        TargetBuffManager.Add("VitalsGrandChallenge", vitalsBuff);
+        myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 4);
     }
 
     public override IEnumerator HijackedR(int skillLevel)
     {
         yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
 
-        VitalsBuff vitalsBuff = new(8, myStats.buffManager, "Grand Challenge")
+        VitalsBuff vitalsBuff = new(8, MyBuffManager, "Grand Challenge")
         {
             value = 4,
             activationTime = 7.5f
         };
-        myStats.buffManager.buffs.Add("VitalsGrandChallenge", vitalsBuff);
+        MyBuffManager.buffs.Add("VitalsGrandChallenge", vitalsBuff);
 
         targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel];
     }
 
     private void CheckVitals()
     {
-        if (targetStats.buffManager.buffs.TryGetValue("Vitals", out Buff vitals))
+        if (TargetBuffManager.buffs.TryGetValue("Vitals", out Buff vitals))
         {
             VitalsBuff vitalsBuff = (VitalsBuff)vitals;
             if (vitalsBuff.isActive)
             {
-                UpdateTotalDamage(ref pSum, 4, new Damage(targetStats.maxHealth * 0.03f, SkillDamageType.True), "Vitals");
+                UpdateTotalDamage(ref pSum, 4, new Damage(targetStats.maxHealth * 0.03f, SkillDamageType.True, (SkillComponentTypes)1824), "Vitals");
                 vitalsBuff.Kill();
             }
         }
-        else if (targetStats.buffManager.buffs.TryGetValue("VitalsGrandChallenge", out Buff vitalsUlt))
+        else if (TargetBuffManager.buffs.TryGetValue("VitalsGrandChallenge", out Buff vitalsUlt))
         {
             VitalsBuff vitalsBuff = (VitalsBuff)vitalsUlt;
             if (vitalsBuff.isActive)
             {
-                UpdateTotalDamage(ref rSum, 3, new Damage(targetStats.maxHealth * 0.03f, SkillDamageType.True), "Vitals Grand Challenge");
+                UpdateTotalDamage(ref rSum, 3, new Damage(targetStats.maxHealth * 0.03f, SkillDamageType.True, (SkillComponentTypes)1824), "Vitals Grand Challenge");
                 vitalsBuff.value--;
 
                 if (vitalsBuff.value <= 0)
@@ -163,7 +172,7 @@ public class Fiora : ChampionCombat
         for (int i = 0; i < vitalsHit; i++)
         {
             yield return new WaitForSeconds(1);
-            UpdateTotalHeal(ref hSum, myStats.rSkill[0].UseSkill(4, rKeys[0], myStats, targetStats), "Victory Zone"); //hardcoded healing
+            UpdateTotalHeal(ref hSum, myStats.rSkill[0].UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats), "Victory Zone"); //hardcoded healing
         }
     }
 }
