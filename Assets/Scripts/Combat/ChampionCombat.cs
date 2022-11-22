@@ -378,12 +378,12 @@ namespace Simulator.Combat
 
         public virtual Tooltip UpdateTooltip()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public virtual ChampionStatsExternal UpdateStatsExternal()
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }
