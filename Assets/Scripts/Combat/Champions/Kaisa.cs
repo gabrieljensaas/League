@@ -160,6 +160,7 @@ public class Kaisa : ChampionCombat
                 if (value.value == 5)
                 {
                     DealPassiveDamage((targetStats.maxHealth - targetStats.currentHealth) / 100 * (15 + (5 * (myStats.AP % 100))));
+                    simulationManager.AddCastLog(myCastLog, 4);
                     value.Kill();
                 }
                 else

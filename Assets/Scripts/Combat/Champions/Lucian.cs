@@ -53,42 +53,53 @@ public class Lucian : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)18560);
+        myStats.qCD = myStats.qSkill[0].basic.coolDown[myStats.qLevel];
         AddLightslinger(myStats.qSkill[0].basic.name);
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)18564);
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
         AddLightslinger(myStats.wSkill[0].basic.name);
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
+        UpdateTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2050), ESkill().basic.name);
         AddLightslinger(myStats.eSkill[0].basic.name);
+        attackCooldown = 0;
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(3, myStats.buffManager, myStats.rSkill[0].basic.name, "TheCulling"));
-        StartCoroutine(TheCulling(22 + 0, (22 + 0) / 3f));                // +0 needs to be added later as critical chance
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        MyBuffManager.Add("Channeling", new ChannelingBuff(3, myStats.buffManager, myStats.rSkill[0].basic.name, "TheCulling"));
+        StartCoroutine(TheCulling(22 + (int)(myStats.critStrikeChance * 0.25f), (22 + (int)(myStats.critStrikeChance * 0.25f)) / 3f));
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
+        UpdateTotalDamage(ref rSum, 3, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), RSkill().basic.name);
         AddLightslinger(myStats.rSkill[0].basic.name);
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     public override IEnumerator HijackedR(int skillLevel)
@@ -104,21 +115,24 @@ public class Lucian : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
+        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5916), "Lucian's Auto Attack");
         yield return new WaitForSeconds(0.25f);
         if (myStats.buffManager.buffs.TryGetValue("Lightslinger", out Buff value))
         {
-            AutoAttack(new Damage(myStats.AD * passiveMultiplier, SkillDamageType.Phyiscal));
-            myStats.eCD -= 2f;
+            UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD * passiveMultiplier, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5916), "Lucian's Auto Attack");
+            myStats.eCD -= 4f;
             value.Kill();
+            simulationManager.AddCastLog(myCastLog, 4);
         }
+        simulationManager.AddCastLog(myCastLog, 5);
+        attackCooldown = 1f / myStats.attackSpeed;
     }
 
     private IEnumerator TheCulling(int waveCount, float interval)
     {
         if (waveCount == 0) yield break;
         yield return new WaitForSeconds(interval);
-        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)8324);
         StartCoroutine(TheCulling(waveCount--, interval));
         AddLightslinger(myStats.qSkill[0].basic.name);
     }
@@ -138,13 +152,13 @@ public class Lucian : ChampionCombat
 
     private void AddLightslinger(string source)
     {
-        if (myStats.buffManager.buffs.TryGetValue("Lightslinger", out Buff value))
+        if (MyBuffManager.buffs.TryGetValue("Lightslinger", out Buff value))
         {
             value.duration = 3.5f;
         }
         else
         {
-            myStats.buffManager.buffs.Add("Lightslinger", new LightslingerBuff(3.5f, myStats.buffManager, source));
+            MyBuffManager.Add("Lightslinger", new LightslingerBuff(3.5f, myStats.buffManager, source));
         }
     }
 }
