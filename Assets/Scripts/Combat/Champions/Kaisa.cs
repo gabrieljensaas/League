@@ -125,7 +125,7 @@ public class Kaisa : ChampionCombat
         myStats.eSkill[0].basic.castTime = GetKaisaECastTime(myStats.bonusAS);
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        MyBuffManager.buffs.Add("Untargetable", new UntargetableBuff(0.5f, myStats.buffManager, myStats.eSkill[0].basic.name));
+        MyBuffManager.Add("Untargetable", new UntargetableBuff(0.5f, myStats.buffManager, myStats.eSkill[0].basic.name));
         MyBuffManager.Add(myStats.eSkill[0].basic.name, new AttackSpeedBuff(4, myStats.buffManager, myStats.eSkill[0].basic.name,
             myStats.wSkill[0].UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), myStats.eSkill[0].basic.name));
         UpdateTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, buffNames:new string[] {"Untargetable", ESkill().basic.name },

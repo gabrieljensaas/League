@@ -151,7 +151,7 @@ public class Sett : ChampionCombat
 
     public IEnumerator HaymakerShield()
     {
-        MyBuffManager.Add(myStats.wSkill[0].basic.name, new ShieldBuff(3, MyBuffManager, myStats.wSkill[0].basic.name, grit, WSkill().basic.name, decaying: true));
+        MyBuffManager.buffs.Add(myStats.wSkill[0].basic.name, new ShieldBuff(3, MyBuffManager, myStats.wSkill[0].basic.name, grit, WSkill().basic.name, decaying: true));
         yield return new WaitForSeconds(0.75f);
         if (MyBuffManager.shields.TryGetValue(WSkill().basic.name, out ShieldBuff value))
         {
