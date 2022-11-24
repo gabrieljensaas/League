@@ -22030,12 +22030,11 @@ MonoBehaviour:
             3072                 ],                 "ability": [                    
             5,                     5,                     1,                    
             2                 ]             },             {                 "champName":
-            "Aatrox",                 "champLevel": 14,                 "items":
-            [                     3006,                     3115,                    
-            6653,                     3116,                     3157                
-            ],                 "ability": [                     5,                    
-            2,                     5,                     2                 ]            
-            }         ]     } }'
+            "Fiora",                 "champLevel": 14,                 "items": [                    
+            3006,                     3115,                     6653,                    
+            3116,                     3157                 ],                 "ability":
+            [                     5,                     2,                     5,                    
+            2                 ]             }         ]     } }'
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1638351006

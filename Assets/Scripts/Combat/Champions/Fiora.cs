@@ -68,7 +68,7 @@ public class Fiora : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1], skillComponentTypes: (SkillComponentTypes)2970);
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)2970);
         myStats.qCD *= 0.5f;
         simulationManager.AddCastLog(myCastLog, 0);
         CheckVitals();
