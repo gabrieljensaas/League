@@ -8,7 +8,7 @@ public class CheckDamageReductionPercent : Check
 
     public override Damage Control(Damage damage)
     {
-        if (combat.myStats.buffManager.buffs.TryGetValue("DamageReduction", out Buff value))
+        if (combat.MyBuffManager.buffs.TryGetValue("DamageReduction", out Buff value))
         {
             damage.value *= (100 - value.value) * 0.01f;
         }

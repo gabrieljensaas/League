@@ -8,13 +8,13 @@ public class GarenAACheck : Check
 
     public override Damage Control(Damage damage)
     {
-        if (combat.myStats.buffManager.buffs.TryGetValue("DecisiveStrike", out Buff value))
+        if (combat.MyBuffManager.buffs.TryGetValue("DecisiveStrike", out Buff value))
         {
             damage.value += value.value;
             combat.qSum += value.value;
             combat.myUI.abilitySum[0].text = combat.qSum.ToString();
-            combat.myStats.buffManager.buffs.Remove("DecisiveStrike");
-            combat.targetStats.buffManager.buffs.Add("Silence", new SilenceBuff(1.5f, combat.targetStats.buffManager, "Decisive Strike"));
+            combat.MyBuffManager.buffs.Remove("DecisiveStrike");
+            combat.TargetBuffManager.buffs.Add("Silence", new SilenceBuff(1.5f, combat.TargetBuffManager, "Decisive Strike"));
         }
         return damage;
     }

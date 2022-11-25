@@ -15,6 +15,7 @@ public class Garen : ChampionCombat
         checksE.Add(new CheckIfCasting(this));
         checksR.Add(new CheckIfCasting(this));
         checksA.Add(new CheckIfCasting(this));
+
         checksQ.Add(new CheckIfDisrupt(this));
         checksW.Add(new CheckIfDisrupt(this));
         checksE.Add(new CheckIfDisrupt(this));
@@ -22,83 +23,106 @@ public class Garen : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
         checksA.Add(new CheckIfCantAA(this));
+
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
         checksE.Add(new CheckCD(this, "E"));
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
+
         autoattackcheck = new GarenAACheck(this);
         checkTakeDamage.Add(new CheckDamageReductionPercent(this));
         checkTakeDamagePostMitigation.Add(new CheckShield(this));
         checksR.Add(new CheckIfExecutes(this, "R"));
 
         qKeys.Add("Bonus Physical Damage");
+
         wKeys.Add("Duration");
         wKeys.Add("Shield Strength");
+        
         eKeys.Add("Increased Damage Per Spin");
+        
         rKeys.Add("True Damage");
 
         base.UpdatePriorityAndChecks();
     }
 
+    public override IEnumerator ExecuteA()
+    {
+        if (!CheckForAbilityControl(checksA)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(0.1f));
+        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Garen's Auto Attack");
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
+    }
+
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("DecisiveStrike", new DecisiveStrikeBuff(4.5f, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats)));
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
+        MyBuffManager.Add("DecisiveStrike", new DecisiveStrikeBuff(4.5f, MyBuffManager, QSkill().name, QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats)));
+        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("DamageReductionPercent", new DamageReductionPercentBuff(myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats), myStats.buffManager, myStats.wSkill[0].basic.name, 30));
-        myStats.buffManager.shields.Add(myStats.wSkill[0].basic.name, new ShieldBuff(0.75f, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, wKeys[1], myStats, targetStats), myStats.wSkill[0].basic.name));
-        myStats.buffManager.buffs.Add("Tenacity", new TenacityBuff(0.75f, myStats.buffManager, myStats.wSkill[0].basic.name, 60, myStats.wSkill[0].basic.name));
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+        MyBuffManager.Add("DamageReductionPercent", new DamageReductionPercentBuff(WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), MyBuffManager, WSkill().basic.name, 30));
+        MyBuffManager.shields.Add(WSkill().basic.name, new ShieldBuff(0.75f, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), WSkill().basic.name));
+        MyBuffManager.Add("Tenacity", new TenacityBuff(0.75f, MyBuffManager, WSkill().basic.name, 60, WSkill().basic.name));
+        myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         simulationManager.ShowText($"Garen Used Judgment!");
-        myStats.buffManager.buffs.Add("CantAA", new CantAABuff(3f, myStats.buffManager, myStats.eSkill[0].basic.name));
+        MyBuffManager.Add("CantAA", new CantAABuff(3f, MyBuffManager, ESkill().basic.name));
         StartCoroutine(GarenE(0, 0));
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateTotalDamage(ref qSum, 3, myStats.rSkill[0], 2, rKeys[0]);
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
+        UpdateTotalDamage(ref qSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)34944);
+        myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 4);
 
         StopCoroutine("GarenE");          //if 2 GarenE coroutine exists this could leat to some bugs
-        if (myStats.buffManager.buffs.ContainsKey("CantAA"))
+        if (MyBuffManager.buffs.ContainsKey("CantAA"))
         {
-            myStats.buffManager.buffs.Remove("CantAA");
+            MyBuffManager.buffs.Remove("CantAA");
         }
     }
 
     private IEnumerator GarenE(float seconds, int spinCount)
     {
         yield return new WaitForSeconds(seconds);
-        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes:(SkillComponentTypes)8192);
         spinCount++;
-        if (spinCount >= 6 && targetStats.buffManager.buffs.ContainsKey("Judgment"))
+        if (spinCount >= 6 && TargetBuffManager.buffs.ContainsKey("Judgment"))
         {
-            targetStats.buffManager.buffs["Judgment"].duration = 6;
+            TargetBuffManager.buffs["Judgment"].duration = 6;
         }
         else if (spinCount >= 6)
         {
-            targetStats.buffManager.buffs.Add("Judgment", new ArmorReductionBuff(6, targetStats.buffManager, "Judgment", 25, "Judgment"));
+            TargetBuffManager.Add("Judgment", new ArmorReductionBuff(6, TargetBuffManager, "Judgment", 25, "Judgment"));
         }
         if (spinCount > 6)
         {
