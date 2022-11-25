@@ -40,15 +40,19 @@ public class Jax : ChampionCombat
         checksE.Add(new CheckIfDisrupt(this));
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
+        checksQ.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
 
         autoattackcheck = new JaxAACheck(this);
         checkTakeDamage.Add(new CheckCounterStrike(this));
 
         qKeys.Add("Physical Damage");
+
         wKeys.Add("Bonus Magic Damage");
+
         eKeys.Add("Minimum Physical Damage");
         eKeys.Add("Maximum Physical Damage");
+
         rKeys.Add("Bonus Magic Damage");
         rKeys.Add("Bonus Armor");
         rKeys.Add("Bonus Magic Resistance");
@@ -62,10 +66,10 @@ public class Jax : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         StopCoroutine(PStackExpired());
-        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
+        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Jax's Auto Attack");
         if (pStack < 8) pStack++;
-        myStats.buffManager.buffs.Remove("RelentlessAssault");
-        myStats.buffManager.buffs.Add("RelentlessAssault", new AttackSpeedBuff(2.5f, myStats.buffManager, "RelentlessAssault", RelentlessAssaultAS(myStats.level, pStack), "RelentlessAssault"));
+        MyBuffManager.buffs.Remove("RelentlessAssault");
+        MyBuffManager.Add("RelentlessAssault", new AttackSpeedBuff(2.5f, MyBuffManager, "RelentlessAssault", RelentlessAssaultAS(myStats.level, pStack), "RelentlessAssault"));
         StartCoroutine(PStackExpired());
 
         if (rStack < 3)
@@ -73,43 +77,62 @@ public class Jax : ChampionCombat
         else
         {
             rStack = 0;
-            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+            UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)928);
         }
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
+
+    }
+    public override IEnumerator ExecuteQ()
+    {
+        if (myStats.qLevel == -1) yield break;
+        if (!CheckForAbilityControl(checksQ)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)34946);
+        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("EmpowerBuff", new EmpowerBuff(10, myStats.buffManager, myStats.wSkill[0].name));
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+        MyBuffManager.Add("EmpowerBuff", new EmpowerBuff(10, MyBuffManager, WSkill().name));
+        myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("CounterStrikeBuff", new CounterStrikeBuff(10, myStats.buffManager, myStats.eSkill[0].name));
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
+        MyBuffManager.Add("CounterStrikeBuff", new CounterStrikeBuff(2, MyBuffManager, ESkill().name));
+        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("BonusArmor", new ArmorBuff(8, myStats.buffManager, myStats.rSkill[0].name, (int)myStats.rSkill[0].UseSkill(2, rKeys[1], myStats, targetStats), "BonusArmor"));
-        myStats.buffManager.buffs.Add("BonusMR", new MagicResistanceBuff(8, myStats.buffManager, myStats.rSkill[0].name, (int)myStats.rSkill[0].UseSkill(2, rKeys[2], myStats, targetStats), "BonusMR"));
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
+        MyBuffManager.Add("BonusArmor", new ArmorBuff(8, MyBuffManager, RSkill().name, (int)RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats), "BonusArmor"));
+        MyBuffManager.Add("BonusMR", new MagicResistanceBuff(8, MyBuffManager, RSkill().name, (int)RSkill().UseSkill(myStats.rLevel, rKeys[2], myStats, targetStats), "BonusMR"));
+        myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 4);
     }
 
     private IEnumerator PStackExpired()
     {
         yield return new WaitForSeconds(2.5f);
         pStack--;
-        myStats.buffManager.buffs.Remove("RelentlessAssault");
-        if (pStack > 0) myStats.buffManager.buffs.Add("RelentlessAssault", new AttackSpeedBuff(2.5f, myStats.buffManager, "RelentlessAssault", RelentlessAssaultAS(myStats.level, pStack), "RelentlessAssault"));
+        MyBuffManager.buffs.Remove("RelentlessAssault");
+        if (pStack > 0) MyBuffManager.Add("RelentlessAssault", new AttackSpeedBuff(2.5f, MyBuffManager, "RelentlessAssault", RelentlessAssaultAS(myStats.level, pStack), "RelentlessAssault"));
     }
 }

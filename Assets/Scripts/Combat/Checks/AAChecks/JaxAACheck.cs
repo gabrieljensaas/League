@@ -8,9 +8,9 @@ public class JaxAACheck : Check
 
     public override Damage Control(Damage damage)
     {
-        if (combat.targetStats.buffManager.buffs.TryGetValue("EmpowerBuff", out Buff buff))
+        if (combat.TargetBuffManager.buffs.TryGetValue("EmpowerBuff", out Buff buff))
         {
-            damage.value = combat.myStats.wSkill[0].UseSkill(5, combat.wKeys[0], combat.myStats, combat.targetStats);
+            damage.value = combat.WSkill().UseSkill(combat.myStats.wLevel, combat.wKeys[0], combat.myStats, combat.targetStats);
             buff.Kill();
         }
 
