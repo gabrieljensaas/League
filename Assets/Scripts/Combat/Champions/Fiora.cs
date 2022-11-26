@@ -27,7 +27,6 @@ public class Fiora : ChampionCombat
         checksA.Add(new CheckIfTotalCC(this));
         checksQ.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
-        autoattackcheck = new FioraAACheck(this);
 
         qKeys.Add("Physical Damage");
         wKeys.Add("Magic Damage");
@@ -56,7 +55,22 @@ public class Fiora : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Fiora's Auto Attack");
+        if (UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Fiora's Auto Attack") != float.MinValue)
+		{
+            if (MyBuffManager.buffs.TryGetValue("Bladework", out Buff value))
+            {
+                if (value.value == 1)
+                {
+                    UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[1], skillComponentTypes: (SkillComponentTypes)4096); //can crit but not skill activation
+                    value.Kill();
+                }
+                else
+                {
+                    // Only Apply Slows. Damage is autoattack damage
+                    value.value--;
+                }
+            }
+        }
         attackCooldown = 1f / myStats.attackSpeed;
         simulationManager.AddCastLog(myCastLog, 5);
         CheckVitals();
@@ -98,8 +112,8 @@ public class Fiora : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
 
-        MyBuffManager.Add("Bladework", new BladeworkBuff(4, MyBuffManager, myStats.eSkill[0].name));
-
+        MyBuffManager.Add("Bladework", new BladeworkBuff(4, MyBuffManager, myStats.eSkill[0].name, 2));
+        attackCooldown = 0;
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];//2064 we are passing damage on autoattack checks
         simulationManager.AddCastLog(myCastLog, 2);
 
@@ -136,7 +150,7 @@ public class Fiora : ChampionCombat
         };
         MyBuffManager.buffs.Add("VitalsGrandChallenge", vitalsBuff);
 
-        targetStats.rCD = myStats.rSkill[0].basic.coolDown[skillLevel];
+        targetStats.rCD = RSkill().basic.coolDown[skillLevel];
     }
 
     private void CheckVitals()

@@ -43,7 +43,6 @@ public class Jax : ChampionCombat
         checksQ.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
 
-        autoattackcheck = new JaxAACheck(this);
         checkTakeDamage.Add(new CheckCounterStrike(this));
 
         qKeys.Add("Physical Damage");
@@ -66,7 +65,14 @@ public class Jax : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
         StopCoroutine(PStackExpired());
-        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Jax's Auto Attack");
+        if (UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Jax's Auto Attack") != float.MinValue)
+		{
+            if (TargetBuffManager.buffs.TryGetValue("EmpowerBuff", out Buff buff))
+            {
+                UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)24944);
+                buff.Kill();
+            }
+        }
         if (pStack < 8) pStack++;
         MyBuffManager.buffs.Remove("RelentlessAssault");
         MyBuffManager.Add("RelentlessAssault", new AttackSpeedBuff(2.5f, MyBuffManager, "RelentlessAssault", RelentlessAssaultAS(myStats.level, pStack), "RelentlessAssault"));
@@ -101,6 +107,7 @@ public class Jax : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
         MyBuffManager.Add("EmpowerBuff", new EmpowerBuff(10, MyBuffManager, WSkill().name));
+        attackCooldown = 0;
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
         simulationManager.AddCastLog(myCastLog, 1);
     }
