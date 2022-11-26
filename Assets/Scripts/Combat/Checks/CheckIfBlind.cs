@@ -8,7 +8,7 @@ public class CheckIfBlind : Check
 
     public override Damage Control(Damage damage)
     {
-        damage.value = combat.myStats.buffManager.buffs.ContainsKey("Blind") ? 0 : damage.value;
+        damage.value = combat.TargetBuffManager.buffs.ContainsKey("Blind") ? 0 : damage.value;
         return damage;
     }
 

@@ -30,7 +30,6 @@ public class Garen : ChampionCombat
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
 
-        autoattackcheck = new GarenAACheck(this);
         checkTakeDamage.Add(new CheckDamageReductionPercent(this));
         checkTakeDamagePostMitigation.Add(new CheckShield(this));
         checksR.Add(new CheckIfExecutes(this, "R"));
@@ -52,7 +51,16 @@ public class Garen : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Garen's Auto Attack");
+        if (UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Garen's Auto Attack") != float.MinValue)
+        {
+            if (MyBuffManager.buffs.TryGetValue("DecisiveStrike", out Buff value))
+            {
+                MyBuffManager.buffs.Remove("DecisiveStrike");
+                UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)34944);
+                TargetBuffManager.Add("Silence", new SilenceBuff(1.5f, TargetBuffManager, "Decisive Strike"));
+            }
+        }
+        
         attackCooldown = 1f / myStats.attackSpeed;
         simulationManager.AddCastLog(myCastLog, 5);
     }

@@ -24,7 +24,7 @@ public class NoxiousTrapBuff : Buff
         tickTimer += Time.fixedDeltaTime;
         if (tickTimer >= 1 && isActive)
         {
-            manager.combat.targetCombat.UpdateTotalDamage(ref manager.combat.targetCombat.rSum, 2, manager.combat.targetStats.rSkill[1], 2, manager.combat.targetCombat.rKeys[0]);
+            manager.combat.targetCombat.UpdateTotalDamage(ref manager.combat.targetCombat.rSum, 2, manager.combat.targetStats.rSkill[0], manager.combat.targetStats.rLevel, manager.combat.targetCombat.rKeys[1], skillComponentTypes:(SkillComponentTypes)139392);
             tickTimer = 0;
         }
     }
