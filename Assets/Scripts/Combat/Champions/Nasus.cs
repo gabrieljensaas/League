@@ -35,7 +35,6 @@ public class Nasus : ChampionCombat
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
-        autoattackcheck = new NasusAACheck(this);
 
         qKeys.Add("Bonus Physical Damage");
 
@@ -58,7 +57,14 @@ public class Nasus : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Nasus's Auto Attack");
+        if (UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Nasus's Auto Attack") != float.MinValue)
+		{
+            if (MyBuffManager.buffs.TryGetValue("SiphoningStrike", out Buff value))
+            {
+                MyBuffManager.buffs.Remove("SiphoningStrike");
+                UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes:(SkillComponentTypes)38912);
+            }
+        }
         attackCooldown = 1f / myStats.attackSpeed;
         simulationManager.AddCastLog(myCastLog, 5);
     }
