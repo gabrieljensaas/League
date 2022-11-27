@@ -15,6 +15,9 @@ public class Jhin : ChampionCombat
         };
     }
 
+    public static float[] LotusRechargeBySkillLevel = { 24f, 21.5f, 19f, 16.5f, 14f };
+
+    private float lotusTrapRecharge = 0;
     private int lotusTrapCharge = 2;
     private int whisperShot = 0;
 
@@ -66,6 +69,7 @@ public class Jhin : ChampionCombat
     {
         base.CombatUpdate();
 
+        lotusTrapRecharge += Time.fixedDeltaTime;
         AddLotusTrapCharge();
     }
 
@@ -77,65 +81,70 @@ public class Jhin : ChampionCombat
         if (whisperShot == 4)
         {
             whisperShot = 0;
-
-            float damage = (myStats.AD * 1.75f) + ((targetCombat.myStats.maxHealth - targetCombat.myStats.currentHealth) * 0.25f); //crit + missing health max level
-            if (damage < 0)
-                damage = 0;
-
-            if (autoattackcheck != null) damage = autoattackcheck.Control(new Damage(damage, SkillDamageType.Phyiscal)).value;
-
-            aSum += targetCombat.TakeDamage(new Damage(damage, SkillDamageType.Phyiscal), $"{myStats.name}'s Auto Attack");
-            hSum += HealHealth(damage * myStats.lifesteal, "Lifesteal");
-            myUI.aaSum.text = aSum.ToString();
-            myUI.healSum.text = hSum.ToString();
-
-            attackCooldown = 1f / myStats.attackSpeed;
+            UpdateTotalDamage(ref aSum, 5, new Damage((myStats.AD * 1.75f) + ((targetCombat.myStats.maxHealth - targetCombat.myStats.currentHealth) * 0.25f), SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)1820), "Jhin's Auto Attack");
         }
         else
         {
             whisperShot++;
-            AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
+            UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5916), "Jhin's Auto Attack");
         }
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)18564);
         ApplyDeadlyFlourishMark(myStats.qSkill[0].basic.name);
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+        myStats.qCD = myStats.qSkill[0].basic.coolDown[myStats.qLevel];
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
     {
-        yield return StartCoroutine(base.ExecuteW());
+        if (myStats.wLevel == -1) yield break;
+        if (!CheckForAbilityControl(checksW)) yield break;
 
-        if (targetStats.buffManager.buffs.TryGetValue("Deadly Flourish Mark", out Buff deadlyFlourishMark))
-            targetStats.buffManager.buffs.Add("Root", new RootBuff(myStats.wSkill[0].UseSkill(4, wKeys[1], myStats, targetStats), targetStats.buffManager, myStats.wSkill[0].basic.name));
+        yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+        if(UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)34948) != float.MinValue)
+        {
+            if (targetStats.buffManager.buffs.TryGetValue("Deadly Flourish Mark", out Buff deadlyFlourishMark))
+                targetStats.buffManager.buffs.Add("Root", new RootBuff(myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), targetStats.buffManager, myStats.wSkill[0].basic.name));
+        }
+        myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (lotusTrapCharge > 0)
         {
             if (!CheckForAbilityControl(checksE)) yield break;
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            targetStats.buffManager.buffs.Add("Lotus Trap", new LotusTrapBuff(1, targetStats.buffManager, myStats.eSkill[0].basic.name));
+            StartCoroutine(LotusTrap());
+            UpdateTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), ESkill().basic.name);
             ApplyDeadlyFlourishMark(myStats.qSkill[0].basic.name);
-            myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+            myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
+            simulationManager.AddCastLog(myCastLog, 2);
         }
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        UpdateTotalDamage(ref rSum, 3, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), RSkill().basic.name);
         myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(10, myStats.buffManager, myStats.rSkill[0].basic.name, "CurtainCall"));
-        yield return StartCoroutine(CurtainCall());
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        StartCoroutine(CurtainCall());
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     public override IEnumerator HijackedR(int skillLevel)
@@ -150,16 +159,16 @@ public class Jhin : ChampionCombat
     {
         if (myStats.wCD > 0) return;
 
-        if (targetStats.buffManager.buffs.TryGetValue("Deadly Flourish Mark", out Buff deadlyFlourishMark))
-            deadlyFlourishMark.duration = 4;
-        else
-            targetStats.buffManager.buffs.Add("Deadly Flourish Mark", new DeadlyFlourishBuff(4, targetStats.buffManager, skillName));
+        TargetBuffManager.Add("Deadly Flourish Mark", new DeadlyFlourishBuff(4, targetStats.buffManager, skillName));
     }
 
     private void AddLotusTrapCharge()
     {
-        if (lotusTrapCharge < 2)
+        if (myStats.eLevel != -1 && lotusTrapCharge < 2 && lotusTrapRecharge >= LotusRechargeBySkillLevel[myStats.eLevel])
+        {
             lotusTrapCharge++;
+            lotusTrapRecharge= 0;
+        }
     }
 
     private IEnumerator CurtainCall()
@@ -168,9 +177,9 @@ public class Jhin : ChampionCombat
         while (shots > 0)
         {
             if (shots == 1)
-                UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]); //TODO: change to crit when Recep pushes new stuff
+                UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)39044, damageModifier: 1 + (targetStats.PercentMissingHealth * 3));
             else
-                UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
+                UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)34948, damageModifier: 1 + (targetStats.PercentMissingHealth * 3));
 
             shots--;
             yield return new WaitForSeconds(0.25f);
@@ -199,5 +208,11 @@ public class Jhin : ChampionCombat
     public override void StopChanneling(string uniqueKey)
     {
         StopCoroutine(uniqueKey);
+    }
+
+    public IEnumerator LotusTrap()
+    {
+        yield return new WaitForSeconds(3);       //1 second for arming and 2 seconds trigger
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], myStats.eLevel, skillComponentTypes: (SkillComponentTypes)16512);
     }
 }
