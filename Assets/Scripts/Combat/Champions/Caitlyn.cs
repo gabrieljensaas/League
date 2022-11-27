@@ -32,7 +32,6 @@ public class Caitlyn : ChampionCombat
         checksE.Add(new CheckCD(this, "E"));
         checksR.Add(new CheckCD(this, "R"));
         checksA.Add(new CheckCD(this, "A"));
-        autoattackcheck = new CaitlynAACheck(this);
         checksQ.Add(new CheckIfDisrupt(this));
         checksW.Add(new CheckIfDisrupt(this));
         checksE.Add(new CheckIfDisrupt(this));
@@ -53,7 +52,7 @@ public class Caitlyn : ChampionCombat
         eKeys.Add("Magic Damage");
         rKeys.Add("Physical damage");
 
-        wStackMax = (int)myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats);
+        wStackMax = myStats.wLevel == -1 ? 0 : (int)myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats);
         wStack = wStackMax;
         base.UpdatePriorityAndChecks();
     }
@@ -63,7 +62,7 @@ public class Caitlyn : ChampionCombat
         base.CombatUpdate();
 
         wCD += Time.fixedDeltaTime;
-        if (wCD > CaitlynTrapRechargeBySkillLevel[4])
+        if (myStats.wLevel != -1 && wCD > CaitlynTrapRechargeBySkillLevel[myStats.wLevel])
         {
             if (wStack != wStackMax)
             {
@@ -73,41 +72,90 @@ public class Caitlyn : ChampionCombat
         }
     }
 
+    public override IEnumerator ExecuteQ()
+    {
+        if (myStats.qLevel == -1) yield break;
+        if (!CheckForAbilityControl(checksQ)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)18564);
+        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
+        simulationManager.AddCastLog(myCastLog, 0);
+    }
+
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
         if (wStack <= 0) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        if (targetStats.buffManager.buffs.TryGetValue("YordleSnapTrap", out Buff value))
+        if(UpdateTotalDamage(ref wSum, 1, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2176), WSkill().basic.name) != float.MinValue)
         {
-            value.value += 1;
+            if (targetStats.buffManager.buffs.TryGetValue("YordleSnapTrap", out Buff value)) value.value += 1;
+            else TargetBuffManager.Add("YordleSnapTrap", new YordleSnapTrapBuff(1, targetStats.buffManager, myStats.wSkill[0].basic.name));
         }
-        else
-        {
-            targetStats.buffManager.buffs.Add("YordleSnapTrap", new YordleSnapTrapBuff(1, targetStats.buffManager, myStats.wSkill[0].basic.name));
-        }
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("NetHeadshot", new NetHeadshotBuff(1.8f, myStats.buffManager, myStats.eSkill[0].basic.name));
-        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        if(UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], skillComponentTypes: (SkillComponentTypes)34950) != float.MinValue)
+        {
+            MyBuffManager.Add("NetHeadshot", new NetHeadshotBuff(1.8f, myStats.buffManager, myStats.eSkill[0].basic.name));
+        }
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        UpdateTotalDamage(ref rSum, 3, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), RSkill().basic.name);
         myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(1, myStats.buffManager, myStats.rSkill[0].basic.name, "AceInTheHole"));
         StartCoroutine(AceInTheHole());
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 3);
+    }
+
+    public override IEnumerator ExecuteA()
+    {
+        if (!CheckForAbilityControl(checksA)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(0.1f));
+        if (myStats.buffManager.buffs.TryGetValue("NetHeadshot", out Buff v))
+        {
+            UpdateTotalDamage(ref aSum, 5, new Damage((GetCaitlynPassivePercent(myStats.level) + myStats.critStrikeChance) * myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5916), "Caitlyn's Auto Attack");
+            v.Kill();
+        }
+        else if (myStats.buffManager.buffs.TryGetValue("TrapHeadshot", out Buff val))
+        {
+            UpdateTotalDamage(ref aSum, 5, new Damage(((GetCaitlynPassivePercent(myStats.level) + myStats.critStrikeChance) * myStats.AD) + myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5916), "Caitlyn's Auto Attack");
+            val.Kill();
+        }
+        else if (myStats.buffManager.buffs.TryGetValue("Headshot", out Buff value))
+        {
+            if (value.value == 6)
+            {
+                UpdateTotalDamage(ref aSum, 5, new Damage((GetCaitlynPassivePercent(myStats.level) + myStats.critStrikeChance) * myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5916), "Caitlyn's Auto Attack");
+                value.Kill();
+            }
+            else
+            {
+                value.value++;
+            }
+        }
+        else UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5916), "Caitlyn's Auto Attack");
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     public override IEnumerator HijackedR(int skillLevel)
@@ -121,7 +169,7 @@ public class Caitlyn : ChampionCombat
     private IEnumerator AceInTheHole()
     {
         yield return new WaitForSeconds(1f);
-        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0], 1 + 0);              //0 is critical chance fix it when items are added
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], 1 + myStats.critStrikeChance, skillComponentTypes: (SkillComponentTypes)32900);
     }
 
     private IEnumerator HAceInTheHole(int skillLevel)
