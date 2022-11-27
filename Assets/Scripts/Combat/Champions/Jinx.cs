@@ -44,15 +44,17 @@ public class Jinx : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal, SkillComponentTypes.Projectile | SkillComponentTypes.OnHit | SkillComponentTypes.Dodgeable | SkillComponentTypes.Blockable | SkillComponentTypes.Blindable));
-        if(myStats.qLevel > -1)
+        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5916), "Jinx's Auto Attack");
+        if (myStats.qLevel > -1)
         {
             StopCoroutine(QStackExpired());
             if (qStack != 3) qStack++;
             if(MyBuffManager.buffs.TryGetValue(myStats.qSkill[0].basic.name, out Buff value)) ((AttackSpeedBuff)value).KillSilent();
-            myStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * (qStack + 1) * 0.5f, myStats.qSkill[0].basic.name));
+            MyBuffManager.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * (qStack + 1) * 0.5f, myStats.qSkill[0].basic.name));
             StartCoroutine(QStackExpired());
         }
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     public override IEnumerator ExecuteW()
@@ -63,8 +65,9 @@ public class Jinx : ChampionCombat
         myStats.wSkill[0].basic.castTime = GetJinxWCastTime(myStats.bonusAS);
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)34948);
         myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
@@ -73,10 +76,23 @@ public class Jinx : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
+        UpdateTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), ESkill().basic.name);
         yield return new WaitForSeconds(0.9f); // chompers landing and arming time
-        targetStats.buffManager.buffs.TryAdd("Root", new RootBuff(1.5f, targetStats.buffManager, myStats.eSkill[0].basic.name));
-        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0]);
+        if(UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], skillComponentTypes: (SkillComponentTypes)16516) != float.MinValue)
+            TargetBuffManager.Add("Root", new RootBuff(1.5f, targetStats.buffManager, myStats.eSkill[0].basic.name));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
+    }
+
+    public override IEnumerator ExecuteR()
+    {
+        if (myStats.rLevel == -1) yield break;
+        if (!CheckForAbilityControl(checksR)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)18564);
+        myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     private IEnumerator QStackExpired()
@@ -84,6 +100,6 @@ public class Jinx : ChampionCombat
         yield return new WaitForSeconds(2.5f);
         qStack--;
         if (MyBuffManager.buffs.TryGetValue(myStats.qSkill[0].basic.name, out Buff value)) ((AttackSpeedBuff)value).KillSilent();
-        if (qStack > 0) myStats.buffManager.buffs.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * (qStack + 1) * 0.5f, myStats.qSkill[0].basic.name));
+        if (qStack > 0) MyBuffManager.Add(myStats.qSkill[0].basic.name, new AttackSpeedBuff(2.5f, myStats.buffManager, myStats.qSkill[0].basic.name, myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * (qStack + 1) * 0.5f, myStats.qSkill[0].basic.name));
     }
 }
