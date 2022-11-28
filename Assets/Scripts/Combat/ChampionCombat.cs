@@ -139,9 +139,9 @@ namespace Simulator.Combat
             targetCombat.myUI.abilitySum[totalDamageTextIndex].text = totalDamage.ToString();
         }
 
-        public void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level, string skillKey)
+        public void UpdateTotalHeal(ref float totalHeal, SkillList skill, int level, string skillKey, float healModifier = 1)
         {
-            float healGiven = HealHealth(skill.UseSkill(level, skillKey, myStats, targetStats) * (100 - myStats.grievouswounds) / 100, skill.basic.name);
+            float healGiven = HealHealth(healModifier * skill.UseSkill(level, skillKey, myStats, targetStats) * (100 - myStats.grievouswounds) / 100, skill.basic.name);
             if (healGiven <= 0) return;
             simulationManager.AddHealLog(new HealLog(myStats.name, skill.basic.name, healGiven, simulationManager.timer));
             totalHeal += healGiven;
