@@ -29,7 +29,7 @@ public class MasterYiAACheck : Check
         }
         else
         {
-            combat.myStats.buffManager.buffs.Add("DoubleStrike", new DoubleStrikeBuff(4, combat.myStats.buffManager, "Double Strike"));
+            combat.MyBuffManager.Add("DoubleStrike", new DoubleStrikeBuff(4, combat.myStats.buffManager, "Double Strike"));
             return damage;
         }
     }
