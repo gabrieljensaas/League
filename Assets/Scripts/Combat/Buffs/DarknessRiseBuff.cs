@@ -23,7 +23,7 @@ public class DarknessRiseBuff : Buff
         if (value == 3 && tickTimer >= 1)
         {
             mordekaiser.Indestructible(manager.combat.UpdateTotalDamage(ref manager.combat.pSum, 4, new Damage(
-                Mordekaiser.DarknessRiseDamage(manager.combat.myStats.level) + (0.3f * manager.combat.myStats.AP) + (manager.combat.targetStats.maxHealth * Mordekaiser.DarknessRiseTargetMaxHPPercentDamage(manager.combat.myStats.level)), SkillDamageType.Spell),
+                Mordekaiser.DarknessRiseDamage(manager.combat.myStats.level) + (0.3f * manager.combat.myStats.AP) + (manager.combat.targetStats.maxHealth * Mordekaiser.DarknessRiseTargetMaxHPPercentDamage(manager.combat.myStats.level)), SkillDamageType.Spell, skillComponentType:(SkillComponentTypes)8192),
                 manager.combat.myStats.passiveSkill.skillName));
             tickTimer = 0;
         }

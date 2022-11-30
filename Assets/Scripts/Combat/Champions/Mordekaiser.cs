@@ -32,8 +32,6 @@ public class Mordekaiser : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
 
         checkTakeDamage.Add(new CheckMordekaiserIndestructible(this, this));
-        checkTakeDamage.Add(new CheckMordekaiserIndestructible(this, this));
-        checkTakeDamagePostMitigation.Add(new CheckShield(this));
         checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Magic Damage");
@@ -42,7 +40,7 @@ public class Mordekaiser : ChampionCombat
         eKeys.Add("Magic Penetration");
         eKeys.Add("Magic Damage");
 
-        targetStats.spellBlock *= (100 - myStats.eSkill[0].UseSkill(4, eKeys[0], myStats, targetStats)) * 0.01f;
+        targetStats.spellBlock *= (100 - ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats)) * 0.01f;
         base.UpdatePriorityAndChecks();
     }
 
@@ -51,65 +49,75 @@ public class Mordekaiser : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        Indestructible(AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal)).damage);
-        Indestructible(UpdateTotalDamage(ref pSum, 4, new Damage(0.4f * myStats.AP, SkillDamageType.Spell), myStats.passiveSkill.skillName));
+        Indestructible(UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Mordekaiser's Auto Attack"));
+        Indestructible(UpdateTotalDamage(ref pSum, 4, new Damage(0.4f * myStats.AP, SkillDamageType.Spell, skillComponentType: (SkillComponentTypes)5912), myStats.passiveSkill.skillName));
         DarknessRiseStacks(myStats.passiveSkill.skillName);
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        Indestructible(UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]));
-        Indestructible(UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1])); //additional damage
-        DarknessRiseStacks(myStats.qSkill[0].name);
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
+        Indestructible(UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)34944));
+        Indestructible(UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1], skillComponentTypes: (SkillComponentTypes)34944));
+        DarknessRiseStacks(QSkill().name);
+        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     //decay is unspecified in fandom
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        myStats.buffManager.shields.Add(myStats.wSkill[0].basic.name, new ShieldBuff(5, myStats.buffManager, myStats.wSkill[0].basic.name, shieldStored, myStats.wSkill[0].basic.name));
+        yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+        MyBuffManager.shields.Add(WSkill().basic.name, new ShieldBuff(5, MyBuffManager, WSkill().basic.name, shieldStored, WSkill().basic.name));
         shieldStored = 0;
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
+        simulationManager.AddCastLog(myCastLog, 1);
 
         StartCoroutine(ConsumeShield());
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        Indestructible(UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]));
-        DarknessRiseStacks(myStats.eSkill[0].name);
-        targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.1f, targetStats.buffManager, myStats.eSkill[0].name)); //pull
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
+        Indestructible(UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[1], skillComponentTypes:(SkillComponentTypes)18560));
+        DarknessRiseStacks(ESkill().name);
+        TargetBuffManager.Add("Airborne", new AirborneBuff(0.1f, TargetBuffManager, ESkill().name)); //pull
+        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateTotalHeal(ref hSum, (targetStats.maxHealth * 0.1f), myStats.rSkill[0].name);
+        yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
+        UpdateTotalHeal(ref hSum, (targetStats.maxHealth * 0.1f), RSkill().name);
         StartCoroutine(StealStats());
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 4);
     }
 
     private void DarknessRiseStacks(string source)
     {
-        if (myStats.buffManager.buffs.TryGetValue("DarknessRise", out Buff buff))
+        if (MyBuffManager.buffs.TryGetValue("DarknessRise", out Buff buff))
         {
             buff.duration = 4;
             if (buff.value < 3) buff.value++;
         }
         else
-            myStats.buffManager.buffs.Add("DarknessRise", new DarknessRiseBuff(4, myStats.buffManager, source, this));
+            MyBuffManager.Add("DarknessRise", new DarknessRiseBuff(4, MyBuffManager, source, this));
     }
 
     private IEnumerator StealStats()
@@ -152,9 +160,9 @@ public class Mordekaiser : ChampionCombat
     private IEnumerator ConsumeShield()
     {
         yield return new WaitForSeconds(4);
-        if (myStats.buffManager.buffs.TryGetValue(myStats.wSkill[0].basic.name, out Buff buff))
+        if (MyBuffManager.buffs.TryGetValue(WSkill().basic.name, out Buff buff))
         {
-            UpdateTotalHeal(ref hSum, buff.value * myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats) * 0.01f, myStats.wSkill[0].name);
+            UpdateTotalHeal(ref hSum, buff.value * WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats) * 0.01f, WSkill().name);
             buff.Kill();
         }
     }
