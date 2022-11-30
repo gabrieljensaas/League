@@ -76,6 +76,7 @@ public class Mordekaiser : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+        UpdateTotalDamage(ref wSum, 1, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), WSkill().basic.name);
         MyBuffManager.shields.Add(WSkill().basic.name, new ShieldBuff(5, MyBuffManager, WSkill().basic.name, shieldStored, WSkill().basic.name));
         shieldStored = 0;
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];

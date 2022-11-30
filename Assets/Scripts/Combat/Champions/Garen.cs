@@ -82,6 +82,7 @@ public class Garen : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+        UpdateTotalDamage(ref wSum, 1, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), WSkill().basic.name);
         MyBuffManager.Add("DamageReductionPercent", new DamageReductionPercentBuff(WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), MyBuffManager, WSkill().basic.name, 30));
         MyBuffManager.shields.Add(WSkill().basic.name, new ShieldBuff(0.75f, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), WSkill().basic.name));
         MyBuffManager.Add("Tenacity", new TenacityBuff(0.75f, MyBuffManager, WSkill().basic.name, 60, WSkill().basic.name));

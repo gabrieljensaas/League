@@ -38,6 +38,9 @@ public class Kayn : ChampionCombat
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
+        checksQ.Add(new CheckIfImmobilize(this));
+        checksE.Add(new CheckIfImmobilize(this));
+        checksR.Add(new CheckIfImmobilize(this));
 
         targetCombat.checksQ.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksW.Add(new CheckIfEnemyTargetable(targetCombat));
@@ -59,23 +62,39 @@ public class Kayn : ChampionCombat
 
         base.UpdatePriorityAndChecks();
     }
+    public override IEnumerator ExecuteA()
+    {
+        if (!CheckForAbilityControl(checksA)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(0.1f));
+        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Kayn's Auto Attack");
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
+    }
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         if (kaynForm == KaynForm.Darkin)
         {
-            UpdateTotalDamage(ref qSum, 0, new Damage((myStats.AD * 0.65f) + ((0.05f + (0.035f * (int)(myStats.AD / 100))) * targetStats.maxHealth), SkillDamageType.Phyiscal), QSkill().name);
+            UpdateTotalDamage(ref qSum, 0, new Damage((myStats.AD * 0.65f) + ((0.05f + (0.035f * (int)(myStats.AD / 100))) * targetStats.maxHealth), SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)18560), QSkill().name);
+            UpdateTotalDamage(ref qSum, 0, new Damage((myStats.AD * 0.65f) + ((0.05f + (0.035f * (int)(myStats.AD / 100))) * targetStats.maxHealth), SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)18560), QSkill().name);
         }
         else
-            UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1]);
-        myStats.qCD = QSkill().basic.coolDown[4];
+		{
+            UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)18560);
+            UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)18560);
+        }
+        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
         if (kaynForm == KaynForm.ShadowAssassin)
@@ -87,37 +106,44 @@ public class Kayn : ChampionCombat
         }
         else
             yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0]);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes:(SkillComponentTypes)18560);
 
-        myStats.wCD = WSkill().basic.coolDown[4];
+        myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     //assume that heal will pop out for terrain
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        UpdateTotalHeal(ref hSum, myStats.eSkill[0], 4, eKeys[1]);
-        myStats.eCD = ESkill().basic.coolDown[4];
+        UpdateTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), ESkill().basic.name);
+
+        UpdateTotalHeal(ref hSum, myStats.eSkill[0], myStats.eLevel, eKeys[1]);
+        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
 
         if (kaynForm == KaynForm.Darkin)
         {
-            UpdateTotalDamage(ref rSum, 0, new Damage((0.15f + (0.13f * (int)(myStats.AD / 100))) * targetStats.maxHealth, SkillDamageType.Phyiscal), RSkill().name);
+            UpdateTotalDamage(ref rSum, 3, new Damage((0.15f + (0.13f * (int)(myStats.AD / 100))) * targetStats.maxHealth, SkillDamageType.Phyiscal, skillComponentType:(SkillComponentTypes)34944), RSkill().name);
             UpdateTotalHeal(ref hSum, 0.0975f + (0.0845f * (int)(myStats.AD / 100)), RSkill().name);
         }
         else
-            UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0]);
-        myStats.buffManager.buffs.Add("Untargetable", new UntargetableBuff(2.5f, myStats.buffManager, RSkill().name));
+            UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)34944);
+        MyBuffManager.Add("Untargetable", new UntargetableBuff(2.5f, myStats.buffManager, RSkill().name));
 
-        myStats.rCD = RSkill().basic.coolDown[2];
+        myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 4);
     }
 
     private class CheckKaynFormBonus : Check

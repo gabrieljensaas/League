@@ -86,6 +86,7 @@ public class Nasus : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+        UpdateTotalDamage(ref wSum, 1, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), WSkill().basic.name);
         TargetBuffManager.Add("CrippleBuff", new CrippleBuff(1, TargetBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats)));
         TargetBuffManager.Add("CrippleBuff", new CrippleBuff(1, TargetBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats) + WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats)));
         TargetBuffManager.Add("CrippleBuff", new CrippleBuff(1, TargetBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats) + WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats)));
@@ -114,6 +115,7 @@ public class Nasus : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
+        UpdateTotalDamage(ref rSum, 3, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), WSkill().basic.name);
         MyBuffManager.Add("ArmorBuff", new ArmorBuff(rSum, MyBuffManager, RSkill().basic.name, RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats), "ArmorBuff"));
         MyBuffManager.Add("MRBuff", new MagicResistanceBuff(rSum, MyBuffManager, RSkill().basic.name, (int)RSkill().UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats), "MRBuff"));
         StartCoroutine(FuryOfTheSands(0));

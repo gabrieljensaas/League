@@ -114,7 +114,7 @@ public class Fiora : ChampionCombat
 
         MyBuffManager.Add("Bladework", new BladeworkBuff(4, MyBuffManager, myStats.eSkill[0].name, 2));
         attackCooldown = 0;
-        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];//2064 we are passing damage on autoattack checks
+        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
         simulationManager.AddCastLog(myCastLog, 2);
 
     }

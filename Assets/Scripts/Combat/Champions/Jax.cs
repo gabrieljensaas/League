@@ -106,6 +106,7 @@ public class Jax : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+        UpdateTotalDamage(ref wSum, 1, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), WSkill().basic.name);
         MyBuffManager.Add("EmpowerBuff", new EmpowerBuff(10, MyBuffManager, WSkill().name));
         attackCooldown = 0;
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
