@@ -30,7 +30,6 @@ public class Viego : ChampionCombat
         checksW.Add(new CheckIfImmobilize(this));
         checksR.Add(new CheckIfImmobilize(this));
         checksR.Add(new CheckIfExecutes(this, "R"));
-        autoattackcheck = new ViegoAACheck(this);
 
         qKeys.Add("Bonus Physical Damage");
         qKeys.Add("Physical Damage");
@@ -49,23 +48,26 @@ public class Viego : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        UpdateTotalDamage(ref qSum, 0, QSkill(), 4, qKeys[1]);
+        yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
+        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[1], skillComponentTypes:(SkillComponentTypes)18560);
         BladeMark(QSkill().basic.name);
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
 
     public override IEnumerator ExecuteW()
     {
-        if (!CheckForAbilityControl(checksE)) yield break;
+        if (myStats.wLevel == -1) yield break;
+        if (!CheckForAbilityControl(checksW)) yield break;
 
         if (!wCast)
         {
-            yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+            yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes:(SkillComponentTypes)34944);
             BladeMark(WSkill().basic.name);
             timeSinceW = 0;
             timeChanneled = 0;
@@ -74,30 +76,34 @@ public class Viego : ChampionCombat
         else
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], 4, wKeys[0]);
+            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)34944);
             MyBuffManager.Add("StunBuff", new StunBuff(0.25f + (timeChanneled > 1 ? 1 : timeChanneled), TargetBuffManager, "StunBuff")); //what happens when channeling gets cancelled
             BladeMark(WSkill().basic.name);
-            myStats.wCD = myStats.wSkill[0].basic.coolDown[4] - timeSinceW;
+            myStats.wCD = WSkill().basic.coolDown[myStats.wLevel] - timeSinceW;
         }
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        MyBuffManager.Add("AttackSpeed", new AttackSpeedBuff(8, MyBuffManager, ESkill().basic.name, ESkill().UseSkill(4, eKeys[0], myStats, targetStats), "AttackSpeed"));
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
+        MyBuffManager.Add("AttackSpeed", new AttackSpeedBuff(8, MyBuffManager, ESkill().basic.name, ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), "AttackSpeed"));
+        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        float multiplier = RSkill().UseSkill(2, rKeys[0], myStats, targetStats) * 0.01f * myStats.PercentMissingHealth;
-        UpdateTotalDamage(ref rSum, 3, new Damage(multiplier * 0.01f, SkillDamageType.Phyiscal), RSkill().basic.name);
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
+        float multiplier = RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * myStats.PercentMissingHealth;
+        UpdateTotalDamage(ref rSum, 3, new Damage(multiplier * 0.01f, SkillDamageType.Phyiscal, skillComponentType:(SkillComponentTypes)34944), RSkill().basic.name);
+        myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 4);
     }
 
     public override IEnumerator ExecuteA()
@@ -105,18 +111,18 @@ public class Viego : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        float multiplier = QSkill().UseSkill(4, qKeys[0], myStats, targetStats) * 0.01f;
+        float multiplier = QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * 0.01f;
         float damage = 0.2f * myStats.AD;
-        if (targetStats.buffManager.buffs.TryGetValue("BladeOFRuinedKing", out Buff buff))
+        if (TargetBuffManager.buffs.TryGetValue("BladeOFRuinedKing", out Buff buff))
         {
-            UpdateTotalDamage(ref qSum, 0, new Damage(damage, SkillDamageType.Phyiscal), QSkill().basic.name);
-            AutoAttack(new Damage(myStats.AD * (1 + multiplier), SkillDamageType.Phyiscal));
+            UpdateTotalDamage(ref qSum, 0, new Damage(damage, SkillDamageType.Phyiscal), QSkill().basic.name); // dont really know what i did here implementation might be incorrect.
+            UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD * (1 + multiplier), SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Viego's Auto Attack");
             buff.Kill();
             UpdateTotalHeal(ref qSum, damage * 1.35f, QSkill().basic.name);
         }
         else
         {
-            AutoAttack(new Damage(myStats.AD * (1 + multiplier), SkillDamageType.Phyiscal));
+            UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Viego's Auto Attack");
         }
     }
 
@@ -125,6 +131,6 @@ public class Viego : ChampionCombat
         if (targetStats.buffManager.buffs.TryGetValue("BladeOfRuinedKing", out Buff buff))
             buff.duration = 4;
         else
-            targetStats.buffManager.buffs.Add("BladeOfRuinedKing", new BladeOfRuinedKingBuff(4, TargetBuffManager, source));
+            TargetBuffManager.Add("BladeOfRuinedKing", new BladeOfRuinedKingBuff(4, TargetBuffManager, source));
     }
 }

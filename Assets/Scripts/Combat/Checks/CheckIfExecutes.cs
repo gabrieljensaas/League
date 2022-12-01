@@ -50,13 +50,13 @@ public class CheckIfExecutes : Check
                 else if (combat.WSkill().skillDamageType == SkillDamageType.True) damageq = (int)damageq;
                 return damageq >= combat.targetStats.currentHealth;
             case "W":
-                var damagew = combat.WSkill().UseSkill(combat.myStats.qLevel, combat.qKeys[0], combat.myStats, combat.targetStats);
+                var damagew = combat.WSkill().UseSkill(combat.myStats.wLevel, combat.wKeys[0], combat.myStats, combat.targetStats);
                 if (combat.WSkill().skillDamageType == SkillDamageType.Phyiscal) damagew = (int)(damagew * 100 / (100 + combat.targetStats.armor));
                 else if (combat.WSkill().skillDamageType == SkillDamageType.Spell) damagew = (int)(damagew * 100 / (100 + combat.targetStats.spellBlock));
                 else if (combat.WSkill().skillDamageType == SkillDamageType.True) damagew = (int)damagew;
                 return damagew >= combat.targetStats.currentHealth;
             case "E":
-                var damagee = combat.WSkill().UseSkill(combat.myStats.qLevel, combat.qKeys[0], combat.myStats, combat.targetStats);
+                var damagee = combat.WSkill().UseSkill(combat.myStats.eLevel, combat.eKeys[0], combat.myStats, combat.targetStats);
                 if (combat.WSkill().skillDamageType == SkillDamageType.Phyiscal) damagee = (int)(damagee * 100 / (100 + combat.targetStats.armor));
                 else if (combat.WSkill().skillDamageType == SkillDamageType.Spell) damagee = (int)(damagee * 100 / (100 + combat.targetStats.spellBlock));
                 else if (combat.WSkill().skillDamageType == SkillDamageType.True) damagee = (int)damagee;

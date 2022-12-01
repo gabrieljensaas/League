@@ -52,12 +52,13 @@ public class LeeSin : ChampionCombat
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         if (!qCast)
         {
-            yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-            UpdateTotalDamage(ref qSum, 2, myStats.qSkill[0], 4, qKeys[0]);
+            yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
+            UpdateTotalDamage(ref qSum, 2, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes:(SkillComponentTypes)34944);
             StartCoroutine(SonicWave());
             myStats.qCD = 0.4f;
             timeSinceQ = 0;
@@ -65,26 +66,29 @@ public class LeeSin : ChampionCombat
         }
         else
         {
-            yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
+            yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
             if (myStats.buffManager.HasImmobilize) yield break;
-            float extraDamage = myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) * (1 + ((targetStats.maxHealth - targetStats.currentHealth) / targetStats.maxHealth));
-            UpdateTotalDamage(ref qSum, 4, new Damage(extraDamage, SkillDamageType.Spell), myStats.qSkill[0].basic.name);
+            float extraDamage = myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * (1 + ((targetStats.maxHealth - targetStats.currentHealth) / targetStats.maxHealth));
+            UpdateTotalDamage(ref qSum, 4, new Damage(extraDamage, SkillDamageType.Spell, skillComponentType: (SkillComponentTypes)34944), myStats.qSkill[0].basic.name);
             StopCoroutine(SonicWave());
             Flurry();
-            myStats.qCD = myStats.qSkill[0].basic.coolDown[4] - timeSinceQ;
+            myStats.qCD = myStats.qSkill[0].basic.coolDown[myStats.qLevel] - timeSinceQ;
 
         }
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
         if (!wCast)
         {
-            yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
+            yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
             if (myStats.buffManager.HasImmobilize) yield break;
-            myStats.buffManager.shields.Add("ShieldBuff", new ShieldBuff(2f, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, wKeys[0], myStats, targetStats), "ShieldBuff"));
+            UpdateTotalDamage(ref wSum, 1, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), WSkill().basic.name);
+            MyBuffManager.shields.Add("ShieldBuff", new ShieldBuff(2f, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), "ShieldBuff"));
             StartCoroutine(SafeGuard());
             myStats.wCD = 0.4f;
             timeSinceW = 0;
@@ -93,22 +97,25 @@ public class LeeSin : ChampionCombat
         else
         {
             yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-            myStats.buffManager.buffs.Add("LifeStealBuff", new LifeStealBuff(4, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(4, wKeys[1], myStats, targetStats), "LifeStealBuff"));
+            MyBuffManager.Add("LifeStealBuff", new LifeStealBuff(4, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), "LifeStealBuff"));
             // Need to add SpellVamp Buff 
             StopCoroutine(SafeGuard());
             Flurry();
-            myStats.wCD = myStats.wSkill[0].basic.coolDown[4] - timeSinceW;
+            myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel] - timeSinceW;
         }
+        simulationManager.AddCastLog(myCastLog, 1);
+
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
         if (!eCast)
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
+            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], skillComponentTypes:(SkillComponentTypes)18560);
             StartCoroutine(Tempest());
             myStats.eCD = 0.4f;
             timeSinceE = 0;
@@ -118,20 +125,24 @@ public class LeeSin : ChampionCombat
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
             //only Slows them.
+            UpdateTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), ESkill().basic.name);
             StopCoroutine(Tempest());
             Flurry();
-            myStats.eCD = myStats.eSkill[0].basic.coolDown[4] - timeSinceE;
+            myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel] - timeSinceE;
         }
+        simulationManager.AddCastLog(myCastLog, 2);
+
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
-        myStats.buffManager.buffs.Add("AirBorneBuff", new AirborneBuff(1f, targetStats.buffManager, "AirBorneBuff"));
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes:(SkillComponentTypes)34944);
+        MyBuffManager.Add("AirBorneBuff", new AirborneBuff(1f, targetStats.buffManager, "AirBorneBuff"));
+        myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
     }
 
     public override IEnumerator ExecuteA()
@@ -139,7 +150,8 @@ public class LeeSin : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal));
+        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Lee Sin's Auto Attack");
+
         if (flurryStack == 1) myStats.buffManager.buffs["Flurry"].Kill();
         else if (flurryStack > 0)
         {
@@ -147,6 +159,8 @@ public class LeeSin : ChampionCombat
             myStats.buffManager.buffs["Flurry"].value = flurryStack;
             myStats.buffManager.buffs["Flurry"].duration = 3;
         }
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     public IEnumerator SonicWave()
@@ -154,7 +168,7 @@ public class LeeSin : ChampionCombat
         qCast = true;
         yield return new WaitForSeconds(3f);
         qCast = false;
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4] - timeSinceQ;
+        myStats.qCD = myStats.qSkill[0].basic.coolDown[myStats.qLevel] - timeSinceQ;
     }
 
     public IEnumerator SafeGuard()
@@ -162,14 +176,14 @@ public class LeeSin : ChampionCombat
         wCast = true;
         yield return new WaitForSeconds(3f);
         wCast = false;
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4] - timeSinceW;
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel] - timeSinceW;
     }
     public IEnumerator Tempest()
     {
         eCast = true;
         yield return new WaitForSeconds(3f);
         eCast = false;
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4] - timeSinceE;
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel] - timeSinceE;
     }
 
     public void Flurry()
