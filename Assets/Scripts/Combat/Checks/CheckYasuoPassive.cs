@@ -12,7 +12,7 @@ public class CheckYasuoPassive : Check
     {
         if (yasuo.pCD <= 0)
         {
-            combat.myStats.buffManager.shields.Add("Way of the Wanderer", new ShieldBuff(1, combat.myStats.buffManager, "Way of the Wanderer", Yasuo.PassiveShieldByLevel[combat.myStats.level], "Way of the Wanderer"));
+            combat.MyBuffManager.shields.Add("Way of the Wanderer", new ShieldBuff(1, combat.myStats.buffManager, "Way of the Wanderer", Yasuo.PassiveShieldByLevel[combat.myStats.level], "Way of the Wanderer"));
             yasuo.pCD = Yasuo.pMaxCooldown;
         }
 

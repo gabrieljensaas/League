@@ -63,14 +63,12 @@ public class Yasuo : ChampionCombat
         checksE.Add(new CheckIfImmobilize(this));
         checksR.Add(new CheckIfImmobilize(this));
         checkTakeDamage.Add(new CheckYasuoPassive(this, this));
-        checkTakeDamage.Add(new CheckYasuoPassive(this, this));
         checksR.Add(new CheckIfEnemyAirborne(this));
         checksQ.Add(new CheckIfUnableToAct(this));
         checksW.Add(new CheckIfUnableToAct(this));
         checksE.Add(new CheckIfUnableToAct(this));
         checksR.Add(new CheckIfUnableToAct(this));
         checksA.Add(new CheckIfUnableToAct(this));
-        checkTakeDamagePostMitigation.Add(new CheckShield(this));
         checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         myStats.qSkill[0].basic.castTime = GetYasuoQCastTime(myStats.bonusAS);
@@ -94,58 +92,81 @@ public class Yasuo : ChampionCombat
 
         pCD -= Time.fixedDeltaTime;
     }
+    public override IEnumerator ExecuteA()
+    {
+        if (!CheckForAbilityControl(checksA)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(0.1f));
+        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Yasuo's Auto Attack");
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
+    }
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         if (qStack != 2) StartCoroutine(QStack());
         else
         {
-            if (OnTheE) targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.9f, targetStats.buffManager, myStats.qSkill[0].basic.name));
-            else targetStats.buffManager.buffs.Add("Airborne", new AirborneBuff(0.75f, targetStats.buffManager, myStats.qSkill[0].basic.name));
+            if (OnTheE) TargetBuffManager.Add("Airborne", new AirborneBuff(0.9f, targetStats.buffManager, myStats.qSkill[0].basic.name));
+            else TargetBuffManager.Add("Airborne", new AirborneBuff(0.75f, targetStats.buffManager, myStats.qSkill[0].basic.name));
             qStack = 0;
             StopCoroutine(QStack());
-            StopCoroutine(QStack());
-        }
-        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[0]);
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+			StopCoroutine(QStack());
+		}
+        UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)7048);
+        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
         if (OnTheE) yield break;
-        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
+
+        yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+     
         //blocks projectiles add later
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
         if (OnTheE) yield break;
-        yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
+
+        yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         StartCoroutine(RidingE());
-        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0]);
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], skillComponentTypes:(SkillComponentTypes)34944);
+        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
     {
-        if (!CheckForAbilityControl(checksR)) yield break;
+        if (TargetBuffManager.buffs.ContainsKey("Airborne"))
+        {
+            if (myStats.rLevel == -1) yield break;
+            if (!CheckForAbilityControl(checksR)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("UnableToAct", new UnableToActBuff(1f, myStats.buffManager, myStats.rSkill[0].basic.name));
-        pCD = 0;
-        qStack = 0;
-        StopCoroutine(QStack());
-        StopCoroutine(QStack());
-        targetStats.buffManager.buffs["Airborne"].duration = 1;
-        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
-        //critics gain armor pen %50 percent
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+            yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
+            MyBuffManager.Add("UnableToAct", new UnableToActBuff(1f, myStats.buffManager, myStats.rSkill[0].basic.name));
+            pCD = 0;
+            qStack = 0;
+            StopCoroutine(QStack());
+            StopCoroutine(QStack());
+            TargetBuffManager.buffs["Airborne"].duration = 1;
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)34816);
+            //critics gain armor pen %50 percent
+            myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
+            simulationManager.AddCastLog(myCastLog, 4);
+        }
     }
 
     public override IEnumerator HijackedR(int skillLevel)
