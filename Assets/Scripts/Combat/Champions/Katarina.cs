@@ -66,38 +66,67 @@ public class Katarina : ChampionCombat
     public IEnumerator Voracity(float landingTime)
     {
         yield return new WaitForSeconds(landingTime);
-        UpdateTotalDamage(ref pSum, 0, new Damage(KatarinaPassiveFlatDamageByLevel[myStats.level] + (myStats.bonusAD * 0.6f) + (GetKatPassiveAPPercentByLevel(myStats.level) * 0.01f * myStats.AP), SkillDamageType.Spell), myStats.passiveSkill.skillName);
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[0] - (GetKatPassiveECooldownReduction(myStats.level) * 0.01f * myStats.eSkill[0].basic.coolDown[0]);
+        UpdateTotalDamage(ref pSum, 4, new Damage(KatarinaPassiveFlatDamageByLevel[myStats.level] + (myStats.bonusAD * 0.6f) + (GetKatPassiveAPPercentByLevel(myStats.level) * 0.01f * myStats.AP), SkillDamageType.Spell, skillComponentType: (SkillComponentTypes)16520), "Voracity");
+        myStats.eCD -= GetKatPassiveECooldownReduction(myStats.level) * 0.01f * myStats.eSkill[0].basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 4);
     }
 
     public override IEnumerator ExecuteQ()
     {
-        yield return base.ExecuteQ();
-        StartCoroutine(Voracity(1f));
+        if (myStats.qLevel == -1) yield break;
+        if (!CheckForAbilityControl(checksQ)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
+        if(UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)18564) != float.MinValue) StartCoroutine(Voracity(1f));
+        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        UpdateTotalDamage(ref wSum, 1, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), WSkill().basic.name);
+        myStats.wCD = myStats.wSkill[0].basic.coolDown[myStats.wLevel];
         StartCoroutine(Voracity(1.25f));
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
     {
-        yield return base.ExecuteE();
+        if (myStats.eLevel == -1) yield break;
+        if (!CheckForAbilityControl(checksE)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: (SkillComponentTypes)34953);
+        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
         attackCooldown = 0.0f;
+        simulationManager.AddCastLog(myCastLog, 2);
     }
+
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(2.5f, myStats.buffManager, myStats.rSkill[0].basic.name, "DeathLotus"));
+        UpdateTotalDamage(ref rSum, 3, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), RSkill().basic.name);
+        MyBuffManager.Add("Channeling", new ChannelingBuff(2.5f, myStats.buffManager, myStats.rSkill[0].basic.name, "DeathLotus"));
         StartCoroutine(DeathLotus(0));
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 3);
+    }
+
+    public override IEnumerator ExecuteA()
+    {
+        if (!CheckForAbilityControl(checksA)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(0.1f));
+        UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Katarina's Auto Attack");
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     public override IEnumerator HijackedR(int skillLevel)
@@ -112,15 +141,17 @@ public class Katarina : ChampionCombat
     {
         yield return new WaitForSeconds(0.166f);
         time += 0.166f;
-        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]);
-        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[1]);
-        if (targetStats.buffManager.buffs.TryGetValue(myStats.rSkill[0].basic.name, out Buff value))
+        if(UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats), SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)16540), RSkill().basic.name) != float.MinValue)
         {
-            value.duration = 3f;
-        }
-        else
-        {
-            targetStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new GrievousWoundsBuff(3, targetStats.buffManager, myStats.rSkill[0].basic.name, 40f, myStats.rSkill[0].basic.name));
+            UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[1], skillComponentTypes: (SkillComponentTypes)16384);
+            if (targetStats.buffManager.buffs.TryGetValue(myStats.rSkill[0].basic.name, out Buff value))
+            {
+                value.duration = 3f;
+            }
+            else
+            {
+                TargetBuffManager.Add(myStats.rSkill[0].basic.name, new GrievousWoundsBuff(3, targetStats.buffManager, myStats.rSkill[0].basic.name, 40f, myStats.rSkill[0].basic.name));
+            }
         }
         if (time < 2.5f) StartCoroutine(DeathLotus(time));
     }
@@ -137,7 +168,7 @@ public class Katarina : ChampionCombat
         }
         else
         {
-            myStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name, new GrievousWoundsBuff(3, myStats.buffManager, myStats.rSkill[0].basic.name, 40f, myStats.rSkill[0].basic.name));
+            MyBuffManager.Add(myStats.rSkill[0].basic.name, new GrievousWoundsBuff(3, myStats.buffManager, myStats.rSkill[0].basic.name, 40f, myStats.rSkill[0].basic.name));
         }
         if (time < 2.5f) StartCoroutine(HDeathLotus(time, skillLevel));
     }
