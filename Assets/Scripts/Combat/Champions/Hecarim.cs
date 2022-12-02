@@ -30,13 +30,9 @@ public class Hecarim : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
 
         qKeys.Add("Physical Damage");
-        qKeys.Add("Minion Damage");
         wKeys.Add("Magic Damage Per Tick");
-        wKeys.Add("Total Magic Damage");
         wKeys.Add("Bonus Resistances");
-        wKeys.Add("Capped Healing");
         eKeys.Add("Minimum Physical Damage");
-        eKeys.Add("Maximum Physical Damage");
         rKeys.Add("Magic damage");
 
         base.UpdatePriorityAndChecks();
@@ -52,51 +48,64 @@ public class Hecarim : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        SpiritOfTheDread(AutoAttack(new Damage(myStats.AD, SkillDamageType.Phyiscal)).damage);
+        SpiritOfTheDread(UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Hecarim's Auto Attack"));
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         StopCoroutine(LoseRampageStacks());
-        SpiritOfTheDread(UpdateTotalDamage(ref qSum, 0, new Damage(myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats) + (rampageStacks * 0.04f * myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats)), SkillDamageType.Phyiscal), myStats.qSkill[0].name)); //no bonus AD for now
+        SpiritOfTheDread(UpdateTotalDamage(ref qSum, 0, new Damage(myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) + (rampageStacks * 0.04f * myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats)), SkillDamageType.Phyiscal, skillComponentType:(SkillComponentTypes)18560), myStats.qSkill[0].name)); //no bonus AD for now
         if (rampageStacks < 3) rampageStacks++;
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
         myStats.qCD -= rampageStacks * 0.75f;
+        simulationManager.AddCastLog(myCastLog, 0);
         StartCoroutine(LoseRampageStacks());
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("BonusArmor", new ArmorBuff(4, myStats.buffManager, myStats.wSkill[0].basic.name, (int)myStats.wSkill[0].UseSkill(4, wKeys[2], myStats, targetStats), "BonusArmor"));
-        myStats.buffManager.buffs.Add("BonusMR", new MagicResistanceBuff(4, myStats.buffManager, myStats.wSkill[0].basic.name, (int)myStats.wSkill[0].UseSkill(4, wKeys[2], myStats, targetStats), "BonusMR"));
-        myStats.buffManager.buffs.Add("SpiritOfTheDread", new SpiritOfTheDreadBuff(4, myStats.buffManager, myStats.eSkill[0].name));
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+        UpdateTotalDamage(ref wSum, 1, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), WSkill().basic.name);
+        MyBuffManager.Add("BonusArmor", new ArmorBuff(4, MyBuffManager, myStats.wSkill[0].basic.name, (int)myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), "BonusArmor"));
+        MyBuffManager.Add("BonusMR", new MagicResistanceBuff(4, MyBuffManager, myStats.wSkill[0].basic.name, (int)myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), "BonusMR"));
+        MyBuffManager.Add("SpiritOfTheDread", new SpiritOfTheDreadBuff(4, MyBuffManager, myStats.eSkill[0].name));
+        StartCoroutine(SpiritOfDread());
+        myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        SpiritOfTheDread(UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[0])); //does not account for movement as of the moment
-        targetStats.buffManager.buffs.Add("Stun", new StunBuff(0.25f, targetStats.buffManager, myStats.eSkill[0].name));
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
+        SpiritOfTheDread(UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], skillComponentTypes:(SkillComponentTypes)39808)); //does not account for movement as of the moment
+        TargetBuffManager.Add("Stun", new StunBuff(0.25f, TargetBuffManager, myStats.eSkill[0].name));
+        attackCooldown = 0;
+        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        SpiritOfTheDread(UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], 2, rKeys[0]));
-        targetStats.buffManager.buffs.Add("Flee", new FleeBuff(0.75f, targetStats.buffManager, myStats.eSkill[0].name));
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
+        SpiritOfTheDread(UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes:(SkillComponentTypes)18560));
+        TargetBuffManager.Add("Flee", new FleeBuff(0.75f, TargetBuffManager, myStats.rSkill[0].name));
+        myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 4);
     }
 
     private IEnumerator LoseRampageStacks()
@@ -109,10 +118,21 @@ public class Hecarim : ChampionCombat
             yield return new WaitForSeconds(1);
         }
     }
+    private IEnumerator SpiritOfDread()
+	{
+        yield return new WaitForSeconds(1f);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)8192);
+        yield return new WaitForSeconds(1f);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)8192);
+        yield return new WaitForSeconds(1f);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)8192);
+        yield return new WaitForSeconds(1f);
+        UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)8192);
+    }
 
     public void SpiritOfTheDread(float damage)
     {
-        if (myStats.buffManager.buffs.ContainsKey("SpiritOfTheDread"))
-            UpdateTotalHeal(ref hSum, damage * 0.25f, myStats.wSkill[0].basic.name);
+        if (MyBuffManager.buffs.ContainsKey("SpiritOfTheDread"))
+            UpdateTotalHeal(ref hSum, damage * 0.25f, WSkill().basic.name);
     }
 }
