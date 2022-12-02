@@ -127,7 +127,7 @@ public class Zed : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        var damage = UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Ahri's Auto Attack");
+        var damage = UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Zed's Auto Attack");
         if (damage > 0 && markedForDeath) markedRawDamage += damage;
         if (damage != float.MinValue)
         {
