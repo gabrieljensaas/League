@@ -120,11 +120,13 @@ public class Diana : ChampionCombat
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         TargetBuffManager.Add("Airborne", new AirborneBuff(0.25f, TargetBuffManager, myStats.rSkill[0].name));
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 4);
 
         yield return new WaitForSeconds(1);
         UpdateTotalDamage(ref rSum, 3, myStats.rSkill[1], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)18560);
