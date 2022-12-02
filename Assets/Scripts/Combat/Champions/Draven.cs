@@ -5,6 +5,7 @@ using UnityEngine;
 public class Draven : ChampionCombat
 {
     private int pStack = 1;
+    private float rMultiplier = 2;
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "R", "Q", "W", "E", "A" };
@@ -18,7 +19,7 @@ public class Draven : ChampionCombat
         checksW.Add(new CheckIfCasting(this));
         checksE.Add(new CheckIfCasting(this));
         checksR.Add(new CheckIfCasting(this));
-        checksR.Add(new CheckIfExecutes(this, "R", pStack, 2));
+        checksR.Add(new CheckIfExecutes(this, "R",ref pStack,ref rMultiplier));
         checksA.Add(new CheckIfCasting(this));
         checksQ.Add(new CheckIfDisrupt(this));
         checksW.Add(new CheckIfDisrupt(this));
