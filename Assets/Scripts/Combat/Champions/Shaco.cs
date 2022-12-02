@@ -73,55 +73,71 @@ public class Shaco : ChampionCombat
 
     public override IEnumerator ExecuteA()
     {
-        yield return base.ExecuteA();
-        if (myStats.buffManager.buffs.TryGetValue("Untargetable", out Buff buff))
-        {
-            UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], 4, qKeys[1]);
-            buff.Kill();
+        if (!CheckForAbilityControl(checksA)) yield break;
+
+        yield return StartCoroutine(StartCastingAbility(0.1f));
+        if (UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Shaco's Auto Attack") != float.MinValue);
+		{
+            if (MyBuffManager.buffs.TryGetValue("Untargetable", out Buff buff))
+            {
+                UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[1], skillComponentTypes:(SkillComponentTypes)5016);
+                buff.Kill();
+            }
         }
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     public override IEnumerator ExecuteQ()
     {
+        if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.qSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add("Untargetable", new UntargetableBuff(myStats.qSkill[0].UseSkill(4, qKeys[0], myStats, targetStats), myStats.buffManager, myStats.qSkill[0].basic.name));
-        myStats.qCD = myStats.qSkill[0].basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
+        UpdateTotalDamage(ref qSum, 1, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), QSkill().basic.name);
+        MyBuffManager.Add("Untargetable", new UntargetableBuff(myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), myStats.buffManager, myStats.qSkill[0].basic.name));
+        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
+        simulationManager.AddCastLog(myCastLog, 0);
     }
 
     public override IEnumerator ExecuteW()
     {
+        if (myStats.wLevel == -1) yield break;
         if (!CheckForAbilityControl(checksW)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        pets.Add(new JackInTheBox(this, JackInTheBoxHP(myStats.level), myStats.wSkill[0].UseSkill(4, wKeys[2], myStats, targetStats), 2, 100, 50, 5, 2));
-        myStats.wCD = myStats.wSkill[0].basic.coolDown[4];
+        yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+        pets.Add(new JackInTheBox(this, JackInTheBoxHP(myStats.level), myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[2], myStats, targetStats), 2, 100, 50, 5, 2));
+        myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
     {
+        if (myStats.eLevel == -1) yield break;
         if (!CheckForAbilityControl(checksE)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
 
         if (myStats.buffManager.buffs.TryGetValue("Untargetable", out Buff buff))
             buff.Kill();
 
         if (targetStats.PercentCurrentHealth > 0.3f)
-            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[1]);
+            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[1], skillComponentTypes:(SkillComponentTypes)34820);
         else
-            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], 4, eKeys[2]);
+            UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[2], skillComponentTypes: (SkillComponentTypes)34820);
 
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[4];
+        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
     {
+        if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         pets.Add(new Hallucination(this, myStats.currentHealth, myStats.AD, myStats.attackSpeed, myStats.spellBlock, myStats.armor, 18));
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[2];
+        myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 4);
     }
 }

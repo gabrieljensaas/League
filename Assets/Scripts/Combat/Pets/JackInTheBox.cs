@@ -39,13 +39,13 @@ public class JackInTheBox : Pet
 
     public void AutoAttack()
     {
-        owner.targetCombat.TakeDamage(new Damage(aaDamage, SkillDamageType.Spell), "Jack In The Box Attack");
+        owner.targetCombat.TakeDamage(new Damage(aaDamage, SkillDamageType.Spell, skillComponentType:(SkillComponentTypes)18564), "Jack In The Box Attack");
         aaTimer = 1f / attackSpeed;
     }
 
     private void Kill()
     {
-        owner.targetStats.buffManager.buffs.Add("Flee", new FleeBuff(2, owner.targetStats.buffManager, "Jack In The Box"));
+        owner.TargetBuffManager.Add("Flee", new FleeBuff(2, owner.targetStats.buffManager, "Jack In The Box"));
         owner.pets.Remove(this);
     }
 }
