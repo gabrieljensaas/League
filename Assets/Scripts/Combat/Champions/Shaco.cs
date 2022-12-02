@@ -94,7 +94,7 @@ public class Shaco : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateTotalDamage(ref qSum, 1, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), QSkill().basic.name);
+        UpdateTotalDamage(ref qSum, 0, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), QSkill().basic.name);
         MyBuffManager.Add("Untargetable", new UntargetableBuff(myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats), myStats.buffManager, myStats.qSkill[0].basic.name));
         myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
         simulationManager.AddCastLog(myCastLog, 0);
@@ -106,6 +106,8 @@ public class Shaco : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
+        UpdateTotalDamage(ref wSum, 1, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), WSkill().basic.name);
+
         pets.Add(new JackInTheBox(this, JackInTheBoxHP(myStats.level), myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[2], myStats, targetStats), 2, 100, 50, 5, 2));
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
         simulationManager.AddCastLog(myCastLog, 1);
@@ -136,6 +138,8 @@ public class Shaco : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
+        UpdateTotalDamage(ref rSum, 3, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), RSkill().basic.name);
+        MyBuffManager.Add("UntargetableBuff", new UntargetableBuff(0.5f, MyBuffManager, RSkill().basic.name));
         pets.Add(new Hallucination(this, myStats.currentHealth, myStats.AD, myStats.attackSpeed, myStats.spellBlock, myStats.armor, 18));
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
         simulationManager.AddCastLog(myCastLog, 4);

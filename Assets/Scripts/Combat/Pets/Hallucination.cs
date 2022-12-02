@@ -32,14 +32,14 @@ public class Hallucination : Pet
 
     public void AutoAttack()
     {
-        owner.targetCombat.TakeDamage(new Damage(aaDamage, SkillDamageType.Phyiscal, skillComponentType:(SkillComponentTypes)5192), "Shaco Clone Auto Attack");
+        owner.targetCombat.TakeDamage(new Damage(aaDamage, SkillDamageType.Phyiscal, skillComponentType:(SkillComponentTypes)132616), "Shaco Clone Auto Attack");
         aaTimer = 1f / attackSpeed;
     }
 
     private void Kill()
     {
-        owner.pets.Add(new JackInTheBox(owner, Shaco.JackInTheBoxHallucinationHP(owner.myStats.level), owner.myStats.wSkill[0].UseSkill(4, owner.wKeys[2], owner.myStats, owner.targetStats), 2, 100, 50, 5, 0));
-        owner.targetStats.buffManager.buffs.Add("Flee", new FleeBuff(1, owner.targetStats.buffManager, "Shaco Clone"));
+        owner.pets.Add(new JackInTheBox(owner, Shaco.JackInTheBoxHallucinationHP(owner.myStats.level), owner.myStats.wSkill[0].UseSkill(owner.myStats.wLevel, owner.wKeys[2], owner.myStats, owner.targetStats), 2, 100, 50, 5, 0));
+        owner.TargetBuffManager.Add("Flee", new FleeBuff(1, owner.targetStats.buffManager, "Shaco Clone"));
         owner.pets.Remove(this);
     }
 }
