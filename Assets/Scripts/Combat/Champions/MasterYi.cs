@@ -28,7 +28,6 @@ public class MasterYi : ChampionCombat
         checksQ.Add(new CheckIfUnableToAct(this));
         checksW.Add(new CheckIfUnableToAct(this));
         checksA.Add(new CheckIfUnableToAct(this));
-        autoattackcheck = new MasterYiAACheck(this);
         checksE.Add(new CheckIfWujuStyle(this));
         targetCombat.checksQ.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksW.Add(new CheckIfEnemyTargetable(targetCombat));
@@ -65,8 +64,32 @@ public class MasterYi : ChampionCombat
             myStats.qCD--;
             if (MyBuffManager.buffs.TryGetValue("WujuStyle", out Buff buff))
 			{
-                UpdateTotalDamage(ref eSum, 2, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.True, skillComponentType: (SkillComponentTypes)1320), ESkill().basic.name);
+                UpdateTotalDamage(ref eSum, 2, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.True, skillComponentType: (SkillComponentTypes)32), ESkill().basic.name);
 
+            }
+            if (myStats.buffManager.buffs.TryGetValue("DoubleStrike", out Buff value))
+            {
+                if (value.value == 3)
+                {
+                    if(UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Master Yi's Double Strike") != float.MinValue)
+                    {
+                        myStats.qCD--;
+                        if (MyBuffManager.buffs.TryGetValue("WujuStyle", out Buff buff))
+                        {
+                            UpdateTotalDamage(ref eSum, 2, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.True, skillComponentType: (SkillComponentTypes)32), ESkill().basic.name);
+
+                        }
+                    }
+                }
+                else
+                {
+                    value.value++;
+                    value.duration = 4;
+                }
+            }
+            else
+            {
+                MyBuffManager.Add("DoubleStrike", new DoubleStrikeBuff(4, myStats.buffManager, "Double Strike"));
             }
         }
         attackCooldown = 1f / myStats.attackSpeed;
