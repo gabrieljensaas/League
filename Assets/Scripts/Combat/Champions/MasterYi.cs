@@ -74,7 +74,7 @@ public class MasterYi : ChampionCombat
                     if(UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Master Yi's Double Strike") != float.MinValue)
                     {
                         myStats.qCD--;
-                        if (MyBuffManager.buffs.TryGetValue("WujuStyle", out Buff buff))
+                        if (MyBuffManager.buffs.TryGetValue("WujuStyle", out Buff buff2))
                         {
                             UpdateTotalDamage(ref eSum, 2, new Damage(ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), SkillDamageType.True, skillComponentType: (SkillComponentTypes)32), ESkill().basic.name);
 
