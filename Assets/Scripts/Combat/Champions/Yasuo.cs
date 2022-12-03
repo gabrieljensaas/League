@@ -9,6 +9,7 @@ public class Yasuo : ChampionCombat
     public float pCD = 0;
     public int qStack = 0;
     public bool OnTheE = false;
+    public bool ActiveWindwall = false;
     public static float GetYasuoQCastTime(float bonusAS)
     {
         return bonusAS switch
@@ -62,6 +63,7 @@ public class Yasuo : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
         checksE.Add(new CheckIfImmobilize(this));
         checksR.Add(new CheckIfImmobilize(this));
+        checkTakeDamage.Add(new CheckIfBlockingProjectile(this, ref ActiveWindwall));
         checkTakeDamage.Add(new CheckYasuoPassive(this, this));
         checksR.Add(new CheckIfEnemyAirborne(this));
         checksQ.Add(new CheckIfUnableToAct(this));
@@ -70,13 +72,6 @@ public class Yasuo : ChampionCombat
         checksR.Add(new CheckIfUnableToAct(this));
         checksA.Add(new CheckIfUnableToAct(this));
         checkTakeDamagePostMitigation.Add(new CheckShield(this));
-
-        myStats.qSkill[0].basic.castTime = GetYasuoQCastTime(myStats.bonusAS);
-        myStats.qSkill[0].basic.coolDown[0] = GetYasuoQCooldown(myStats.bonusAS);
-        myStats.qSkill[0].basic.coolDown[1] = GetYasuoQCooldown(myStats.bonusAS);
-        myStats.qSkill[0].basic.coolDown[2] = GetYasuoQCooldown(myStats.bonusAS);
-        myStats.qSkill[0].basic.coolDown[3] = GetYasuoQCooldown(myStats.bonusAS);
-        myStats.qSkill[0].basic.coolDown[4] = GetYasuoQCooldown(myStats.bonusAS);
 
         qKeys.Add("Physical Damage");
         wKeys.Add("");
@@ -107,7 +102,7 @@ public class Yasuo : ChampionCombat
         if (myStats.qLevel == -1) yield break;
         if (!CheckForAbilityControl(checksQ)) yield break;
 
-        yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
+        yield return StartCoroutine(StartCastingAbility(GetYasuoQCastTime(myStats.bonusAS)));
         if (qStack != 2) StartCoroutine(QStack());
         else
         {
@@ -118,7 +113,7 @@ public class Yasuo : ChampionCombat
 			StopCoroutine(QStack());
 		}
         UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)7048);
-        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
+        myStats.qCD = GetYasuoQCooldown(myStats.bonusAS);
         simulationManager.AddCastLog(myCastLog, 0);
     }
 
@@ -129,8 +124,8 @@ public class Yasuo : ChampionCombat
         if (OnTheE) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-     
-        //blocks projectiles add later
+        UpdateTotalDamage(ref wSum, 1, new Damage(0, SkillDamageType.Phyiscal), WSkill().basic.name);
+        StartCoroutine(ActivateWindwall());
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
         simulationManager.AddCastLog(myCastLog, 1);
     }
@@ -163,7 +158,7 @@ public class Yasuo : ChampionCombat
             StopCoroutine(QStack());
             TargetBuffManager.buffs["Airborne"].duration = 1;
             UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)34816);
-            //critics gain armor pen %50 percent
+            StartCoroutine(UltimateArmorpen());
             myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
             simulationManager.AddCastLog(myCastLog, 4);
         }
@@ -192,5 +187,19 @@ public class Yasuo : ChampionCombat
         OnTheE = true;
         yield return new WaitForSeconds(0.5f);            //it is based on the movement
         OnTheE = false;
+    }
+
+    public IEnumerator UltimateArmorpen()
+    {
+        myStats.armorPenetrationPercent += 50;
+        yield return new WaitForSeconds(15f);
+        myStats.armorPenetrationPercent -= 50;
+    }
+
+    public IEnumerator ActivateWindwall()
+    {
+        ActiveWindwall = true;
+        yield return new WaitForSeconds(4);
+        ActiveWindwall = false;
     }
 }
