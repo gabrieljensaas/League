@@ -113,7 +113,7 @@ public class Jhin : ChampionCombat
         if(UpdateTotalDamage(ref wSum, 1, WSkill(), myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)34948) != float.MinValue)
         {
             if (targetStats.buffManager.buffs.TryGetValue("Deadly Flourish Mark", out Buff deadlyFlourishMark))
-                targetStats.buffManager.buffs.Add("Root", new RootBuff(myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), targetStats.buffManager, myStats.wSkill[0].basic.name));
+                TargetBuffManager.Add("Root", new RootBuff(myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), targetStats.buffManager, myStats.wSkill[0].basic.name));
         }
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
         simulationManager.AddCastLog(myCastLog, 1);
@@ -185,7 +185,7 @@ public class Jhin : ChampionCombat
             yield return new WaitForSeconds(0.25f);
         }
 
-        myStats.buffManager.buffs.Remove("Channeling");
+        if(MyBuffManager.buffs.TryGetValue("Channeling", out Buff value)) value.Kill();
     }
 
     private IEnumerator HCurtainCall(int skillLevel)
