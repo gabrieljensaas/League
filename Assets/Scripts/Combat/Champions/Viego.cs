@@ -33,6 +33,7 @@ public class Viego : ChampionCombat
 
         qKeys.Add("Bonus Physical Damage");
         qKeys.Add("Physical Damage");
+        qKeys.Add("Minumum Bonus Damage");
         wKeys.Add("Magic Damage");
         eKeys.Add("Bonus Attack Speed");
         rKeys.Add("Bonus Physical Damage");
@@ -111,18 +112,20 @@ public class Viego : ChampionCombat
         if (!CheckForAbilityControl(checksA)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(0.1f));
-        float multiplier = QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * 0.01f;
-        float damage = 0.2f * myStats.AD;
+        float procDamage = QSkill().UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * 0.01f * targetStats.currentHealth;
+        float markDamage = (0.2f * myStats.AD) + (myStats.AP * 0.15f);
         if (TargetBuffManager.buffs.TryGetValue("BladeOFRuinedKing", out Buff buff))
         {
-            UpdateTotalDamage(ref qSum, 0, new Damage(damage, SkillDamageType.Phyiscal), QSkill().basic.name); // dont really know what i did here implementation might be incorrect.
-            UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD * (1 + multiplier), SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Viego's Auto Attack");
+            if(UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD + myStats.qLevel > -1 ? procDamage > QSkill().UseSkill(myStats.qLevel, qKeys[2], myStats, targetStats) ? procDamage : QSkill().UseSkill(myStats.qLevel, qKeys[2], myStats, targetStats) : 0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Viego's Auto Attack") != float.MinValue)
+            {
+                UpdateTotalDamage(ref qSum, 0, new Damage(markDamage, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)4136), QSkill().basic.name); // dont really know what i did here implementation might be incorrect.
+            }
             buff.Kill();
-            UpdateTotalHeal(ref qSum, damage * 1.35f, QSkill().basic.name);
+            UpdateTotalHeal(ref qSum, markDamage * 1.35f, QSkill().basic.name);
         }
         else
         {
-            UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Viego's Auto Attack");
+            UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD + myStats.qLevel > -1 ? procDamage > QSkill().UseSkill(myStats.qLevel, qKeys[2], myStats, targetStats) ? procDamage : QSkill().UseSkill(myStats.qLevel, qKeys[2], myStats, targetStats) : 0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Viego's Auto Attack");
         }
     }
 

@@ -10,7 +10,7 @@ public class CheckForYoneE : Check
 
     public override Damage Control(Damage damage)
     {
-        if (yone.InE) yone.EDamage += damage.value * yone.myStats.eSkill[0].UseSkill(4, yone.eKeys[0], yone.myStats, combat.myStats);
+        if (yone.InE && yone.myStats.eLevel > -1) yone.EDamage += damage.value * yone.myStats.eSkill[0].UseSkill(yone.myStats.eLevel, yone.eKeys[0], yone.myStats, combat.myStats);
         return damage;
     }
 

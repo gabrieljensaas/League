@@ -116,8 +116,8 @@ public class Warwick : ChampionCombat
         MyBuffManager.Add("Channeling", new ChannelingBuff(1.5f, MyBuffManager, RSkill().basic.name, "InfiniteDuress"));
         TargetBuffManager.Add("SuppressBuff", new SuppressionBuff(1.5f, TargetBuffManager, RSkill().basic.name));
 
-        UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats), SkillDamageType.Spell,skillComponentType:(SkillComponentTypes)35736), RSkill().basic.name);
-        UpdateTotalHeal(ref rSum, RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats), RSkill().basic.name); //need to change to post mitigation
+        var damage = UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats), SkillDamageType.Spell,skillComponentType:(SkillComponentTypes)35736), RSkill().basic.name);
+        UpdateTotalHeal(ref rSum, damage, RSkill().basic.name); //need to change to post mitigation
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
         simulationManager.AddCastLog(myCastLog, 4);
     }
