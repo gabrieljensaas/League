@@ -26,7 +26,7 @@ public class YordleSnapTrapBuff : Buff
             value--;
             duration = 3f;
             manager.buffs.Add("Root", new RootBuff(1.5f, manager, manager.combat.targetStats.wSkill[0].basic.name));
-            manager.combat.targetStats.buffManager.buffs.Add("TrapHeadshot", new TrapHeadshotBuff(1.8f, manager.combat.myStats.buffManager, manager.combat.targetStats.wSkill[0].basic.name));
+            manager.combat.TargetBuffManager.Add("TrapHeadshot", new TrapHeadshotBuff(1.8f, manager.combat.targetStats.buffManager, manager.combat.targetStats.wSkill[0].basic.name));
         }
     }
 }

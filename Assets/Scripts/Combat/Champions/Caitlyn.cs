@@ -5,7 +5,6 @@ using UnityEngine;
 public class Caitlyn : ChampionCombat
 {
     public static float[] CaitlynTrapRechargeBySkillLevel = { 30, 24, 19, 15, 12 };
-    public static float[] CaitlynMaxTrapBySkillLevel = { 3, 3, 4, 4, 5 };
 
     public static float GetCaitlynPassivePercent(int level)
     {
@@ -120,7 +119,7 @@ public class Caitlyn : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         UpdateTotalDamage(ref rSum, 3, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), RSkill().basic.name);
-        myStats.buffManager.buffs.Add("Channeling", new ChannelingBuff(1, myStats.buffManager, myStats.rSkill[0].basic.name, "AceInTheHole"));
+        MyBuffManager.Add("Channeling", new ChannelingBuff(1, myStats.buffManager, myStats.rSkill[0].basic.name, "AceInTheHole"));
         StartCoroutine(AceInTheHole());
         myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
         simulationManager.AddCastLog(myCastLog, 3);
