@@ -48,7 +48,7 @@ public class MasterYi : ChampionCombat
         qKeys.Add("Reduced Damage per hit");
         wKeys.Add("Minimum Healing Per Half Second");
         wKeys.Add("Damage Reduction");
-        eKeys.Add("True Damage");
+        eKeys.Add("Bonus True Damage");
         rKeys.Add("Bonus Attack Speed");
 
         myUI.combatPriority.text = string.Join(", ", combatPrio);
