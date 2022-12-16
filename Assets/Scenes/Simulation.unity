@@ -22014,27 +22014,28 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1658831954}
-        m_TargetAssemblyTypeName: Simulator.API.APIRequestManager, Assembly-CSharp
-        m_MethodName: LoadChampionData
-        m_Mode: 5
+        m_TargetAssemblyTypeName: APIRequestManager, Assembly-CSharp
+        m_MethodName: LoadChampionDataButton
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: '{     "APIMatchInfo": {         "version": "12.17.1",        
+          m_StringArgument: '     } }APIMatchInfo": {         "version": "12.17.1",        
             "minute": "20",         "championInfo": [             {                
-            "champName": "Warwick",                 "champLevel": 7,                
+            "champName": "Lucian",                 "champLevel": 7,                
             "items": [                     3006,                     6692,                    
             3042,                     6676,                     6696,                    
             3072                 ],                 "ability": [                    
             4,                     1,                     1,                    
             1                 ]             },             {                 "champName":
-            "Jhin",                 "champLevel": 7,                 "items": [                    
-            3006,                     3115,                     6653,                    
-            3116,                     3157                 ],                 "ability":
-            [                     4,                     1,                     1,                    
-            1                 ]             }         ]     } }'
+            "MasterYi",                 "champLevel": 7,                 "items":
+            [                     3006,                     3115,                    
+            6653,                     3116,                     3157                
+            ],                 "ability": [                     4,                    
+            1,                     1,                     1                 ]            
+            }         ]     } }'
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1638351006
@@ -22485,6 +22486,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 999f369f77470b04abe1ac29117d78a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonResponse:
+    APIMatchInfo:
+      version: 12.17.1
+      minute: 20
+      championInfo:
+      - ability: 05000000010000000300000001000000
+        champName: Lucian
+        champLevel: 10
+        items: 
+      - ability: 05000000010000000300000001000000
+        champName: MasterYi
+        champLevel: 10
+        items: 
 --- !u!114 &1658831955
 MonoBehaviour:
   m_ObjectHideFlags: 0

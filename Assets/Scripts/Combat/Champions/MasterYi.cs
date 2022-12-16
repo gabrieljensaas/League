@@ -46,7 +46,7 @@ public class MasterYi : ChampionCombat
 
         qKeys.Add("Physical Damage");
         qKeys.Add("Reduced Damage per hit");
-        wKeys.Add("Minimum Healing Per Half Second");
+        wKeys.Add("Minimum Heal Per Tick");
         wKeys.Add("Damage Reduction");
         eKeys.Add("Bonus True Damage");
         rKeys.Add("Bonus Attack Speed");

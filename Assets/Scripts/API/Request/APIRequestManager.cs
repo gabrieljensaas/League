@@ -8,6 +8,7 @@ public class APIRequestManager : MonoBehaviour
 
     private SimManager simManager;
     private ExternalJS externalJS;
+    public LSSAPIResponse buttonResponse;
 
     #region Singleton
     private static APIRequestManager _instance;
@@ -44,6 +45,11 @@ public class APIRequestManager : MonoBehaviour
         StartCoroutine(StartBattle());
     }
 
+    public void LoadChampionDataButton()
+    {
+        simManager.LoadStats(buttonResponse);
+        StartCoroutine(StartBattle());
+    }
     public IEnumerator StartBattle()
     {
         yield return new WaitForSeconds(3f);
