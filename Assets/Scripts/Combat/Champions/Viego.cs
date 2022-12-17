@@ -82,6 +82,7 @@ public class Viego : ChampionCombat
             BladeMark(WSkill().basic.name);
             myStats.wCD = WSkill().basic.coolDown[myStats.wLevel] - timeSinceW;
         }
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
