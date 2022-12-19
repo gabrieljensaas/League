@@ -46,7 +46,7 @@ public class Fiora : ChampionCombat
             {
                 activationTime = 13.25f
             };
-            TargetBuffManager.buffs.Add("Vitals", vitalsBuff);
+            TargetBuffManager.Add("Vitals", vitalsBuff);
         }
     }
 
@@ -82,8 +82,9 @@ public class Fiora : ChampionCombat
         if (!CheckForAbilityControl(checksQ)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-        UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)2970);
-        myStats.qCD *= 0.5f;
+        myStats.qCD = QSkill().basic.coolDown[myStats.qLevel];
+        if(UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)2970) != float.MinValue)
+            myStats.qCD *= 0.5f;
         simulationManager.AddCastLog(myCastLog, 0);
         CheckVitals();
 

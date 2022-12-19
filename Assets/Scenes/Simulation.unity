@@ -22496,7 +22496,7 @@ MonoBehaviour:
         champLevel: 6
         items: 
       - ability: 04000000010000000100000001000000
-        champName: Darius
+        champName: Fiora
         champLevel: 7
         items: 
 --- !u!114 &1658831955

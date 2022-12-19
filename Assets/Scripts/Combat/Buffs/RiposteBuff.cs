@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RiposteBuff : Buff
@@ -40,7 +42,7 @@ public class RiposteBuff : Buff
         }
 
         //removing debuffs that were added during riposte
-        foreach (string buff in manager.buffs.Keys)
+        foreach (string buff in manager.buffs.Keys.ToArray())
             if (!buffKeys.Contains(buff)) manager.buffs.Remove(buff);
 
         manager.simulationManager.ShowText($"{manager.stats.name}'s Riposte Ended!");
