@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Warwick : ChampionCombat
 {
-    private bool eCast;
+    private bool eCast = false;
     private float timeSinceE;
+    private bool wCast = false;
     public override void UpdatePriorityAndChecks()
     {
         combatPrio = new string[] { "E", "W", "Q", "R", "A" };
@@ -44,18 +45,20 @@ public class Warwick : ChampionCombat
         eKeys.Add("Damage Reduction");
         rKeys.Add("Total Magic Damage");
 
-        if (targetStats.currentHealth < 0.5f * targetStats.maxHealth)
-        {
-            if (targetStats.currentHealth > 0.25f * targetStats.maxHealth) MyBuffManager.Add("AttackSpeedBuff", new AttackSpeedBuff(float.MaxValue, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), "BloodHunt"));
-            else MyBuffManager.Add("AttackSpeedBuff", new AttackSpeedBuff(float.MaxValue, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), "BloodHunt"));
-        }
-
         base.UpdatePriorityAndChecks();
     }
     public override void CombatUpdate()
     {
         base.CombatUpdate();
         timeSinceE += Time.fixedDeltaTime;
+
+        if (wCast) return;
+        if (targetStats.PercentCurrentHealth < 0.5f)
+        {
+            if (targetStats.PercentCurrentHealth < 0.20f) MyBuffManager.Add("BloodHunt", new AttackSpeedBuff(float.MaxValue, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), "BloodHunt"));
+            else MyBuffManager.Add("BloodHunt", new AttackSpeedBuff(float.MaxValue, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), "BloodHunt"));
+        }
+        else if (MyBuffManager.buffs.TryGetValue("BloodHunt", out Buff value)) value.Kill();
     }
 
     public override IEnumerator ExecuteQ()
@@ -76,8 +79,9 @@ public class Warwick : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-        MyBuffManager.Add("AttackSpeedBuff", new AttackSpeedBuff(8f, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), "Blood Hunt"));
+        MyBuffManager.Add("BloodHunt", new AttackSpeedBuff(8f, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), "BloodHunt"));
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
+        StartCoroutine(WCast());
         simulationManager.AddCastLog(myCastLog, 1);
     }
 
@@ -89,16 +93,17 @@ public class Warwick : ChampionCombat
         if (!eCast)
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            MyBuffManager.Add("DamageReductionBuff", new DamageReductionPercentBuff(2.5f, MyBuffManager, ESkill().basic.name, ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats)));
+            MyBuffManager.Add("DamageReductionPercent", new DamageReductionPercentBuff(2.5f, MyBuffManager, ESkill().basic.name, ESkill().UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats)));
+            eCast= true;
             myStats.eCD = 1f;
             timeSinceE = 0;
         }
         else
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-            MyBuffManager.Add("CantAABuff", new CantAABuff(0.5f, MyBuffManager, "CantAA"));
+            MyBuffManager.Add("CantAA", new CantAABuff(0.5f, MyBuffManager, "CantAA"));
             yield return new WaitForSeconds(0.5f);
-            TargetBuffManager.Add("FearBuff", new FleeBuff(1f, TargetBuffManager, ESkill().basic.name));
+            TargetBuffManager.Add("Flee", new FleeBuff(1f, TargetBuffManager, ESkill().basic.name));
             eCast = false;
             myStats.eCD = ESkill().basic.coolDown[myStats.eLevel] - timeSinceE;
         }
@@ -111,13 +116,13 @@ public class Warwick : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        MyBuffManager.Add("ImmuneToCC", new ImmuneToCCBuff(0.1f, MyBuffManager, "CC-Immune", "InfiniteDuress"));
-        TargetBuffManager.Add("KnockdownBuff", new KnockdownBuff(0.1f, TargetBuffManager, RSkill().basic.name));
+        MyBuffManager.Add("InfiniteDuress", new ImmuneToCCBuff(0.1f, MyBuffManager, "CC-Immune", "InfiniteDuress"));
+        TargetBuffManager.Add("Knockdown", new KnockdownBuff(0.1f, TargetBuffManager, RSkill().basic.name));
         MyBuffManager.Add("Channeling", new ChannelingBuff(1.5f, MyBuffManager, RSkill().basic.name, "InfiniteDuress"));
-        TargetBuffManager.Add("SuppressBuff", new SuppressionBuff(1.5f, TargetBuffManager, RSkill().basic.name));
+        TargetBuffManager.Add("Suppression", new SuppressionBuff(1.5f, TargetBuffManager, RSkill().basic.name));
 
         var damage = UpdateTotalDamage(ref rSum, 3, new Damage(RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats), SkillDamageType.Spell,skillComponentType:(SkillComponentTypes)35736), RSkill().basic.name);
-        UpdateTotalHeal(ref rSum, damage, RSkill().basic.name); //need to change to post mitigation
+        UpdateTotalHeal(ref rSum, damage, RSkill().basic.name);
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
         simulationManager.AddCastLog(myCastLog, 4);
     }
@@ -138,5 +143,12 @@ public class Warwick : ChampionCombat
         }
         attackCooldown = 1f / myStats.attackSpeed;
         simulationManager.AddCastLog(myCastLog, 5);
+    }
+
+    private IEnumerator WCast()
+    {
+        wCast= true;
+        yield return new WaitForSeconds(8);
+        wCast = false;
     }
 }
