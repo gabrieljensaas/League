@@ -22492,11 +22492,11 @@ MonoBehaviour:
       minute: 20
       championInfo:
       - ability: 03000000010000000100000001000000
-        champName: Warwick
+        champName: Ahri
         champLevel: 6
         items: 
       - ability: 04000000010000000100000001000000
-        champName: MasterYi
+        champName: Darius
         champLevel: 7
         items: 
 --- !u!114 &1658831955

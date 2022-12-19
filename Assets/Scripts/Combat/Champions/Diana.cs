@@ -129,7 +129,7 @@ public class Diana : ChampionCombat
         simulationManager.AddCastLog(myCastLog, 4);
 
         yield return new WaitForSeconds(1);
-        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[1], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)18560);
+        UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)18560);
         MoonsilverBladeBonusAS();
     }
 

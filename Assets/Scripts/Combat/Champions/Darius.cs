@@ -48,7 +48,7 @@ public class Darius : ChampionCombat
         autoattackcheck = new DariusAACheck(this);
         dariusP = new CheckDariusP(this);
 
-        qKeys.Add("Blade Physical Damage");
+        qKeys.Add("Physical Damage");
         wKeys.Add("Physical Damage");
         eKeys.Add("Armor Penetration");
         rKeys.Add("True Damage");
