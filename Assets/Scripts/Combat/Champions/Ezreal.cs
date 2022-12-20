@@ -27,7 +27,7 @@ public class Ezreal : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
 
         qKeys.Add("Physical Damage");
-        wKeys.Add("Magic Damage");
+        wKeys.Add("Bonus Magic Damage");
         eKeys.Add("Magic Damage");
         rKeys.Add("Magic Damage");
 
@@ -80,7 +80,7 @@ public class Ezreal : ChampionCombat
         if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
 
-        yield return targetCombat.StartCoroutine(targetCombat.StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        yield return targetCombat.StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0],skillComponentTypes:(SkillComponentTypes)18564);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
         CheckEssenceFlux();

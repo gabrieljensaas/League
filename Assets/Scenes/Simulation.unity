@@ -22492,11 +22492,11 @@ MonoBehaviour:
       minute: 20
       championInfo:
       - ability: 03000000050000000100000001000000
-        champName: Sett
+        champName: Ezreal
         champLevel: 10
         items: 
       - ability: 04000000010000000100000001000000
-        champName: Fiora
+        champName: Ahri
         champLevel: 7
         items: 
 --- !u!114 &1658831955
