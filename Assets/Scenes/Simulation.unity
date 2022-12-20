@@ -22491,13 +22491,13 @@ MonoBehaviour:
       version: 12.17.1
       minute: 20
       championInfo:
-      - ability: 01000000030000000100000000000000
-        champName: Jax
-        champLevel: 5
+      - ability: 01000000010000000100000001000000
+        champName: Anivia
+        champLevel: 10
         items: 
-      - ability: 01000000010000000200000000000000
-        champName: Garen
-        champLevel: 4
+      - ability: 01000000010000000100000001000000
+        champName: Lucian
+        champLevel: 10
         items: 
 --- !u!114 &1658831955
 MonoBehaviour:

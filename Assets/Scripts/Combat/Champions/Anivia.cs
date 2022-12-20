@@ -123,7 +123,7 @@ public class Anivia : ChampionCombat
         yield return new WaitForSeconds(0.5f);
         UpdateTotalDamage(ref rSum, 4, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)8192);
         StartCoroutine(EmpoweredGlacialStorm());
-        ((ChannelingBuff)MyBuffManager.buffs["GlacialStorm"]).uniqueKey = "EmpoweredGlacialStorm";
+        ((ChannelingBuff)MyBuffManager.buffs["Channeling"]).uniqueKey = "EmpoweredGlacialStorm";
 
     }
 
