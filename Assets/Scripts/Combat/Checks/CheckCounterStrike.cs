@@ -8,10 +8,11 @@ public class CheckCounterStrike : Check
 
     public override Damage Control(Damage damage)
     {
-        if (combat.MyBuffManager.buffs.TryGetValue("CounterStrikeBuff", out Buff buff))
+        if (combat.MyBuffManager.buffs.TryGetValue("CounterStrikeBuff", out Buff buff) && damage.skillComponentType == SkillComponentTypes.OnAttack)
+        {
             if (buff.value > 5) buff.value++;
-
-        damage.value = 0;
+            damage.value = 0;
+        }
         return damage;
     }
 

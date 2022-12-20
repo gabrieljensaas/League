@@ -85,7 +85,7 @@ public class Garen : ChampionCombat
         UpdateTotalDamage(ref wSum, 1, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), WSkill().basic.name);
         MyBuffManager.Add("DamageReductionPercent", new DamageReductionPercentBuff(WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), MyBuffManager, WSkill().basic.name, 30));
         MyBuffManager.shields.Add(WSkill().basic.name, new ShieldBuff(0.75f, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), WSkill().basic.name));
-        MyBuffManager.Add("Tenacity", new TenacityBuff(0.75f, MyBuffManager, WSkill().basic.name, 60, WSkill().basic.name));
+        MyBuffManager.Add(WSkill().basic.name, new TenacityBuff(0.75f, MyBuffManager, WSkill().basic.name, 60, WSkill().basic.name));
         myStats.wCD = WSkill().basic.coolDown[myStats.wLevel];
         simulationManager.AddCastLog(myCastLog, 1);
     }
@@ -96,7 +96,6 @@ public class Garen : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
-        simulationManager.ShowText($"Garen Used Judgment!");
         MyBuffManager.Add("CantAA", new CantAABuff(3f, MyBuffManager, ESkill().basic.name));
         StartCoroutine(GarenE(0, 0));
         myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
@@ -109,9 +108,9 @@ public class Garen : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        UpdateTotalDamage(ref qSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)34944);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)34944);
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
-        simulationManager.AddCastLog(myCastLog, 4);
+        simulationManager.AddCastLog(myCastLog, 3);
 
         StopCoroutine("GarenE");          //if 2 GarenE coroutine exists this could leat to some bugs
         if (MyBuffManager.buffs.ContainsKey("CantAA"))

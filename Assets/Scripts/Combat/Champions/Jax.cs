@@ -7,15 +7,15 @@ public class Jax : ChampionCombat
     private int pStack = 0;
     private int rStack = 0;
 
-    public static float RelentlessAssaultAS(int level, int stack)
+    public static float RelentlessAssaultAS(int level, int stack, float baseAS)
     {
         return level switch
         {
-            < 4 => 3.5f * stack,
-            < 7 => 5f * stack,
-            < 10 => 6.5f * stack,
-            < 13 => 9.5f * stack,
-            _ => 11f * stack
+            < 4 => 0.035f * stack * baseAS,
+            < 7 => 0.05f * stack * baseAS,
+            < 10 => 0.065f * stack * baseAS ,
+            < 13 => 0.095f * stack * baseAS,
+            _ => 0.011f * stack * baseAS
         };
     }
 
@@ -75,12 +75,12 @@ public class Jax : ChampionCombat
         }
         if (pStack < 8) pStack++;
         MyBuffManager.buffs.Remove("RelentlessAssault");
-        MyBuffManager.Add("RelentlessAssault", new AttackSpeedBuff(2.5f, MyBuffManager, "RelentlessAssault", RelentlessAssaultAS(myStats.level, pStack), "RelentlessAssault"));
+        MyBuffManager.Add("RelentlessAssault", new AttackSpeedBuff(2.5f, MyBuffManager, "RelentlessAssault", RelentlessAssaultAS(myStats.level, pStack, myStats.baseAttackSpeed), "RelentlessAssault"));
         StartCoroutine(PStackExpired());
 
         if (rStack < 3)
             rStack++;
-        else
+        else if(myStats.rLevel != -1)
         {
             rStack = 0;
             UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)928);
@@ -141,6 +141,6 @@ public class Jax : ChampionCombat
         yield return new WaitForSeconds(2.5f);
         pStack--;
         MyBuffManager.buffs.Remove("RelentlessAssault");
-        if (pStack > 0) MyBuffManager.Add("RelentlessAssault", new AttackSpeedBuff(2.5f, MyBuffManager, "RelentlessAssault", RelentlessAssaultAS(myStats.level, pStack), "RelentlessAssault"));
+        if (pStack > 0) MyBuffManager.Add("RelentlessAssault", new AttackSpeedBuff(2.5f, MyBuffManager, "RelentlessAssault", RelentlessAssaultAS(myStats.level, pStack, myStats.baseAttackSpeed), "RelentlessAssault"));
     }
 }

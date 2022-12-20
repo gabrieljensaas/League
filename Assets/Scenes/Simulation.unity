@@ -22491,13 +22491,13 @@ MonoBehaviour:
       version: 12.17.1
       minute: 20
       championInfo:
-      - ability: 03000000050000000100000001000000
-        champName: Sion
-        champLevel: 10
+      - ability: 01000000030000000100000000000000
+        champName: Jax
+        champLevel: 5
         items: 
-      - ability: 04000000010000000100000001000000
-        champName: Ahri
-        champLevel: 7
+      - ability: 01000000010000000200000000000000
+        champName: Garen
+        champLevel: 4
         items: 
 --- !u!114 &1658831955
 MonoBehaviour:
