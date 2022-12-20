@@ -22492,7 +22492,7 @@ MonoBehaviour:
       minute: 20
       championInfo:
       - ability: 03000000050000000100000001000000
-        champName: Ezreal
+        champName: Sion
         champLevel: 10
         items: 
       - ability: 04000000010000000100000001000000

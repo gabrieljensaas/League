@@ -62,7 +62,7 @@ public class Sion : ChampionCombat
         if (!CheckForAbilityControl(checksW)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-        if (MyBuffManager.shields.ContainsKey(myStats.wSkill[0].basic.name))
+        if (!MyBuffManager.shields.ContainsKey(myStats.wSkill[0].basic.name))
         {
             myStats.buffManager.shields.Add(myStats.wSkill[0].basic.name, new ShieldBuff(6, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), myStats.wSkill[0].basic.name));
             myStats.wCD = 3;
