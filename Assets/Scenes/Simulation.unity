@@ -22492,11 +22492,11 @@ MonoBehaviour:
       minute: 20
       championInfo:
       - ability: 01000000010000000100000001000000
-        champName: Anivia
+        champName: Akshan
         champLevel: 10
         items: 
       - ability: 01000000010000000100000001000000
-        champName: Lucian
+        champName: Lillia
         champLevel: 10
         items: 
 --- !u!114 &1658831955
