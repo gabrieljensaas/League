@@ -122,7 +122,7 @@ public class Aatrox : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
-        myStats.buffManager.buffs.Add(myStats.rSkill[0].basic.name,
+        MyBuffManager.Add(myStats.rSkill[0].basic.name,
             new AttackDamageBuff(10, myStats.buffManager, myStats.rSkill[0].basic.name, (int)myStats.rSkill[0].UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats),
             myStats.rSkill[0].basic.name));
         UpdateTotalDamage(ref rSum, 3, new Damage(0, SkillDamageType.Phyiscal, (SkillComponentTypes)2048), RSkill().basic.name);

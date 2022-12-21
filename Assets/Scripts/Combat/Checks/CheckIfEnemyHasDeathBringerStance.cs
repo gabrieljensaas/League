@@ -18,7 +18,7 @@ public class CheckIfEnemyHasDeathBringerStance : Check
         {
             aatrox.UpdateTotalHeal(ref aatrox.hSum, damage.value, "Deathbringer Stance");
             value.Kill();
-            aatrox.pCD = Aatrox.AatroxPassiveCooldownByLevelTable[aatrox.myStats.level];
+            aatrox.pCD = Aatrox.AatroxPassiveCooldownByLevelTable[aatrox.myStats.level - 1];
         }
         return damage;
     }

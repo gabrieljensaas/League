@@ -89,6 +89,7 @@ public class Kaisa : ChampionCombat
         yield return new WaitForSeconds(0.1f);
         UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[1], skillComponentTypes: (SkillComponentTypes)8324);
         UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[1], skillComponentTypes: (SkillComponentTypes)8324);
+        simulationManager.AddCastLog(myCastLog, 0);
     }
     public override IEnumerator ExecuteW()
     {
@@ -112,9 +113,10 @@ public class Kaisa : ChampionCombat
         {
             PlasmaBuff buff = new PlasmaBuff(4, targetStats.buffManager, "Kaisa's Passive");
             buff.value = 3;
-            MyBuffManager.buffs.Add("Plasma", buff);
+            TargetBuffManager.Add("Plasma", buff);
         }
         myStats.wCD *= 0.33f;
+        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
@@ -127,10 +129,11 @@ public class Kaisa : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         MyBuffManager.Add("Untargetable", new UntargetableBuff(0.5f, myStats.buffManager, myStats.eSkill[0].basic.name));
         MyBuffManager.Add(myStats.eSkill[0].basic.name, new AttackSpeedBuff(4, myStats.buffManager, myStats.eSkill[0].basic.name,
-            myStats.wSkill[0].UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), myStats.eSkill[0].basic.name));
+            myStats.eSkill[0].UseSkill(myStats.eLevel, eKeys[0], myStats, targetStats), myStats.eSkill[0].basic.name));
         UpdateTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, buffNames:new string[] {"Untargetable", ESkill().basic.name },
             skillComponentType: (SkillComponentTypes)2048), ESkill().basic.name);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
+        simulationManager.AddCastLog(myCastLog, 2);
     }
 
     public override IEnumerator ExecuteR()
@@ -144,6 +147,7 @@ public class Kaisa : ChampionCombat
         UpdateTotalDamage(ref rSum, 3, 
             new Damage(0, SkillDamageType.Phyiscal, buffNames: new string[] {RSkill().basic.name}, skillComponentType: (SkillComponentTypes)2050), RSkill().basic.name);
         myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     public override IEnumerator ExecuteA()
@@ -190,5 +194,6 @@ public class Kaisa : ChampionCombat
     public void DealPassiveDamage(float rawdamage)
     {
         UpdateTotalDamage(ref pSum, 4, new Damage(rawdamage, SkillDamageType.Spell, skillComponentType: (SkillComponentTypes)36), myStats.passiveSkill.skillName);
+        simulationManager.AddCastLog(myCastLog, 4);
     }
 }

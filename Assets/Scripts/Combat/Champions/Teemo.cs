@@ -50,6 +50,7 @@ public class Teemo : ChampionCombat
         base.CombatUpdate();
         noxiousTrapTimer += Time.fixedDeltaTime;
 
+        if (myStats.rLevel == -1) return;
         if (noxiousTrapTimer > noxiousTrapRechargeRate && noxiousTrapCharges < (int)RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats))
         {
             noxiousTrapTimer = 0;
