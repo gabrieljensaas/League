@@ -54,7 +54,7 @@ public class Jhin : ChampionCombat
         wKeys.Add("Physical Damage");
         wKeys.Add("Root Duration");
         eKeys.Add("Magic Damage");
-        rKeys.Add("Minimum Damage");
+        rKeys.Add("Minimum Physical Damage");
 
         base.UpdatePriorityAndChecks();
     }
@@ -182,7 +182,7 @@ public class Jhin : ChampionCombat
                 UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)34948, damageModifier: 1 + (targetStats.PercentMissingHealth * 3));
 
             shots--;
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(1f);
         }
 
         if(MyBuffManager.buffs.TryGetValue("Channeling", out Buff value)) value.Kill();

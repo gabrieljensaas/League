@@ -67,7 +67,7 @@ public class Trundle : ChampionCombat
         if (!CheckForAbilityControl(checksE)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
-        TargetBuffManager.Add("KnockBackBuff", new AirborneBuff(0.1f, targetStats.buffManager, "KnockBackBuff"));
+        TargetBuffManager.Add("Airborne", new AirborneBuff(0.1f, targetStats.buffManager, "Airborne"));
         UpdateTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), ESkill().basic.name);
         myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
         simulationManager.AddCastLog(myCastLog, 2);
@@ -83,10 +83,10 @@ public class Trundle : ChampionCombat
         {
             UpdateTotalHeal(ref rSum, myStats.rSkill[0], myStats.rLevel, rKeys[0], healModifier: 0.5f);
             StartCoroutine(Subjugate());
-            MyBuffManager.Add("BonusArmor", new ArmorBuff(8, myStats.buffManager, myStats.rSkill[0].basic.name, (float)0.4 * targetStats.armor, "BonusArmor"));
-            TargetBuffManager.Add("ArmorReduction", new ArmorReductionBuff(8, targetStats.buffManager, myStats.qSkill[0].basic.name, (float)0.4 * targetStats.armor, "ArmorReduction"));
-            MyBuffManager.Add("BonusMR", new MagicResistanceBuff(8, myStats.buffManager, myStats.qSkill[0].basic.name, (int)(0.4 * targetStats.spellBlock), "BonusMR"));
-            TargetBuffManager.Add("MRReduction", new MagicResistanceReductionBuff(8, myStats.buffManager, myStats.qSkill[0].basic.name, (float)0.4 * targetStats.spellBlock, "MRReduction"));
+            MyBuffManager.Add("BonusArmor", new ArmorBuff(8, myStats.buffManager, myStats.rSkill[0].basic.name, 0.4f * targetStats.armor, "BonusArmor"));
+            TargetBuffManager.Add("ArmorReduction", new ArmorReductionBuff(8, targetStats.buffManager, myStats.rSkill[0].basic.name, 0.4f * targetStats.armor, "ArmorReduction"));
+            MyBuffManager.Add("BonusMR", new MagicResistanceBuff(8, myStats.buffManager, myStats.rSkill[0].basic.name, 0.4f * targetStats.spellBlock, "BonusMR"));
+            TargetBuffManager.Add("MRReduction", new MagicResistanceReductionBuff(8, TargetBuffManager, myStats.rSkill[0].basic.name, 0.4f * targetStats.spellBlock, "MRReduction"));
         }
         myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
         simulationManager.AddCastLog(myCastLog, 3);

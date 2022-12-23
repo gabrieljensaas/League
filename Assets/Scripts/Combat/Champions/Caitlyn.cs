@@ -8,9 +8,9 @@ public class Caitlyn : ChampionCombat
 
     public static float GetCaitlynPassivePercent(int level)
     {
-        if (level < 7) return 60;
-        if (level < 13) return 90;
-        return 120;
+        if (level < 7) return 160 * 0.01f;
+        if (level < 13) return 190 * 0.01f;
+        return 220 * 0.01f;
     }
 
     private int wStack;
