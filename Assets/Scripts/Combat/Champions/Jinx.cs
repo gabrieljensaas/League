@@ -77,10 +77,10 @@ public class Jinx : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         UpdateTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), ESkill().basic.name);
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
         yield return new WaitForSeconds(0.9f); // chompers landing and arming time
         if(UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], skillComponentTypes: (SkillComponentTypes)16516) != float.MinValue)
             TargetBuffManager.Add("Root", new RootBuff(1.5f, targetStats.buffManager, myStats.eSkill[0].basic.name));
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
         simulationManager.AddCastLog(myCastLog, 2);
     }
 

@@ -22492,11 +22492,11 @@ MonoBehaviour:
       minute: 5
       championInfo:
       - ability: 05000000050000000500000003000000
-        champName: Lucian
+        champName: Garen
         champLevel: 18
         items: 
       - ability: 05000000050000000500000003000000
-        champName: Teemo
+        champName: Ashe
         champLevel: 18
         items: 
 --- !u!114 &1658831955
