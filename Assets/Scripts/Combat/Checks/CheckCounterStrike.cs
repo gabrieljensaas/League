@@ -11,7 +11,7 @@ public class CheckCounterStrike : Check
         if (combat.MyBuffManager.buffs.TryGetValue("CounterStrikeBuff", out Buff buff) && damage.skillComponentType == SkillComponentTypes.OnAttack)
         {
             if (buff.value > 5) buff.value++;
-            damage.value = 0;
+            damage.value = float.MinValue;
         }
         return damage;
     }

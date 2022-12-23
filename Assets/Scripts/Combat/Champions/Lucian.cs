@@ -41,7 +41,7 @@ public class Lucian : ChampionCombat
         checksE.Add(new CheckIfImmobilize(this));
         checksA.Add(new CheckIfDisarmed(this));
 
-        myStats.qSkill[0].basic.castTime = LucianQCastTimeByLevel[myStats.level]; //variable cast time
+        myStats.qSkill[0].basic.castTime = LucianQCastTimeByLevel[myStats.level - 1]; //variable cast time
         passiveMultiplier = GetLucianPassiveMultiplier(myStats.level);
 
         qKeys.Add("Physical Damage");
@@ -95,7 +95,7 @@ public class Lucian : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
         MyBuffManager.Add("Channeling", new ChannelingBuff(3, myStats.buffManager, myStats.rSkill[0].basic.name, "TheCulling"));
-        StartCoroutine(TheCulling(22 + (int)(myStats.critStrikeChance * 0.25f), (22 + (int)(myStats.critStrikeChance * 0.25f)) / 3f));
+        StartCoroutine(TheCulling(22 + (int)(myStats.critStrikeChance * 0.25f),3f / (22 + (int)(myStats.critStrikeChance * 0.25f))));
         myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
         UpdateTotalDamage(ref rSum, 3, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), RSkill().basic.name);
         AddLightslinger(myStats.rSkill[0].basic.name);
@@ -133,8 +133,8 @@ public class Lucian : ChampionCombat
         if (waveCount == 0) yield break;
         yield return new WaitForSeconds(interval);
         UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes: (SkillComponentTypes)8324);
-        StartCoroutine(TheCulling(waveCount--, interval));
-        AddLightslinger(myStats.qSkill[0].basic.name);
+        StartCoroutine(TheCulling(waveCount - 1, interval));
+        AddLightslinger(myStats.rSkill[0].basic.name);
     }
 
     private IEnumerator HTheCulling(int waveCount, float interval, int skillLevel)

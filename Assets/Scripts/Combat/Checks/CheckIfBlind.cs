@@ -8,7 +8,7 @@ public class CheckIfBlind : Check
 
     public override Damage Control(Damage damage)
     {
-        damage.value = combat.TargetBuffManager.buffs.ContainsKey("Blind") ? 0 : damage.value;
+        if (damage.skillComponentType == SkillComponentTypes.Blindable) damage.value = float.MinValue;
         return damage;
     }
 

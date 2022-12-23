@@ -6055,7 +6055,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _simulatorTargetedFPS: 60
   _simulatorTimeScale: 5
-  _simulatorFixedTimeStep: 0.033
+  _simulatorFixedTimeStep: 0.0066
   isSimulating: 0
   championsDropdowns:
   - {fileID: 884130053}
@@ -22489,15 +22489,15 @@ MonoBehaviour:
   buttonResponse:
     APIMatchInfo:
       version: 12.17.1
-      minute: 28
+      minute: 5
       championInfo:
       - ability: 05000000050000000500000003000000
-        champName: Kaisa
-        champLevel: 13
+        champName: Lucian
+        champLevel: 18
         items: 
       - ability: 05000000050000000500000003000000
-        champName: Ahri
-        champLevel: 14
+        champName: Teemo
+        champLevel: 18
         items: 
 --- !u!114 &1658831955
 MonoBehaviour:

@@ -297,7 +297,7 @@ namespace Simulator.Combat
 
             damage.value = (int)CheckForDamageControl(checkTakeDamagePostMitigation, damage).value;
 
-            if (damage.value <= 0) return 0;
+            if (damage.value <= 0) return damage.value;
 
             myStats.currentHealth -= damage.value;
             simulationManager.ShowText($"{myStats.name} Took {damage.value} Damage From {source}!");
