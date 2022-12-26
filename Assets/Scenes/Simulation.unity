@@ -22495,15 +22495,15 @@ MonoBehaviour:
   buttonResponse:
     APIMatchInfo:
       version: 12.17.1
-      minute: 5
+      minute: 19
       championInfo:
       - ability: 05000000050000000500000003000000
         champName: Viktor
         champLevel: 18
         items: 
-      - ability: 05000000050000000500000003000000
-        champName: Irelia
-        champLevel: 18
+      - ability: 01000000050000000500000002000000
+        champName: Jax
+        champLevel: 13
         items: 
 --- !u!114 &1658831955
 MonoBehaviour:

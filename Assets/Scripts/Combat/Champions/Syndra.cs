@@ -66,10 +66,10 @@ public class Syndra : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
         UpdateTotalDamage(ref qSum, 0, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), QSkill().basic.name);
         myStats.qCD = 1.25f;
+        QRecharge = 0;
         yield return new WaitForSeconds(0.6f);
         UpdateTotalDamage(ref qSum, 0, QSkill(), myStats.qLevel, qKeys[0], skillComponentTypes: (SkillComponentTypes)16512);
         StartCoroutine(PutSphereOnTheGround());
-        QRecharge = 0;
         simulationManager.AddCastLog(myCastLog, 0);
     }
 
