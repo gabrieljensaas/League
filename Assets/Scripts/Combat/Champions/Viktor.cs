@@ -29,9 +29,9 @@ public class Viktor : ChampionCombat
         checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Magic Damage");
-        qKeys.Add("Discharge Damage");
+        qKeys.Add("Modified Magic Damage");
         eKeys.Add("Magic Damage");
-        eKeys.Add("Aftershock Magic Damage");
+        eKeys.Add("Magic Damage");
         rKeys.Add("Magic Damage");
         rKeys.Add("Magic Damage Per Tick");
 
