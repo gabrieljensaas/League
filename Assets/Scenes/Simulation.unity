@@ -22498,7 +22498,7 @@ MonoBehaviour:
       minute: 19
       championInfo:
       - ability: 05000000050000000500000003000000
-        champName: Zed
+        champName: Ekko
         champLevel: 18
         items: 
       - ability: 05000000050000000500000003000000

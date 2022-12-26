@@ -31,6 +31,7 @@ public class Ekko : ChampionCombat
         checksR.Add(new CheckIfImmobilize(this));
         checkTakeDamagePostMitigation.Add(new CheckForLostHealth(this, this));
         checkTakeDamagePostMitigation.Add(new CheckIfTargetable(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
         targetCombat.checksQ.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksW.Add(new CheckIfEnemyTargetable(targetCombat));
         targetCombat.checksE.Add(new CheckIfEnemyTargetable(targetCombat));
@@ -71,7 +72,7 @@ public class Ekko : ChampionCombat
         yield return new WaitForSeconds(3f);
         if (UpdateTotalDamage(ref wSum, 1, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)128), WSkill().basic.name) != float.MinValue)
             TargetBuffManager.Add("Stun", new StunBuff(2.25f, TargetBuffManager, WSkill().basic.name));
-        MyBuffManager.shields.Add(WSkill().basic.name, new ShieldBuff(2f, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), WSkill().basic.name));
+        MyBuffManager.shields.Add(WSkill().basic.name, new ShieldBuff(2, MyBuffManager, WSkill().basic.name, WSkill().UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), WSkill().basic.name));
         simulationManager.AddCastLog(myCastLog, 1);
     }
 
@@ -82,7 +83,7 @@ public class Ekko : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         UpdateTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2050), ESkill().basic.name);
-        MyBuffManager.Add(ESkill().basic.name, new PhaseDiveBuff(3, MyBuffManager, ESkill().basic.name));
+        MyBuffManager.Add("PhaseDive", new PhaseDiveBuff(3, MyBuffManager, ESkill().basic.name));
         myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
         attackCooldown = 0;
         simulationManager.AddCastLog(myCastLog, 2);
