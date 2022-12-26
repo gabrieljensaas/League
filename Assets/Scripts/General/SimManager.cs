@@ -299,6 +299,12 @@ public class SimManager : MonoBehaviour
     {
         switch (charName)
         {
+            case "Yone":
+                stats.MyCombat = stats.gameObject.AddComponent<Yone>();
+                break;
+            case "Vex":
+                stats.MyCombat = stats.gameObject.AddComponent<Vex>();
+                break;
             case "Shaco":
                 stats.MyCombat = stats.gameObject.AddComponent<Shaco>();
                 break;
