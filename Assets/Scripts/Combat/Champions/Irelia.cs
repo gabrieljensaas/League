@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Irelia : ChampionCombat
 {
-    public static float IonianFervorAttackSpeed(int level, int stack)
+    public static float IonianFervorAttackSpeed(int level, int stack, float baseAS)
     {
         return level switch
         {
-            < 7 => 7.5f * stack,
-            < 13 => 13.75f * stack,
-            _ => 20f * stack
+            < 7 => 0.075f * stack * baseAS,
+            < 13 => 0.01375f * stack * baseAS,
+            _ => 0.020f * stack * baseAS
         };
     }
 
@@ -92,13 +92,13 @@ public class Irelia : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
         UpdateTotalDamage(ref eSum, 2, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), ESkill().basic.name);
+        myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
         yield return new WaitForSeconds(0.4f); //second E cast and activation time
         if(UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], skillComponentTypes: (SkillComponentTypes)18560) != float.MinValue)
         {
-            targetStats.buffManager.buffs.Add("Stun", new StunBuff(0.75f, targetStats.buffManager, myStats.eSkill[0].name));
+            TargetBuffManager.Add("Stun", new StunBuff(0.75f, targetStats.buffManager, myStats.eSkill[0].name));
             UnsteadyMark(myStats.eSkill[0].name);
         }
-        myStats.eCD = myStats.eSkill[0].basic.coolDown[myStats.eLevel];
         IonianFervor(myStats.eSkill[0].name);
         simulationManager.AddCastLog(myCastLog, 2);
     }
@@ -129,7 +129,7 @@ public class Irelia : ChampionCombat
                 if (myStats.buffManager.buffs.TryGetValue("IonianFervorAS", out Buff ASbuff))
                     ((AttackSpeedBuff)ASbuff).KillSilent();
 
-                MyBuffManager.Add("IonianFervorAS", new AttackSpeedBuff(6, myStats.buffManager, "IonianFervor", Irelia.IonianFervorAttackSpeed(myStats.level, (int)buff.value), "IonianFervorAS"));
+                MyBuffManager.Add("IonianFervorAS", new AttackSpeedBuff(6, myStats.buffManager, "IonianFervor", Irelia.IonianFervorAttackSpeed(myStats.level, (int)buff.value, myStats.baseAttackSpeed), "IonianFervorAS"));
 
                 if (buff.value == 4)
                     UpdateTotalDamage(ref pSum, 4, new Damage(IonianFervorEmpoweredDamage(myStats.level) + myStats.bonusAD, SkillDamageType.Spell, skillComponentType: (SkillComponentTypes)32), "Ionian Fervor");

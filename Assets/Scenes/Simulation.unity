@@ -22498,11 +22498,11 @@ MonoBehaviour:
       minute: 5
       championInfo:
       - ability: 05000000050000000500000003000000
-        champName: LeeSin
+        champName: Jinx
         champLevel: 18
         items: 
       - ability: 05000000050000000500000003000000
-        champName: Tristana
+        champName: Irelia
         champLevel: 18
         items: 
 --- !u!114 &1658831955
