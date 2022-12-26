@@ -32,8 +32,10 @@ public class LeeSin : ChampionCombat
         checksR.Add(new CheckIfDisrupt(this));
         checksA.Add(new CheckIfTotalCC(this));
         checksA.Add(new CheckIfDisarmed(this));
+        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Physical Damage");
+        qKeys.Add("Minimum Physical Damage");
         wKeys.Add("Shield Strength");
         wKeys.Add("Bonus Drain");
         eKeys.Add("Magic Damage");
@@ -58,7 +60,7 @@ public class LeeSin : ChampionCombat
         if (!qCast)
         {
             yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
-            UpdateTotalDamage(ref qSum, 2, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes:(SkillComponentTypes)34944);
+            UpdateTotalDamage(ref qSum, 0, myStats.qSkill[0], myStats.qLevel, qKeys[0], skillComponentTypes:(SkillComponentTypes)34944);
             StartCoroutine(SonicWave());
             myStats.qCD = 0.4f;
             timeSinceQ = 0;
@@ -68,8 +70,8 @@ public class LeeSin : ChampionCombat
         {
             yield return StartCoroutine(StartCastingAbility(QSkill().basic.castTime));
             if (myStats.buffManager.HasImmobilize) yield break;
-            float extraDamage = myStats.qSkill[0].UseSkill(myStats.qLevel, qKeys[0], myStats, targetStats) * (1 + ((targetStats.maxHealth - targetStats.currentHealth) / targetStats.maxHealth));
-            UpdateTotalDamage(ref qSum, 4, new Damage(extraDamage, SkillDamageType.Spell, skillComponentType: (SkillComponentTypes)34944), myStats.qSkill[0].basic.name);
+            float extraDamage = myStats.qSkill[5].UseSkill(myStats.qLevel, qKeys[1], myStats, targetStats) * (1 + ((targetStats.maxHealth - targetStats.currentHealth) / targetStats.maxHealth));
+            UpdateTotalDamage(ref qSum, 0, new Damage(extraDamage, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)34944), myStats.qSkill[5].basic.name);
             StopCoroutine(SonicWave());
             Flurry();
             myStats.qCD = myStats.qSkill[0].basic.coolDown[myStats.qLevel] - timeSinceQ;
@@ -88,7 +90,7 @@ public class LeeSin : ChampionCombat
             yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
             if (myStats.buffManager.HasImmobilize) yield break;
             UpdateTotalDamage(ref wSum, 1, new Damage(0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)2048), WSkill().basic.name);
-            MyBuffManager.shields.Add("ShieldBuff", new ShieldBuff(2f, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), "ShieldBuff"));
+            MyBuffManager.shields.Add("ShieldBuff", new ShieldBuff(2, MyBuffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[0], myStats, targetStats), "ShieldBuff"));
             StartCoroutine(SafeGuard());
             myStats.wCD = 0.4f;
             timeSinceW = 0;
@@ -97,7 +99,7 @@ public class LeeSin : ChampionCombat
         else
         {
             yield return StartCoroutine(StartCastingAbility(myStats.wSkill[0].basic.castTime));
-            MyBuffManager.Add("LifeStealBuff", new LifeStealBuff(4, myStats.buffManager, myStats.wSkill[0].basic.name, myStats.wSkill[0].UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), "LifeStealBuff"));
+            MyBuffManager.Add("LifeStealBuff", new LifeStealBuff(4, myStats.buffManager, myStats.wSkill[1].basic.name, myStats.wSkill[1].UseSkill(myStats.wLevel, wKeys[1], myStats, targetStats), "LifeStealBuff"));
             // Need to add SpellVamp Buff 
             StopCoroutine(SafeGuard());
             Flurry();
@@ -141,8 +143,9 @@ public class LeeSin : ChampionCombat
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
         UpdateTotalDamage(ref rSum, 3, myStats.rSkill[0], myStats.rLevel, rKeys[0], skillComponentTypes:(SkillComponentTypes)34944);
-        MyBuffManager.Add("AirBorneBuff", new AirborneBuff(1f, targetStats.buffManager, "AirBorneBuff"));
+        TargetBuffManager.Add("Airborne", new AirborneBuff(1f, targetStats.buffManager, "AirBorneBuff"));
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     public override IEnumerator ExecuteA()

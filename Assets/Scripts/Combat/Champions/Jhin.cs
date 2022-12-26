@@ -213,6 +213,6 @@ public class Jhin : ChampionCombat
     public IEnumerator LotusTrap()
     {
         yield return new WaitForSeconds(3);       //1 second for arming and 2 seconds trigger
-        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], myStats.eLevel, skillComponentTypes: (SkillComponentTypes)16512);
+        UpdateTotalDamage(ref eSum, 2, ESkill(), myStats.eLevel, eKeys[0], skillComponentTypes: (SkillComponentTypes)16512);
     }
 }

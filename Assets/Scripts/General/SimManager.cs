@@ -140,13 +140,14 @@ public class SimManager : MonoBehaviour
                 break;
             }
         }
-
         int skillIndex = 0;
         for (int i = 0; i < championManager.qSkills.Count; i++)
         {
             if (championManager.qSkills[i].basic.champion == champName)
             {
-                champStats.qSkill[skillIndex] = championManager.qSkills[i];
+                if (skillIndex == 0)
+                    champStats.qSkill[skillIndex] = (championManager.qSkills[i]);
+                else champStats.qSkill.Add(championManager.qSkills[i]);
                 skillIndex++;
             }
         }
@@ -155,7 +156,9 @@ public class SimManager : MonoBehaviour
         {
             if (championManager.wSkills[i].basic.champion == champName)
             {
-                champStats.wSkill[skillIndex] = championManager.wSkills[i];
+                if (skillIndex == 0)
+                    champStats.wSkill[skillIndex] = (championManager.wSkills[i]);
+                else champStats.wSkill.Add(championManager.wSkills[i]);
                 skillIndex++;
             }
         }
@@ -164,7 +167,9 @@ public class SimManager : MonoBehaviour
         {
             if (championManager.eSkills[i].basic.champion == champName)
             {
-                champStats.eSkill[skillIndex] = championManager.eSkills[i];
+                if (skillIndex == 0)
+                    champStats.eSkill[skillIndex] = (championManager.eSkills[i]);
+                else champStats.eSkill.Add(championManager.eSkills[i]);
                 skillIndex++;
             }
         }
@@ -173,7 +178,9 @@ public class SimManager : MonoBehaviour
         {
             if (championManager.rSkills[i].basic.champion == champName)
             {
-                champStats.rSkill[skillIndex] = championManager.rSkills[i];
+                if (skillIndex == 0)
+                    champStats.rSkill[skillIndex] = (championManager.rSkills[i]);
+                else champStats.rSkill.Add(championManager.rSkills[i]);
                 skillIndex++;
             }
         }

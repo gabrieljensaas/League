@@ -2093,10 +2093,6 @@ MonoBehaviour:
   - {fileID: 245803481}
   currentHP: {fileID: 936647569}
   passiveSkill: {fileID: 11400000, guid: 5888de635ad55664f94714cbebc37d41, type: 2}
-  qSkill:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   wSkill:
   - {fileID: 0}
   - {fileID: 0}
@@ -2106,6 +2102,12 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   rSkill:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  qSkill:
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -5947,13 +5949,17 @@ MonoBehaviour:
   - {fileID: 1691049337}
   currentHP: {fileID: 1365512289}
   passiveSkill: {fileID: 0}
-  qSkill:
-  - {fileID: 0}
   wSkill:
   - {fileID: 0}
   eSkill:
   - {fileID: 0}
   rSkill:
+  - {fileID: 0}
+  qSkill:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   qCD: 0
   wCD: 0
@@ -22492,7 +22498,7 @@ MonoBehaviour:
       minute: 5
       championInfo:
       - ability: 05000000050000000500000003000000
-        champName: Trundle
+        champName: LeeSin
         champLevel: 18
         items: 
       - ability: 05000000050000000500000003000000

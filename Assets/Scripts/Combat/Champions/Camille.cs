@@ -54,7 +54,6 @@ public class Camille : ChampionCombat
         checksR.Add(new CheckIfUnableToAct(this));
         checksA.Add(new CheckIfUnableToAct(this));
         checkTakeDamagePostMitigation.Add(new CheckShield(this));
-        checkTakeDamagePostMitigation.Add(new CheckShield(this));
 
         qKeys.Add("Bonus Physical Damage");
         wKeys.Add("Physical Damage");

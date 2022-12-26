@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -13,10 +14,10 @@ namespace Simulator.Combat
 
         [HideInInspector] public BuffManager buffManager;                    //class to manage buffs
         [HideInInspector] public PassiveList passiveSkill;
-        [HideInInspector] public SkillList[] qSkill = new SkillList[5];
-        [HideInInspector] public SkillList[] wSkill = new SkillList[5];
-        [HideInInspector] public SkillList[] eSkill = new SkillList[5];
-        [HideInInspector] public SkillList[] rSkill = new SkillList[5];
+        [HideInInspector] public List<SkillList> wSkill = new List<SkillList>();
+        [HideInInspector] public List<SkillList> eSkill = new List<SkillList>();
+        [HideInInspector] public List<SkillList> rSkill = new List<SkillList>();
+        [HideInInspector] public List<SkillList> qSkill = new List<SkillList>();
         [HideInInspector] public float qCD, wCD, eCD, rCD, pCD;                                          //cooldown of skills
         [HideInInspector] public int qLevel, wLevel, eLevel, rLevel;                                          //levels of skills
 
