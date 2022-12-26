@@ -29,11 +29,10 @@ public class Viego : ChampionCombat
         checksA.Add(new CheckIfDisarmed(this));
         checksW.Add(new CheckIfImmobilize(this));
         checksR.Add(new CheckIfImmobilize(this));
-        checksR.Add(new CheckIfExecutes(this, "R"));
 
         qKeys.Add("Bonus Physical Damage");
         qKeys.Add("Physical Damage");
-        qKeys.Add("Minumum Bonus Damage");
+        qKeys.Add("Minimum Bonus Damage");
         wKeys.Add("Magic Damage");
         eKeys.Add("Bonus Attack Speed");
         rKeys.Add("Bonus Physical Damage");
@@ -68,21 +67,22 @@ public class Viego : ChampionCombat
         if (!wCast)
         {
             yield return StartCoroutine(StartCastingAbility(WSkill().basic.castTime));
-            UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes:(SkillComponentTypes)34944);
-            BladeMark(WSkill().basic.name);
             timeSinceW = 0;
             timeChanneled = 0;
-
+            wCast = true;
+            myStats.wCD = 1;
+            simulationManager.AddCastLog(myCastLog, 1);
         }
         else
         {
             yield return StartCoroutine(StartCastingAbility(myStats.eSkill[0].basic.castTime));
             UpdateTotalDamage(ref wSum, 1, myStats.wSkill[0], myStats.wLevel, wKeys[0], skillComponentTypes: (SkillComponentTypes)34944);
-            MyBuffManager.Add("StunBuff", new StunBuff(0.25f + (timeChanneled > 1 ? 1 : timeChanneled), TargetBuffManager, "StunBuff")); //what happens when channeling gets cancelled
+            TargetBuffManager.Add("Stun", new StunBuff(0.25f + (timeChanneled > 1 ? 1 : timeChanneled), TargetBuffManager, "StunBuff")); //what happens when channeling gets cancelled
             BladeMark(WSkill().basic.name);
             myStats.wCD = WSkill().basic.coolDown[myStats.wLevel] - timeSinceW;
+            simulationManager.AddCastLog(myCastLog, 1);
+            wCast = false;
         }
-        simulationManager.AddCastLog(myCastLog, 1);
     }
 
     public override IEnumerator ExecuteE()
@@ -100,12 +100,13 @@ public class Viego : ChampionCombat
     {
         if (myStats.rLevel == -1) yield break;
         if (!CheckForAbilityControl(checksR)) yield break;
+        if (targetStats.PercentCurrentHealth < 0.5f) yield break;
 
         yield return StartCoroutine(StartCastingAbility(RSkill().basic.castTime));
-        float multiplier = RSkill().UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats) * 0.01f * myStats.PercentMissingHealth;
-        UpdateTotalDamage(ref rSum, 3, new Damage(multiplier * 0.01f, SkillDamageType.Phyiscal, skillComponentType:(SkillComponentTypes)34944), RSkill().basic.name);
+        UpdateTotalDamage(ref rSum, 3, RSkill(), myStats.rLevel, rKeys[0],skillComponentTypes: (SkillComponentTypes)34944);
+        UpdateTotalDamage(ref rSum, 3, new Damage(myStats.AD * 1.2f * (1 + myStats.critStrikeChance), SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)34944), RSkill().basic.name);
         myStats.rCD = RSkill().basic.coolDown[myStats.rLevel];
-        simulationManager.AddCastLog(myCastLog, 4);
+        simulationManager.AddCastLog(myCastLog, 3);
     }
 
     public override IEnumerator ExecuteA()
@@ -128,6 +129,8 @@ public class Viego : ChampionCombat
         {
             UpdateTotalDamage(ref aSum, 5, new Damage(myStats.AD + myStats.qLevel > -1 ? procDamage > QSkill().UseSkill(myStats.qLevel, qKeys[2], myStats, targetStats) ? procDamage : QSkill().UseSkill(myStats.qLevel, qKeys[2], myStats, targetStats) : 0, SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)5912), "Viego's Auto Attack");
         }
+        attackCooldown = 1f / myStats.attackSpeed;
+        simulationManager.AddCastLog(myCastLog, 5);
     }
 
     private void BladeMark(string source)
