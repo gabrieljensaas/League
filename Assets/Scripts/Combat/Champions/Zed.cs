@@ -53,7 +53,7 @@ public class Zed : ChampionCombat
 
         qKeys.Add("Physical Damage");
         eKeys.Add("Physical Damage");
-        rKeys.Add("");
+        rKeys.Add("Physical Damage");
 
         base.UpdatePriorityAndChecks();
     }

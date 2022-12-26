@@ -22498,12 +22498,12 @@ MonoBehaviour:
       minute: 19
       championInfo:
       - ability: 05000000050000000500000003000000
-        champName: Viktor
+        champName: Zed
         champLevel: 18
         items: 
-      - ability: 01000000050000000500000002000000
-        champName: Jax
-        champLevel: 13
+      - ability: 05000000050000000500000003000000
+        champName: Tristana
+        champLevel: 18
         items: 
 --- !u!114 &1658831955
 MonoBehaviour:
