@@ -168,6 +168,7 @@ public class Yone : ChampionCombat
         if (!CheckForAbilityControl(checksR)) yield break;
 
         yield return StartCoroutine(StartCastingAbility(myStats.rSkill[0].basic.castTime));
+        myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
         if(UpdateTotalDamage(ref rSum, 3, new Damage(0, SkillDamageType.Phyiscal, (SkillComponentTypes)2177), RSkill().basic.name) != float.MinValue)
         {
             TargetBuffManager.Add("Airborne", new AirborneBuff(1.05f, targetStats.buffManager, myStats.rSkill[0].basic.name));
@@ -176,7 +177,6 @@ public class Yone : ChampionCombat
             UpdateTotalDamage(ref rSum, 3, new Damage(myStats.rSkill[0].UseSkill(myStats.rLevel, rKeys[0], myStats, targetStats), SkillDamageType.Phyiscal, skillComponentType: (SkillComponentTypes)16384), myStats.rSkill[0].basic.name);
             UpdateTotalDamage(ref rSum, 3, new Damage(myStats.rSkill[0].UseSkill(myStats.rLevel, rKeys[1], myStats, targetStats), SkillDamageType.Spell, skillComponentType: (SkillComponentTypes)16384), myStats.rSkill[0].basic.name);
         }
-        myStats.rCD = myStats.rSkill[0].basic.coolDown[myStats.rLevel];
         simulationManager.AddCastLog(myCastLog, 3);
     }
 
