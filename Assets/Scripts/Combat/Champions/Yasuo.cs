@@ -43,7 +43,7 @@ public class Yasuo : ChampionCombat
 
     public override void UpdatePriorityAndChecks()
     {
-        combatPrio = new string[] { "E", "W", "Q", "R", "A" };
+        combatPrio = new string[] { "R", "W", "Q", "E", "A" };
 
         checksQ.Add(new CheckCD(this, "Q"));
         checksW.Add(new CheckCD(this, "W"));
@@ -139,7 +139,7 @@ public class Yasuo : ChampionCombat
         yield return StartCoroutine(StartCastingAbility(ESkill().basic.castTime));
         StartCoroutine(RidingE());
         UpdateTotalDamage(ref eSum, 2, myStats.eSkill[0], myStats.eLevel, eKeys[0], skillComponentTypes:(SkillComponentTypes)34944);
-        myStats.eCD = ESkill().basic.coolDown[myStats.eLevel];
+        myStats.eCD = 10 - myStats.eLevel;        //target immunity
         simulationManager.AddCastLog(myCastLog, 2);
     }
 

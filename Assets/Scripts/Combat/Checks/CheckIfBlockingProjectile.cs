@@ -14,7 +14,7 @@ public class CheckIfBlockingProjectile : Check
     }
     public override Damage Control(Damage damage)
     {
-        if (damage.skillComponentType.HasFlag(SkillComponentTypes.Projectile))
+        if (blocking && damage.skillComponentType.HasFlag(SkillComponentTypes.Projectile))
         {
             damage.value = float.MinValue;
         }
